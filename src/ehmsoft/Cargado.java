@@ -6,6 +6,8 @@ import core.*;
 
 
 public interface Cargado {
+	public Vector consultarDemandantes();
+	public Vector consultarDemandados();
 	public Vector consultarPersonas();
 	public Persona consultarPersona(String id_persona);
 	public Vector consultarProcesos();

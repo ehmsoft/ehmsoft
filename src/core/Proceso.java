@@ -39,6 +39,7 @@ public class Proceso {
 	}
 
 	//Fin Constructores
+
 	public void addActuacion(Actuacion act){
 		this.actuaciones.addElement(act);
 	}
