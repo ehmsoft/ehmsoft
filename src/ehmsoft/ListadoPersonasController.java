@@ -1,85 +1,60 @@
 package ehmsoft;
 
-import net.rim.device.api.ui.container.MainScreen;
+import net.rim.device.api.ui.UiApplication;
 import core.Persona;
 import gui.ListadoPersonas;
 import persistence.Persistence;
 import java.util.Vector;
 
-public class ListadoPersonasController extends MainScreen {
+public class ListadoPersonasController {
 	
-	private Persona selected;
-	private short tipo;
-	public Main theApp;
+	private int tipo;
 	private Persistence persistencia;
 	private Object[] personas;
-	private Vector persistence;
+	private Vector vectorPersonas;
 	private ListadoPersonas screen;
-	private NuevoProcesoController controller;
-	public ListadoPersonasController(Main theApp, NuevoProcesoController controller,short tipo)
+	
+	public ListadoPersonasController(int tipo)
 	{
-		this.persistencia = new Persistence();
-		this.theApp = theApp;
 		this.tipo = tipo;
-		this.persistence = persistencia.consultarPersonas();
-		if(this.persistence == null)
-		{
-			this.personas = new Object[1];
-			this.personas[0] = "Nuevo";
-		}
+		this.persistencia = new Persistence();
+		
+		if(tipo == 1)
+			this.vectorPersonas = persistencia.consultarDemandantes();
+		else
+			this.vectorPersonas = persistencia.consultarDemandantes();
+
+		if(this.vectorPersonas == null)
+			this.personas = new Object[0];
 		else
 		{
-			this.personas = new Object[persistence.size()+1];
-			this.personas[0] = "Nuevo";
+			this.personas = new Object[vectorPersonas.size()];
 			transformarListado();
 		}
-		this.screen = new ListadoPersonas(this);
-		this.theApp.pushScreen(this.screen);		
+		this.screen = new ListadoPersonas(tipo, this.personas);
 	}
 	
 	private void transformarListado()
 	{
-		for(int i = 1; i < persistence.size(); i++)
-			personas[i] = persistence.elementAt(i-1);
-	}
-	
-	public Object[] getPersonas()
-	{
-		return personas;
+		for(int i = 0; i < vectorPersonas.size(); i++)
+			personas[i] = vectorPersonas.elementAt(i);
 	}
 	
 	public Persona getSelected()
 	{
-		return selected;
-	}
-	
-	public void setSelected(Persona persona)
-	{
-		selected = persona;
-	}
-	
-	public void lanzarNuevaPersona(short tipo)
-	{
-		NuevaPersonaController nuevaPersona = new NuevaPersonaController(
-				theApp, tipo);
-		setSelected(nuevaPersona.getPersona());
-		nuevaPersona = null;
-		redibujar();
-		synchronized (controller) {
-			controller.notify();			
+		NuevaPersonaController nuevaPersona = new NuevaPersonaController(this.tipo);
+		if(screen.getSelected() == "Nuevo demandante" || screen.getSelected() == "Nuevo demandado") {
+			UiApplication.getUiApplication().pushModalScreen(nuevaPersona.getScreen());
+			nuevaPersona.guardarPersona();
+			screen.addPersona(nuevaPersona.getPersona());
+			return nuevaPersona.getPersona();
 		}
-	}
-
-	public short getTipo() {
-		return tipo;
+		else
+			return (Persona)screen.getSelected();
 	}
 	
-	private void redibujar()
+	public ListadoPersonas getScreen()
 	{
-		Object[] nuevo = new Object[personas.length+1];
-		for(int i = 0; i < personas.length; i++)
-			nuevo[i] = personas[i];
-		nuevo[personas.length] = selected;
-		personas = nuevo;		
+		return screen;
 	}
 }

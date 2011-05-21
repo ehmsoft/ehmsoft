@@ -1,39 +1,30 @@
 package ehmsoft;
 
-import net.rim.device.api.ui.container.MainScreen;
 import core.Persona;
 import gui.NuevaPersona;
+import persistence.Persistence;
 
-public class NuevaPersonaController extends MainScreen{
-	
-	public Main theApp;
-	private short tipo;
+public class NuevaPersonaController {
 	private Persona persona;
 	private NuevaPersona screen;
-	public NuevaPersonaController(Main theApp, short tipo)
-	{
-		this.theApp = theApp;
-		this.tipo = tipo;
-		this.screen = new NuevaPersona(this);
-		this.theApp.pushScreen(this.screen);
-	}
-	
-	public short getTipo()
-	{
-		return tipo;
-	}
-	
-	public Persona getPersona()
-	{
-		return persona;
-	}
-	
-	public void guardarPersona()
-	{
-		this.persona = this.persona.personaNueva(
-				(short)1,screen.getId(), screen.getNombre(), screen.getTelefono(), 
-				screen.getDireccion(), screen.getCorreo(), screen.getNotas());
-		theApp.popScreen(screen);
+
+	public NuevaPersonaController(int tipo) {
+		this.screen = new NuevaPersona(tipo);
 	}
 
+	public NuevaPersona getScreen() {
+		return screen;
+	}
+
+	public Persona getPersona() {
+		return persona;
+	}
+
+	public void guardarPersona() {
+		Persistence guardado = new Persistence();
+		persona = new Persona(1, screen.getCedula(), screen.getNombre(),
+				screen.getTelefono(), screen.getDireccion(),
+				screen.getCorreo(), screen.getNotas());
+		guardado.guardarPersona(persona);		
+	}
 }

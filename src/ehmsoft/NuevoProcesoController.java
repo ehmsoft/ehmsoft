@@ -26,7 +26,7 @@ public class NuevoProcesoController extends MainScreen{
 	public Persona selectDemandante()
 	{
 		NuevoProcesoController This = this;
-		ListadoPersonasController listaDemandantes = new ListadoPersonasController(theApp,This,(short)1);
+		ListadoPersonasController listaDemandantes = new ListadoPersonasController(1);
 		Persona demandante = new Persona((short)1, "", "", "", "", "", "");
 		synchronized (listaDemandantes) {
 			try {

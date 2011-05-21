@@ -1,44 +1,50 @@
 package gui;
 
-import core.Persona;
-import ehmsoft.ListadoPersonasController;
+import net.rim.device.api.ui.UiApplication;
 import net.rim.device.api.ui.container.MainScreen;
 
 public class ListadoPersonas extends MainScreen {
 
-	/**
-	 * 
-	 */
-	ListaListadoPersonas lista;
-	ListadoPersonasController controller;
-	public ListadoPersonas(final ListadoPersonasController controller) {
+	private Object selected;
+	private ListaListadoPersonas lista;
+	
+	public ListadoPersonas(int tipo, Object[] listadoPersonas) {
 		super(MainScreen.VERTICAL_SCROLL | MainScreen.VERTICAL_SCROLLBAR);
-		// TODO Auto-generated constructor stub
-		this.controller = controller;
 		
-		if(this.controller.getTipo() == (short)1)
+		if(tipo == 1)
 			setTitle("Listado de demandantes");
-		else if (this.controller.getTipo() == (short)2)
-			setTitle("Listado de demandados");
 		else
-			setTitle("Listado de personas");
+			setTitle("Listado de demandados");
 		
 		lista = new ListaListadoPersonas()
 		{
 			protected boolean navigationClick(int status, int time)
 			{
-				if(getSelectedIndex() == 0)
-				{
-					controller.lanzarNuevaPersona(controller.getTipo());
-				}
-				else
-				{
-					controller.setSelected((Persona)get(this,getSelectedIndex()));
-				}
+				selected = get(lista, getSelectedIndex());
+				UiApplication.getUiApplication().popScreen(getScreen());
 				return true;
 			}
 		};
-		lista.set(this.controller.getPersonas());
+		
+		lista.set(listadoPersonas);
+		if(tipo == 1)
+			lista.insert(0, "Nuevo demandante");
+		else
+			lista.insert(0, "Nuevo demandado");
 		add(lista);
+	}
+	
+	public void addPersona(Object persona) {
+		lista.insert(lista.getSize(), persona);
+	}
+	
+	public Object getSelected() {
+		return selected;
+	}
+	
+	public boolean onClose()
+	{
+		UiApplication.getUiApplication().popScreen(getScreen());
+		return true;
 	}
 }

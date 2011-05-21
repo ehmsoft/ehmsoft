@@ -41,9 +41,12 @@ public final class screenMain extends MainScreen
 
 package ehmsoft;
 
+import core.Persona;
 import net.rim.device.api.ui.Field;
 import net.rim.device.api.ui.FieldChangeListener;
+import net.rim.device.api.ui.UiApplication;
 import net.rim.device.api.ui.component.ButtonField;
+import net.rim.device.api.ui.component.Dialog;
 import net.rim.device.api.ui.container.MainScreen;
 
 /**
@@ -58,6 +61,10 @@ public final class ScreenMain extends MainScreen
 	Main theApp;
 	ButtonField btnListadoProcesos;
 	ButtonField btnNuevoProceso;
+	ButtonField btnNuevoDemandante;
+	ButtonField btnNuevoDemandado;
+	ButtonField btnListadoDemandantes;
+	
     public ScreenMain(Main theApp)
     {       
     	this.theApp = theApp;
@@ -71,6 +78,17 @@ public final class ScreenMain extends MainScreen
         btnNuevoProceso.setChangeListener(listenerNuevoProceso);
         add(btnNuevoProceso);
         
+        btnNuevoDemandante = new ButtonField("Nuevo Demandante");
+        btnNuevoDemandante.setChangeListener(listenerNuevoDemandante);
+        add(btnNuevoDemandante);
+        
+        btnNuevoDemandado = new ButtonField("Nuevo Demandado");
+        btnNuevoDemandado.setChangeListener(listenerNuevoDemandado);
+        add(btnNuevoDemandado);
+        
+        btnListadoDemandantes = new ButtonField("Listado Demandantes");
+        btnListadoDemandantes.setChangeListener(listenerListadoDemandantes);
+        add(btnListadoDemandantes);      
     }
     
     private FieldChangeListener listenerListadoProcesos = new FieldChangeListener() {
@@ -86,6 +104,38 @@ public final class ScreenMain extends MainScreen
     		theApp.lanzarNuevoProceso();
     		//theApp.pushScreen(new gui.ListadoProcesos(theApp));
     		
+    	}
+    };
+    
+    private FieldChangeListener listenerNuevoDemandante = new FieldChangeListener() {
+    	public void fieldChanged(Field field, int context) {
+    		NuevaPersonaController demandante= new NuevaPersonaController(1);
+    		UiApplication.getUiApplication().pushModalScreen(demandante.getScreen());
+    		demandante.guardarPersona();
+    		Dialog.alert(demandante.getPersona().getNombre());
+    		demandante = null;
+    	}
+    };
+    
+    private FieldChangeListener listenerNuevoDemandado = new FieldChangeListener() {
+    	public void fieldChanged(Field field, int context) {
+    		NuevaPersonaController demandado= new NuevaPersonaController(2);
+    		UiApplication.getUiApplication().pushModalScreen(demandado.getScreen());
+    		demandado.guardarPersona();
+    		Dialog.alert(demandado.getPersona().getNombre());
+    		demandado = null;
+    	}
+    };
+    
+    private FieldChangeListener listenerListadoDemandantes = new FieldChangeListener() {
+    	public void fieldChanged(Field field, int context) {
+    		ListadoPersonasController listado = new ListadoPersonasController(1);
+    		UiApplication.getUiApplication().pushModalScreen(listado.getScreen());
+    		Dialog.alert(listado.getSelected().getNombre());
+    		UiApplication.getUiApplication().pushModalScreen(listado.getScreen());
+    		Dialog.alert(listado.getSelected().getNombre());
+    		UiApplication.getUiApplication().pushModalScreen(listado.getScreen());
+    		Dialog.alert(listado.getSelected().getNombre());    		
     	}
     };
     
