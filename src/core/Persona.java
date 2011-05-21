@@ -1,7 +1,7 @@
 package core;
 
 public class Persona {
-private short tipo;
+private int tipo;
 private String id;
 private String nombre;
 private String telefono;
@@ -11,7 +11,7 @@ private String notas;
 private String id_persona;
 
 //Constructores
-public Persona(short tipo, String id, String nombre, String telefono,String direccion, String correo, String notas) {
+public Persona(int tipo, String id, String nombre, String telefono,String direccion, String correo, String notas) {
 this.tipo = tipo;
 this.id = id;
 this.nombre = nombre;
@@ -23,7 +23,7 @@ this.notas = notas;
 //Fin Constructores
 
 //Getters
-public short getTipo() {
+public int getTipo() {
 return tipo;
 }
 public String getId() {
