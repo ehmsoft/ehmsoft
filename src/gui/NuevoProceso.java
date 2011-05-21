@@ -1,19 +1,22 @@
 package gui;
 
+import java.util.Calendar;
+
+import core.Juzgado;
 import core.Persona;
 import net.rim.device.api.ui.Field;
 import net.rim.device.api.ui.FieldChangeListener;
+import net.rim.device.api.ui.UiApplication;
 import net.rim.device.api.ui.component.BasicEditField;
 import net.rim.device.api.ui.component.ButtonField;
 import net.rim.device.api.ui.component.DateField;
-import net.rim.device.api.ui.component.Dialog;
 import net.rim.device.api.ui.component.LabelField;
 import net.rim.device.api.ui.component.NumericChoiceField;
 import net.rim.device.api.ui.component.ObjectChoiceField;
 import net.rim.device.api.ui.container.HorizontalFieldManager;
 import net.rim.device.api.ui.container.MainScreen;
 import net.rim.device.api.ui.container.VerticalFieldManager;
-import ehmsoft.NuevoProcesoController;;
+import ehmsoft.ListadoPersonasController;
 
 public class NuevoProceso extends MainScreen {
 
@@ -24,19 +27,22 @@ public class NuevoProceso extends MainScreen {
 	ObjectChoiceField categoria;
 	NumericChoiceField prioridad;
 	DateField fecha;
-	BasicEditField notas;
+	BasicEditField txtNotas;
 	BasicEditField txtRadicado;
 	BasicEditField txtRadicadoUnico;
 	ButtonField btnDemandante;
 	ButtonField btnDemandado;
 	ButtonField btnJuzgado;
-	NuevoProcesoController controller;
 	
-	public NuevoProceso(NuevoProcesoController controller) {
+	Persona demandante;
+	Persona demandado;
+	Juzgado juzgado;
+	
+	
+	public NuevoProceso() {
 		super(MainScreen.VERTICAL_SCROLL | MainScreen.VERTICAL_SCROLLBAR);
 		// TODO Auto-generated constructor stub
-		this.controller = controller;
-		setTitle("Crear Proceso");
+		setTitle("Nuevo Proceso");
 		
 		HorizontalFieldManager fldChoiceElements = new HorizontalFieldManager();
 		VerticalFieldManager fldRight = new VerticalFieldManager(USE_ALL_WIDTH);
@@ -49,6 +55,7 @@ public class NuevoProceso extends MainScreen {
 		fldRight.add(btnDemandante);
 		
 		btnDemandado = new ButtonField("Seleccionar",FIELD_RIGHT);
+		btnDemandado.setChangeListener(listenerBtnDemandado);
 		fldLeft.add(new LabelField("Demandado: "));
 		fldLeft.add(new LabelField(""));
 		fldRight.add(btnDemandado);
@@ -89,23 +96,28 @@ public class NuevoProceso extends MainScreen {
 		fecha.setEditable(true);
 		add(fecha);
 		
-		notas = new BasicEditField();
-		notas.setLabel("Notas: ");
-		add(notas);
+		txtNotas = new BasicEditField();
+		txtNotas.setLabel("Notas: ");
+		add(txtNotas);
 	}
 	
     private FieldChangeListener listenerBtnDemandante = new FieldChangeListener() {
     	public void fieldChanged(Field field, int context) {
-    		Persona dem = controller.selectDemandante();
-    		if(dem == null)
-    			Dialog.alert("La cagó");
-    		else
-    			Dialog.alert(dem.getNombre());
+    		ListadoPersonasController demandantes = new ListadoPersonasController(1);
+    		UiApplication.getUiApplication().pushModalScreen(demandantes.getScreen());
+    		demandante = demandantes.getSelected();
+    		demandantes = null;
+    		btnDemandante.setLabel(demandante.getNombre());
     	}
     };
     
     private FieldChangeListener listenerBtnDemandado = new FieldChangeListener() {
     	public void fieldChanged(Field field, int context) {
+    		ListadoPersonasController demandados = new ListadoPersonasController(2);
+    		UiApplication.getUiApplication().pushModalScreen(demandados.getScreen());
+    		demandado = demandados.getSelected();
+    		demandados = null;
+    		btnDemandado.setLabel(demandado.getNombre());
     	}
     };
     
@@ -113,4 +125,52 @@ public class NuevoProceso extends MainScreen {
     	public void fieldChanged(Field field, int context) {
     	}
     };
+    
+    public Persona getDemandante() {
+    	return demandante;
+    }
+    
+    public Persona getDemandado() {
+    	return demandado;
+    }
+    
+    public Juzgado getJuzgado() {
+    	return juzgado;
+    }
+    
+    public String getRadicado() {
+    	return txtRadicado.getText();
+    }
+    
+    public String getRadicadoUnico() {
+    	return txtRadicadoUnico.getText();
+    }
+    
+    public String getEstado() {
+    	return (String)estado.getChoice(estado.getSelectedIndex());
+    }
+    
+    public String getCategoria() {
+    	return (String)estado.getChoice(estado.getSelectedIndex());
+    }
+    
+    public String getPrioridad() {
+    	return (String)estado.getChoice(estado.getSelectedIndex());
+    }
+    
+    public String getNotas() {
+    	return txtNotas.getText();
+    }
+    
+    public Calendar getFecha() {
+    	Calendar fecha = Calendar.getInstance();
+		
+		fecha.setTime(fecha.getTime());
+		return fecha;
+    }
+    
+    public boolean onClose() {
+    	UiApplication.getUiApplication().popScreen(getScreen());
+    	return true;
+    }
 }

@@ -1,5 +1,4 @@
 package ehmsoft;
-import net.rim.device.api.ui.container.MainScreen;
 import core.Proceso;
 import core.Persona;
 import core.Actuacion;
@@ -7,38 +6,21 @@ import core.CampoPersonalizado;
 import core.Juzgado;
 import gui.NuevoProceso;
 
-public class NuevoProcesoController extends MainScreen{
+public class NuevoProcesoController {
 	
-	public Main theApp;
 	private Persona demandante;
 	private Persona demandado;
 	private Actuacion actuacion;
 	private CampoPersonalizado campo;
 	private Juzgado juzgado;
 	private NuevoProceso screen;
-	public NuevoProcesoController(Main theApp)
+	public NuevoProcesoController()
 	{
-		this.theApp = theApp;
-		this.screen = new NuevoProceso(this);
-		this.theApp.pushScreen(screen);		
+		this.screen = new NuevoProceso();
 	}
 	
-	public Persona selectDemandante()
-	{
-		NuevoProcesoController This = this;
-		ListadoPersonasController listaDemandantes = new ListadoPersonasController(1);
-		Persona demandante = new Persona((short)1, "", "", "", "", "", "");
-		synchronized (listaDemandantes) {
-			try {
-				This.wait();
-				demandante = listaDemandantes.getSelected();
-				listaDemandantes = null;
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
-		return demandante;
+	public NuevoProceso getScreen() {
+		return screen;
 	}
 }
 	

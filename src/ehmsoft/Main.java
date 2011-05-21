@@ -79,9 +79,4 @@ public class Main extends UiApplication
     {
     	pushScreen(new gui.VerProceso(this,proceso));
     }
-    
-    public void lanzarNuevoProceso()
-    {
-    	new NuevoProcesoController(this);
-    }
 }

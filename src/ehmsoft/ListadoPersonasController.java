@@ -4,6 +4,8 @@ import net.rim.device.api.ui.UiApplication;
 import core.Persona;
 import gui.ListadoPersonas;
 import persistence.Persistence;
+
+import java.util.Enumeration;
 import java.util.Vector;
 
 public class ListadoPersonasController {
@@ -36,14 +38,21 @@ public class ListadoPersonasController {
 	
 	private void transformarListado()
 	{
-		for(int i = 0; i < vectorPersonas.size(); i++)
-			personas[i] = vectorPersonas.elementAt(i);
+		int i = 0;
+		
+		Enumeration index = vectorPersonas.elements();
+		
+		while(index.hasMoreElements()) 
+		{
+			personas[i] = index.nextElement();			
+			i++;
+		}
 	}
 	
 	public Persona getSelected()
 	{
 		NuevaPersonaController nuevaPersona = new NuevaPersonaController(this.tipo);
-		if(screen.getSelected() == "Nuevo demandante" || screen.getSelected() == "Nuevo demandado") {
+		if(String.class.isInstance(screen.getSelected())) {
 			UiApplication.getUiApplication().pushModalScreen(nuevaPersona.getScreen());
 			nuevaPersona.guardarPersona();
 			screen.addPersona(nuevaPersona.getPersona());

@@ -101,9 +101,8 @@ public final class ScreenMain extends MainScreen
     
     private FieldChangeListener listenerNuevoProceso = new FieldChangeListener() {
     	public void fieldChanged(Field field, int context) {
-    		theApp.lanzarNuevoProceso();
-    		//theApp.pushScreen(new gui.ListadoProcesos(theApp));
-    		
+    		NuevoProcesoController proceso = new NuevoProcesoController();
+    		UiApplication.getUiApplication().pushModalScreen(proceso.getScreen());
     	}
     };
     
