@@ -9,7 +9,7 @@ import net.rim.device.api.ui.container.MainScreen;
 public final class ScreenMain extends MainScreen
 {
     /**
-     * Creates a new ScreenMain object
+     * Creates a new screenMain object
      */
     public ScreenMain()
     {        
