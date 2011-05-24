@@ -9,6 +9,7 @@ public class ListadoJuzgados extends MainScreen {
 	private ListaListadoJuzgados lista;
 	public ListadoJuzgados(Object[] listadoJuzgados) {
 		super(MainScreen.VERTICAL_SCROLL | MainScreen.VERTICAL_SCROLLBAR);
+		
 		setTitle("Listado de juzgados");
 		
 		lista = new ListaListadoJuzgados()

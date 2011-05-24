@@ -7,13 +7,13 @@ import net.rim.device.api.ui.container.MainScreen;
 
 public class NuevaPersona extends MainScreen {
 
-	private int tipo;
-	private BasicEditField nombre;
-	private BasicEditField cedula;
-	private BasicEditField direccion;
-	private BasicEditField telefono;
-	private BasicEditField correo;
-	private BasicEditField notas;
+	private int _tipo;
+	private BasicEditField _txtNombre;
+	private BasicEditField _txtCedula;
+	private BasicEditField _txtDireccion;
+	private BasicEditField _txtTelefono;
+	private BasicEditField _txtCorreo;
+	private BasicEditField _txtNotas;
 
 	public NuevaPersona(int tipo) {
 		super(MainScreen.VERTICAL_SCROLL | MainScreen.VERTICAL_SCROLLBAR);
@@ -24,25 +24,25 @@ public class NuevaPersona extends MainScreen {
 			setTitle("Nuevo demandado");
 
 		// Se inicializan con el estilo
-		this.nombre = new BasicEditField(BasicEditField.NO_NEWLINE);
-		this.nombre.setLabel("Nombre: ");
-		this.cedula = new BasicEditField(BasicEditField.NO_NEWLINE);
-		this.cedula.setLabel("Id: ");
-		this.direccion = new BasicEditField(BasicEditField.NO_NEWLINE);
-		this.direccion.setLabel("Dirección: ");
-		this.notas = new BasicEditField("Notas: ", "");
-		this.telefono = new BasicEditField(BasicEditField.FILTER_PHONE);
-		this.telefono.setLabel("Teléfono: ");
-		this.correo = new BasicEditField(BasicEditField.FILTER_EMAIL);
-		this.correo.setLabel("Correo: ");
+		this._txtNombre = new BasicEditField(BasicEditField.NO_NEWLINE);
+		this._txtNombre.setLabel("Nombre: ");
+		this._txtCedula = new BasicEditField(BasicEditField.NO_NEWLINE);
+		this._txtCedula.setLabel("Id: ");
+		this._txtDireccion = new BasicEditField(BasicEditField.NO_NEWLINE);
+		this._txtDireccion.setLabel("Dirección: ");
+		this._txtNotas = new BasicEditField("Notas: ", "");
+		this._txtTelefono = new BasicEditField(BasicEditField.FILTER_PHONE);
+		this._txtTelefono.setLabel("Teléfono: ");
+		this._txtCorreo = new BasicEditField(BasicEditField.FILTER_EMAIL);
+		this._txtCorreo.setLabel("Correo: ");
 		// Se agregan los elementos a la pantalla
 
-		add(this.nombre);
-		add(this.cedula);
-		add(this.direccion);
-		add(this.telefono);
-		add(this.correo);
-		add(this.notas);
+		add(this._txtNombre);
+		add(this._txtCedula);
+		add(this._txtDireccion);
+		add(this._txtTelefono);
+		add(this._txtCorreo);
+		add(this._txtNotas);
 		addMenuItem(menuGuardar);
 	}
 
@@ -55,31 +55,31 @@ public class NuevaPersona extends MainScreen {
 	};
 
 	public int getTipo() {
-		return tipo;
+		return _tipo;
 	}
 
 	public String getNombre() {
-		return nombre.getText();
+		return _txtNombre.getText();
 	}
 
 	public String getCedula() {
-		return cedula.getText();
+		return _txtCedula.getText();
 	}
 
 	public String getDireccion() {
-		return direccion.getText();
+		return _txtDireccion.getText();
 	}
 
 	public String getTelefono() {
-		return telefono.getText();
+		return _txtTelefono.getText();
 	}
 
 	public String getCorreo() {
-		return correo.getText();
+		return _txtCorreo.getText();
 	}
 
 	public String getNotas() {
-		return notas.getText();
+		return _txtNotas.getText();
 	}
 	
 	public boolean onClose() {

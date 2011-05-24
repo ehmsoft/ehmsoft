@@ -41,7 +41,6 @@ public final class screenMain extends MainScreen
 
 package ehmsoft;
 
-import core.Persona;
 import net.rim.device.api.ui.Field;
 import net.rim.device.api.ui.FieldChangeListener;
 import net.rim.device.api.ui.UiApplication;
@@ -64,6 +63,7 @@ public final class ScreenMain extends MainScreen
 	ButtonField btnNuevoDemandante;
 	ButtonField btnNuevoDemandado;
 	ButtonField btnListadoDemandantes;
+	ButtonField btnListadoJuzgados;
 	
     public ScreenMain(Main theApp)
     {       
@@ -88,7 +88,11 @@ public final class ScreenMain extends MainScreen
         
         btnListadoDemandantes = new ButtonField("Listado Demandantes");
         btnListadoDemandantes.setChangeListener(listenerListadoDemandantes);
-        add(btnListadoDemandantes);      
+        add(btnListadoDemandantes);
+        
+        btnListadoJuzgados = new ButtonField("Listado Juzgados");
+        btnListadoJuzgados.setChangeListener(listenerListadoJuzgados);
+        add(btnListadoJuzgados);      
     }
     
     private FieldChangeListener listenerListadoProcesos = new FieldChangeListener() {
@@ -129,6 +133,18 @@ public final class ScreenMain extends MainScreen
     private FieldChangeListener listenerListadoDemandantes = new FieldChangeListener() {
     	public void fieldChanged(Field field, int context) {
     		ListadoPersonasController listado = new ListadoPersonasController(1);
+    		UiApplication.getUiApplication().pushModalScreen(listado.getScreen());
+    		Dialog.alert(listado.getSelected().getNombre());
+    		UiApplication.getUiApplication().pushModalScreen(listado.getScreen());
+    		Dialog.alert(listado.getSelected().getNombre());
+    		UiApplication.getUiApplication().pushModalScreen(listado.getScreen());
+    		Dialog.alert(listado.getSelected().getNombre());    		
+    	}
+    };
+    
+    private FieldChangeListener listenerListadoJuzgados = new FieldChangeListener() {
+    	public void fieldChanged(Field field, int context) {
+    		ListadoJuzgadosController listado = new ListadoJuzgadosController();
     		UiApplication.getUiApplication().pushModalScreen(listado.getScreen());
     		Dialog.alert(listado.getSelected().getNombre());
     		UiApplication.getUiApplication().pushModalScreen(listado.getScreen());

@@ -1,8 +1,8 @@
 package ehmsoft;
 
 import net.rim.device.api.ui.UiApplication;
-import core.Persona;
-import gui.ListadoPersonas;
+import core.Juzgado;
+import gui.ListadoJuzgados;
 import persistence.Persistence;
 
 import java.util.Enumeration;
@@ -10,57 +10,55 @@ import java.util.Vector;
 
 public class ListadoJuzgadosController {
 	
-	private int tipo;
-	private Persistence persistencia;
-	private Object[] juzgados;
-	private Vector vectorJuzgados;
-	private ListadoPersonas screen;
+	private Persistence _persistencia;
+	private Object[] _juzgados;
+	private Vector _vectorJuzgados;
+	private ListadoJuzgados _screen;
 	
-	public ListadoJuzgadosController(int tipo)
+	public ListadoJuzgadosController()
 	{
-		this.tipo = tipo;
-		this.persistencia = new Persistence();
+		this._persistencia = new Persistence();
 		
-		this.vectorJuzgados = persistencia.consultarJuzgados();
+		this._vectorJuzgados = _persistencia.consultarJuzgados();
 
-		if(this.vectorJuzgados == null)
-			this.juzgados = new Object[0];
+		if(this._vectorJuzgados == null)
+			this._juzgados = new Object[0];
 		else
 		{
-			this.juzgados = new Object[vectorJuzgados.size()];
+			this._juzgados = new Object[_vectorJuzgados.size()];
 			transformarListado();
 		}
-		this.screen = new ListadoPersonas(tipo, this.juzgados);
+		this._screen = new ListadoJuzgados(this._juzgados);
 	}
 	
 	private void transformarListado()
 	{
 		int i = 0;
 		
-		Enumeration index = vectorJuzgados.elements();
+		Enumeration index = _vectorJuzgados.elements();
 		
 		while(index.hasMoreElements()) 
 		{
-			juzgados[i] = index.nextElement();			
+			_juzgados[i] = index.nextElement();			
 			i++;
 		}
 	}
 	
-	public Persona getSelected()
+	public Juzgado getSelected()
 	{
-		NuevaPersonaController nuevaPersona = new NuevaPersonaController(this.tipo);
-		if(String.class.isInstance(screen.getSelected())) {
-			UiApplication.getUiApplication().pushModalScreen(nuevaPersona.getScreen());
-			nuevaPersona.guardarPersona();
-			screen.addPersona(nuevaPersona.getPersona());
-			return nuevaPersona.getPersona();
+		NuevoJuzgadoController nuevoJuzgado = new NuevoJuzgadoController();
+		if(String.class.isInstance(_screen.getSelected())) {
+			UiApplication.getUiApplication().pushModalScreen(nuevoJuzgado.getScreen());
+			nuevoJuzgado.guardarJuzgado();
+			_screen.addJuzgado(nuevoJuzgado.getJuzgado());
+			return nuevoJuzgado.getJuzgado();
 		}
 		else
-			return (Persona)screen.getSelected();
+			return (Juzgado)_screen.getSelected();
 	}
 	
-	public ListadoPersonas getScreen()
+	public ListadoJuzgados getScreen()
 	{
-		return screen;
+		return _screen;
 	}
 }
