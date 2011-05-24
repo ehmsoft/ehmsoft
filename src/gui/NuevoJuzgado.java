@@ -3,9 +3,9 @@ package gui;
 import net.rim.device.api.ui.MenuItem;
 import net.rim.device.api.ui.UiApplication;
 import net.rim.device.api.ui.component.BasicEditField;
-import net.rim.device.api.ui.container.MainScreen;
+import net.rim.device.api.ui.component.SeparatorField;
 
-public class NuevoJuzgado extends MainScreen {
+public class NuevoJuzgado extends FondoNuevos {
 
 	/**
 	 * 
@@ -19,8 +19,6 @@ public class NuevoJuzgado extends MainScreen {
 	private BasicEditField _txtId_juzgado;
 	
 	public NuevoJuzgado() {
-		super(MainScreen.VERTICAL_SCROLL | MainScreen.VERTICAL_SCROLLBAR);
-		// TODO Auto-generated constructor stub
 		setTitle("Nuevo juzgado");
 		
 		_txtNombre = new BasicEditField(BasicEditField.NO_NEWLINE);
@@ -41,12 +39,18 @@ public class NuevoJuzgado extends MainScreen {
 		_txtId_juzgado = new BasicEditField(BasicEditField.NO_NEWLINE);
 		_txtId_juzgado.setLabel("Id del juzgado: ");
 		
-		add(_txtNombre);
-		add(_txtCiudad);
-		add(_txtDireccion);
-		add(_txtTelefono);
-		add(_txtTipo);
-		add(_txtId_juzgado);
+		_vertical.add(_txtNombre);
+		_vertical.add(new SeparatorField());
+		_vertical.add(_txtCiudad);
+		_vertical.add(new SeparatorField());
+		_vertical.add(_txtDireccion);
+		_vertical.add(new SeparatorField());
+		_vertical.add(_txtTelefono);
+		_vertical.add(new SeparatorField());
+		_vertical.add(_txtTipo);
+		_vertical.add(new SeparatorField());
+		_vertical.add(_txtId_juzgado);
+		add(_vertical);
 		addMenuItem(menuGuardar);
 	}
 	
