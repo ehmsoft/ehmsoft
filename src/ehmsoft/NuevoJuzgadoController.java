@@ -23,6 +23,11 @@ public class NuevoJuzgadoController {
 	public void guardarJuzgado() {
 		Persistence guardado = new Persistence();
 		_juzgado = new Juzgado(_screen.getNombre(),_screen.getCiudad(),_screen.getDireccion(),_screen.getTelefono(),_screen.getTelefono());
-		guardado.guardarJuzgado(_juzgado);		
+		try {
+			guardado.guardarJuzgado(_juzgado);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}		
 	}
 }

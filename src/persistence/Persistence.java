@@ -8,119 +8,84 @@ import ehmsoft.Guardado;
 
 public class Persistence implements Cargado, Guardado {
 	private ConnectionManager connMgr;
-	public void actualizarPersona(Persona persona) {
-		// TODO Aquí se actualiza una persona
 
+	public void actualizarPersona(Persona persona) throws Exception {
+		// TODO Auto-generated method stub
+		
 	}
 
-	public void guardarPersona(Persona persona) {
-		// TODO Aquí se guarda una persona
-
+	public void guardarPersona(Persona persona) throws Exception {
+		// TODO Auto-generated method stub
+		
 	}
 
-	public void borrarPersona(Persona persona) {
-		// TODO Aquí se borra una persona
-
+	public void borrarPersona(Persona persona) throws Exception {
+		// TODO Auto-generated method stub
+		
 	}
 
-	public void actualizarJuzgado(Juzgado juzgado) {
-		// TODO Se actualiza un juzado
-
+	public void actualizarJuzgado(Juzgado juzgado) throws Exception {
+		// TODO Auto-generated method stub
+		
 	}
 
-	public void guardarJuzgado(Juzgado juzgado) {
-		// TODO Se guarda un juzgado
-
+	public void guardarJuzgado(Juzgado juzgado) throws Exception {
+		// TODO Auto-generated method stub
+		
 	}
 
-	public void borrarJuzgado(Juzgado juzgado) {
-		// TODO Se borra un juzgado
-
+	public void borrarJuzgado(Juzgado juzgado) throws Exception {
+		// TODO Auto-generated method stub
+		
 	}
 
-	public void actualizarActuacion(Actuacion actuacion) {
-		// TODO Se actualiza una actuación
-
+	public void actualizarActuacion(Actuacion actuacion) throws Exception {
+		// TODO Auto-generated method stub
+		
 	}
 
-	public void guardarActuacion(Actuacion actuacion) {
-		// TODO Se guarda un actuación
-
+	public void guardarActuacion(Actuacion actuacion, String id_proceso)
+			throws Exception {
+		// TODO Auto-generated method stub
+		
 	}
 
-	public void borrarActuacion(Actuacion actuacion) {
-		// TODO Se borra una actuación
-
+	public void borrarActuacion(Actuacion actuacion) throws Exception {
+		// TODO Auto-generated method stub
+		
 	}
 
-	public void actualizarCampoPersonalizado(CampoPersonalizado campo) {
-		// TODO Se actualiza un campo personalizado
-
+	public void actualizarCampoPersonalizado(CampoPersonalizado campo)
+			throws Exception {
+		// TODO Auto-generated method stub
+		
 	}
 
-	public void guardarCampoPersonalizado(CampoPersonalizado campo) {
-		// TODO se guarda un campo personalizado
-
+	public void guardarCampoPersonalizado(CampoPersonalizado campo,
+			String id_proceso) throws Exception {
+		// TODO Auto-generated method stub
+		
 	}
 
-	public void borrarCampoPersonalizado(CampoPersonalizado campo) {
-		// TODO se borra un campo personalizado
-
+	public void borrarCampoPersonalizado(CampoPersonalizado campo)
+			throws Exception {
+		// TODO Auto-generated method stub
+		
 	}
 
-	public void actualizarProceso(Proceso proceso) {
-		// TODO Se actualiza Proceso
-
+	public void actualizarProceso(Proceso proceso) throws Exception {
+		// TODO Auto-generated method stub
+		
 	}
 
-	public void guardarProceso(Proceso proceso) {
-		// TODO Se guarda Proceso
-
+	public void guardarProceso(Proceso proceso) throws Exception {
+		// TODO Auto-generated method stub
+		
 	}
 
-	public void borrarProceso(Proceso proceso) {
-		// TODO Se borra un proceso
-
-	}
-
-	public Vector consultarPersonas() {
-		// TODO Se consulta la lista de personas
-		return null;
-	}
-
-	public Persona consultarPersona(String id_persona) {
-		// TODO Se consulta una persona
-		return null;
-	}
-
-	public Vector consultarProcesos() {
-		// TODO Se consulta la lista de procesos
-		return null;
-	}
-
-	public Proceso consultarProceso(String id_proceso) {
-		// TODO se consulta un proceso
-		return null;
-	}
-
-	public Vector consultarActuaciones(Proceso proceso) {
-		// TODO Se consulta la lista de Actuaciones
-		return null;
-	}
-
-	public Actuacion consultarActuacion(String id_actuacion) {
-		// TODO Se consulta una actuacion
-		return null;
-	}
-
-	public Vector consultarJuzgados() {
-		// TODO Se consulta la lista de  Juzgados
-		return null;
-	}
-
-	public Juzgado consultarJuzgado(String id_juzgado) {
-		// TODO Se consulta un Juzgado
-		return null;
+	public void borrarProceso(Proceso proceso) throws Exception {
+		// TODO Auto-generated method stub
+		
 	}
 
 	public Vector consultarDemandantes() {
@@ -133,4 +98,44 @@ public class Persistence implements Cargado, Guardado {
 		return null;
 	}
 
+	public Vector consultarPersonas() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public Persona consultarPersona(String id_persona) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public Vector consultarProcesos() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public Proceso consultarProceso(String id_proceso) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public Vector consultarActuaciones(Proceso proceso) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public Actuacion consultarActuacion(String id_actuacion) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public Vector consultarJuzgados() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public Juzgado consultarJuzgado(String id_juzgado) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
 }

@@ -26,7 +26,12 @@ public class NuevoProcesoController {
 		_proceso = new Proceso(_screen.getDemandante(),_screen.getDemandado(),_screen.getFecha(),_screen.getJuzgado(),
 				_screen.getRadicado(),_screen.getRadicadoUnico(),null,_screen.getEstado(),_screen.getCategoria(),
 				null,_screen.getNotas(),null,_screen.getPrioridad());
-		guardado.guardarProceso(_proceso);
+		try {
+			guardado.guardarProceso(_proceso);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 }
 	

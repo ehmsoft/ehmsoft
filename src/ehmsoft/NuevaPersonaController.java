@@ -25,6 +25,11 @@ public class NuevaPersonaController {
 		_persona = new Persona(1, _screen.getCedula(), _screen.getNombre(),
 				_screen.getTelefono(), _screen.getDireccion(),
 				_screen.getCorreo(), _screen.getNotas());
-		guardado.guardarPersona(_persona);		
+		try {
+			guardado.guardarPersona(_persona);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}		
 	}
 }
