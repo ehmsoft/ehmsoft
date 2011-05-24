@@ -1,17 +1,11 @@
 package gui;
 
-import net.rim.device.api.system.Bitmap;
 import net.rim.device.api.ui.MenuItem;
 import net.rim.device.api.ui.UiApplication;
-import net.rim.device.api.ui.XYEdges;
 import net.rim.device.api.ui.component.BasicEditField;
 import net.rim.device.api.ui.component.SeparatorField;
-import net.rim.device.api.ui.container.MainScreen;
-import net.rim.device.api.ui.container.VerticalFieldManager;
-import net.rim.device.api.ui.decor.BackgroundFactory;
-import net.rim.device.api.ui.decor.BorderFactory;
 
-public class NuevaPersona extends MainScreen {
+public class NuevaPersona extends FondoNuevos {
 
 	private int _tipo;
 	private BasicEditField _txtNombre;
@@ -22,46 +16,40 @@ public class NuevaPersona extends MainScreen {
 	private BasicEditField _txtNotas;
 
 	public NuevaPersona(int tipo) {
-		super(MainScreen.VERTICAL_SCROLL | MainScreen.VERTICAL_SCROLLBAR);
 		// TODO Auto-generated constructor stub
-		
+		super();
 		if (tipo == 1)
 			setTitle("Nuevo demandante");
 		else
 			setTitle("Nuevo demandado");
-		
-		this.getMainManager().setBackground(BackgroundFactory.createLinearGradientBackground(0x0099CCFF,0x0099CCFF,0x00336699,0x00336699));
-		
-		VerticalFieldManager vertical = new VerticalFieldManager();
-		Bitmap borderBitmap = Bitmap.getBitmapResource("rounded-border.png");
-		vertical.setBorder(BorderFactory.createBitmapBorder(new XYEdges(12,12,12,12), borderBitmap));
 
 		// Se inicializan con el estilo
-		this._txtNombre = new BasicEditField(BasicEditField.NO_NEWLINE);
-		this._txtNombre.setLabel("Nombre: ");
-		this._txtCedula = new BasicEditField(BasicEditField.NO_NEWLINE);
-		this._txtCedula.setLabel("Id: ");
-		this._txtDireccion = new BasicEditField(BasicEditField.NO_NEWLINE);
-		this._txtDireccion.setLabel("Dirección: ");
-		this._txtNotas = new BasicEditField("Notas: ", "");
-		this._txtTelefono = new BasicEditField(BasicEditField.FILTER_PHONE);
-		this._txtTelefono.setLabel("Teléfono: ");
-		this._txtCorreo = new BasicEditField(BasicEditField.FILTER_EMAIL);
-		this._txtCorreo.setLabel("Correo: ");
+		_txtNombre = new BasicEditField(BasicEditField.NO_NEWLINE);
+		_txtNombre.setLabel("Nombre: ");
+		_txtCedula = new BasicEditField(BasicEditField.NO_NEWLINE);
+		_txtCedula.setLabel("Id: ");
+		_txtDireccion = new BasicEditField(BasicEditField.NO_NEWLINE);
+		_txtDireccion.setLabel("Dirección: ");
+		_txtNotas = new BasicEditField();
+		_txtNotas.setLabel("Notas: ");
+		_txtTelefono = new BasicEditField(BasicEditField.NO_NEWLINE);
+		_txtTelefono.setLabel("Teléfono: ");
+		_txtCorreo = new BasicEditField(BasicEditField.NO_NEWLINE);
+		_txtCorreo.setLabel("Correo: ");
 		// Se agregan los elementos a la pantalla
 
-		vertical.add(this._txtNombre);
-		vertical.add(new SeparatorField());
-		vertical.add(this._txtCedula);
-		vertical.add(new SeparatorField());
-		vertical.add(this._txtDireccion);
-		vertical.add(new SeparatorField());
-		vertical.add(this._txtTelefono);
-		vertical.add(new SeparatorField());
-		vertical.add(this._txtCorreo);
-		vertical.add(new SeparatorField());
-		vertical.add(this._txtNotas);
-		add(vertical);
+		_vertical.add(_txtNombre);
+		_vertical.add(new SeparatorField());
+		_vertical.add(_txtCedula);
+		_vertical.add(new SeparatorField());
+		_vertical.add(_txtDireccion);
+		_vertical.add(new SeparatorField());
+		_vertical.add(_txtTelefono);
+		_vertical.add(new SeparatorField());
+		_vertical.add(_txtCorreo);
+		_vertical.add(new SeparatorField());
+		_vertical.add(_txtNotas);
+		add(_vertical);
 		addMenuItem(menuGuardar);
 	}
 
