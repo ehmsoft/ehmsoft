@@ -1,7 +1,6 @@
-package ehmsoft;
+package gui;
 
 import core.Juzgado;
-import gui.NuevoJuzgado;
 import persistence.Persistence;
 
 public class NuevoJuzgadoController {

@@ -18,8 +18,6 @@ import net.rim.device.api.ui.component.ObjectChoiceField;
 import net.rim.device.api.ui.container.HorizontalFieldManager;
 import net.rim.device.api.ui.container.MainScreen;
 import net.rim.device.api.ui.container.VerticalFieldManager;
-import ehmsoft.ListadoJuzgadosController;
-import ehmsoft.ListadoPersonasController;
 
 public class NuevoProceso extends MainScreen {
 

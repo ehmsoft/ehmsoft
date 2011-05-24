@@ -1,6 +1,5 @@
-package ehmsoft;
+package gui;
 import core.Proceso;
-import gui.NuevoProceso;
 import persistence.Persistence;
 
 public class NuevoProcesoController {
