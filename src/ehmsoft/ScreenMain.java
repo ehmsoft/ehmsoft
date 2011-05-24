@@ -3,6 +3,7 @@ package ehmsoft;
 import gui.ListadoJuzgadosController;
 import gui.ListadoPersonasController;
 import gui.NuevaPersonaController;
+import gui.NuevoCampoPersonalizadoController;
 import gui.NuevoProcesoController;
 import net.rim.device.api.ui.Field;
 import net.rim.device.api.ui.FieldChangeListener;
@@ -27,6 +28,7 @@ public final class ScreenMain extends MainScreen
 	ButtonField btnNuevoDemandado;
 	ButtonField btnListadoDemandantes;
 	ButtonField btnListadoJuzgados;
+	ButtonField btnNuevoCampoPersonalizado;
 	
     public ScreenMain(Main theApp)
     {       
@@ -55,7 +57,11 @@ public final class ScreenMain extends MainScreen
         
         btnListadoJuzgados = new ButtonField("Listado Juzgados");
         btnListadoJuzgados.setChangeListener(listenerListadoJuzgados);
-        add(btnListadoJuzgados);      
+        add(btnListadoJuzgados);
+        
+        btnNuevoCampoPersonalizado = new ButtonField("Nuevo campo personalizado");
+        btnNuevoCampoPersonalizado.setChangeListener(listenerNuevoCampoPersonalizado);
+        add(btnNuevoCampoPersonalizado);
     }
     
     private FieldChangeListener listenerListadoProcesos = new FieldChangeListener() {
@@ -114,6 +120,15 @@ public final class ScreenMain extends MainScreen
     		Dialog.alert(listado.getSelected().getNombre());
     		UiApplication.getUiApplication().pushModalScreen(listado.getScreen());
     		Dialog.alert(listado.getSelected().getNombre());    		
+    	}
+    };
+    
+    private FieldChangeListener listenerNuevoCampoPersonalizado = new FieldChangeListener() {
+    	public void fieldChanged(Field field, int context) {
+    		NuevoCampoPersonalizadoController controller = new NuevoCampoPersonalizadoController();
+    		UiApplication.getUiApplication().pushModalScreen(controller.getScreen());
+    		controller.guardarCampo();
+    		Dialog.alert(controller.getCampo().getNombre());
     	}
     };
     
