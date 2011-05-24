@@ -11,7 +11,16 @@ private String notas;
 private String id_persona;
 
 //Constructores
-public Persona(int tipo, String id, String nombre, String telefono,String direccion, String correo, String notas) {
+/**
+* @param tipo 1 para demandante, 2 para demandado
+* @param id C�la o Nit
+* @param nombre
+* @param telefono
+* @param direccion
+* @param correo
+* @param notas
+*/
+public Persona(int tipo, String id, String nombre, String telefono,String direccion, String correo, String notas) {// Constructor b�co
 this.tipo = tipo;
 this.id = id;
 this.nombre = nombre;
@@ -52,7 +61,7 @@ return id_persona;
 public void setId_persona(String id_persona) {
 this.id_persona = id_persona;
 }
-public void setTipo(short tipo) {
+public void setTipo(int tipo) {
 this.tipo = tipo;
 }
 public void setId(String id) {

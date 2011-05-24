@@ -17,12 +17,12 @@ public class Proceso {
 	private String tipo;
 	private String notas;
 	private Vector campos;
-	private short prioridad;
+	private int prioridad;
 	//Constructores
 	public Proceso(Persona demandante, Persona demandado, Calendar fecha,
 			Juzgado juzgado, String radicado, String radicadoUnico,
 			Vector actuaciones, String estado, String categoria, String tipo,
-			String notas, Vector campos, short prioridad) {
+			String notas, Vector campos, int prioridad) {
 		this.demandante = demandante;
 		this.demandado = demandado;
 		this.fecha = fecha;
@@ -89,7 +89,7 @@ public class Proceso {
 	public Vector getCampos() {
 		return campos;
 	}
-	public short getPrioridad() {
+	public int getPrioridad() {
 		return prioridad;
 	}
 	
@@ -137,7 +137,7 @@ public class Proceso {
 	public void setCampos(Vector campos) {
 		this.campos = campos;
 	}
-	public void setPrioridad(short prioridad) {
+	public void setPrioridad(int prioridad) {
 		this.prioridad = prioridad;
 	}
 	
