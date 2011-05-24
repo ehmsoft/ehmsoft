@@ -4,6 +4,7 @@ import net.rim.device.api.ui.Font;
 import net.rim.device.api.ui.Graphics;
 import net.rim.device.api.ui.component.ListField;
 import net.rim.device.api.ui.component.ObjectListField;
+import core.Proceso;
 
 public class ListaListadoProcesos extends ObjectListField {
 	
@@ -16,10 +17,11 @@ public class ListaListadoProcesos extends ObjectListField {
 	public void drawListRow(ListField list, Graphics g, int index, int y, int w)
 	{
 		Proceso objeto = (Proceso) this.get(this,index);
-		String demandante = objeto.getDemandante();
-		String demandado = objeto.getDemandado();
+		String demandante = objeto.getDemandante().getNombre();
+		String demandado = objeto.getDemandado().getNombre();
 		String radicado = objeto.getRadicado();
-		String juzgado = objeto.getJuzgado();
+		String juzgado = objeto.getJuzgado().getNombre();
+		
 		g.setFont(getFont().derive(Font.BOLD,25));
 		g.drawText("Radicado: "+radicado,0,y);
 		g.setFont(getFont().derive(Font.PLAIN,22));

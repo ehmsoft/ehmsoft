@@ -35,7 +35,6 @@ public class Main extends UiApplication
 
 package ehmsoft;
 
-import gui.Proceso;
 import net.rim.device.api.ui.UiApplication;
 
 /**
@@ -64,19 +63,5 @@ public class Main extends UiApplication
     {        
         // Push a screen onto the UI stack for rendering.
         pushScreen(new ScreenMain(this));
-    }
-    
-    public void lanzarListadoProcesos()
-    {
-		Proceso proceso1 = new Proceso("Harold","Mario","001","Juzgado 1");
-		Proceso proceso2 = new Proceso("Esteban","Santa","002","Juzgado 2");
-		
-		Object[] objetos = new Object[]{proceso1,proceso2};
-    	pushScreen(new gui.ListadoProcesos(this,objetos));
-    }
-    
-    public void lanzarVerProceso(Proceso proceso)
-    {
-    	pushScreen(new gui.VerProceso(this,proceso));
     }
 }

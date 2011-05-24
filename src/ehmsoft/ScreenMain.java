@@ -96,10 +96,7 @@ public final class ScreenMain extends MainScreen
     }
     
     private FieldChangeListener listenerListadoProcesos = new FieldChangeListener() {
-    	public void fieldChanged(Field field, int context) {
-    		theApp.lanzarListadoProcesos();
-    		//theApp.pushScreen(new gui.ListadoProcesos(theApp));
-    		
+    	public void fieldChanged(Field field, int context) {    		
     	}
     };
     
@@ -107,6 +104,9 @@ public final class ScreenMain extends MainScreen
     	public void fieldChanged(Field field, int context) {
     		NuevoProcesoController proceso = new NuevoProcesoController();
     		UiApplication.getUiApplication().pushModalScreen(proceso.getScreen());
+    		proceso.guardarProceso();
+    		Dialog.alert(proceso.getProceso().getDemandante().getNombre());
+    		proceso = null;
     	}
     };
     
