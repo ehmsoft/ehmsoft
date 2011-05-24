@@ -1,9 +1,15 @@
 package gui;
 
+import net.rim.device.api.system.Bitmap;
 import net.rim.device.api.ui.MenuItem;
 import net.rim.device.api.ui.UiApplication;
+import net.rim.device.api.ui.XYEdges;
 import net.rim.device.api.ui.component.BasicEditField;
+import net.rim.device.api.ui.component.SeparatorField;
 import net.rim.device.api.ui.container.MainScreen;
+import net.rim.device.api.ui.container.VerticalFieldManager;
+import net.rim.device.api.ui.decor.BackgroundFactory;
+import net.rim.device.api.ui.decor.BorderFactory;
 
 public class NuevaPersona extends MainScreen {
 
@@ -18,10 +24,17 @@ public class NuevaPersona extends MainScreen {
 	public NuevaPersona(int tipo) {
 		super(MainScreen.VERTICAL_SCROLL | MainScreen.VERTICAL_SCROLLBAR);
 		// TODO Auto-generated constructor stub
+		
 		if (tipo == 1)
 			setTitle("Nuevo demandante");
 		else
 			setTitle("Nuevo demandado");
+		
+		this.getMainManager().setBackground(BackgroundFactory.createLinearGradientBackground(0x0099CCFF,0x0099CCFF,0x00336699,0x00336699));
+		
+		VerticalFieldManager vertical = new VerticalFieldManager();
+		Bitmap borderBitmap = Bitmap.getBitmapResource("rounded-border.png");
+		vertical.setBorder(BorderFactory.createBitmapBorder(new XYEdges(12,12,12,12), borderBitmap));
 
 		// Se inicializan con el estilo
 		this._txtNombre = new BasicEditField(BasicEditField.NO_NEWLINE);
@@ -37,12 +50,18 @@ public class NuevaPersona extends MainScreen {
 		this._txtCorreo.setLabel("Correo: ");
 		// Se agregan los elementos a la pantalla
 
-		add(this._txtNombre);
-		add(this._txtCedula);
-		add(this._txtDireccion);
-		add(this._txtTelefono);
-		add(this._txtCorreo);
-		add(this._txtNotas);
+		vertical.add(this._txtNombre);
+		vertical.add(new SeparatorField());
+		vertical.add(this._txtCedula);
+		vertical.add(new SeparatorField());
+		vertical.add(this._txtDireccion);
+		vertical.add(new SeparatorField());
+		vertical.add(this._txtTelefono);
+		vertical.add(new SeparatorField());
+		vertical.add(this._txtCorreo);
+		vertical.add(new SeparatorField());
+		vertical.add(this._txtNotas);
+		add(vertical);
 		addMenuItem(menuGuardar);
 	}
 
