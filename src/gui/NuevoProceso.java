@@ -140,7 +140,14 @@ public class NuevoProceso extends FondoNuevos {
 	private final MenuItem menuGuardar = new MenuItem("Guardar", 0, 0) {
 
 		public void run() {
-			UiApplication.getUiApplication().popScreen(getScreen());
+			if (_demandante == null)
+				Dialog.alert("Debe seleccionar un demandante");
+			else if (_demandado == null)
+				Dialog.alert("Debe seleccionar un demandado");
+			else if (_juzgado == null)
+				Dialog.alert("Debe Seleccionar un juzgado");
+			else
+				UiApplication.getUiApplication().popScreen(getScreen());
 		}
 	};
 
