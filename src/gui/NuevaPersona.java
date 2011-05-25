@@ -82,7 +82,7 @@ public class NuevaPersona extends FondoNuevos {
 	public String getNotas() {
 		return _txtNotas.getText();
 	}
-	
+
 	public boolean onClose() {
 		UiApplication.getUiApplication().popScreen(getScreen());
 		return true;

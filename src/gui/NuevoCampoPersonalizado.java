@@ -17,44 +17,47 @@ public class NuevoCampoPersonalizado extends MainScreen {
 	private CheckboxField _cbObligatorio;
 	private BasicEditField _txtLongMax;
 	private BasicEditField _txtLongMin;
+
 	public NuevoCampoPersonalizado() {
 		super(MainScreen.VERTICAL_SCROLL | MainScreen.VERTICAL_SCROLLBAR);
 		// TODO Auto-generated constructor stub
 		setTitle("Nuevo campo personalizado");
 		VerticalFieldManager vertical = new VerticalFieldManager();
-		
+
 		_txtNombre = new BasicEditField(BasicEditField.NO_NEWLINE);
 		_txtNombre.setLabel("Nombre: ");
-		
+
 		_cbObligatorio = new CheckboxField(" Obligatorio", false);
-		
-		_txtLongMax = new BasicEditField(BasicEditField.NO_NEWLINE | BasicEditField.FILTER_INTEGER);
+
+		_txtLongMax = new BasicEditField(BasicEditField.NO_NEWLINE
+				| BasicEditField.FILTER_INTEGER);
 		_txtLongMax.setLabel("Longitud máxima: ");
-		
-		_txtLongMin = new BasicEditField(BasicEditField.NO_NEWLINE | BasicEditField.FILTER_INTEGER);
+
+		_txtLongMin = new BasicEditField(BasicEditField.NO_NEWLINE
+				| BasicEditField.FILTER_INTEGER);
 		_txtLongMin.setLabel("Longitud mínima: ");
-		
+
 		vertical.add(_txtNombre);
 		vertical.add(_cbObligatorio);
 		vertical.add(_txtLongMax);
 		vertical.add(_txtLongMin);
-		
+
 		add(vertical);
 		addMenuItem(menuGuardar);
 	}
-	
+
 	private final MenuItem menuGuardar = new MenuItem("Guardar", 0, 0) {
 
 		public void run() {
 			// TODO Auto-generated method stub
-			if(getLongMax() >= getLongMin())
+			if (getLongMax() >= getLongMin())
 				UiApplication.getUiApplication().popScreen(getScreen());
 			else
 				Dialog.alert("La longitud mínima no puede ser mayor que la longitud máxima, corrija y guarde nuevamente");
 		}
 	};
-	
-	public String getNombre(){
+
+	public String getNombre() {
 		return _txtNombre.getText();
 	}
 
