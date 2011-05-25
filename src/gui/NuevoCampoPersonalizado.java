@@ -47,7 +47,7 @@ public class NuevoCampoPersonalizado extends MainScreen {
 
 		public void run() {
 			// TODO Auto-generated method stub
-			if(Integer.parseInt(_txtLongMax.getText()) >= Integer.parseInt(_txtLongMin.getText()))
+			if(getLongMax() >= getLongMin())
 				UiApplication.getUiApplication().popScreen(getScreen());
 			else
 				Dialog.alert("La longitud mínima no puede ser mayor que la longitud máxima, corrija y guarde nuevamente");

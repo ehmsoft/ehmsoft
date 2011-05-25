@@ -1,6 +1,7 @@
 package gui;
 
 import java.util.Calendar;
+import java.util.Vector;
 
 import core.CampoPersonalizado;
 import core.Juzgado;
@@ -45,10 +46,14 @@ public class NuevoProceso extends FondoNuevos {
 	private Persona _demandado;
 	private Juzgado _juzgado;
 	private CampoPersonalizado _campo;
+	private Vector _camposPersonalizados;
+	private Vector _valoresCamposPersonalizados;
 	
 	
 	public NuevoProceso() {
 		setTitle("Nuevo Proceso");
+		_camposPersonalizados = new Vector();
+		_valoresCamposPersonalizados = new Vector();
 		
 		HorizontalFieldManager fldDemandante = new HorizontalFieldManager();
 		VerticalFieldManager fldRightDemandante = new VerticalFieldManager(USE_ALL_WIDTH);
@@ -118,7 +123,7 @@ public class NuevoProceso extends FondoNuevos {
 		fldCampoPersonalizado = new HorizontalFieldManager();
 		fldRightCampoPersonalizado = new VerticalFieldManager(USE_ALL_WIDTH);
 		fldLeftCampoPersonalizado = new VerticalFieldManager();		
-		_btnCampoPersonalizado = new ButtonField("Seleccionar",FIELD_RIGHT);
+		_btnCampoPersonalizado = new ButtonField("Nuevo",FIELD_RIGHT);
 		_btnCampoPersonalizado.setChangeListener(listenerBtnCampoPersonalizado);
 		fldLeftCampoPersonalizado.add(new LabelField("Campo personalizado: "));
 		fldRightCampoPersonalizado.add(_btnCampoPersonalizado);
@@ -191,17 +196,25 @@ public class NuevoProceso extends FondoNuevos {
     		UiApplication.getUiApplication().pushModalScreen(campo.getScreen());
     		try{
     			campo.guardarCampo();
-    			_campo = campo.getCampo();
-    			_txtValor = new BasicEditField();
+    			addCampoPersonalizado(campo.getCampo());
+/*    			_txtValor = new BasicEditField();
     			_txtValor.setLabel(_campo.getNombre()+": ");
-    			_vertical.replace(fldCampoPersonalizado, _txtValor);    			
+    			_vertical.replace(fldCampoPersonalizado, _txtValor);   */ 			
     		}catch(NullPointerException e){
     			Dialog.alert(e.toString());
     		}
     	}
     };
     
-    
+    public void addCampoPersonalizado(CampoPersonalizado campo){
+    	BasicEditField campoP = new BasicEditField();
+    	campoP.setLabel(campo.getNombre()+": ");
+    	if(campo.getLongitudMax() != 0);
+    		campoP.setMaxSize(campo.getLongitudMax());
+    	_vertical.add(campoP);
+    	_camposPersonalizados.addElement(campo);
+    	_valoresCamposPersonalizados.addElement(campoP);    	
+    }
     
     public Persona getDemandante() {
     	return _demandante;
