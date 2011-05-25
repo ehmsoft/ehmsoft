@@ -7,7 +7,7 @@ public class ListadoJuzgados extends MainScreen {
 
 	private Object selected;
 	private ListaListadoJuzgados lista;
-	public ListadoJuzgados(Object[] listadoJuzgados) {
+	public ListadoJuzgados() {
 		super(MainScreen.VERTICAL_SCROLL | MainScreen.VERTICAL_SCROLLBAR);
 		
 		setTitle("Listado de juzgados");
@@ -21,8 +21,7 @@ public class ListadoJuzgados extends MainScreen {
 				return true;
 			}
 		};
-		
-		lista.set(listadoJuzgados);
+	
 		lista.insert(0, "Nuevo juzgado");
 		add(lista);
 	}

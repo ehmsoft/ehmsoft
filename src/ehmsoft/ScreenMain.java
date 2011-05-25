@@ -8,6 +8,7 @@ import gui.ListadoPersonasController;
 import gui.ListadoProcesosController;
 import gui.NuevaPersonaController;
 import gui.NuevoCampoPersonalizadoController;
+import gui.NuevoJuzgadoController;
 import gui.NuevoProcesoController;
 import net.rim.device.api.ui.Field;
 import net.rim.device.api.ui.FieldChangeListener;
@@ -133,13 +134,22 @@ public final class ScreenMain extends MainScreen
     
     private FieldChangeListener listenerListadoJuzgados = new FieldChangeListener() {
     	public void fieldChanged(Field field, int context) {
+    		NuevoJuzgadoController juzgado1 = new NuevoJuzgadoController();
+    		UiApplication.getUiApplication().pushModalScreen(juzgado1.getScreen());
+    		juzgado1.guardarJuzgado();
+    		
+    		NuevoJuzgadoController juzgado2 = new NuevoJuzgadoController();
+    		UiApplication.getUiApplication().pushModalScreen(juzgado2.getScreen());
+    		juzgado2.guardarJuzgado();
+    		
+    		Vector vector = new Vector();
+    		vector.addElement(juzgado1.getJuzgado());
+    		vector.addElement(juzgado2.getJuzgado());
+    		
     		ListadoJuzgadosController listado = new ListadoJuzgadosController();
+    		listado.setVectorJuzgados(vector);
     		UiApplication.getUiApplication().pushModalScreen(listado.getScreen());
     		Dialog.alert(listado.getSelected().getNombre());
-    		UiApplication.getUiApplication().pushModalScreen(listado.getScreen());
-    		Dialog.alert(listado.getSelected().getNombre());
-    		UiApplication.getUiApplication().pushModalScreen(listado.getScreen());
-    		Dialog.alert(listado.getSelected().getNombre());    		
     	}
     };
     

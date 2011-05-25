@@ -1,6 +1,7 @@
 package gui;
 
 import net.rim.device.api.ui.UiApplication;
+import net.rim.device.api.ui.component.Dialog;
 import core.Juzgado;
 import persistence.Persistence;
 
@@ -10,37 +11,36 @@ import java.util.Vector;
 public class ListadoJuzgadosController {
 	
 	private Persistence _persistencia;
-	private Object[] _juzgados;
 	private Vector _vectorJuzgados;
 	private ListadoJuzgados _screen;
 	
 	public ListadoJuzgadosController()
 	{
-		this._persistencia = new Persistence();
-		
-		this._vectorJuzgados = _persistencia.consultarJuzgados();
-
-		if(this._vectorJuzgados == null)
-			this._juzgados = new Object[0];
-		else
-		{
-			this._juzgados = new Object[_vectorJuzgados.size()];
-			transformarListado();
-		}
-		this._screen = new ListadoJuzgados(this._juzgados);
+		_persistencia = new Persistence();		
+		_vectorJuzgados = _persistencia.consultarJuzgados();
+		_screen = new ListadoJuzgados();
+		addJuzgados();
 	}
 	
-	private void transformarListado()
+	private void addJuzgados()
 	{
-		int i = 0;
-		
-		Enumeration index = _vectorJuzgados.elements();
+		Enumeration index;
+		try{
+		index = _vectorJuzgados.elements();
 		
 		while(index.hasMoreElements()) 
-		{
-			_juzgados[i] = index.nextElement();			
-			i++;
+		 _screen.addJuzgado(index.nextElement());	
+		}catch(NullPointerException e){
+			
 		}
+		catch(Exception e){
+			Dialog.alert(e.toString());
+		}
+	}
+	
+	public void setVectorJuzgados(Vector juzgados){
+		_vectorJuzgados = juzgados;
+		addJuzgados();
 	}
 	
 	public Juzgado getSelected()
