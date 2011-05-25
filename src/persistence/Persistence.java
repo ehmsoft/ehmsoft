@@ -12,7 +12,10 @@ import ehmsoft.Guardado;
 
 public class Persistence implements Cargado, Guardado {
 	private ConnectionManager connMgr;
-
+	public Persistence() throws Exception{
+		connMgr = new ConnectionManager();
+	}
+	
 	public void actualizarPersona(Persona persona) throws Exception {
 		/**
 		 * @param tipo	1 para demandante, 2 para demandado
@@ -180,54 +183,56 @@ public class Persistence implements Cargado, Guardado {
 		
 	}
 
-	public Vector consultarDemandantes() {
+	public Vector consultarDemandantes() throws Exception {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	public Vector consultarDemandados() {
+	public Vector consultarDemandados() throws Exception {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	public Vector consultarPersonas() {
+	public Vector consultarPersonas() throws Exception {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	public Persona consultarPersona(String id_persona) {
+	public Persona consultarPersona(String id_persona) throws Exception {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	public Vector consultarProcesos() {
+	public Vector consultarProcesos() throws Exception {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	public Proceso consultarProceso(String id_proceso) {
+	public Proceso consultarProceso(String id_proceso) throws Exception {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	public Vector consultarActuaciones(Proceso proceso) {
+	public Vector consultarActuaciones(Proceso proceso) throws Exception {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	public Actuacion consultarActuacion(String id_actuacion) {
+	public Actuacion consultarActuacion(String id_actuacion) throws Exception {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	public Vector consultarJuzgados() {
+	public Vector consultarJuzgados() throws Exception {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	public Juzgado consultarJuzgado(String id_juzgado) {
+	public Juzgado consultarJuzgado(String id_juzgado) throws Exception {
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+	
 	
 }
