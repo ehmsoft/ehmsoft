@@ -1,5 +1,6 @@
 package ehmsoft;
 
+import core.CampoPersonalizado;
 import gui.ListadoJuzgadosController;
 import gui.ListadoPersonasController;
 import gui.ListadoProcesosController;
@@ -80,7 +81,7 @@ public final class ScreenMain extends MainScreen
     		NuevoProcesoController proceso = new NuevoProcesoController();
     		UiApplication.getUiApplication().pushModalScreen(proceso.getScreen());
     		proceso.guardarProceso();
-    		Dialog.alert(proceso.getProceso().getDemandante().getNombre());
+    		Dialog.alert(((CampoPersonalizado) proceso.getProceso().getCampos().elementAt(1)).getValor());
     		proceso = null;
     	}
     };
