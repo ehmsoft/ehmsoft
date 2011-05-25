@@ -9,35 +9,35 @@ public class NuevoJuzgado extends FondoNuevos {
 	/**
 	 * 
 	 */
-	
+
 	private BasicEditField _txtNombre;
 	private BasicEditField _txtCiudad;
 	private BasicEditField _txtDireccion;
 	private BasicEditField _txtTelefono;
 	private BasicEditField _txtTipo;
 	private BasicEditField _txtId_juzgado;
-	
+
 	public NuevoJuzgado() {
 		setTitle("Nuevo juzgado");
-		
+
 		_txtNombre = new BasicEditField(BasicEditField.NO_NEWLINE);
 		_txtNombre.setLabel("Nombre: ");
-		
+
 		_txtCiudad = new BasicEditField(BasicEditField.NO_NEWLINE);
 		_txtCiudad.setLabel("Ciudad: ");
-		
+
 		_txtDireccion = new BasicEditField(BasicEditField.NO_NEWLINE);
 		_txtDireccion.setLabel("Dirección: ");
-		
+
 		_txtTelefono = new BasicEditField(BasicEditField.NO_NEWLINE);
 		_txtTelefono.setLabel("Teléfono: ");
-		
+
 		_txtTipo = new BasicEditField(BasicEditField.NO_NEWLINE);
 		_txtTipo.setLabel("Tipo: ");
-		
+
 		_txtId_juzgado = new BasicEditField(BasicEditField.NO_NEWLINE);
 		_txtId_juzgado.setLabel("Id del juzgado: ");
-		
+
 		_vertical.add(_txtNombre);
 		_vertical.add(_txtCiudad);
 		_vertical.add(_txtDireccion);
@@ -47,7 +47,7 @@ public class NuevoJuzgado extends FondoNuevos {
 		add(_vertical);
 		addMenuItem(menuGuardar);
 	}
-	
+
 	private final MenuItem menuGuardar = new MenuItem("Guardar", 0, 0) {
 
 		public void run() {
@@ -55,7 +55,7 @@ public class NuevoJuzgado extends FondoNuevos {
 			UiApplication.getUiApplication().popScreen(getScreen());
 		}
 	};
-	
+
 	public String getNombre() {
 		return _txtNombre.getText();
 	}

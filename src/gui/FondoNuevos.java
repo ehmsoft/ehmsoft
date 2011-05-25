@@ -22,14 +22,15 @@ public abstract class FondoNuevos extends MainScreen {
 		this.getMainManager().setBackground(
 				BackgroundFactory.createLinearGradientBackground(0x0099CCFF,
 						0x0099CCFF, 0x00336699, 0x00336699));
-		_vertical = new VerticalFieldManager(){
-			public void add(Field field){
-				if(this.getFieldCount() != 0)
+		_vertical = new VerticalFieldManager() {
+			public void add(Field field) {
+				if (this.getFieldCount() != 0)
 					super.add(new SeparatorField());
 				super.add(field);
 			}
 		};
 		Bitmap borderBitmap = Bitmap.getBitmapResource("rounded-border.png");
-		_vertical.setBorder(BorderFactory.createBitmapBorder(new XYEdges(12,12,12,12), borderBitmap));
+		_vertical.setBorder(BorderFactory.createBitmapBorder(new XYEdges(12,
+				12, 12, 12), borderBitmap));
 	}
 }

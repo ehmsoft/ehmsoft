@@ -15,19 +15,19 @@ public class VerProceso extends MainScreen {
 		super(MainScreen.VERTICAL_SCROLL | MainScreen.VERTICAL_SCROLLBAR);
 		// TODO Auto-generated constructor stub
 		setTitle("Proceso");
-		
-		String string = getFont()+""+getFont().getHeight()+"";
-		
+
+		String string = getFont() + "" + getFont().getHeight() + "";
+
 		Dialog.alert(string);
-		
+
 		BasicEditField txtDemandante = new BasicEditField();
 		txtDemandante.setLabel("Demandante: ");
 		txtDemandante.setText(((Proceso) proceso).getDemandante().getNombre());
-		
+
 		BasicEditField txtDemandado = new BasicEditField();
 		txtDemandado.setLabel("Demandado: ");
 		txtDemandado.setText(((Proceso) proceso).getDemandado().getNombre());
-		
+
 		add(txtDemandante);
 		add(new SeparatorField());
 		add(txtDemandado);

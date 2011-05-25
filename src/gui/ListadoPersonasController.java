@@ -9,27 +9,26 @@ import java.util.Enumeration;
 import java.util.Vector;
 
 public class ListadoPersonasController {
-	
+
 	private int _tipo;
 	private Persistence _persistencia;
 	private Vector _vectorPersonas;
 	private ListadoPersonas _screen;
-	
-	public ListadoPersonasController(int tipo)
-	{
+
+	public ListadoPersonasController(int tipo) {
 		_tipo = tipo;
 		_persistencia = new Persistence();
-		
-		if(tipo == 1)
+
+		if (tipo == 1)
 			_vectorPersonas = _persistencia.consultarDemandantes();
 		else
 			_vectorPersonas = _persistencia.consultarDemandantes();
-		
+
 		_screen = new ListadoPersonas(tipo);
 		addPersonas();
 	}
-	
-	public void setVectorPersonas(Vector personas){
+
+	public void setVectorPersonas(Vector personas) {
 		_vectorPersonas = personas;
 		addPersonas();
 	}
@@ -47,21 +46,19 @@ public class ListadoPersonasController {
 		}
 	}
 
-	public Persona getSelected()
-	{
+	public Persona getSelected() {
 		NuevaPersonaController nuevaPersona = new NuevaPersonaController(_tipo);
-		if(String.class.isInstance(_screen.getSelected())) {
-			UiApplication.getUiApplication().pushModalScreen(nuevaPersona.getScreen());
+		if (String.class.isInstance(_screen.getSelected())) {
+			UiApplication.getUiApplication().pushModalScreen(
+					nuevaPersona.getScreen());
 			nuevaPersona.guardarPersona();
 			_screen.addPersona(nuevaPersona.getPersona());
 			return nuevaPersona.getPersona();
-		}
-		else
-			return (Persona)_screen.getSelected();
+		} else
+			return (Persona) _screen.getSelected();
 	}
-	
-	public ListadoPersonas getScreen()
-	{
+
+	public ListadoPersonas getScreen() {
 		return _screen;
 	}
 }
