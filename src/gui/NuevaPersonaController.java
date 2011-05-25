@@ -21,7 +21,7 @@ public class NuevaPersonaController {
 
 	public void guardarPersona() {
 		Persistence guardado = new Persistence();
-		_persona = new Persona(1, _screen.getCedula(), _screen.getNombre(),
+		_persona = new Persona(_screen.getTipo(), _screen.getCedula(), _screen.getNombre(),
 				_screen.getTelefono(), _screen.getDireccion(),
 				_screen.getCorreo(), _screen.getNotas());
 		try {
