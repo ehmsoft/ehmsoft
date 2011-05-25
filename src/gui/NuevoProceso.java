@@ -2,6 +2,7 @@ package gui;
 
 import java.util.Calendar;
 
+import core.CampoPersonalizado;
 import core.Juzgado;
 import core.Persona;
 import net.rim.device.api.ui.Field;
@@ -33,10 +34,17 @@ public class NuevoProceso extends FondoNuevos {
 	private ButtonField _btnDemandante;
 	private ButtonField _btnDemandado;
 	private ButtonField _btnJuzgado;
+	private ButtonField _btnCampoPersonalizado;
+	
+	private HorizontalFieldManager fldCampoPersonalizado;
+	private VerticalFieldManager fldRightCampoPersonalizado;
+	private VerticalFieldManager fldLeftCampoPersonalizado;
+	private BasicEditField _txtValor;
 	
 	private Persona _demandante;
 	private Persona _demandado;
 	private Juzgado _juzgado;
+	private CampoPersonalizado _campo;
 	
 	
 	public NuevoProceso() {
@@ -107,6 +115,17 @@ public class NuevoProceso extends FondoNuevos {
 		_txtNotas.setLabel("Notas: ");
 		_vertical.add(_txtNotas);
 		
+		fldCampoPersonalizado = new HorizontalFieldManager();
+		fldRightCampoPersonalizado = new VerticalFieldManager(USE_ALL_WIDTH);
+		fldLeftCampoPersonalizado = new VerticalFieldManager();		
+		_btnCampoPersonalizado = new ButtonField("Seleccionar",FIELD_RIGHT);
+		_btnCampoPersonalizado.setChangeListener(listenerBtnCampoPersonalizado);
+		fldLeftCampoPersonalizado.add(new LabelField("Campo personalizado: "));
+		fldRightCampoPersonalizado.add(_btnCampoPersonalizado);
+		fldCampoPersonalizado.add(fldLeftCampoPersonalizado);
+		fldCampoPersonalizado.add(fldRightCampoPersonalizado);
+		_vertical.add(fldCampoPersonalizado);
+		
 		add(_vertical);
 		
 		addMenuItem(menuGuardar);
@@ -165,6 +184,24 @@ public class NuevoProceso extends FondoNuevos {
     		}
     	}
     };
+    
+    private FieldChangeListener listenerBtnCampoPersonalizado = new FieldChangeListener() {
+    	public void fieldChanged(Field field, int context) {
+    		NuevoCampoPersonalizadoController campo = new NuevoCampoPersonalizadoController();
+    		UiApplication.getUiApplication().pushModalScreen(campo.getScreen());
+    		try{
+    			campo.guardarCampo();
+    			_campo = campo.getCampo();
+    			_txtValor = new BasicEditField();
+    			_txtValor.setLabel(_campo.getNombre()+": ");
+    			_vertical.replace(fldCampoPersonalizado, _txtValor);    			
+    		}catch(NullPointerException e){
+    			Dialog.alert(e.toString());
+    		}
+    	}
+    };
+    
+    
     
     public Persona getDemandante() {
     	return _demandante;
