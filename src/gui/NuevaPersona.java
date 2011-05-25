@@ -3,7 +3,6 @@ package gui;
 import net.rim.device.api.ui.MenuItem;
 import net.rim.device.api.ui.UiApplication;
 import net.rim.device.api.ui.component.BasicEditField;
-import net.rim.device.api.ui.component.SeparatorField;
 
 public class NuevaPersona extends FondoNuevos {
 
@@ -39,15 +38,10 @@ public class NuevaPersona extends FondoNuevos {
 		// Se agregan los elementos a la pantalla
 
 		_vertical.add(_txtNombre);
-		_vertical.add(new SeparatorField());
 		_vertical.add(_txtCedula);
-		_vertical.add(new SeparatorField());
 		_vertical.add(_txtDireccion);
-		_vertical.add(new SeparatorField());
 		_vertical.add(_txtTelefono);
-		_vertical.add(new SeparatorField());
 		_vertical.add(_txtCorreo);
-		_vertical.add(new SeparatorField());
 		_vertical.add(_txtNotas);
 		add(_vertical);
 		addMenuItem(menuGuardar);
