@@ -1,6 +1,7 @@
 package gui;
 
 import net.rim.device.api.ui.UiApplication;
+import net.rim.device.api.ui.component.Dialog;
 import net.rim.device.api.ui.container.MainScreen;
 
 public class ListadoPersonas extends MainScreen {
@@ -15,6 +16,7 @@ public class ListadoPersonas extends MainScreen {
 			setTitle("Listado de demandantes");
 		else
 			setTitle("Listado de demandados");
+		Dialog.alert(getFont().toString()+getFont().getHeight());
 		
 		lista = new ListaListadoPersonas()
 		{

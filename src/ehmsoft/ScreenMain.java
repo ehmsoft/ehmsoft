@@ -2,6 +2,8 @@ package ehmsoft;
 
 import gui.ListadoJuzgadosController;
 import gui.ListadoPersonasController;
+import gui.ListadoProcesos;
+import gui.ListadoProcesosController;
 import gui.NuevaPersonaController;
 import gui.NuevoCampoPersonalizadoController;
 import gui.NuevoProcesoController;
@@ -11,6 +13,7 @@ import net.rim.device.api.ui.UiApplication;
 import net.rim.device.api.ui.component.ButtonField;
 import net.rim.device.api.ui.component.Dialog;
 import net.rim.device.api.ui.container.MainScreen;
+import gui.ListadoProcesosController;
 
 /**
  * A class extending the MainScreen class, which provides default standard
@@ -65,7 +68,12 @@ public final class ScreenMain extends MainScreen
     }
     
     private FieldChangeListener listenerListadoProcesos = new FieldChangeListener() {
-    	public void fieldChanged(Field field, int context) {    		
+    	public void fieldChanged(Field field, int context) {
+    		ListadoProcesosController listado= new ListadoProcesosController();
+    		UiApplication.getUiApplication().pushModalScreen(listado.getScreen());
+    		Dialog.alert(listado.getSelected().getDemandante().getNombre());
+    		UiApplication.getUiApplication().pushModalScreen(listado.getScreen());
+    		Dialog.alert(listado.getSelected().getDemandante().getNombre());
     	}
     };
     

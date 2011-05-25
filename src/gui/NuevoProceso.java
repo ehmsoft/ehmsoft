@@ -191,11 +191,11 @@ public class NuevoProceso extends FondoNuevos {
     }
     
     public String getCategoria() {
-    	return (String)_chEstado.getChoice(_chEstado.getSelectedIndex());
+    	return (String)_chEstado.getChoice(_chCategoria.getSelectedIndex());
     }
     
     public short getPrioridad() {
-    	return Short.parseShort((String) _chEstado.getChoice(_chEstado.getSelectedIndex()));
+    	return Short.parseShort((String) _chPrioridad.getChoice(_chEstado.getSelectedIndex()));
     }
     
     public String getNotas() {
