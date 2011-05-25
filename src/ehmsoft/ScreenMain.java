@@ -1,8 +1,5 @@
 package ehmsoft;
 
-import java.util.Vector;
-
-import core.CampoPersonalizado;
 import gui.ListadoJuzgadosController;
 import gui.ListadoPersonasController;
 import gui.ListadoProcesosController;
@@ -10,12 +7,16 @@ import gui.NuevaPersonaController;
 import gui.NuevoCampoPersonalizadoController;
 import gui.NuevoJuzgadoController;
 import gui.NuevoProcesoController;
+
+import java.util.Vector;
+
 import net.rim.device.api.ui.Field;
 import net.rim.device.api.ui.FieldChangeListener;
 import net.rim.device.api.ui.UiApplication;
 import net.rim.device.api.ui.component.ButtonField;
 import net.rim.device.api.ui.component.Dialog;
 import net.rim.device.api.ui.container.MainScreen;
+import core.CampoPersonalizado;
 
 /**
  * A class extending the MainScreen class, which provides default standard

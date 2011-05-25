@@ -1,7 +1,7 @@
 package gui;
 
-import core.Juzgado;
 import persistence.Persistence;
+import core.Juzgado;
 
 public class NuevoJuzgadoController {
 	private Juzgado _juzgado;

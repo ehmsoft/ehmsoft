@@ -3,9 +3,6 @@ package gui;
 import java.util.Calendar;
 import java.util.Vector;
 
-import core.CampoPersonalizado;
-import core.Juzgado;
-import core.Persona;
 import net.rim.device.api.ui.Field;
 import net.rim.device.api.ui.FieldChangeListener;
 import net.rim.device.api.ui.MenuItem;
@@ -19,6 +16,9 @@ import net.rim.device.api.ui.component.NumericChoiceField;
 import net.rim.device.api.ui.component.ObjectChoiceField;
 import net.rim.device.api.ui.container.HorizontalFieldManager;
 import net.rim.device.api.ui.container.VerticalFieldManager;
+import core.CampoPersonalizado;
+import core.Juzgado;
+import core.Persona;
 
 public class NuevoProceso extends FondoNuevos {
 

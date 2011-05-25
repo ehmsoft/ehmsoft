@@ -4,10 +4,9 @@ import java.util.Enumeration;
 import java.util.Vector;
 
 import net.rim.device.api.ui.component.BasicEditField;
-
+import persistence.Persistence;
 import core.CampoPersonalizado;
 import core.Proceso;
-import persistence.Persistence;
 
 public class NuevoProcesoController {
 

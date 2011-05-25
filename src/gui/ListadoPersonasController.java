@@ -1,12 +1,12 @@
 package gui;
 
-import net.rim.device.api.ui.UiApplication;
-import net.rim.device.api.ui.component.Dialog;
-import core.Persona;
-import persistence.Persistence;
-
 import java.util.Enumeration;
 import java.util.Vector;
+
+import net.rim.device.api.ui.UiApplication;
+import net.rim.device.api.ui.component.Dialog;
+import persistence.Persistence;
+import core.Persona;
 
 public class ListadoPersonasController {
 
