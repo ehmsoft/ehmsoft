@@ -57,16 +57,28 @@ public class NuevoCampoPersonalizado extends MainScreen {
 	public String getNombre(){
 		return _txtNombre.getText();
 	}
-	
-	public Boolean isObligatorio(){
+
+	public Boolean isObligatorio() {
 		return new Boolean(_cbObligatorio.getChecked());
 	}
-	
-	public int getLongMax(){
-		return Integer.parseInt(_txtLongMax.getText());
+
+	public int getLongMax() {
+		int lon;
+		try {
+			lon = Integer.parseInt(_txtLongMax.getText());
+		} catch (NumberFormatException e) {
+			return 0;
+		}
+		return lon;
 	}
-	
-	public int getLongMin(){
-		return Integer.parseInt(_txtLongMin.getText());
+
+	public int getLongMin() {
+		int lon;
+		try {
+			lon = Integer.parseInt(_txtLongMin.getText());
+		} catch (NumberFormatException e) {
+			return 0;
+		}
+		return lon;
 	}
 }
