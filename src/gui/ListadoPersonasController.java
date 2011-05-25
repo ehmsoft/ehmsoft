@@ -25,8 +25,8 @@ public class ListadoPersonasController {
 		else
 			_vectorPersonas = _persistencia.consultarDemandantes();
 		
-		addPersonas();
 		_screen = new ListadoPersonas(tipo);
+		addPersonas();
 	}
 	
 	public void setVectorPersonas(Vector personas){
