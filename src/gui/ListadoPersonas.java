@@ -8,7 +8,7 @@ public class ListadoPersonas extends MainScreen {
 	private Object selected;
 	private ListaListadoPersonas lista;
 	
-	public ListadoPersonas(int tipo, Object[] listadoPersonas) {
+	public ListadoPersonas(int tipo) {
 		super(MainScreen.VERTICAL_SCROLL | MainScreen.VERTICAL_SCROLLBAR);
 		
 		if(tipo == 1)
@@ -26,7 +26,6 @@ public class ListadoPersonas extends MainScreen {
 			}
 		};
 		
-		lista.set(listadoPersonas);
 		if(tipo == 1)
 			lista.insert(0, "Nuevo demandante");
 		else
