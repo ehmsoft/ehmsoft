@@ -1,7 +1,7 @@
 package gui;
 
-import core.Persona;
 import persistence.Persistence;
+import core.Persona;
 
 public class NuevaPersonaController {
 	private Persona _persona;

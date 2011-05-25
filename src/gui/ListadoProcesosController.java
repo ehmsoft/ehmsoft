@@ -1,11 +1,11 @@
 package gui;
 
-import net.rim.device.api.ui.UiApplication;
-import core.Proceso;
-import persistence.Persistence;
-
 import java.util.Enumeration;
 import java.util.Vector;
+
+import net.rim.device.api.ui.UiApplication;
+import persistence.Persistence;
+import core.Proceso;
 
 public class ListadoProcesosController {
 

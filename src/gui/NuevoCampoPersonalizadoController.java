@@ -1,8 +1,8 @@
 package gui;
 
 import net.rim.device.api.ui.component.Dialog;
-import core.CampoPersonalizado;
 import persistence.Persistence;
+import core.CampoPersonalizado;
 
 public class NuevoCampoPersonalizadoController {
 	private CampoPersonalizado _campo;

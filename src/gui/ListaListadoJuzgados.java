@@ -1,9 +1,9 @@
 package gui;
 
-import core.Juzgado;
 import net.rim.device.api.ui.Graphics;
 import net.rim.device.api.ui.component.ListField;
 import net.rim.device.api.ui.component.ObjectListField;
+import core.Juzgado;
 
 public class ListaListadoJuzgados extends ObjectListField {
 
