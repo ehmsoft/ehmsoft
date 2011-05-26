@@ -33,4 +33,8 @@ public abstract class FondoNuevos extends MainScreen {
 		_vertical.setBorder(BorderFactory.createBitmapBorder(new XYEdges(12,
 				12, 12, 12), borderBitmap));
 	}
+	
+	protected void addElem(Field field){
+		_vertical.add(field);
+	}
 }
