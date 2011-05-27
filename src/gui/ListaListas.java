@@ -7,14 +7,13 @@ import net.rim.device.api.ui.Graphics;
 import net.rim.device.api.ui.component.ListField;
 import net.rim.device.api.ui.component.ObjectListField;
 
-public class ListaListas extends ObjectListField {
-	protected final int _fuente;
+abstract class ListaListas extends ObjectListField {
+	protected int _fuente;
 	protected static int _colorLinea = 0x00D2D2D2;
 	protected Vector _fuentes;
 	
 	public ListaListas() {
 		super();
-		_fuente = getFont().getHeight();
 	}
 	
 	public ListaListas(Vector fuentes) {
@@ -53,11 +52,11 @@ public class ListaListas extends ObjectListField {
 				- 1);
 	}
 	
-	protected void drawListRowDefault(ListField list, Graphics g, int index, int y, int w) {
+	public void drawListRowDefault(ListField list, Graphics g, int index, int y, int w) {
 		super.drawListRow(list, g, index, y, w);
 	}
 
-	protected String getParam(Object objeto, String parametro) {
+	public String getParam(Object objeto, String parametro) {
 		String ret = "Error";
 		return ret;
 	}		
