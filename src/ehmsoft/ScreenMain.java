@@ -17,6 +17,7 @@ import net.rim.device.api.ui.component.ButtonField;
 import net.rim.device.api.ui.component.Dialog;
 import net.rim.device.api.ui.container.MainScreen;
 import core.CampoPersonalizado;
+import core.Persona;
 
 /**
  * A class extending the MainScreen class, which provides default standard
@@ -118,22 +119,12 @@ public final class ScreenMain extends MainScreen {
 
 	private FieldChangeListener listenerListadoDemandantes = new FieldChangeListener() {
 		public void fieldChanged(Field field, int context) {
-			NuevaPersonaController persona1 = new NuevaPersonaController(1);
-			UiApplication.getUiApplication().pushModalScreen(
-					persona1.getScreen());
-			persona1.guardarPersona();
-			NuevaPersonaController persona2 = new NuevaPersonaController(1);
-			UiApplication.getUiApplication().pushModalScreen(
-					persona2.getScreen());
-			persona2.guardarPersona();
-			NuevaPersonaController persona3 = new NuevaPersonaController(1);
-			UiApplication.getUiApplication().pushModalScreen(
-					persona3.getScreen());
-			persona3.guardarPersona();
+			Persona persona1 = new Persona(1,"1093219325","Harold","3657642","calle 30 # 14 - 32","sancospi","Ninguna");
+			Persona persona2 = new Persona(1,"1093219326","Santa","3657652","calle 30 # 15 - 32","estebans","Una");
+			
 			Vector vector = new Vector();
-			vector.addElement(persona1.getPersona());
-			vector.addElement(persona2.getPersona());
-			vector.addElement(persona3.getPersona());
+			vector.addElement(persona1);
+			vector.addElement(persona2);
 
 			ListadoPersonasController listado = new ListadoPersonasController(1);
 			listado.setVectorPersonas(vector);
