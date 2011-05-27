@@ -1,5 +1,6 @@
 package gui;
 
+import net.rim.device.api.ui.component.Dialog;
 import persistence.Persistence;
 import core.Actuacion;
 
@@ -27,7 +28,7 @@ public class NuevaActuacionController {
 		try {
 			guardado.guardarActuacion(_actuacion, _idProceso);
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
+			Dialog.alert(e.toString());
 			e.printStackTrace();
 		}
 	}

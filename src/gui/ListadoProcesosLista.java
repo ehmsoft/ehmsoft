@@ -6,9 +6,9 @@ import net.rim.device.api.ui.component.ListField;
 import net.rim.device.api.ui.component.ObjectListField;
 import core.Proceso;
 
-public class ListaListadoProcesos extends ObjectListField {
+public class ListadoProcesosLista extends ObjectListField {
 
-	public ListaListadoProcesos() {
+	public ListadoProcesosLista() {
 		super();
 	}
 

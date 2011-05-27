@@ -9,14 +9,14 @@ public class ListadoCamposPersonalizados extends MainScreen {
 	 * 
 	 */
 	private Object _selected;
-	private ListaListadoCamposPersonalizados _lista;
+	private ListadoCamposPersonalizadosLista _lista;
 	
 	public ListadoCamposPersonalizados() {
 		super(MainScreen.VERTICAL_SCROLL | MainScreen.VERTICAL_SCROLLBAR);
 		
 		setTitle("Listado de campos personalizados");
 		
-		_lista = new ListaListadoCamposPersonalizados(){
+		_lista = new ListadoCamposPersonalizadosLista(){
 			protected boolean navigationClick(int status, int time) {
 				_selected = get(_lista, getSelectedIndex());
 				return true;
