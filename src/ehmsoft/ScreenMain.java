@@ -1,46 +1,12 @@
-/*package ehmsoft;
-import net.rim.device.api.ui.Field;
-import net.rim.device.api.ui.FieldChangeListener;
-import net.rim.device.api.ui.component.ButtonField;
-import net.rim.device.api.ui.container.MainScreen;
-
-*//**
- * A class extending the MainScreen class, which provides default standard
- * behavior for BlackBerry GUI applications.
- *//*
-public final class screenMain extends MainScreen
-{
-    *//**
-     * Creates a new screenMain object
-     *//*
-	Main theApp;
-	ButtonField btnListadoProcesos;
-	
-    public screenMain(Main theApp)
-    {
-    	this.theApp = theApp;
-        // Set the displayed title of the screen       
-        setTitle("Software Abogados v 0.1.0");
-        *//**
-         * Esta parte es tentativa, solamente la uso para tener acceso directo a las pantallas
-         *//*
-        btnListadoProcesos = new ButtonField("Listado de procesos");
-        btnListadoProcesos.setChangeListener(listenerListadoProcesos);
-        add(btnListadoProcesos);
-    }
-    
-    private FieldChangeListener listenerListadoProcesos = new FieldChangeListener() {
-    	public void fieldChanged(Field field, int context) {
-    		theApp.controller.lanzarListadoProcesos();
-    		//theApp.pushScreen(new gui.ListadoProcesos(theApp));
-    		
-    	}
-    };
-}
-*/
-
 package ehmsoft;
 
+import core.CampoPersonalizado;
+import gui.ListadoJuzgadosController;
+import gui.ListadoPersonasController;
+import gui.ListadoProcesosController;
+import gui.NuevaPersonaController;
+import gui.NuevoCampoPersonalizadoController;
+import gui.NuevoProcesoController;
 import net.rim.device.api.ui.Field;
 import net.rim.device.api.ui.FieldChangeListener;
 import net.rim.device.api.ui.UiApplication;
@@ -64,6 +30,7 @@ public final class ScreenMain extends MainScreen
 	ButtonField btnNuevoDemandado;
 	ButtonField btnListadoDemandantes;
 	ButtonField btnListadoJuzgados;
+	ButtonField btnNuevoCampoPersonalizado;
 	
     public ScreenMain(Main theApp)
     {       
@@ -92,11 +59,20 @@ public final class ScreenMain extends MainScreen
         
         btnListadoJuzgados = new ButtonField("Listado Juzgados");
         btnListadoJuzgados.setChangeListener(listenerListadoJuzgados);
-        add(btnListadoJuzgados);      
+        add(btnListadoJuzgados);
+        
+        btnNuevoCampoPersonalizado = new ButtonField("Nuevo campo personalizado");
+        btnNuevoCampoPersonalizado.setChangeListener(listenerNuevoCampoPersonalizado);
+        add(btnNuevoCampoPersonalizado);
     }
     
     private FieldChangeListener listenerListadoProcesos = new FieldChangeListener() {
-    	public void fieldChanged(Field field, int context) {    		
+    	public void fieldChanged(Field field, int context) {
+    		ListadoProcesosController listado= new ListadoProcesosController();
+    		UiApplication.getUiApplication().pushModalScreen(listado.getScreen());
+    		Dialog.alert(listado.getSelected().getDemandante().getNombre());
+    		UiApplication.getUiApplication().pushModalScreen(listado.getScreen());
+    		Dialog.alert(listado.getSelected().getDemandante().getNombre());
     	}
     };
     
@@ -105,7 +81,7 @@ public final class ScreenMain extends MainScreen
     		NuevoProcesoController proceso = new NuevoProcesoController();
     		UiApplication.getUiApplication().pushModalScreen(proceso.getScreen());
     		proceso.guardarProceso();
-    		Dialog.alert(proceso.getProceso().getDemandante().getNombre());
+    		Dialog.alert(((CampoPersonalizado) proceso.getProceso().getCampos().elementAt(1)).getValor());
     		proceso = null;
     	}
     };
@@ -151,6 +127,15 @@ public final class ScreenMain extends MainScreen
     		Dialog.alert(listado.getSelected().getNombre());
     		UiApplication.getUiApplication().pushModalScreen(listado.getScreen());
     		Dialog.alert(listado.getSelected().getNombre());    		
+    	}
+    };
+    
+    private FieldChangeListener listenerNuevoCampoPersonalizado = new FieldChangeListener() {
+    	public void fieldChanged(Field field, int context) {
+    		NuevoCampoPersonalizadoController controller = new NuevoCampoPersonalizadoController();
+    		UiApplication.getUiApplication().pushModalScreen(controller.getScreen());
+    		controller.guardarCampo();
+    		Dialog.alert(controller.getCampo().getNombre());
     	}
     };
     

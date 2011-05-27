@@ -1,7 +1,6 @@
-package ehmsoft;
+package gui;
 
 import core.Persona;
-import gui.NuevaPersona;
 import persistence.Persistence;
 
 public class NuevaPersonaController {

@@ -1,8 +1,7 @@
-package ehmsoft;
+package gui;
 
 import net.rim.device.api.ui.UiApplication;
 import core.Juzgado;
-import gui.ListadoJuzgados;
 import persistence.Persistence;
 
 import java.util.Enumeration;
