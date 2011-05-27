@@ -1,5 +1,6 @@
 package ehmsoft;
 
+import gui.Fuente;
 import gui.ListadoJuzgadosController;
 import gui.ListadoPersonasController;
 import gui.ListadoProcesosController;
@@ -122,11 +123,19 @@ public final class ScreenMain extends MainScreen {
 			Persona persona1 = new Persona(1,"1093219325","Harold","3657642","calle 30 # 14 - 32","sancospi","Ninguna");
 			Persona persona2 = new Persona(1,"1093219326","Santa","3657652","calle 30 # 15 - 32","estebans","Una");
 			
+			Vector fuentes = new Vector();
+			fuentes.addElement(new Fuente(-10, 0x009C9C9C, "nombre"));
+			fuentes.addElement(new Fuente(-15, 0x00000000, "id"));
+			fuentes.addElement(new Fuente(-5, 0x00000000, "direccion"));
+			fuentes.addElement(new Fuente(-20, 0x00000000, "telefono"));
+			fuentes.addElement(new Fuente(-15, 0x00000000, "correo"));
+			fuentes.addElement(new Fuente(-15, 0x00000000, "notas"));
+			
 			Vector vector = new Vector();
 			vector.addElement(persona1);
 			vector.addElement(persona2);
 
-			ListadoPersonasController listado = new ListadoPersonasController(1);
+			ListadoPersonasController listado = new ListadoPersonasController(1,fuentes);
 			listado.setVectorPersonas(vector);
 			UiApplication.getUiApplication().pushModalScreen(
 					listado.getScreen());

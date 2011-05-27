@@ -15,6 +15,19 @@ public class ListadoPersonasController {
 	private Vector _vectorPersonas;
 	private ListadoPersonas _screen;
 
+	public ListadoPersonasController(int tipo, Vector fuentes) {
+		_tipo = tipo;
+		_persistencia = new Persistence();
+
+		if (tipo == 1)
+			_vectorPersonas = _persistencia.consultarDemandantes();
+		else
+			_vectorPersonas = _persistencia.consultarDemandantes();
+
+		_screen = new ListadoPersonas(tipo, fuentes);
+		addPersonas();
+	}
+	
 	public ListadoPersonasController(int tipo) {
 		_tipo = tipo;
 		_persistencia = new Persistence();

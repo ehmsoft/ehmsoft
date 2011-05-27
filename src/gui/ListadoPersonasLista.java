@@ -1,47 +1,65 @@
 package gui;
 
+import java.util.Vector;
+
 import net.rim.device.api.ui.Font;
 import net.rim.device.api.ui.Graphics;
 import net.rim.device.api.ui.component.ListField;
-import net.rim.device.api.ui.component.ObjectListField;
 import core.Persona;
 
-public class ListadoPersonasLista extends ObjectListField {
+public class ListadoPersonasLista extends ListaListas {
 	private int fuente1;
 	private int fuente2;
-	private int height;
-	private int colorLinea;
+	private int _height;
 	private int colorFuente2;
-	
-	public ListadoPersonasLista(){
+
+	public ListadoPersonasLista() {
 		super();
-		colorLinea = 0x00ECECEC;
 		colorFuente2 = 0x009C9C9C;
 		fuente1 = getFont().getHeight();
 		fuente2 = fuente1 - 5;
-		height = fuente1 + (fuente2)*2;
-		setRowHeight(height);
+		_height = fuente1 + (fuente2) * 2;
+		setRowHeight(_height);
 	}
+	
+	public ListadoPersonasLista(Vector vector) {
+		super(vector);
+	}
+	
+	protected void drawListRowDefault(ListField list, Graphics g, int index, int y, int w) {		
+		Persona objeto = (Persona) this.get(this, index);
+		String nombre = objeto.getNombre();
+		String id = objeto.getId();
+		String notas = objeto.getNotas();
 
-	public void drawListRow(ListField list, Graphics g, int index, int y, int w) {
-		if (this.get(this, index).getClass() == "Hola".getClass()) {
-			int posX = getWidth()/2 - getContentWidth()/4;
-			int posY = getRowHeight()/2 - getFont().getHeight()/2;
-			g.drawText((String) this.get(this, index), posX, posY);
-		} else {
-			Persona objeto = (Persona) this.get(this, index);
-			String nombre = objeto.getNombre();
-			String id = objeto.getId();
-			String notas = objeto.getNotas();
-			
-			g.setFont(getFont().derive(Font.SANS_SERIF_STYLE));
-			g.drawText(nombre, 0, y);
-			g.setFont(getFont().derive(Font.SANS_SERIF_STYLE,fuente2));
-			g.setColor(colorFuente2);
-			g.drawText(id, 0, y + fuente1);
-			g.drawText(notas, 0, y + fuente1 + fuente2);
-		}
-		g.setColor(colorLinea);
-		g.drawLine(0,y+height-1,getWidth(),y+height-1);
+		g.setFont(getFont().derive(Font.SANS_SERIF_STYLE));
+		g.drawText(nombre, 0, y);
+		g.setFont(getFont().derive(Font.SANS_SERIF_STYLE, fuente2));
+		g.setColor(colorFuente2);
+		g.drawText(id, 0, y + fuente1);
+		g.drawText(notas, 0, y + fuente1 + fuente2);
 	}
+	
+	protected String getParam(Object objeto, String parametro) {
+		String ret = "Error";
+		if(parametro == "nombre") {
+			ret = ((Persona) objeto).getNombre();
+		}
+		if(parametro == "id") {
+			ret = ((Persona) objeto).getId();
+		}
+		if(parametro == "telefono") {
+			ret = ((Persona) objeto).getTelefono();
+		}
+		if(parametro == "direccion") {
+			ret = ((Persona) objeto).getDireccion();
+		}
+		if(parametro == "correo") {
+			ret = ((Persona) objeto).getCorreo();
+		}
+		if(parametro == "notas") {
+			ret = ((Persona) objeto).getNotas();
+		}
+		return ret;
+	}	
 }
