@@ -6,14 +6,14 @@ import net.rim.device.api.ui.container.MainScreen;
 public class ListadoJuzgados extends MainScreen {
 
 	private Object selected;
-	private ListaListadoJuzgados lista;
+	private ListadoJuzgadosLista lista;
 
 	public ListadoJuzgados() {
 		super(MainScreen.VERTICAL_SCROLL | MainScreen.VERTICAL_SCROLLBAR);
 
 		setTitle("Listado de juzgados");
 
-		lista = new ListaListadoJuzgados() {
+		lista = new ListadoJuzgadosLista() {
 			protected boolean navigationClick(int status, int time) {
 				selected = get(lista, getSelectedIndex());
 				UiApplication.getUiApplication().popScreen(getScreen());

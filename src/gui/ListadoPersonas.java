@@ -6,7 +6,7 @@ import net.rim.device.api.ui.container.MainScreen;
 public class ListadoPersonas extends MainScreen {
 
 	private Object selected;
-	private ListaListadoPersonas lista;
+	private ListadoPersonasLista lista;
 
 	public ListadoPersonas(int tipo) {
 		super(MainScreen.VERTICAL_SCROLL | MainScreen.VERTICAL_SCROLLBAR);
@@ -16,7 +16,7 @@ public class ListadoPersonas extends MainScreen {
 		else
 			setTitle("Listado de demandados");
 
-		lista = new ListaListadoPersonas() {
+		lista = new ListadoPersonasLista() {
 			protected boolean navigationClick(int status, int time) {
 				selected = get(lista, getSelectedIndex());
 				UiApplication.getUiApplication().popScreen(getScreen());
