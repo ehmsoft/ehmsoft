@@ -189,6 +189,7 @@ public class Persistence implements Cargado, Guardado {
 	public Vector consultarDemandantes() throws Exception {//Devuelve una lista de todos los demandantes
 		Database d = null;
 		Vector demandantes = new Vector();
+		try{
 		connMgr = new ConnectionManager();
 		connMgr.prepararBD();
 		d = DatabaseFactory.open(connMgr.getDbLocation());
@@ -206,13 +207,21 @@ public class Persistence implements Cargado, Guardado {
             String direccion = row.getString(4);
             String correo = row.getString(5);
             String notas = row.getString(6);
-            Persona per = new Persona(id_demandante, cedula, nombre, telefono, direccion, correo, notas);
+            Persona per = new Persona(1, cedula, nombre, telefono, direccion, correo, notas, Integer.toString(id_demandante));
             demandantes.addElement(per);
                                             
         }
         st.close();
         cursor.close();
+		} catch (Exception e){
+			throw e;
+		} finally {
+        if (d != null){
+        	d.close();
+        }
+		}
         return demandantes;
+        
 	}
 
 	public Vector consultarDemandados() throws Exception {
