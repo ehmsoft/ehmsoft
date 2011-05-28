@@ -66,22 +66,25 @@ public class Persistence implements Cargado, Guardado {
 					"persona.getTelefono()," +
 					"persona.getDireccion()," +
 					"persona.getCorreo()," +																		
-					"persona.getNombre())");
+					"persona.getNotas())");
 			stPersona1.prepare();
 			stPersona1.execute();
 			stPersona1.close();
 		}
-		if(persona.getTipo()==2){
+		else if(persona.getTipo()==2){
 			Statement stPersona2 = d.createStatement("INSERT INTO demandados VALUES(NULL, " +
 					"persona.getId()," +
 					"persona.getNombre()," +
 					"persona.getTelefono()," +
 					"persona.getDireccion()," +
 					"persona.getCorreo()," +																		
-					"persona.getNombre())");
+					"persona.getNotas())");
 			stPersona2.prepare();
 			stPersona2.execute();
 			stPersona2.close();
+		}
+		else{
+			throw new Exception("Tipo persona invalido");
 		}
 		d.close();
 	}
