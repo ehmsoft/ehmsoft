@@ -2,8 +2,11 @@ package persistence;
 
 import java.util.Vector;
 
+
+import net.rim.device.api.database.Cursor;
 import net.rim.device.api.database.Database;
 import net.rim.device.api.database.DatabaseFactory;
+import net.rim.device.api.database.Row;
 import net.rim.device.api.database.Statement;
 
 import core.*;
@@ -183,9 +186,33 @@ public class Persistence implements Cargado, Guardado {
 		
 	}
 
-	public Vector consultarDemandantes() throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+	public Vector consultarDemandantes() throws Exception {//Devuelve una lista de todos los demandantes
+		Database d = null;
+		Vector demandantes = new Vector();
+		connMgr = new ConnectionManager();
+		connMgr.prepararBD();
+		d = DatabaseFactory.open(connMgr.getDbLocation());
+    	Statement st = d.createStatement("SELECT * FROM demandantes");
+        st.prepare();
+        Cursor cursor = st.getCursor();
+        while(cursor.next())
+        {                    
+            Row row = cursor.getRow();
+            
+            int id_demandante = row.getInteger(0);
+            String cedula = row.getString(1);
+            String nombre = row.getString(2);
+            String telefono = row.getString(3);
+            String direccion = row.getString(4);
+            String correo = row.getString(5);
+            String notas = row.getString(6);
+            Persona per = new Persona(id_demandante, cedula, nombre, telefono, direccion, correo, notas);
+            demandantes.addElement(per);
+                                            
+        }
+        st.close();
+        cursor.close();
+        return demandantes;
 	}
 
 	public Vector consultarDemandados() throws Exception {
