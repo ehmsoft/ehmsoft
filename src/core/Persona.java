@@ -29,6 +29,17 @@ public class Persona {
 		this.correo = correo;
 		this.notas = notas;
 	}
+	public Persona(int tipo, String id, String nombre, String telefono,
+			String direccion, String correo, String notas, String id_persona) {
+		this.tipo = tipo;
+		this.id = id;
+		this.nombre = nombre;
+		this.telefono = telefono;
+		this.direccion = direccion;
+		this.correo = correo;
+		this.notas = notas;
+		this.id_persona = id_persona;
+	}
 	//Fin Constructores
 	
 	//Getters
