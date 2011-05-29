@@ -18,7 +18,7 @@ public class Persistence implements Cargado, Guardado {
 	public Persistence() throws Exception{
 		connMgr = new ConnectionManager();
 	}
-	
+
 	public void actualizarPersona(Persona persona) throws Exception {
 		/**
 		 * @param tipo	1 para demandante, 2 para demandado
@@ -32,7 +32,7 @@ public class Persistence implements Cargado, Guardado {
 					"persona.getTelefono()," +
 					"persona.getDireccion()," +
 					"persona.getCorreo()," +																		
-					"persona.getNombre())");
+			"persona.getNombre())");
 			stPersona1.prepare();
 			stPersona1.execute();
 			stPersona1.close();
@@ -44,17 +44,17 @@ public class Persistence implements Cargado, Guardado {
 					"persona.getTelefono()," +
 					"persona.getDireccion()," +
 					"persona.getCorreo()," +																		
-					"persona.getNombre())");
+			"persona.getNombre())");
 			stPersona2.prepare();
 			stPersona2.execute();
 			stPersona2.close();
 		}
 		d.close();
-		
+
 	}
 
 	public void guardarPersona(Persona persona) throws Exception {
-		 /**
+		/**
 		 * @param tipo	1 para demandante, 2 para demandado
 		 **/
 		Database d = null;
@@ -66,7 +66,7 @@ public class Persistence implements Cargado, Guardado {
 					"persona.getTelefono()," +
 					"persona.getDireccion()," +
 					"persona.getCorreo()," +																		
-					"persona.getNotas())");
+			"persona.getNotas())");
 			stPersona1.prepare();
 			stPersona1.execute();
 			stPersona1.close();
@@ -78,7 +78,7 @@ public class Persistence implements Cargado, Guardado {
 					"persona.getTelefono()," +
 					"persona.getDireccion()," +
 					"persona.getCorreo()," +																		
-					"persona.getNotas())");
+			"persona.getNotas())");
 			stPersona2.prepare();
 			stPersona2.execute();
 			stPersona2.close();
@@ -91,145 +91,175 @@ public class Persistence implements Cargado, Guardado {
 
 	public void borrarPersona(Persona persona) throws Exception {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	public void actualizarJuzgado(Juzgado juzgado) throws Exception {
 		Database d = null;
 		d= DatabaseFactory.open(connMgr.getDbLocation());
-			Statement stJuzgado = d.createStatement("INSERT INTO juzgados VALUES( juzgado.getId_juzgado(),"+
-					"juzgado.getNombre(),"+
-					"juzgado.getCiudad(),"+
-					"juzgado.getTelefono(),"+
-					"juzgado.getDireccion(),"+ 
-					"juzgado.getTipo())");
-			stJuzgado.prepare();
-			stJuzgado.execute();
-			stJuzgado.close();
-			d.close();
-		
+		Statement stJuzgado = d.createStatement("INSERT INTO juzgados VALUES( juzgado.getId_juzgado(),"+
+				"juzgado.getNombre(),"+
+				"juzgado.getCiudad(),"+
+				"juzgado.getTelefono(),"+
+				"juzgado.getDireccion(),"+ 
+		"juzgado.getTipo())");
+		stJuzgado.prepare();
+		stJuzgado.execute();
+		stJuzgado.close();
+		d.close();
+
 	}
 
 	public void guardarJuzgado(Juzgado juzgado) throws Exception {
 		Database d = null;
 		d= DatabaseFactory.open(connMgr.getDbLocation());
-			Statement stJuzgado = d.createStatement("INSERT INTO juzgados VALUES( NULL,"+
-					"juzgado.getNombre(),"+
-					"juzgado.getCiudad(),"+
-					"juzgado.getTelefono(),"+
-					"juzgado.getDireccion(),"+
-					"juzgado.getTipo())");
-			stJuzgado.prepare();
-			stJuzgado.execute();
-			stJuzgado.close();
-			d.close();
+		Statement stJuzgado = d.createStatement("INSERT INTO juzgados VALUES( NULL,"+
+				"juzgado.getNombre(),"+
+				"juzgado.getCiudad(),"+
+				"juzgado.getTelefono(),"+
+				"juzgado.getDireccion(),"+
+		"juzgado.getTipo())");
+		stJuzgado.prepare();
+		stJuzgado.execute();
+		stJuzgado.close();
+		d.close();
 	}
 
 	public void borrarJuzgado(Juzgado juzgado) throws Exception {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	public void actualizarActuacion(Actuacion actuacion) throws Exception {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	public void guardarActuacion(Actuacion actuacion, String id_proceso) throws Exception {
 		Database d = null;
 		d= DatabaseFactory.open(connMgr.getDbLocation());
-			Statement stActiacion = d.createStatement("INSERT INTO actuciones VALUES( NULL,"+
-					"id_proceso,"+
-					"actuacion.getJuzgado(),"+
-					"actuacion.getFecha(),"+
-					"actuacion.getFechaProxima(),"+
-					"actuacion.getDescripcion())");
-			stActiacion.prepare();
-			stActiacion.execute();
-			stActiacion.close();
-			d.close();
-		
+		Statement stActiacion = d.createStatement("INSERT INTO actuciones VALUES( NULL,"+
+				"id_proceso,"+
+				"actuacion.getJuzgado(),"+
+				"actuacion.getFecha(),"+
+				"actuacion.getFechaProxima(),"+
+		"actuacion.getDescripcion())");
+		stActiacion.prepare();
+		stActiacion.execute();
+		stActiacion.close();
+		d.close();
+
 	}
 
 	public void borrarActuacion(Actuacion actuacion) throws Exception {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	public void actualizarCampoPersonalizado(CampoPersonalizado campo)
-			throws Exception {
+	throws Exception {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	public void guardarCampoPersonalizado(CampoPersonalizado campo,String id_proceso) throws Exception {
 		// TODO Auto-generated method stub
-		
-		
+
+
 	}
 
 	public void borrarCampoPersonalizado(CampoPersonalizado campo)
-			throws Exception {
+	throws Exception {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	public void actualizarProceso(Proceso proceso) throws Exception {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	public void guardarProceso(Proceso proceso) throws Exception {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	public void borrarProceso(Proceso proceso) throws Exception {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	public Vector consultarDemandantes() throws Exception {//Devuelve una lista de todos los demandantes
 		Database d = null;
 		Vector demandantes = new Vector();
 		try{
-		connMgr = new ConnectionManager();
-		connMgr.prepararBD();
-		d = DatabaseFactory.open(connMgr.getDbLocation());
-    	Statement st = d.createStatement("SELECT * FROM demandantes");
-        st.prepare();
-        Cursor cursor = st.getCursor();
-        while(cursor.next())
-        {                    
-            Row row = cursor.getRow();
-            
-            int id_demandante = row.getInteger(0);
-            String cedula = row.getString(1);
-            String nombre = row.getString(2);
-            String telefono = row.getString(3);
-            String direccion = row.getString(4);
-            String correo = row.getString(5);
-            String notas = row.getString(6);
-            Persona per = new Persona(1, cedula, nombre, telefono, direccion, correo, notas, Integer.toString(id_demandante));
-            demandantes.addElement(per);
-                                            
-        }
-        st.close();
-        cursor.close();
+			connMgr.prepararBD();
+			d = DatabaseFactory.open(connMgr.getDbLocation());
+			Statement st = d.createStatement("SELECT * FROM demandantes order by nombre");
+			st.prepare();
+			Cursor cursor = st.getCursor();
+			while(cursor.next())
+			{                    
+				Row row = cursor.getRow();
+
+				int id_demandante = row.getInteger(0);
+				String cedula = row.getString(1);
+				String nombre = row.getString(2);
+				String telefono = row.getString(3);
+				String direccion = row.getString(4);
+				String correo = row.getString(5);
+				String notas = row.getString(6);
+				Persona per = new Persona(1, cedula, nombre, telefono, direccion, correo, notas, Integer.toString(id_demandante));
+				demandantes.addElement(per);
+
+			}
+			st.close();
+			cursor.close();
 		} catch (Exception e){
 			throw e;
 		} finally {
-        if (d != null){
-        	d.close();
-        }
+			if (d != null){
+				d.close();
+			}
 		}
-        return demandantes;
-        
+		return demandantes;
+
 	}
 
 	public Vector consultarDemandados() throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+		Database d = null;
+		Vector demandados = new Vector();
+		try{
+			connMgr.prepararBD();
+			d = DatabaseFactory.open(connMgr.getDbLocation());
+			Statement st = d.createStatement("SELECT * FROM demandados order by nombre");
+			st.prepare();
+			Cursor cursor = st.getCursor();
+			while(cursor.next())
+			{                    
+				Row row = cursor.getRow();
+
+				int id_demandante = row.getInteger(0);
+				String cedula = row.getString(1);
+				String nombre = row.getString(2);
+				String telefono = row.getString(3);
+				String direccion = row.getString(4);
+				String correo = row.getString(5);
+				String notas = row.getString(6);
+				Persona per = new Persona(2, cedula, nombre, telefono, direccion, correo, notas, Integer.toString(id_demandante));
+				demandados.addElement(per);
+
+			}
+			st.close();
+			cursor.close();
+		} catch (Exception e){
+			throw e;
+		} finally {
+			if (d != null){
+				d.close();
+			}
+		}
+		return demandados;
 	}
 
 	public Vector consultarPersonas() throws Exception {
@@ -272,6 +302,6 @@ public class Persistence implements Cargado, Guardado {
 		return null;
 	}
 
-	
-	
+
+
 }
