@@ -239,14 +239,14 @@ public class Persistence implements Cargado, Guardado {
 			{                    
 				Row row = cursor.getRow();
 
-				int id_demandante = row.getInteger(0);
+				int id_demandado = row.getInteger(0);
 				String cedula = row.getString(1);
 				String nombre = row.getString(2);
 				String telefono = row.getString(3);
 				String direccion = row.getString(4);
 				String correo = row.getString(5);
 				String notas = row.getString(6);
-				Persona per = new Persona(2, cedula, nombre, telefono, direccion, correo, notas, Integer.toString(id_demandante));
+				Persona per = new Persona(2, cedula, nombre, telefono, direccion, correo, notas, Integer.toString(id_demandado));
 				demandados.addElement(per);
 
 			}
@@ -263,9 +263,61 @@ public class Persistence implements Cargado, Guardado {
 	}
 
 	public Vector consultarPersonas() throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+		Database d = null;
+		Vector pers = new Vector();
+		try{
+			connMgr.prepararBD();
+			d = DatabaseFactory.open(connMgr.getDbLocation());
+			Statement st = d.createStatement("SELECT * FROM demandados order by nombre");
+			st.prepare();
+			Cursor cursor = st.getCursor();
+			while(cursor.next())
+			{                    
+				Row row = cursor.getRow();
+
+				int id_demandado = row.getInteger(0);
+				String cedula = row.getString(1);
+				String nombre = row.getString(2);
+				String telefono = row.getString(3);
+				String direccion = row.getString(4);
+				String correo = row.getString(5);
+				String notas = row.getString(6);
+				Persona per = new Persona(2, cedula, nombre, telefono, direccion, correo, notas, Integer.toString(id_demandado));
+				pers.addElement(per);
+
+			}
+			st.close();
+			cursor.close();
+			st = d.createStatement("SELECT * FROM demandantes order by nombre");
+			st.prepare();
+			cursor = st.getCursor();
+			while(cursor.next())
+			{                    
+				Row row = cursor.getRow();
+
+				int id_demandante = row.getInteger(0);
+				String cedula = row.getString(1);
+				String nombre = row.getString(2);
+				String telefono = row.getString(3);
+				String direccion = row.getString(4);
+				String correo = row.getString(5);
+				String notas = row.getString(6);
+				Persona per = new Persona(1, cedula, nombre, telefono, direccion, correo, notas, Integer.toString(id_demandante));
+				pers.addElement(per);
+
+			}
+			st.close();
+			cursor.close();
+		} catch (Exception e){
+			throw e;
+		} finally {
+			if (d != null){
+				d.close();
+			}
+		}
+		return pers;
 	}
+		
 
 	public Persona consultarPersona(String id_persona) throws Exception {
 		// TODO Auto-generated method stub
