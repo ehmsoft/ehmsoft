@@ -9,7 +9,7 @@ public interface Cargado {
 	public Vector consultarDemandantes() throws Exception;
 	public Vector consultarDemandados() throws Exception;
 	public Vector consultarPersonas() throws Exception;
-	public Persona consultarPersona(String id_persona) throws Exception;
+	public Persona consultarPersona(String id_persona, int tipo) throws Exception;
 	public Vector consultarProcesos() throws Exception;
 	public Proceso consultarProceso(String id_proceso) throws Exception;
 	public Vector consultarActuaciones(Proceso proceso) throws Exception;
