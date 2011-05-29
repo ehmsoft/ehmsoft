@@ -317,11 +317,69 @@ public class Persistence implements Cargado, Guardado {
 		}
 		return pers;
 	}
-		
 
-	public Persona consultarPersona(String id_persona) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+
+	public Persona consultarPersona(String id_persona, int tipo) throws Exception {
+		Database d = null;
+		Persona per = null;
+		try{
+			connMgr.prepararBD();
+			d = DatabaseFactory.open(connMgr.getDbLocation());
+			if(tipo == 2){
+				Statement st = d.createStatement("SELECT * FROM demandados where id_demandado = ?");
+				st.prepare();
+				st.bind(1, id_persona);
+
+				Cursor cursor = st.getCursor();
+				if(cursor.next()){                    
+					Row row = cursor.getRow();
+
+					int id_demandado = row.getInteger(0);
+					String cedula = row.getString(1);
+					String nombre = row.getString(2);
+					String telefono = row.getString(3);
+					String direccion = row.getString(4);
+					String correo = row.getString(5);
+					String notas = row.getString(6);
+					per = new Persona(2, cedula, nombre, telefono, direccion, correo, notas, Integer.toString(id_demandado));
+
+				}
+
+				st.close();
+				cursor.close();
+
+			} else if(tipo == 1){
+				Statement st = d.createStatement("SELECT * FROM demandantes where id_demandante = ?");
+				st.prepare();
+				st.bind(1, id_persona);
+
+				Cursor cursor = st.getCursor();
+				if(cursor.next()){                    
+					Row row = cursor.getRow();
+
+					int id_demandante = row.getInteger(0);
+					String cedula = row.getString(1);
+					String nombre = row.getString(2);
+					String telefono = row.getString(3);
+					String direccion = row.getString(4);
+					String correo = row.getString(5);
+					String notas = row.getString(6);
+					per = new Persona(1, cedula, nombre, telefono, direccion, correo, notas, Integer.toString(id_demandante));
+
+				}	
+				st.close();
+				cursor.close();
+			}else{
+				throw new Exception("tipo incorrecto para consultar Persona");
+			}
+		} catch (Exception e){
+			throw e;
+		} finally {
+			if (d != null){
+				d.close();
+			}
+		}
+		return per;
 	}
 
 	public Vector consultarProcesos() throws Exception {
