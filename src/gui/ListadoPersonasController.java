@@ -17,12 +17,27 @@ public class ListadoPersonasController {
 
 	public ListadoPersonasController(int tipo, Vector fuentes) {
 		_tipo = tipo;
-		_persistencia = new Persistence();
+		try {
+			_persistencia = new Persistence();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
 		if (tipo == 1)
-			_vectorPersonas = _persistencia.consultarDemandantes();
+			try {
+				_vectorPersonas = _persistencia.consultarDemandantes();
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		else
-			_vectorPersonas = _persistencia.consultarDemandantes();
+			try {
+				_vectorPersonas = _persistencia.consultarDemandantes();
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 
 		_screen = new ListadoPersonas(tipo, fuentes);
 		addPersonas();
@@ -30,12 +45,27 @@ public class ListadoPersonasController {
 	
 	public ListadoPersonasController(int tipo) {
 		_tipo = tipo;
-		_persistencia = new Persistence();
+		try {
+			_persistencia = new Persistence();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
 		if (tipo == 1)
-			_vectorPersonas = _persistencia.consultarDemandantes();
+			try {
+				_vectorPersonas = _persistencia.consultarDemandantes();
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		else
-			_vectorPersonas = _persistencia.consultarDemandantes();
+			try {
+				_vectorPersonas = _persistencia.consultarDemandantes();
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 
 		_screen = new ListadoPersonas(tipo);
 		addPersonas();

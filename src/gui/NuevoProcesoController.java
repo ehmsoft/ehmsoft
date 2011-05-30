@@ -26,7 +26,13 @@ public class NuevoProcesoController {
 	}
 
 	public void guardarProceso() {
-		Persistence guardado = new Persistence();
+		Persistence guardado = null;
+		try {
+			guardado = new Persistence();
+		} catch (Exception e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 		Vector campos = null;
 		try {
 			campos = asignarValores(_screen.getCampos(), _screen.getValores());

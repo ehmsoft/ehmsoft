@@ -21,7 +21,13 @@ public class NuevoCampoPersonalizadoController {
 	}
 
 	public void guardarCampo() {
-		Persistence guardado = new Persistence();
+		Persistence guardado = null;
+		try {
+			guardado = new Persistence();
+		} catch (Exception e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 		_campo = new CampoPersonalizado(_screen.getNombre(), null,
 				_screen.isObligatorio(), _screen.getLongMax(),
 				_screen.getLongMin());

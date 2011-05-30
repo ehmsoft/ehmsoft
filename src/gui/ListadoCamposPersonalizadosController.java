@@ -15,7 +15,12 @@ public class ListadoCamposPersonalizadosController {
 	private ListadoCamposPersonalizados _screen;
 
 	public ListadoCamposPersonalizadosController() {
-		_persistencia = new Persistence();
+		try {
+			_persistencia = new Persistence();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
 		_screen = new ListadoCamposPersonalizados();
 		addCampos();

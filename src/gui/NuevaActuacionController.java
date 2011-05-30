@@ -23,7 +23,13 @@ public class NuevaActuacionController {
 	}
 
 	public void guardarActuacion() {
-		Persistence guardado = new Persistence();
+		Persistence guardado = null;
+		try {
+			guardado = new Persistence();
+		} catch (Exception e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 		_actuacion = new Actuacion(_screen.getJuzgado(), _screen.getFecha(), _screen.getFechaProxima(), _screen.getDescripcion());
 		try {
 			guardado.guardarActuacion(_actuacion, _idProceso);

@@ -15,8 +15,18 @@ public class ListadoJuzgadosController {
 	private ListadoJuzgados _screen;
 
 	public ListadoJuzgadosController() {
-		_persistencia = new Persistence();
-		_vectorJuzgados = _persistencia.consultarJuzgados();
+		try {
+			_persistencia = new Persistence();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		try {
+			_vectorJuzgados = _persistencia.consultarJuzgados();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		_screen = new ListadoJuzgados();
 		addJuzgados();
 	}

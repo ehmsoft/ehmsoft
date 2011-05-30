@@ -20,7 +20,13 @@ public class NuevaPersonaController {
 	}
 
 	public void guardarPersona() {
-		Persistence guardado = new Persistence();
+		Persistence guardado = null;
+		try {
+			guardado = new Persistence();
+		} catch (Exception e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 		_persona = new Persona(_screen.getTipo(), _screen.getCedula(),
 				_screen.getNombre(), _screen.getTelefono(),
 				_screen.getDireccion(), _screen.getCorreo(), _screen.getNotas());

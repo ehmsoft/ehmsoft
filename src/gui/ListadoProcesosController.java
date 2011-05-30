@@ -15,9 +15,19 @@ public class ListadoProcesosController {
 	private ListadoProcesos _screen;
 
 	public ListadoProcesosController() {
-		_persistencia = new Persistence();
+		try {
+			_persistencia = new Persistence();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
-		_vectorProcesos = _persistencia.consultarProcesos();
+		try {
+			_vectorProcesos = _persistencia.consultarProcesos();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
 		if (_vectorProcesos == null)
 			_procesos = new Object[0];
