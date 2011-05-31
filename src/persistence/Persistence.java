@@ -189,7 +189,7 @@ public class Persistence implements Cargado, Guardado {
 
 	}
 
-	public Vector consultarDemandantes() throws Exception {//Devuelve una lista de todos los demandantes
+	public Vector consultarDemandantes() throws Exception {//Devuelve una vector iterable de todos los demandantes
 		Database d = null;
 		Vector demandantes = new Vector();
 		try{
@@ -201,7 +201,6 @@ public class Persistence implements Cargado, Guardado {
 			while(cursor.next())
 			{                    
 				Row row = cursor.getRow();
-
 				int id_demandante = row.getInteger(0);
 				String cedula = row.getString(1);
 				String nombre = row.getString(2);
@@ -211,7 +210,6 @@ public class Persistence implements Cargado, Guardado {
 				String notas = row.getString(6);
 				Persona per = new Persona(1, cedula, nombre, telefono, direccion, correo, notas, Integer.toString(id_demandante));
 				demandantes.addElement(per);
-
 			}
 			st.close();
 			cursor.close();
@@ -225,8 +223,7 @@ public class Persistence implements Cargado, Guardado {
 		return demandantes;
 
 	}
-
-	public Vector consultarDemandados() throws Exception {
+	public Vector consultarDemandados() throws Exception {//Devuelve un vector iterable con todos los demandados
 		Database d = null;
 		Vector demandados = new Vector();
 		try{
@@ -261,8 +258,7 @@ public class Persistence implements Cargado, Guardado {
 		}
 		return demandados;
 	}
-
-	public Vector consultarPersonas() throws Exception {
+	public Vector consultarPersonas() throws Exception {//Devuelve un vector iterable con todos los demandantes y demandados
 		Database d = null;
 		Vector pers = new Vector();
 		try{
@@ -274,7 +270,6 @@ public class Persistence implements Cargado, Guardado {
 			while(cursor.next())
 			{                    
 				Row row = cursor.getRow();
-
 				int id_demandado = row.getInteger(0);
 				String cedula = row.getString(1);
 				String nombre = row.getString(2);
@@ -284,7 +279,6 @@ public class Persistence implements Cargado, Guardado {
 				String notas = row.getString(6);
 				Persona per = new Persona(2, cedula, nombre, telefono, direccion, correo, notas, Integer.toString(id_demandado));
 				pers.addElement(per);
-
 			}
 			st.close();
 			cursor.close();
@@ -294,7 +288,6 @@ public class Persistence implements Cargado, Guardado {
 			while(cursor.next())
 			{                    
 				Row row = cursor.getRow();
-
 				int id_demandante = row.getInteger(0);
 				String cedula = row.getString(1);
 				String nombre = row.getString(2);
@@ -304,7 +297,6 @@ public class Persistence implements Cargado, Guardado {
 				String notas = row.getString(6);
 				Persona per = new Persona(1, cedula, nombre, telefono, direccion, correo, notas, Integer.toString(id_demandante));
 				pers.addElement(per);
-
 			}
 			st.close();
 			cursor.close();
@@ -317,9 +309,7 @@ public class Persistence implements Cargado, Guardado {
 		}
 		return pers;
 	}
-
-
-	public Persona consultarPersona(String id_persona, int tipo) throws Exception {
+	public Persona consultarPersona(String id_persona, int tipo) throws Exception {//Devuelve una persona especifica
 		Database d = null;
 		Persona per = null;
 		try{
@@ -329,11 +319,9 @@ public class Persistence implements Cargado, Guardado {
 				Statement st = d.createStatement("SELECT * FROM demandados where id_demandado = ?");
 				st.prepare();
 				st.bind(1, id_persona);
-
 				Cursor cursor = st.getCursor();
 				if(cursor.next()){                    
 					Row row = cursor.getRow();
-
 					int id_demandado = row.getInteger(0);
 					String cedula = row.getString(1);
 					String nombre = row.getString(2);
@@ -342,21 +330,16 @@ public class Persistence implements Cargado, Guardado {
 					String correo = row.getString(5);
 					String notas = row.getString(6);
 					per = new Persona(2, cedula, nombre, telefono, direccion, correo, notas, Integer.toString(id_demandado));
-
 				}
-
 				st.close();
 				cursor.close();
-
 			} else if(tipo == 1){
 				Statement st = d.createStatement("SELECT * FROM demandantes where id_demandante = ?");
 				st.prepare();
 				st.bind(1, id_persona);
-
 				Cursor cursor = st.getCursor();
 				if(cursor.next()){                    
 					Row row = cursor.getRow();
-
 					int id_demandante = row.getInteger(0);
 					String cedula = row.getString(1);
 					String nombre = row.getString(2);
@@ -365,7 +348,6 @@ public class Persistence implements Cargado, Guardado {
 					String correo = row.getString(5);
 					String notas = row.getString(6);
 					per = new Persona(1, cedula, nombre, telefono, direccion, correo, notas, Integer.toString(id_demandante));
-
 				}	
 				st.close();
 				cursor.close();
@@ -381,7 +363,6 @@ public class Persistence implements Cargado, Guardado {
 		}
 		return per;
 	}
-
 	public Vector consultarProcesos() throws Exception {
 		// TODO Auto-generated method stub
 		return null;
