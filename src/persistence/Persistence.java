@@ -399,7 +399,7 @@ public class Persistence implements Cargado, Guardado {
 				String tipo = row.getString(3);
 				String direccion = row.getString(4);
 				String telefono = row.getString(5);
-				Juzgado juz = new Juzgado(nombre, ciudad, direccion, telefono, tipo, id_juzgado);
+				Juzgado juz = new Juzgado(nombre, ciudad, direccion, telefono, tipo, Integer.toString(id_juzgado));
 				juzgados.addElement(juz);
 			}
 			st.close();
@@ -415,8 +415,35 @@ public class Persistence implements Cargado, Guardado {
 	}
 
 	public Juzgado consultarJuzgado(String id_juzgado) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+		Database d = null;
+		Juzgado juz = null;
+		try{
+			connMgr.prepararBD();
+			d = DatabaseFactory.open(connMgr.getDbLocation());
+			Statement st = d.createStatement("SELECT * FROM juzgados where id_juzgado = ?");
+			st.prepare();
+			st.bind(1, id_juzgado);
+			Cursor cursor = st.getCursor();
+			if(cursor.next())
+			{                    
+				Row row = cursor.getRow();	
+				String nombre = row.getString(1);
+				String ciudad = row.getString(2);
+				String tipo = row.getString(3);
+				String direccion = row.getString(4);
+				String telefono = row.getString(5);
+				juz = new Juzgado(nombre, ciudad, direccion, telefono, tipo, id_juzgado);
+			}
+			st.close();
+			cursor.close();
+		} catch (Exception e){
+			throw e;
+		} finally {
+			if (d != null){
+				d.close();
+			}
+		}
+		return juz;
 	}
 
 
