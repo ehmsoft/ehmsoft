@@ -15,11 +15,17 @@ public class Juzgado {
 		this.direccion = direccion;
 		this.telefono = telefono;
 		this.tipo = tipo;
+	}	
+	public Juzgado(String nombre, String ciudad, String direccion,
+			String telefono, String tipo, String id_juzgado) {
+		this.nombre = nombre;
+		this.ciudad = ciudad;
+		this.direccion = direccion;
+		this.telefono = telefono;
+		this.tipo = tipo;
+		this.id_juzgado = id_juzgado;
 	}
-
 	//Fin Constructores
-
-	
 	//Getters
 	public String getNombre() {
 		return nombre;
