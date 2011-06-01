@@ -37,6 +37,27 @@ public class Proceso {
 		this.campos = campos;
 		this.prioridad = prioridad;
 	}
+	public Proceso(String id_proceso, Persona demandante, Persona demandado,
+			Calendar fecha, Juzgado juzgado, String radicado,
+			String radicadoUnico, Vector actuaciones, String estado,
+			String categoria, String tipo, String notas, Vector campos,
+			int prioridad) {
+		this.id_proceso = id_proceso;
+		this.demandante = demandante;
+		this.demandado = demandado;
+		this.fecha = fecha;
+		this.juzgado = juzgado;
+		this.radicado = radicado;
+		this.radicadoUnico = radicadoUnico;
+		this.actuaciones = actuaciones;
+		this.estado = estado;
+		this.categoria = categoria;
+		this.tipo = tipo;
+		this.notas = notas;
+		this.campos = campos;
+		this.prioridad = prioridad;
+	}
+
 
 	//Fin Constructores
 

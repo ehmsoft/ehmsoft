@@ -15,6 +15,15 @@ public class Actuacion {
 		this.fechaProxima = fechaProxima;
 		this.descripcion = descripcion;
 	}
+	public Actuacion(Juzgado juzgado, Calendar fecha, Calendar fechaProxima,
+			String descripcion, String id_actuacion) {
+		this.juzgado = juzgado;
+		this.fecha = fecha;
+		this.fechaProxima = fechaProxima;
+		this.descripcion = descripcion;
+		this.id_actuacion = id_actuacion;
+	}
+
 	//Fin Constructores
 
 	//Getters
