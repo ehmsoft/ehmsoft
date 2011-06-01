@@ -221,7 +221,6 @@ public class Persistence implements Cargado, Guardado {
 			}
 		}
 		return demandantes;
-
 	}
 	public Vector consultarDemandados() throws Exception {//Devuelve un vector iterable con todos los demandados
 		Database d = null;
@@ -235,7 +234,6 @@ public class Persistence implements Cargado, Guardado {
 			while(cursor.next())
 			{                    
 				Row row = cursor.getRow();
-
 				int id_demandado = row.getInteger(0);
 				String cedula = row.getString(1);
 				String nombre = row.getString(2);
@@ -382,10 +380,38 @@ public class Persistence implements Cargado, Guardado {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
+	//Devuelve la lista de todos los juzgados
 	public Vector consultarJuzgados() throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+		Database d = null;
+		Vector juzgados = new Vector();
+		try{
+			connMgr.prepararBD();
+			d = DatabaseFactory.open(connMgr.getDbLocation());
+			Statement st = d.createStatement("SELECT * FROM juzgados order by nombre");
+			st.prepare();
+			Cursor cursor = st.getCursor();
+			while(cursor.next())
+			{                    
+				Row row = cursor.getRow();
+				int id_juzgado = row.getInteger(0);
+				String nombre = row.getString(1);
+				String ciudad = row.getString(2);
+				String tipo = row.getString(3);
+				String direccion = row.getString(4);
+				String telefono = row.getString(5);
+				Juzgado juz = new Juzgado(nombre, ciudad, direccion, telefono, tipo, id_juzgado);
+				juzgados.addElement(juz);
+			}
+			st.close();
+			cursor.close();
+		} catch (Exception e){
+			throw e;
+		} finally {
+			if (d != null){
+				d.close();
+			}
+		}
+		return juzgados;
 	}
 
 	public Juzgado consultarJuzgado(String id_juzgado) throws Exception {
