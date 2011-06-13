@@ -372,8 +372,36 @@ public class Persistence implements Cargado, Guardado {
 	}
 
 	public Vector consultarActuaciones(Proceso proceso) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+		Database d = null;
+		Vector actuaciones = new Vector();
+		try{
+			connMgr.prepararBD();
+			d = DatabaseFactory.open(connMgr.getDbLocation());
+			Statement st = d.createStatement("SELECT * FROM actuaciones where id_proceso = ?");
+			st.prepare();
+			st.bind(1, proceso.getId_proceso());
+			Cursor cursor = st.getCursor();
+			while(cursor.next()){                    
+				Row row = cursor.getRow();
+				int id_actuacion = row.getInteger(0);
+				int id_proceso = row.getInteger(1);
+				int id_juzgado = row.getInteger(2);
+				//String fecha_creacion = row.getString(3);
+				//String fecha_proxima = row.getString(4);
+				String descripcion = row.getString(5);
+				String temporal = Integer.toString(id_juzgado) + "  " +Integer.toString(id_proceso) + "  " + Integer.toString(id_actuacion) + " " + descripcion;
+				actuaciones.addElement(temporal);
+			}	
+			st.close();
+			cursor.close();
+		} catch (Exception e){
+			throw e;
+		} finally {
+			if (d != null){
+				d.close();
+			}
+		}
+		return actuaciones;
 	}
 
 	public Actuacion consultarActuacion(String id_actuacion) throws Exception {
