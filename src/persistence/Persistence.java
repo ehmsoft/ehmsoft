@@ -21,36 +21,7 @@ public class Persistence implements Cargado, Guardado {
 	}
 
 	public void actualizarPersona(Persona persona) throws Exception {
-		/**
-		 * @param tipo	1 para demandante, 2 para demandado
-		 **/
-		Database d = null;
-		d= DatabaseFactory.open(connMgr.getDbLocation());
-		if(persona.getTipo()==1){
-			Statement stPersona1 = d.createStatement("INSERT INTO demandantes VALUES(persona.getId_persona()," +
-					"persona.getId()," +
-					"persona.getNombre()," +
-					"persona.getTelefono()," +
-					"persona.getDireccion()," +
-					"persona.getCorreo()," +																		
-			"persona.getNombre())");
-			stPersona1.prepare();
-			stPersona1.execute();
-			stPersona1.close();
-		}
-		if(persona.getTipo()==2){
-			Statement stPersona2 = d.createStatement("INSERT INTO demandados VALUES(persona.getId_persona()," +
-					"persona.getId()," +
-					"persona.getNombre()," +
-					"persona.getTelefono()," +
-					"persona.getDireccion()," +
-					"persona.getCorreo()," +																		
-			"persona.getNombre())");
-			stPersona2.prepare();
-			stPersona2.execute();
-			stPersona2.close();
-		}
-		d.close();
+		// TODO Auto-generated method stub
 
 	}
 
@@ -59,7 +30,9 @@ public class Persistence implements Cargado, Guardado {
 		 * @param tipo	1 para demandante, 2 para demandado
 		 **/
 		Database d = null;
-		d= DatabaseFactory.open(connMgr.getDbLocation());
+		try{
+			connMgr.prepararBD();
+			d = DatabaseFactory.open(connMgr.getDbLocation());
 		if(persona.getTipo()==1){
 			Statement stPersona1 = d.createStatement("INSERT INTO demandantes VALUES(NULL, " +
 					"persona.getId()," +
@@ -88,6 +61,14 @@ public class Persistence implements Cargado, Guardado {
 			throw new Exception("Tipo persona invalido");
 		}
 		d.close();
+		} catch (Exception e){
+			throw e;
+		} finally {
+			if (d != null){
+				d.close();
+			}
+		}
+		
 	}
 
 	public void borrarPersona(Persona persona) throws Exception {
@@ -96,34 +77,33 @@ public class Persistence implements Cargado, Guardado {
 	}
 
 	public void actualizarJuzgado(Juzgado juzgado) throws Exception {
-		Database d = null;
-		d= DatabaseFactory.open(connMgr.getDbLocation());
-		Statement stJuzgado = d.createStatement("INSERT INTO juzgados VALUES( juzgado.getId_juzgado(),"+
-				"juzgado.getNombre(),"+
-				"juzgado.getCiudad(),"+
-				"juzgado.getTelefono(),"+
-				"juzgado.getDireccion(),"+ 
-		"juzgado.getTipo())");
-		stJuzgado.prepare();
-		stJuzgado.execute();
-		stJuzgado.close();
-		d.close();
+		
 
 	}
 
 	public void guardarJuzgado(Juzgado juzgado) throws Exception {
 		Database d = null;
-		d= DatabaseFactory.open(connMgr.getDbLocation());
-		Statement stJuzgado = d.createStatement("INSERT INTO juzgados VALUES( NULL,"+
-				"juzgado.getNombre(),"+
-				"juzgado.getCiudad(),"+
-				"juzgado.getTelefono(),"+
-				"juzgado.getDireccion(),"+
-		"juzgado.getTipo())");
-		stJuzgado.prepare();
-		stJuzgado.execute();
-		stJuzgado.close();
-		d.close();
+		try{
+			connMgr.prepararBD();
+			d = DatabaseFactory.open(connMgr.getDbLocation());
+			Statement stJuzgado = d.createStatement("INSERT INTO juzgados VALUES( NULL,"+
+					"juzgado.getNombre(),"+
+					"juzgado.getCiudad(),"+
+					"juzgado.getTelefono(),"+
+					"juzgado.getDireccion(),"+
+			"juzgado.getTipo())");
+			stJuzgado.prepare();
+			stJuzgado.execute();
+			stJuzgado.close();
+			d.close();
+		} catch (Exception e){
+			throw e;
+		} finally {
+			if (d != null){
+				d.close();
+			}
+		}
+		
 	}
 
 	public void borrarJuzgado(Juzgado juzgado) throws Exception {
@@ -138,17 +118,28 @@ public class Persistence implements Cargado, Guardado {
 
 	public void guardarActuacion(Actuacion actuacion, String id_proceso) throws Exception {
 		Database d = null;
-		d= DatabaseFactory.open(connMgr.getDbLocation());
-		Statement stActiacion = d.createStatement("INSERT INTO actuciones VALUES( NULL,"+
-				"id_proceso,"+
-				"actuacion.getJuzgado(),"+
-				"actuacion.getFecha(),"+
-				"actuacion.getFechaProxima(),"+
-		"actuacion.getDescripcion())");
-		stActiacion.prepare();
-		stActiacion.execute();
-		stActiacion.close();
-		d.close();
+		try{
+			connMgr.prepararBD();
+			d = DatabaseFactory.open(connMgr.getDbLocation());
+			String fecha = actuacion.getFecha().get(Calendar.YEAR)+"-"+actuacion.getFecha().get(Calendar.MONTH)+"-"+actuacion.getFecha().get(Calendar.DAY_OF_MONTH);
+			Statement stActuacion = d.createStatement("INSERT INTO actuciones VALUES( NULL,"+
+					"id_proceso,"+
+					" actuacion.getJuzgado().getId_juzgado(),"+
+					"fecha,"+ 
+					"actuacion.getFechaProxima(),"+
+			"actuacion.getDescripcion())");
+			stActuacion.prepare();
+			stActuacion.execute(); 
+			stActuacion.close();
+			d.close();
+		} catch (Exception e){
+			throw e;
+		} finally {
+			if (d != null){
+				d.close();
+			}
+		}
+		
 
 	}
 
@@ -164,7 +155,34 @@ public class Persistence implements Cargado, Guardado {
 	}
 
 	public void guardarCampoPersonalizado(CampoPersonalizado campo,String id_proceso) throws Exception {
-		// TODO Auto-generated method stub
+		Database d = null;
+		try{
+			connMgr.prepararBD();
+			d = DatabaseFactory.open(connMgr.getDbLocation());
+			Statement stAtributos = d.createStatement("INSERT INTO atributos VALUES( NULL,"+
+					" campo.getNombre(),"+
+					"campo.isObligatorio(),"+ 
+					"campo.getLongitudMax(),"+ 
+			"campo.getLongitudMin())");
+			stAtributos.prepare();
+			stAtributos.execute();
+			stAtributos.close();
+			long id_atributo = d.lastInsertedRowID();
+			Statement stAtributosProceso = d.createStatement("INSERT INTO atributos_proceso VALUES( id_atributo, "+
+					"id_proceso,"+
+					"campo.getValor())");
+			stAtributosProceso.prepare();
+			stAtributosProceso.execute();
+			stAtributosProceso.close();	
+			
+			d.close();
+		} catch (Exception e){
+			throw e;
+		} finally {
+			if (d != null){
+				d.close();
+			}
+		}
 
 
 	}
@@ -181,7 +199,31 @@ public class Persistence implements Cargado, Guardado {
 	}
 
 	public void guardarProceso(Proceso proceso) throws Exception {
-		// TODO Auto-generated method stub
+		Database d = null;
+		try{
+			connMgr.prepararBD();
+			d = DatabaseFactory.open(connMgr.getDbLocation());
+			Statement stProceso = d.createStatement("INSERT INTO procesos VALUES(NULL, " +
+					"proceso.getDemandante().getId_persona()," + //ingresa el id del demandante
+					"proceso.getDemandado().getId_persona()," +
+					"proceso.getFecha()," +
+					"proceso.getRadicado()," +
+					"proceso.getRadicadoUnico()," +
+					"proceso.getEstado()," +
+					"proceso.getTipo()," +
+					"proceso.getNotas()," +
+					"proceso.getPrioridad()," +
+					"proceso.getJuzgado().getId_juzgado()," +
+					"'Categoria por defecto')"); //como obtener id_categoria	
+			d.close();
+		} catch (Exception e){
+			throw e;
+		} finally {
+			if (d != null){
+				d.close();
+			}
+		}		
+		
 
 	}
 
