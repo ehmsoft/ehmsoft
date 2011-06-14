@@ -34,26 +34,26 @@ public class Persistence implements Cargado, Guardado {
 			connMgr.prepararBD();
 			d = DatabaseFactory.open(connMgr.getDbLocation());
 		if(persona.getTipo()==1){
-			Statement stPersona1 = d.createStatement("INSERT INTO demandantes VALUES(NULL, " +
-					"persona.getId()," +
-					"persona.getNombre()," +
-					"persona.getTelefono()," +
-					"persona.getDireccion()," +
-					"persona.getCorreo()," +																		
-			"persona.getNotas())");
+			Statement stPersona1 = d.createStatement("INSERT INTO demandantes VALUES(NULL,?,?,?,?,?,?)");
 			stPersona1.prepare();
+			stPersona1.bind(1, persona.getId());
+			stPersona1.bind(2, persona.getNombre());
+			stPersona1.bind(3, persona.getTelefono());
+			stPersona1.bind(4, persona.getDireccion());
+			stPersona1.bind(5, persona.getCorreo());
+			stPersona1.bind(6, persona.getNotas());
 			stPersona1.execute();
 			stPersona1.close();
 		}
 		else if(persona.getTipo()==2){
-			Statement stPersona2 = d.createStatement("INSERT INTO demandados VALUES(NULL, " +
-					"persona.getId()," +
-					"persona.getNombre()," +
-					"persona.getTelefono()," +
-					"persona.getDireccion()," +
-					"persona.getCorreo()," +																		
-			"persona.getNotas())");
+			Statement stPersona2 = d.createStatement("INSERT INTO demandantes VALUES(NULL,?,?,?,?,?,?)");
 			stPersona2.prepare();
+			stPersona2.bind(1, persona.getId());
+			stPersona2.bind(2, persona.getNombre());
+			stPersona2.bind(3, persona.getTelefono());
+			stPersona2.bind(4, persona.getDireccion());
+			stPersona2.bind(5, persona.getCorreo());
+			stPersona2.bind(6, persona.getNotas());
 			stPersona2.execute();
 			stPersona2.close();
 		}
