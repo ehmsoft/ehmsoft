@@ -117,7 +117,7 @@ public class Persistence implements Cargado, Guardado {
 			String fechaProxima = actuacion.getFechaProxima().get(Calendar.YEAR)+"-"+actuacion.getFechaProxima().get(Calendar.MONTH)+"-"+actuacion.getFechaProxima().get(Calendar.DAY_OF_MONTH);
 			Statement stActuacion = d.createStatement("INSERT INTO actuciones VALUES( NULL,?,?,?,?,?)");
 			stActuacion.prepare();
-			stActuacion.bind(1,id_proceso);
+			stActuacion.bind(1,Integer.parseInt(id_proceso));
 			stActuacion.bind(2,actuacion.getJuzgado().getId_juzgado());
 			stActuacion.bind(3,fecha);
 			stActuacion.bind(4,fechaProxima);
