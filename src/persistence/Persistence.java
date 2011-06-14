@@ -369,7 +369,7 @@ public class Persistence implements Cargado, Guardado {
 		try{
 			connMgr.prepararBD();
 			d = DatabaseFactory.open(connMgr.getDbLocation());
-			Statement st = d.createStatement("SELECT p.id_proceso, p.fecha_creacion, p.radicado, p.radicado_unico, p.estado, p.tipo, p.notas, p.prioridad, demandante.id_demandante, demandante.cedula, demandante.nombre, demandante.telefono, demandante.direccion, demandante.correo, demandante.notas, demandado.id_demandado, demandado.nombre, demandado.telefono, demandado.direccion, demandado.correo, demandado.notas, j.id_juzgado, j.nombre, j.ciudad, j.telefono, j.direccion, j.tipo, c.descripcion FROM procesos p, demandantes demandante, demandados demandado, juzgados j, categorias c WHERE p.id_demandante = demandante.id_demandante AND p.id_demandado = demandado.id_demandado AND p.id_juzgado = j.id_juzgado AND p.id_categoria = c.id_categoria ");
+			Statement st = d.createStatement("SELECT p.id_proceso, p.fecha_creacion, p.radicado, p.radicado_unico, p.estado, p.tipo, p.notas, p.prioridad, demandante.id_demandante, demandante.cedula, demandante.nombre, demandante.telefono, demandante.direccion, demandante.correo, demandante.notas, demandado.id_demandado, demandado.cedula, demandado.nombre, demandado.telefono, demandado.direccion, demandado.correo, demandado.notas, j.id_juzgado, j.nombre, j.ciudad, j.telefono, j.direccion, j.tipo, c.descripcion FROM procesos p, demandantes demandante, demandados demandado, juzgados j, categorias c WHERE p.id_demandante = demandante.id_demandante AND p.id_demandado = demandado.id_demandado AND p.id_juzgado = j.id_juzgado AND p.id_categoria = c.id_categoria ");
 			st.prepare();
 			Cursor cursor = st.getCursor();
 			while(cursor.next())
@@ -412,11 +412,6 @@ public class Persistence implements Cargado, Guardado {
 			}
 			st.close();
 			cursor.close();
-			Enumeration e = procesos.elements();
-			while(e.hasMoreElements()){
-				Proceso proceso_act = (Proceso) e.nextElement();
-				proceso_act.setActuaciones(consultarActuaciones(proceso_act));
-			}
 		} catch (Exception e){
 			throw e;
 		} finally {
@@ -424,12 +419,71 @@ public class Persistence implements Cargado, Guardado {
 				d.close();
 			}
 		}
+		Enumeration e = procesos.elements();
+		while(e.hasMoreElements()){
+			Proceso proceso_act = (Proceso) e.nextElement();
+			proceso_act.setActuaciones(consultarActuaciones(proceso_act));
+		}
 		return procesos;
 	}
 
 	public Proceso consultarProceso(String id_proceso) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+		Database d = null;
+		Proceso proceso = null;
+		try{
+			connMgr.prepararBD();
+			d = DatabaseFactory.open(connMgr.getDbLocation());
+			Statement st = d.createStatement("SELECT p.id_proceso, p.fecha_creacion, p.radicado, p.radicado_unico, p.estado, p.tipo, p.notas, p.prioridad, demandante.id_demandante, demandante.cedula, demandante.nombre, demandante.telefono, demandante.direccion, demandante.correo, demandante.notas, demandado.id_demandado, demandado.cedula, demandado.nombre, demandado.telefono, demandado.direccion, demandado.correo, demandado.notas, j.id_juzgado, j.nombre, j.ciudad, j.telefono, j.direccion, j.tipo, c.descripcion FROM procesos p, demandantes demandante, demandados demandado, juzgados j, categorias c WHERE p.id_proceso= ? AND p.id_demandante = demandante.id_demandante AND p.id_demandado = demandado.id_demandado AND p.id_juzgado = j.id_juzgado AND p.id_categoria = c.id_categoria ");
+			st.prepare();
+			st.bind(1, id_proceso);
+			Cursor cursor = st.getCursor();
+			if(cursor.next())
+			{                    
+				Row row = cursor.getRow();
+				String fecha_creacion = row.getString(1);
+				String radicado = row.getString(2);
+				String radicado_unico = row.getString(3);
+				String estado = row.getString(4);
+				String tipo = row.getString(5);
+				String notas = row.getString(6);
+				String prioridad = row.getString(7);
+				int id_demandante = row.getInteger(8);
+				String cedula_demandante = row.getString(9);
+				String nombre_demandante = row.getString(10);
+				String telefono_demandante = row.getString(11);
+				String direccion_demandante = row.getString(12);
+				String correo_demandante = row.getString(13);
+				String notas_demandante = row.getString(14);
+				int id_demandado = row.getInteger(15);
+				String cedula_demandado = row.getString(16);
+				String nombre_demandado = row.getString(17);
+				String telefono_demandado = row.getString(18);
+				String direccion_demandado = row.getString(19);
+				String correo_demandado = row.getString(20);
+				String notas_demandado = row.getString(21);
+				int id_juzgado = row.getInteger(22);
+				String nombre_juzgado = row.getString(23);
+				String ciudad_juzagdo = row.getString(24);
+				String telefono_juzgado = row.getString(25);
+				String direccion_juzgado = row.getString(26);
+				String tipo_juzgado = row.getString(27);
+				String descripcion_categoria = row.getString(28);
+				Persona demandante = new Persona(1, cedula_demandante, nombre_demandante, telefono_demandante, direccion_demandante, correo_demandante, notas_demandante, Integer.toString(id_demandante));
+				Persona demandado = new Persona(2, cedula_demandado, nombre_demandado, telefono_demandado, direccion_demandado, correo_demandado, notas_demandado, Integer.toString(id_demandado));
+				Juzgado juzgado = new Juzgado(nombre_juzgado, ciudad_juzagdo, direccion_juzgado, telefono_juzgado, tipo_juzgado, Integer.toString(id_juzgado));
+				proceso = new Proceso(id_proceso, demandante, demandado, stringToCalendar(fecha_creacion), juzgado, radicado, radicado_unico, new Vector(), estado, descripcion_categoria, tipo, notas, new Vector(), Integer.parseInt(prioridad));
+			}
+			st.close();
+			cursor.close();
+		} catch (Exception e){
+			throw e;
+		} finally {
+			if (d != null){
+				d.close();
+			}
+		}
+		proceso.setActuaciones(consultarActuaciones(proceso));
+		return proceso;
 	}
 
 	public Vector consultarActuaciones(Proceso proceso) throws Exception {
