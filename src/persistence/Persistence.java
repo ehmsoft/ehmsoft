@@ -1,5 +1,6 @@
 package persistence;
 
+import java.util.Calendar;
 import java.util.Vector;
 
 
@@ -377,21 +378,26 @@ public class Persistence implements Cargado, Guardado {
 		try{
 			connMgr.prepararBD();
 			d = DatabaseFactory.open(connMgr.getDbLocation());
-			Statement st = d.createStatement("SELECT * FROM actuaciones where id_proceso = ?");
+			Statement st = d.createStatement("SELECT a.id_actuacion, a.id_proceso, a.id_juzgado, a.fecha_creacion, a.fecha_proxima, a.descripcion, j.nombre, j.ciudad, j.telefono, j.direccion, j.tipo FROM actuaciones a, juzgados j where a.id_proceso = ? and a.id_juzgado = j.id_juzgado ");
 			st.prepare();
 			st.bind(1, proceso.getId_proceso());
 			Cursor cursor = st.getCursor();
 			while(cursor.next()){                    
 				Row row = cursor.getRow();
 				int id_actuacion = row.getInteger(0);
-				int id_proceso = row.getInteger(1);
 				int id_juzgado = row.getInteger(2);
-				//String fecha_creacion = row.getString(3);
-				//String fecha_proxima = row.getString(4);
+				Calendar fecha_creacion = stringToCalendar(row.getString(3));
+				Calendar fecha_proxima = stringToCalendar(row.getString(4));
 				String descripcion = row.getString(5);
-				String temporal = Integer.toString(id_juzgado) + "  " +Integer.toString(id_proceso) + "  " + Integer.toString(id_actuacion) + " " + descripcion;
-				actuaciones.addElement(temporal);
-			}	
+				String nombre_juzgado = row.getString(6);
+				String ciudad_juzgado = row.getString(7);
+				String telefono_juzgado = row.getString(8);
+				String direccion_juzgado = row.getString(9);
+				String tipo_juzgado = row.getString(10);
+				Juzgado juzgado = new Juzgado(nombre_juzgado, ciudad_juzgado, direccion_juzgado, telefono_juzgado, tipo_juzgado,Integer.toString(id_juzgado));
+				Actuacion actuacion = new Actuacion(juzgado, fecha_creacion, fecha_proxima,descripcion, Integer.toString(id_actuacion));
+				actuaciones.addElement(actuacion);
+			}
 			st.close();
 			cursor.close();
 		} catch (Exception e){
@@ -403,10 +409,40 @@ public class Persistence implements Cargado, Guardado {
 		}
 		return actuaciones;
 	}
-
 	public Actuacion consultarActuacion(String id_actuacion) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+		Database d = null;
+		Actuacion actuacion = null;
+		try{
+			connMgr.prepararBD();
+			d = DatabaseFactory.open(connMgr.getDbLocation());
+			Statement st = d.createStatement("SELECT a.id_actuacion, a.id_proceso, a.id_juzgado, a.fecha_creacion, a.fecha_proxima, a.descripcion, j.nombre, j.ciudad, j.telefono, j.direccion, j.tipo FROM actuaciones a, juzgados j where a.id_actuacion = ? and a.id_juzgado = j.id_juzgado ");
+			st.prepare();
+			st.bind(1, id_actuacion);
+			Cursor cursor = st.getCursor();
+			if(cursor.next()){                    
+				Row row = cursor.getRow();
+				int id_juzgado = row.getInteger(2);
+				Calendar fecha_creacion = stringToCalendar(row.getString(3));
+				Calendar fecha_proxima = stringToCalendar(row.getString(4));
+				String descripcion = row.getString(5);
+				String nombre_juzgado = row.getString(6);
+				String ciudad_juzgado = row.getString(7);
+				String telefono_juzgado = row.getString(8);
+				String direccion_juzgado = row.getString(9);
+				String tipo_juzgado = row.getString(10);
+				Juzgado juzgado = new Juzgado(nombre_juzgado, ciudad_juzgado, direccion_juzgado, telefono_juzgado, tipo_juzgado,Integer.toString(id_juzgado));
+				actuacion = new Actuacion(juzgado, fecha_creacion, fecha_proxima,descripcion, id_actuacion);
+			}
+			st.close();
+			cursor.close();
+		} catch (Exception e){
+			throw e;
+		} finally {
+			if (d != null){
+				d.close();
+			}
+		}
+		return actuacion;
 	}
 	//Devuelve la lista de todos los juzgados
 	public Vector consultarJuzgados() throws Exception {
@@ -441,7 +477,6 @@ public class Persistence implements Cargado, Guardado {
 		}
 		return juzgados;
 	}
-
 	public Juzgado consultarJuzgado(String id_juzgado) throws Exception {
 		Database d = null;
 		Juzgado juz = null;
@@ -473,7 +508,12 @@ public class Persistence implements Cargado, Guardado {
 		}
 		return juz;
 	}
-
-
+	private Calendar stringToCalendar(String fecha) {
+		Calendar calendar_return = Calendar.getInstance();
+		calendar_return.set(Calendar.YEAR, Integer.parseInt(fecha.substring(0, 4)));
+		calendar_return.set(Calendar.MONTH, Integer.parseInt(fecha.substring(5, 7)));
+		calendar_return.set(Calendar.DAY_OF_MONTH, Integer.parseInt(fecha.substring(8, 10)));
+		return calendar_return;
+	}
 
 }
