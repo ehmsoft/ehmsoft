@@ -30,11 +30,19 @@ public class Persistence implements Cargado, Guardado {
 		 * @param tipo	1 para demandante, 2 para demandado
 		 **/
 		Database d = null;
+		Statement stPersona1;
 		try{
 			connMgr.prepararBD();
 			d = DatabaseFactory.open(connMgr.getDbLocation());
 		if(persona.getTipo()==1){
-			Statement stPersona1 = d.createStatement("INSERT INTO demandantes VALUES(NULL,?,?,?,?,?,?)");
+			stPersona1 = d.createStatement("INSERT INTO demandantes VALUES(NULL,?,?,?,?,?,?)");
+		}
+		else if(persona.getTipo()==2){
+			stPersona1 = d.createStatement("INSERT INTO demandados VALUES(NULL,?,?,?,?,?,?)");
+		}
+		else{
+			throw new Exception("Tipo persona invalido");
+		}
 			stPersona1.prepare();
 			stPersona1.bind(1, persona.getId());
 			stPersona1.bind(2, persona.getNombre());
@@ -44,23 +52,7 @@ public class Persistence implements Cargado, Guardado {
 			stPersona1.bind(6, persona.getNotas());
 			stPersona1.execute();
 			stPersona1.close();
-		}
-		else if(persona.getTipo()==2){
-			Statement stPersona2 = d.createStatement("INSERT INTO demandantes VALUES(NULL,?,?,?,?,?,?)");
-			stPersona2.prepare();
-			stPersona2.bind(1, persona.getId());
-			stPersona2.bind(2, persona.getNombre());
-			stPersona2.bind(3, persona.getTelefono());
-			stPersona2.bind(4, persona.getDireccion());
-			stPersona2.bind(5, persona.getCorreo());
-			stPersona2.bind(6, persona.getNotas());
-			stPersona2.execute();
-			stPersona2.close();
-		}
-		else{
-			throw new Exception("Tipo persona invalido");
-		}
-		d.close();
+			d.close();
 		} catch (Exception e){
 			throw e;
 		} finally {
