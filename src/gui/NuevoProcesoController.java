@@ -30,12 +30,11 @@ public class NuevoProcesoController {
 		try {
 			guardado = new Persistence();
 		} catch (Exception e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
 		Vector campos = null;
 		try {
-			campos = asignarValores(_screen.getCampos(), _screen.getValores());
+			campos = asignarValores(_screen.getValores());
 		} catch (Exception e) {
 		} finally {
 			_proceso = new Proceso(_screen.getDemandante(),
@@ -47,20 +46,27 @@ public class NuevoProcesoController {
 			try {
 				guardado.guardarProceso(_proceso);
 			} catch (Exception e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
 	}
 
-	private Vector asignarValores(Vector campos, Vector valores) {
-		Enumeration iCampos = campos.elements();
-		Enumeration iValores = valores.elements();
+	private Vector asignarValores(Vector txtFields) {
+		Enumeration fields = txtFields.elements();
+		Vector campos = new Vector();
 
-		while (iCampos.hasMoreElements())
-			((CampoPersonalizado) iCampos.nextElement())
-					.setValor(((BasicEditField) iValores.nextElement())
-							.getText());
+		while (fields.hasMoreElements()) {
+			BasicEditField txtField;
+			String valor;
+			CampoPersonalizado campo;
+
+			txtField = (BasicEditField) fields.nextElement();
+			valor = txtField.getText();
+			campo = (CampoPersonalizado) txtField.getCookie();
+
+			campo.setValor(valor);
+			campos.addElement(campo);
+		}
 		return campos;
 	}
 }

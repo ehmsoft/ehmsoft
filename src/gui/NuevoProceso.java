@@ -29,6 +29,7 @@ public class NuevoProceso extends FondoNuevos {
 	private ObjectChoiceField _chCategoria;
 	private NumericChoiceField _chPrioridad;
 	private DateField _dtFecha;
+	private BasicEditField _txtTipo;
 	private BasicEditField _txtNotas;
 	private BasicEditField _txtRadicado;
 	private BasicEditField _txtRadicadoUnico;
@@ -37,19 +38,17 @@ public class NuevoProceso extends FondoNuevos {
 	private ButtonField _btnJuzgado;
 	private ButtonField _btnCampoPersonalizado;
 
-	private HorizontalFieldManager fldCampoPersonalizado;
-	private VerticalFieldManager fldRightCampoPersonalizado;
-	private VerticalFieldManager fldLeftCampoPersonalizado;
+	private HorizontalFieldManager _fldCampoPersonalizado;
+	private VerticalFieldManager _fldRightCampoPersonalizado;
+	private VerticalFieldManager _fldLeftCampoPersonalizado;
 
 	private Persona _demandante;
 	private Persona _demandado;
 	private Juzgado _juzgado;
-	private Vector _camposPersonalizados;
 	private Vector _valoresCamposPersonalizados;
 
 	public NuevoProceso() {
 		setTitle("Nuevo Proceso");
-		_camposPersonalizados = new Vector();
 		_valoresCamposPersonalizados = new Vector();
 
 		HorizontalFieldManager fldDemandante = new HorizontalFieldManager();
@@ -95,6 +94,10 @@ public class NuevoProceso extends FondoNuevos {
 		_txtRadicadoUnico = new BasicEditField(BasicEditField.NO_NEWLINE);
 		_txtRadicadoUnico.setLabel("Radicado unico: ");
 		_vertical.add(_txtRadicadoUnico);
+		
+		_txtTipo = new BasicEditField(BasicEditField.NO_NEWLINE);
+		_txtTipo.setLabel("Tipo: ");
+		_vertical.add(_txtTipo);
 
 		_chEstado = new ObjectChoiceField();
 		_chEstado.setLabel("Estado:");
@@ -121,16 +124,16 @@ public class NuevoProceso extends FondoNuevos {
 		_txtNotas.setLabel("Notas: ");
 		_vertical.add(_txtNotas);
 
-		fldCampoPersonalizado = new HorizontalFieldManager();
-		fldRightCampoPersonalizado = new VerticalFieldManager(USE_ALL_WIDTH);
-		fldLeftCampoPersonalizado = new VerticalFieldManager();
+		_fldCampoPersonalizado = new HorizontalFieldManager();
+		_fldRightCampoPersonalizado = new VerticalFieldManager(USE_ALL_WIDTH);
+		_fldLeftCampoPersonalizado = new VerticalFieldManager();
 		_btnCampoPersonalizado = new ButtonField("Nuevo", FIELD_RIGHT);
 		_btnCampoPersonalizado.setChangeListener(listenerBtnCampoPersonalizado);
-		fldLeftCampoPersonalizado.add(new LabelField("Campo personalizado: "));
-		fldRightCampoPersonalizado.add(_btnCampoPersonalizado);
-		fldCampoPersonalizado.add(fldLeftCampoPersonalizado);
-		fldCampoPersonalizado.add(fldRightCampoPersonalizado);
-		_vertical.add(fldCampoPersonalizado);
+		_fldLeftCampoPersonalizado.add(new LabelField("Campo personalizado: "));
+		_fldRightCampoPersonalizado.add(_btnCampoPersonalizado);
+		_fldCampoPersonalizado.add(_fldLeftCampoPersonalizado);
+		_fldCampoPersonalizado.add(_fldRightCampoPersonalizado);
+		_vertical.add(_fldCampoPersonalizado);
 
 		add(_vertical);
 
@@ -208,7 +211,6 @@ public class NuevoProceso extends FondoNuevos {
 			NuevoCampoPersonalizadoController campo = new NuevoCampoPersonalizadoController();
 			UiApplication.getUiApplication().pushModalScreen(campo.getScreen());
 			try {
-				campo.guardarCampo();
 				addCampoPersonalizado(campo.getCampo());
 			} catch (NullPointerException e) {
 				Dialog.alert(e.toString());
@@ -219,15 +221,11 @@ public class NuevoProceso extends FondoNuevos {
 	public void addCampoPersonalizado(CampoPersonalizado campo) {
 		BasicEditField campoP = new BasicEditField();
 		campoP.setLabel(campo.getNombre() + ": ");
+		campoP.setCookie(campo);
 		if (campo.getLongitudMax() != 0)
 			campoP.setMaxSize(campo.getLongitudMax());
 		_vertical.add(campoP);
-		_camposPersonalizados.addElement(campo);
 		_valoresCamposPersonalizados.addElement(campoP);
-	}
-
-	public Vector getCampos() {
-		return _camposPersonalizados;
 	}
 
 	public Vector getValores() {
