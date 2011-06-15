@@ -5,23 +5,14 @@ import java.util.Vector;
 
 import net.rim.device.api.ui.UiApplication;
 import net.rim.device.api.ui.component.Dialog;
-import persistence.Persistence;
 import core.CampoPersonalizado;
 
 public class ListadoCamposPersonalizadosController {
 
-	private Persistence _persistencia;
 	private Vector _vectorCampos;
 	private ListadoCamposPersonalizados _screen;
 
 	public ListadoCamposPersonalizadosController() {
-		try {
-			_persistencia = new Persistence();
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
 		_screen = new ListadoCamposPersonalizados();
 		addCampos();
 	}
