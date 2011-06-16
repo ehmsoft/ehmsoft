@@ -17,6 +17,7 @@ public class NuevaPersona extends FondoNuevos {
 	public NuevaPersona(int tipo) {
 		// TODO Auto-generated constructor stub
 		super();
+		_tipo = tipo;
 		if (tipo == 1)
 			setTitle("Nuevo demandante");
 		else

@@ -1,5 +1,6 @@
 package gui;
 
+import net.rim.device.api.ui.component.Dialog;
 import persistence.Persistence;
 import core.Persona;
 
@@ -26,6 +27,7 @@ public class NuevaPersonaController {
 		} catch (Exception e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
+			Dialog.alert(e1.toString());
 		}
 		_persona = new Persona(_screen.getTipo(), _screen.getCedula(),
 				_screen.getNombre(), _screen.getTelefono(),
@@ -35,6 +37,7 @@ public class NuevaPersonaController {
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			Dialog.alert(e.toString());
 		}
 	}
 }
