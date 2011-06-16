@@ -44,6 +44,30 @@ public class ListadoActuacionesController {
 		_screen = new ListadoActuaciones();
 		addActuaciones();
 	}
+	
+	public ListadoActuacionesController(Vector fuentes) {
+		try {
+			_persistencia = new Persistence();
+		} catch (Exception e) {
+			e.printStackTrace();
+			Dialog.alert(e.toString());
+		}
+
+		_screen = new ListadoActuaciones(fuentes);
+		addActuaciones();
+	}
+	
+	public ListadoActuacionesController() {
+		try {
+			_persistencia = new Persistence();
+		} catch (Exception e) {
+			e.printStackTrace();
+			Dialog.alert(e.toString());
+		}
+
+		_screen = new ListadoActuaciones();
+		addActuaciones();
+	}
 
 	public void setVectorActuaciones(Vector actuaciones) {
 		_vectorActuaciones = actuaciones;
