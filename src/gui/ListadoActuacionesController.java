@@ -64,8 +64,7 @@ public class ListadoActuacionesController {
 	}
 
 	public Actuacion getSelected() {
-		NuevaActuacionController nuevaActuacion = new NuevaActuacionController(
-				_proceso.getId_proceso());
+		NuevaActuacionController nuevaActuacion = new NuevaActuacionController(_proceso);
 		if (String.class.isInstance(_screen.getSelected())) {
 			UiApplication.getUiApplication().pushModalScreen(
 					nuevaActuacion.getScreen());
