@@ -1,6 +1,7 @@
 package gui;
 
 import core.Persona;
+import net.rim.device.api.ui.Graphics;
 import net.rim.device.api.ui.MenuItem;
 import net.rim.device.api.ui.UiApplication;
 import net.rim.device.api.ui.component.BasicEditField;
@@ -11,7 +12,7 @@ public class VerPersona extends MainScreen {
 	/**
 	 * 
 	 */
-	private BasicEditField _txtNombre;
+	private EditableTextField _txtNombre;
 	private BasicEditField _txtId;
 	private BasicEditField _txtTelefono;
 	private BasicEditField _txtDireccion;
@@ -32,8 +33,7 @@ public class VerPersona extends MainScreen {
 		else
 			setTitle("Ver persona");
 
-		_txtNombre = new BasicEditField("Nombre: ", _persona.getNombre());
-		_txtNombre.setEditable(false);
+		_txtNombre = new EditableTextField("Nombre: ", _persona.getNombre());
 
 		_txtId = new BasicEditField("Cédula: ", _persona.getId());
 		_txtId.setEditable(false);
@@ -61,10 +61,9 @@ public class VerPersona extends MainScreen {
 	}
 
 	protected boolean navigationClick(int status, int time) {
-		if (((BasicEditField) getFieldWithFocus()).isEditable())
-			;
+		if (((EditableTextField) getFieldWithFocus()).isEditable());
 		else
-			((BasicEditField) getFieldWithFocus()).setEditable(true);
+			((EditableTextField) getFieldWithFocus()).setEditable();
 		return true;
 	}
 
