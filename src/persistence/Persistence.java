@@ -1,6 +1,7 @@
 package persistence;
 
 import java.util.Calendar;
+import java.util.Enumeration;
 import java.util.Vector;
 
 
@@ -221,8 +222,17 @@ public class Persistence implements Cargado, Guardado {
 				d.close();
 			}
 		}		
-		
-
+		long IDproceso = d.lastInsertedRowID();
+		String id_proceso = Long.toString(IDproceso);
+		Vector cp = new Vector();
+		cp= proceso.getCampos();
+		if (cp != null){
+			Enumeration e = cp.elements();
+			while (e.hasMoreElements()){
+				guardarCampoPersonalizado((CampoPersonalizado)e.nextElement(),id_proceso);
+			}
+			
+		}
 	}
 
 	public void borrarProceso(Proceso proceso) throws Exception {
