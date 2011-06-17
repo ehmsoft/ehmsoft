@@ -196,6 +196,7 @@ public class Persistence implements Cargado, Guardado {
 
 	public void guardarProceso(Proceso proceso) throws Exception {
 		Database d = null;
+		long IDproceso = -1;
 		try{
 			connMgr.prepararBD();
 			d = DatabaseFactory.open(connMgr.getDbLocation());
@@ -213,6 +214,7 @@ public class Persistence implements Cargado, Guardado {
 			stProceso.bind(9,proceso.getPrioridad());
 			stProceso.bind(10,proceso.getJuzgado().getId_juzgado());
 			stProceso.execute();
+			IDproceso = d.lastInsertedRowID();
 			stProceso.close();				
 			d.close();
 		} catch (Exception e){
@@ -222,7 +224,7 @@ public class Persistence implements Cargado, Guardado {
 				d.close();
 			}
 		}		
-		long IDproceso = d.lastInsertedRowID();
+		
 		String id_proceso = Long.toString(IDproceso);
 		Vector cp = new Vector();
 		cp= proceso.getCampos();
