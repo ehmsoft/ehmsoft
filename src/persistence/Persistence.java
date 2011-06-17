@@ -32,6 +32,7 @@ public class Persistence implements Cargado, Guardado {
 			stAcPersona1 = d.createStatement("UPDATE demandantes SET cedula = ? WHERE id_demandante = ?");
 			stAcPersona1.prepare();
 			stAcPersona1.bind(1, persona.getId());
+			stAcPersona1.bind(2, persona.getId_persona());
 			stAcPersona1.execute();
 			stAcPersona1.close();
 		}
