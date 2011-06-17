@@ -23,6 +23,27 @@ public class Persistence implements Cargado, Guardado {
 
 	public void actualizarPersona(Persona persona) throws Exception {
 		// TODO Auto-generated method stub
+		Database d = null;
+		Statement stAcPersona1;
+		try{
+			connMgr.prepararBD();
+			d = DatabaseFactory.open(connMgr.getDbLocation());
+		if(persona.getTipo()==1){
+			stAcPersona1 = d.createStatement("UPDATE demandantes SET cedula = ? WHERE id_demandante = ?");
+			stAcPersona1.prepare();
+			stAcPersona1.bind(1, persona.getId());
+			stAcPersona1.execute();
+			stAcPersona1.close();
+		}
+			
+		} catch (Exception e){
+			throw e;
+		} finally {
+			if (d != null){
+				d.close();
+			}
+		}
+		
 
 	}
 
