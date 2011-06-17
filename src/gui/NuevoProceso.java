@@ -138,6 +138,7 @@ public class NuevoProceso extends FondoNuevos {
 		add(_vertical);
 
 		addMenuItem(menuGuardar);
+		addMenuItem(menuEliminar);
 	}
 
 	private final MenuItem menuGuardar = new MenuItem("Guardar", 0, 0) {
@@ -151,6 +152,23 @@ public class NuevoProceso extends FondoNuevos {
 				Dialog.alert("Debe Seleccionar un juzgado");
 			else
 				UiApplication.getUiApplication().popScreen(getScreen());
+		}
+	};
+	
+	private final MenuItem menuEliminar = new MenuItem("Eliminar", 0, 0) {
+
+		public void run() {
+			Field field = _vertical.getFieldWithFocus();
+			try {
+				Object o = ((BasicEditField) (((VerticalFieldManager) field)
+						.getField(1))).getCookie();
+				if (o != null)
+					_vertical.delete(field);
+				else
+					throw new Exception("Este elemento no puede ser eliminado");
+			} catch (Exception e) {
+				Dialog.alert(e.toString());
+			}
 		}
 	};
 
@@ -210,10 +228,11 @@ public class NuevoProceso extends FondoNuevos {
 		public void fieldChanged(Field field, int context) {
 			NuevoCampoPersonalizadoController campo = new NuevoCampoPersonalizadoController();
 			UiApplication.getUiApplication().pushModalScreen(campo.getScreen());
+			campo.guardarCampo();
 			try {
 				addCampoPersonalizado(campo.getCampo());
 			} catch (NullPointerException e) {
-				Dialog.alert(e.toString());
+				Dialog.alert("listenerBtnCampoPersonalizado -> "+e.toString());
 			}
 		}
 	};

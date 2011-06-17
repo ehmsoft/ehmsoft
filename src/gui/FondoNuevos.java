@@ -3,6 +3,7 @@ package gui;
 import net.rim.device.api.system.Bitmap;
 import net.rim.device.api.ui.Field;
 import net.rim.device.api.ui.XYEdges;
+import net.rim.device.api.ui.component.Dialog;
 import net.rim.device.api.ui.component.SeparatorField;
 import net.rim.device.api.ui.container.MainScreen;
 import net.rim.device.api.ui.container.VerticalFieldManager;
@@ -24,9 +25,14 @@ public abstract class FondoNuevos extends MainScreen {
 						0x0099CCFF, 0x00336699, 0x00336699));
 		_vertical = new VerticalFieldManager() {
 			public void add(Field field) {
+				VerticalFieldManager interno = new VerticalFieldManager();
 				if (this.getFieldCount() != 0)
-					super.add(new SeparatorField());
-				super.add(field);
+					interno.add(new SeparatorField());
+				interno.add(field);
+				super.add(interno);
+			};
+			public void delete(Field field) {
+				super.delete(field);
 			}
 		};
 		Bitmap borderBitmap = Bitmap.getBitmapResource("rounded-border.png");
