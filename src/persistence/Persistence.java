@@ -152,19 +152,21 @@ public class Persistence implements Cargado, Guardado {
 		try{
 			connMgr.prepararBD();
 			d = DatabaseFactory.open(connMgr.getDbLocation());
-			Statement stAtributos = d.createStatement("INSERT INTO atributos VALUES( NULL,"+
-					" campo.getNombre(),"+
-					"campo.isObligatorio(),"+ 
-					"campo.getLongitudMax(),"+ 
-			"campo.getLongitudMin())");
+			String isObligatorio= campo.isObligatorio() + "";
+			Statement stAtributos = d.createStatement("INSERT INTO atributos VALUES( NULL,?,?,?,?)");
 			stAtributos.prepare();
+			stAtributos.bind(1, campo.getNombre());
+			stAtributos.bind(2, isObligatorio);
+			stAtributos.bind(3, campo.getLongitudMax());
+			stAtributos.bind(4,campo.getLongitudMin());
 			stAtributos.execute();
 			stAtributos.close();
 			long id_atributo = d.lastInsertedRowID();
-			Statement stAtributosProceso = d.createStatement("INSERT INTO atributos_proceso VALUES( id_atributo, "+
-					"id_proceso,"+
-					"campo.getValor())");
+			Statement stAtributosProceso = d.createStatement("INSERT INTO atributos_proceso VALUES( ?,?,?)");
 			stAtributosProceso.prepare();
+			stAtributosProceso.bind(1,id_atributo);
+			stAtributosProceso.bind(2,id_proceso);
+			stAtributosProceso.bind(3,campo.getValor());
 			stAtributosProceso.execute();
 			stAtributosProceso.close();	
 			
@@ -196,18 +198,21 @@ public class Persistence implements Cargado, Guardado {
 		try{
 			connMgr.prepararBD();
 			d = DatabaseFactory.open(connMgr.getDbLocation());
-			Statement stProceso = d.createStatement("INSERT INTO procesos VALUES(NULL, " +
-					"proceso.getDemandante().getId_persona()," + //ingresa el id del demandante
-					"proceso.getDemandado().getId_persona()," +
-					"proceso.getFecha()," +
-					"proceso.getRadicado()," +
-					"proceso.getRadicadoUnico()," +
-					"proceso.getEstado()," +
-					"proceso.getTipo()," +
-					"proceso.getNotas()," +
-					"proceso.getPrioridad()," +
-					"proceso.getJuzgado().getId_juzgado()," +
-					"'Categoria por defecto')"); //como obtener id_categoria	
+			String fecha = proceso.getFecha().get(Calendar.YEAR)+"-"+proceso.getFecha().get(Calendar.MONTH)+"-"+proceso.getFecha().get(Calendar.DAY_OF_MONTH);
+			Statement stProceso = d.createStatement("INSERT INTO procesos VALUES(NULL,?,?,?,?,?,?,?,?,?,?," + "'Categoria por defecto')"); 	
+			stProceso.prepare();
+			stProceso.bind(1,proceso.getDemandante().getId_persona());   //ingresa el id del demandante
+			stProceso.bind(2,proceso.getDemandado().getId_persona());
+			stProceso.bind(3,fecha);
+			stProceso.bind(4,proceso.getRadicado());
+			stProceso.bind(5,proceso.getRadicadoUnico());
+			stProceso.bind(6,proceso.getEstado());
+			stProceso.bind(7,proceso.getTipo());
+			stProceso.bind(8,proceso.getNotas());
+			stProceso.bind(9,proceso.getPrioridad());
+			stProceso.bind(10,proceso.getJuzgado().getId_juzgado());
+			stProceso.execute();
+			stProceso.close();				
 			d.close();
 		} catch (Exception e){
 			throw e;
