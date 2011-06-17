@@ -162,8 +162,10 @@ public class NuevoProceso extends FondoNuevos {
 			try {
 				Object o = ((BasicEditField) (((VerticalFieldManager) field)
 						.getField(1))).getCookie();
-				if (o != null && CampoPersonalizado.class.isInstance(o))
+				if (o != null && CampoPersonalizado.class.isInstance(o)) {
 					_vertical.delete(field);
+					_valoresCamposPersonalizados.removeElement(field);
+				}
 				else
 					throw new Exception();
 			}catch (Exception e) {
