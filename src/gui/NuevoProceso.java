@@ -162,12 +162,12 @@ public class NuevoProceso extends FondoNuevos {
 			try {
 				Object o = ((BasicEditField) (((VerticalFieldManager) field)
 						.getField(1))).getCookie();
-				if (o != null)
+				if (o != null && CampoPersonalizado.class.isInstance(o))
 					_vertical.delete(field);
 				else
-					throw new Exception("Este elemento no puede ser eliminado");
-			} catch (Exception e) {
-				Dialog.alert(e.toString());
+					throw new Exception();
+			}catch (Exception e) {
+				Dialog.alert("El elemento no puede ser eliminado");
 			}
 		}
 	};
