@@ -94,7 +94,7 @@ public class NuevoProceso extends FondoNuevos {
 		_txtRadicadoUnico = new BasicEditField(BasicEditField.NO_NEWLINE);
 		_txtRadicadoUnico.setLabel("Radicado unico: ");
 		_vertical.add(_txtRadicadoUnico);
-		
+
 		_txtTipo = new BasicEditField(BasicEditField.NO_NEWLINE);
 		_txtTipo.setLabel("Tipo: ");
 		_vertical.add(_txtTipo);
@@ -154,7 +154,7 @@ public class NuevoProceso extends FondoNuevos {
 				UiApplication.getUiApplication().popScreen(getScreen());
 		}
 	};
-	
+
 	private final MenuItem menuEliminar = new MenuItem("Eliminar", 0, 0) {
 
 		public void run() {
@@ -232,7 +232,7 @@ public class NuevoProceso extends FondoNuevos {
 			try {
 				addCampoPersonalizado(campo.getCampo());
 			} catch (NullPointerException e) {
-				Dialog.alert("listenerBtnCampoPersonalizado -> "+e.toString());
+				Dialog.alert("listenerBtnCampoPersonalizado -> " + e.toString());
 			}
 		}
 	};
@@ -245,6 +245,21 @@ public class NuevoProceso extends FondoNuevos {
 			campoP.setMaxSize(campo.getLongitudMax());
 		_vertical.add(campoP);
 		_valoresCamposPersonalizados.addElement(campoP);
+	}
+
+	public void setDemandante(Persona demandante) {
+		_btnDemandante.setLabel(demandante.getNombre());
+		_demandante = demandante;
+	}
+
+	public void setDemandado(Persona demandado) {
+		_btnDemandado.setLabel(demandado.getNombre());
+		_demandado = demandado;
+	}
+
+	public void setJuzgado(Juzgado juzgado) {
+		_btnJuzgado.setLabel(juzgado.getNombre());
+		_juzgado = juzgado;
 	}
 
 	public Vector getValores() {
