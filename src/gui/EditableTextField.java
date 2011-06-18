@@ -36,6 +36,13 @@ public class EditableTextField extends HorizontalFieldManager {
 		this.add(_txtField);
 	}
 	
+	protected boolean navigationClick(int status, int time) {
+		if (((EditableTextField) getFieldWithFocus()).isEditable());
+		else
+			((EditableTextField) getFieldWithFocus()).setEditable();
+		return true;
+	}
+	
 	public void setLabel(String label) {
 		_label.setText(label);
 	}

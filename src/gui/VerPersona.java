@@ -1,23 +1,18 @@
 package gui;
 
 import core.Persona;
-import net.rim.device.api.ui.Graphics;
 import net.rim.device.api.ui.MenuItem;
 import net.rim.device.api.ui.UiApplication;
-import net.rim.device.api.ui.component.BasicEditField;
 import net.rim.device.api.ui.container.MainScreen;
 
 public class VerPersona extends MainScreen {
 
-	/**
-	 * 
-	 */
 	private EditableTextField _txtNombre;
-	private BasicEditField _txtId;
-	private BasicEditField _txtTelefono;
-	private BasicEditField _txtDireccion;
-	private BasicEditField _txtCorreo;
-	private BasicEditField _txtNotas;
+	private EditableTextField _txtId;
+	private EditableTextField _txtTelefono;
+	private EditableTextField _txtDireccion;
+	private EditableTextField _txtCorreo;
+	private EditableTextField _txtNotas;
 
 	private Persona _persona;
 
@@ -35,21 +30,16 @@ public class VerPersona extends MainScreen {
 
 		_txtNombre = new EditableTextField("Nombre: ", _persona.getNombre());
 
-		_txtId = new BasicEditField("Cédula: ", _persona.getId());
-		_txtId.setEditable(false);
+		_txtId = new EditableTextField("Cédula: ", _persona.getId());
 
-		_txtTelefono = new BasicEditField("Teléfono: ", _persona.getTelefono());
-		_txtTelefono.setEditable(false);
+		_txtTelefono = new EditableTextField("Teléfono: ", _persona.getTelefono());
 
-		_txtDireccion = new BasicEditField("Dirección: ",
+		_txtDireccion = new EditableTextField("Dirección: ",
 				_persona.getDireccion());
-		_txtDireccion.setEditable(false);
 
-		_txtCorreo = new BasicEditField("Correo: ", _persona.getCorreo());
-		_txtCorreo.setEditable(false);
+		_txtCorreo = new EditableTextField("Correo: ", _persona.getCorreo());
 
-		_txtNotas = new BasicEditField("Notas: ", _persona.getNotas());
-		_txtNotas.setEditable(false);
+		_txtNotas = new EditableTextField("Notas: ", _persona.getNotas());
 
 		add(_txtNombre);
 		add(_txtId);
@@ -58,13 +48,6 @@ public class VerPersona extends MainScreen {
 		add(_txtCorreo);
 		add(_txtNotas);
 		addMenuItem(menuGuardar);
-	}
-
-	protected boolean navigationClick(int status, int time) {
-		if (((EditableTextField) getFieldWithFocus()).isEditable());
-		else
-			((EditableTextField) getFieldWithFocus()).setEditable();
-		return true;
 	}
 
 	private final MenuItem menuGuardar = new MenuItem("Guardar", 0, 0) {
