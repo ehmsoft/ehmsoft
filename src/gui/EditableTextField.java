@@ -36,11 +36,18 @@ public class EditableTextField extends HorizontalFieldManager {
 		this.add(_txtField);
 	}
 	
-	protected boolean navigationClick(int status, int time) {
-		if (((EditableTextField) getFieldWithFocus()).isEditable());
-		else
-			((EditableTextField) getFieldWithFocus()).setEditable();
-		return true;
+	public EditableTextField(String label, String initialValue, long style) {
+		_txtField = new BasicEditField(style) {
+			protected void paint(Graphics g) {
+				g.setColor(0x00CDC9C9);
+				super.paint(g);
+			}
+		};
+		_txtField.setText(initialValue);
+		_txtField.setEditable(false);
+		_label = new LabelField(label);
+		this.add(_label);
+		this.add(_txtField);
 	}
 	
 	public void setLabel(String label) {
@@ -56,9 +63,10 @@ public class EditableTextField extends HorizontalFieldManager {
 	}
 	
 	public void setEditable() {
+		long style = _txtField.getStyle();
 		String text = _txtField.getText();
 		this.delete(_txtField);
-		_txtField = new BasicEditField();
+		_txtField = new BasicEditField(style);
 		_txtField.setText(text);
 		_txtField.setEditable(true);
 		this.add(_txtField);

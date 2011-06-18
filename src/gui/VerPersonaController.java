@@ -6,9 +6,11 @@ import core.Persona;
 
 public class VerPersonaController {
 	private VerPersona _screen;
+	private Persona _persona;
 
 	public VerPersonaController(Persona persona) {
 		_screen = new VerPersona(persona);
+		_persona = persona;
 	}
 
 	public VerPersona getScreen() {
@@ -34,10 +36,16 @@ public class VerPersonaController {
 			if (persona.getNotas() != _screen.getNotas())
 				cambio = true;
 
-			if (cambio)
-				persistence.actualizarPersona(persona);
+			if (cambio) {
+				_persona = new Persona(persona.getTipo(), _screen.getId(), _screen.getNombre(), _screen.getTelefono(), _screen.getDireccion(), _screen.getCorreo(), _screen.getNotas(), persona.getId_persona());
+				persistence.actualizarPersona(_persona);
+			}
 		} catch (Exception e) {
 			Dialog.alert("actualizarPersona -> " + e.toString());
 		}
+	}
+	
+	public Persona getPersona() {
+		return _persona;
 	}
 }

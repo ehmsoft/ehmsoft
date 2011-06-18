@@ -3,6 +3,9 @@ package gui;
 import java.util.Enumeration;
 import java.util.Vector;
 
+import net.rim.device.api.ui.Field;
+import net.rim.device.api.ui.MenuItem;
+import net.rim.device.api.ui.UiApplication;
 import net.rim.device.api.ui.component.DateField;
 import net.rim.device.api.ui.component.NumericChoiceField;
 import net.rim.device.api.ui.component.ObjectChoiceField;
@@ -15,9 +18,6 @@ import core.Proceso;
 
 public class VerProceso extends MainScreen {
 
-	/**
-	 * 
-	 */
 	EditableTextField _txtDemandante;
 	EditableTextField _txtDemandado;
 	DateField _dfFecha;
@@ -68,13 +68,7 @@ public class VerProceso extends MainScreen {
 		_txtRadicadoUnico = new EditableTextField("Radicado unico: ", _proceso.getRadicadoUnico());
 		add(_txtRadicadoUnico);
 		
-		Enumeration e = _actuaciones.elements();
-		Object[] elements = new Object[_actuaciones.size()];
-		for(int i = 0; i < elements.length; i++) {
-			elements[i] = ((Actuacion)e.nextElement()).getDescripcion();
-		}
-		
-		_ofActuaciones = new ObjectChoiceField("Actuaciones: ", elements);	
+		_ofActuaciones = new ObjectChoiceField("Actuaciones: ", transformActuaciones());	
 		add(_ofActuaciones);
 		
 		_txtEstado = new EditableTextField("Estado: ", _proceso.getEstado());
@@ -93,8 +87,23 @@ public class VerProceso extends MainScreen {
 		_nfPrioridad.setSelectedValue(_proceso.getPrioridad());
 		add(_nfPrioridad);
 		
-		e = _camposPersonalizados.elements();
 		_txtCampos = new Vector();
+		
+		addCampos();
+		addMenuItem(menuEditar);
+	}
+	
+	private Object[] transformActuaciones() {
+		Enumeration e = _actuaciones.elements();
+		Object[] elements = new Object[_actuaciones.size()];
+		for(int i = 0; i < elements.length; i++) {
+			elements[i] = ((Actuacion)e.nextElement()).getDescripcion();
+		}
+		return elements;
+	}
+	
+	private void addCampos() {
+		Enumeration e = _camposPersonalizados.elements();
 		
 		while(e.hasMoreElements()) {
 			CampoPersonalizado c = (CampoPersonalizado)e.nextElement();
@@ -104,4 +113,25 @@ public class VerProceso extends MainScreen {
 			add(etf);
 		}
 	}
+	
+	private final MenuItem menuEditar = new MenuItem("Editar", 0, 0) {
+
+		public void run() {
+			Field f = getFieldWithFocus();
+			if(f.equals(_txtDemandante)) {
+				VerPersonaController verPersona = new VerPersonaController(_demandante);
+				UiApplication.getUiApplication().pushModalScreen(verPersona.getScreen());
+				verPersona.actualizarPersona();
+				_demandante = verPersona.getPersona();
+				_txtDemandante.setText(_demandante.getNombre());
+			}
+			if(f.equals(_txtDemandado)) {
+				VerPersonaController verPersona = new VerPersonaController(_demandado);
+				UiApplication.getUiApplication().pushModalScreen(verPersona.getScreen());
+				verPersona.actualizarPersona();
+				_demandado = verPersona.getPersona();
+				_txtDemandado.setText(_demandado.getNombre());
+			}
+		}
+	};
 }
