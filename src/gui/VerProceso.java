@@ -1,5 +1,7 @@
 package gui;
 
+import java.util.Calendar;
+import java.util.Date;
 import java.util.Enumeration;
 import java.util.Vector;
 
@@ -210,4 +212,62 @@ public class VerProceso extends MainScreen {
 			}
 		}
 	};
+
+	public Persona getDemandante() {
+		return _demandante;
+	}
+
+	public Persona getDemandado() {
+		return _demandado;
+	}
+
+	public Calendar getFecha() {
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTime(new Date(_dfFecha.getDate()));
+		return calendar;
+	}
+
+	public Juzgado getJuzgado() {
+		return _juzgado;
+	}
+
+	public String getRadicado() {
+		return _txtRadicado.getText();
+	}
+
+	public String getRadicadoUnico() {
+		return _txtRadicadoUnico.getText();
+	}
+
+	public Vector getActuaciones() {
+		return _actuaciones;
+	}
+
+	public String getEstado() {
+		return _txtEstado.getText();
+	}
+
+	public String getCategoria() {
+		return _txtCategoria.getText();
+	}
+
+	public String getTipo() {
+		return _txtTipo.getText();
+	}
+
+	public String getNotas() {
+		return _txtNotas.getText();
+	}
+
+	public int getPrioridad() {
+		return _nfPrioridad.getSelectedValue();
+	}
+
+	public Proceso getProceso() {
+		return _proceso;
+	}
+
+	public Vector getCamposPersonalizados() {
+		return _camposPersonalizados;
+	}
 }
