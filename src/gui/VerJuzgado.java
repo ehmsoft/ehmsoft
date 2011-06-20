@@ -33,12 +33,24 @@ public class VerJuzgado extends MainScreen {
 		add(_txtTelefono);
 		add(_txtTipo);
 		addMenuItem(menuGuardar);
+		addMenuItem(menuEditar);
 	}
 	
 	private final MenuItem menuGuardar = new MenuItem("Guardar", 0, 0) {
 
 		public void run() {
 			UiApplication.getUiApplication().popScreen(getScreen());
+		}
+	};
+	
+	private final MenuItem menuEditar = new MenuItem("Editar", 0, 0) {
+
+		public void run() {
+			EditableTextField f = (EditableTextField) getFieldWithFocus();
+			if (!f.isEditable()) {
+				f.setEditable();
+				f.setFocus();
+			}
 		}
 	};
 	

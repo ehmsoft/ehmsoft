@@ -21,23 +21,22 @@ public class VerPersonaController {
 		try {
 			Persistence persistence = new Persistence();
 			boolean cambio = false;
-			Persona persona = _screen.getPersona();
 
-			if (persona.getNombre() != _screen.getNombre())
+			if (_persona.getNombre() != _screen.getNombre())
 				cambio = true;
-			if (persona.getId() != _screen.getId())
+			if (_persona.getId() != _screen.getId())
 				cambio = true;
-			if (persona.getTelefono() != _screen.getTelefono())
+			if (_persona.getTelefono() != _screen.getTelefono())
 				cambio = true;
-			if (persona.getDireccion() != _screen.getDireccion())
+			if (_persona.getDireccion() != _screen.getDireccion())
 				cambio = true;
-			if (persona.getCorreo() != _screen.getCorreo())
+			if (_persona.getCorreo() != _screen.getCorreo())
 				cambio = true;
-			if (persona.getNotas() != _screen.getNotas())
+			if (_persona.getNotas() != _screen.getNotas())
 				cambio = true;
 
 			if (cambio) {
-				_persona = new Persona(persona.getTipo(), _screen.getId(), _screen.getNombre(), _screen.getTelefono(), _screen.getDireccion(), _screen.getCorreo(), _screen.getNotas(), persona.getId_persona());
+				_persona = new Persona(_persona.getTipo(), _screen.getId(), _screen.getNombre(), _screen.getTelefono(), _screen.getDireccion(), _screen.getCorreo(), _screen.getNotas(), _persona.getId_persona());
 				persistence.actualizarPersona(_persona);
 			}
 		} catch (Exception e) {

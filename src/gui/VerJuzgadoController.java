@@ -6,9 +6,11 @@ import core.Juzgado;
 
 public class VerJuzgadoController {
 	private VerJuzgado _screen;
+	private Juzgado _juzgado;
 
 	public VerJuzgadoController(Juzgado juzgado) {
 		_screen = new VerJuzgado(juzgado);
+		_juzgado = juzgado;
 	}
 
 	public VerJuzgado getScreen() {
@@ -32,10 +34,16 @@ public class VerJuzgadoController {
 			if (juzgado.getTipo() != _screen.getTipo())
 				cambio = true;
 
-			if (cambio)
-				persistence.actualizarJuzgado(juzgado);
+			if (cambio) {
+				_juzgado = new Juzgado(_screen.getNombre(), _screen.getCiudad(), _screen.getDireccion(), _screen.getTelefono(), _screen.getTipo());
+				persistence.actualizarJuzgado(_juzgado);
+			}
 		} catch (Exception e) {
 			Dialog.alert("actualizarJuzgado -> " + e.toString());
 		}
+	}
+	
+	public Juzgado getJuzgado() {
+		return _juzgado;
 	}
 }

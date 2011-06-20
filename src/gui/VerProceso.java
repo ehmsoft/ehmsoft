@@ -60,6 +60,7 @@ public class VerProceso extends MainScreen {
 		add(_txtJuzgado);
 		
 		_dfFecha = new DateField("Fecha: ", _proceso.getFecha().getTime().getTime(), DateField.DATE);
+		_dfFecha.setEditable(false);
 		add(_dfFecha);
 		
 		_txtRadicado = new EditableTextField("Radicado: ", _proceso.getRadicado());
@@ -124,6 +125,7 @@ public class VerProceso extends MainScreen {
 				verPersona.actualizarPersona();
 				_demandante = verPersona.getPersona();
 				_txtDemandante.setText(_demandante.getNombre());
+				_txtDemandante.setFocus();
 			}
 			if(f.equals(_txtDemandado)) {
 				VerPersonaController verPersona = new VerPersonaController(_demandado);
@@ -131,6 +133,31 @@ public class VerProceso extends MainScreen {
 				verPersona.actualizarPersona();
 				_demandado = verPersona.getPersona();
 				_txtDemandado.setText(_demandado.getNombre());
+				_txtDemandado.setFocus();
+			}
+			
+			if(f.equals(_txtJuzgado)) {
+				VerJuzgadoController verJuzgado = new VerJuzgadoController(_juzgado);
+				UiApplication.getUiApplication().pushModalScreen(verJuzgado.getScreen());
+				verJuzgado.actualizarJuzgado();
+				_juzgado = verJuzgado.getJuzgado();
+				_txtJuzgado.setText(_juzgado.getNombre());
+				_txtJuzgado.setFocus();
+			}
+			
+			if(f.equals(_dfFecha)) {
+				_dfFecha.setEditable(true);
+				_dfFecha.setFocus();
+			}
+			
+			if(f.equals(_txtRadicado)) {
+				_txtRadicado.setEditable();
+				_txtRadicado.setFocus();
+			}
+			
+			if(f.equals(_txtRadicadoUnico)) {
+				_txtRadicadoUnico.setEditable();
+				_txtRadicadoUnico.setFocus();
 			}
 		}
 	};
