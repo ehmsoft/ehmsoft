@@ -1,6 +1,7 @@
 package gui;
 
 import core.CampoPersonalizado;
+import net.rim.device.api.ui.Field;
 import net.rim.device.api.ui.MenuItem;
 import net.rim.device.api.ui.UiApplication;
 import net.rim.device.api.ui.component.BasicEditField;
@@ -29,6 +30,7 @@ public class VerCampoPersonalizado extends MainScreen {
 		_txtValor = new EditableTextField("Valor: ", _campoPersonalizado.getValor());
 
 		_cfObligatorio = new CheckboxField(" Obligatorio", _campoPersonalizado.isObligatorio().booleanValue());
+		_cfObligatorio.setEditable(false);
 
 		_txtLongMax = new EditableTextField(BasicEditField.FILTER_INTEGER);
 		_txtLongMax.setLabel("Longitud máxima");
@@ -44,12 +46,41 @@ public class VerCampoPersonalizado extends MainScreen {
 		add(_txtLongMax);
 		add(_txtLongMin);
 		addMenuItem(menuGuardar);
+		addMenuItem(menuEditar);
 	}
 
 	private final MenuItem menuGuardar = new MenuItem("Guardar", 0, 0) {
 
 		public void run() {
 			UiApplication.getUiApplication().popScreen(getScreen());
+		}
+	};
+	
+	private final MenuItem menuEditar = new MenuItem("Editar", 0, 0) {
+
+		public void run() {
+			Field f = getFieldWithFocus();
+			
+			if(f.equals(_txtNombre)) {
+				_txtNombre.setEditable();
+				_txtNombre.setFocus();
+			}
+			if(f.equals(_txtValor)) {
+				_txtValor.setEditable();
+				_txtValor.setFocus();
+			}
+			if(f.equals(_cfObligatorio)) {
+				_cfObligatorio.setEditable(true);
+				_cfObligatorio.setFocus();
+			}
+			if(f.equals(_txtLongMax)) {
+				_txtLongMax.setEditable();
+				_txtLongMin.setFocus();
+			}
+			if(f.equals(_txtLongMin)) {
+				_txtLongMax.setEditable();
+				_txtLongMin.setFocus();
+			}
 		}
 	};
 

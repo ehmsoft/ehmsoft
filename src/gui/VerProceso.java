@@ -7,6 +7,7 @@ import net.rim.device.api.ui.Field;
 import net.rim.device.api.ui.MenuItem;
 import net.rim.device.api.ui.UiApplication;
 import net.rim.device.api.ui.component.DateField;
+import net.rim.device.api.ui.component.Dialog;
 import net.rim.device.api.ui.component.NumericChoiceField;
 import net.rim.device.api.ui.component.ObjectChoiceField;
 import net.rim.device.api.ui.container.MainScreen;
@@ -194,6 +195,18 @@ public class VerProceso extends MainScreen {
 			if(f.equals(_nfPrioridad)) {
 				_nfPrioridad.setEditable(true);
 				_nfPrioridad.setFocus();
+			}
+			try{
+				if(CampoPersonalizado.class.isInstance(f.getCookie())) {
+					VerCampoPersonalizadoController verCampo = new VerCampoPersonalizadoController((CampoPersonalizado)f.getCookie());
+					UiApplication.getUiApplication().pushModalScreen(verCampo.getScreen());
+					verCampo.actualizarCampoPersonalizado();
+					((EditableTextField)f).setText(verCampo.getCampo().getValor());
+					((EditableTextField)f).setLabel(verCampo.getCampo().getNombre()+": ");
+					((EditableTextField)f).setCookie(verCampo.getCampo());
+				}
+			}catch(Exception e) {
+				Dialog.alert("Edit Campo -> "+e.toString());
 			}
 		}
 	};
