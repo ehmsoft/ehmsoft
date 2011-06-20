@@ -86,6 +86,7 @@ public class VerProceso extends MainScreen {
 		
 		_nfPrioridad = new NumericChoiceField("Prioridad: ", 0, 10, 1);
 		_nfPrioridad.setSelectedValue(_proceso.getPrioridad());
+		_nfPrioridad.setEditable(false);
 		add(_nfPrioridad);
 		
 		_txtCampos = new Vector();
@@ -168,6 +169,31 @@ public class VerProceso extends MainScreen {
 				_actuaciones.setElementAt(verAtuacion.getActuacion(),_actuaciones.indexOf(actuacion));
 				_ofActuaciones.setChoices(transformActuaciones());
 				_ofActuaciones.setFocus();
+			}
+			
+			if(f.equals(_txtEstado)) {
+				_txtEstado.setEditable();
+				_txtEstado.setFocus();
+			}
+			
+			if(f.equals(_txtCategoria)) {
+				_txtCategoria.setEditable();
+				_txtCategoria.setFocus();
+			}
+			
+			if(f.equals(_txtTipo)) {
+				_txtTipo.setEditable();
+				_txtTipo.setFocus();
+			}
+			
+			if(f.equals(_txtNotas)) {
+				_txtNotas.setEditable();
+				_txtNotas.setFocus();
+			}
+			
+			if(f.equals(_nfPrioridad)) {
+				_nfPrioridad.setEditable(true);
+				_nfPrioridad.setFocus();
 			}
 		}
 	};

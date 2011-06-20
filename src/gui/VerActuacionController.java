@@ -5,7 +5,6 @@ import java.util.Calendar;
 import net.rim.device.api.ui.component.Dialog;
 import persistence.Persistence;
 import core.Actuacion;
-import core.Juzgado;
 
 public class VerActuacionController {
 	private VerActuacion _screen;
