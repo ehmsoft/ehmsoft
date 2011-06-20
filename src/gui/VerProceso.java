@@ -98,7 +98,7 @@ public class VerProceso extends MainScreen {
 		Enumeration e = _actuaciones.elements();
 		Object[] elements = new Object[_actuaciones.size()];
 		for(int i = 0; i < elements.length; i++) {
-			elements[i] = ((Actuacion)e.nextElement()).getDescripcion();
+			elements[i] = ((Actuacion)e.nextElement());
 		}
 		return elements;
 	}
@@ -158,6 +158,16 @@ public class VerProceso extends MainScreen {
 			if(f.equals(_txtRadicadoUnico)) {
 				_txtRadicadoUnico.setEditable();
 				_txtRadicadoUnico.setFocus();
+			}
+			
+			if(f.equals(_ofActuaciones)) {
+				Actuacion actuacion = (Actuacion)_ofActuaciones.getChoice(_ofActuaciones.getSelectedIndex());
+				VerActuacionController verAtuacion = new VerActuacionController(actuacion);
+				UiApplication.getUiApplication().pushModalScreen(verAtuacion.getScreen());
+				verAtuacion.actualizarActuacion();
+				_actuaciones.setElementAt(verAtuacion.getActuacion(),_actuaciones.indexOf(actuacion));
+				_ofActuaciones.setChoices(transformActuaciones());
+				_ofActuaciones.setFocus();
 			}
 		}
 	};
