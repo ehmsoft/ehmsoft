@@ -267,7 +267,7 @@ public class VerProceso extends MainScreen {
 		return _proceso;
 	}
 
-	public Vector getCamposPersonalizados() {
+	public Vector getCampos() {
 		return _camposPersonalizados;
 	}
 }
