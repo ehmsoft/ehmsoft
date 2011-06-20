@@ -22,17 +22,17 @@ public class VerPersonaController {
 			Persistence persistence = new Persistence();
 			boolean cambio = false;
 
-			if (_persona.getNombre() != _screen.getNombre())
+			if (!_persona.getNombre().equals(_screen.getNombre()))
 				cambio = true;
-			if (_persona.getId() != _screen.getId())
+			if (!_persona.getId().equals(_screen.getId()))
 				cambio = true;
-			if (_persona.getTelefono() != _screen.getTelefono())
+			if (!_persona.getTelefono().equals(_screen.getTelefono()))
 				cambio = true;
-			if (_persona.getDireccion() != _screen.getDireccion())
+			if (!_persona.getDireccion().equals(_screen.getDireccion()))
 				cambio = true;
-			if (_persona.getCorreo() != _screen.getCorreo())
+			if (!_persona.getCorreo().equals( _screen.getCorreo()))
 				cambio = true;
-			if (_persona.getNotas() != _screen.getNotas())
+			if (!_persona.getNotas().equals(_screen.getNotas()))
 				cambio = true;
 
 			if (cambio) {

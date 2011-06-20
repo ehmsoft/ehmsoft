@@ -23,15 +23,15 @@ public class VerJuzgadoController {
 			boolean cambio = false;
 			Juzgado juzgado = _screen.getJuzgado();
 
-			if (juzgado.getNombre() != _screen.getNombre())
+			if (!juzgado.getNombre().equals(_screen.getNombre()))
 				cambio = true;
-			if (juzgado.getCiudad() != _screen.getCiudad())
+			if (!juzgado.getCiudad().equals(_screen.getCiudad()))
 				cambio = true;
-			if (juzgado.getTelefono() != _screen.getTelefono())
+			if (!juzgado.getTelefono().equals(_screen.getTelefono()))
 				cambio = true;
-			if (juzgado.getDireccion() != _screen.getDireccion())
+			if (!juzgado.getDireccion().equals(_screen.getDireccion()))
 				cambio = true;
-			if (juzgado.getTipo() != _screen.getTipo())
+			if (!juzgado.getTipo().equals(_screen.getTipo()))
 				cambio = true;
 
 			if (cambio) {
