@@ -169,7 +169,7 @@ public class Persistence implements Cargado, Guardado {
 			d = DatabaseFactory.open(connMgr.getDbLocation());
 			String fecha = actuacion.getFecha().get(Calendar.YEAR)+"-"+actuacion.getFecha().get(Calendar.MONTH)+"-"+actuacion.getFecha().get(Calendar.DAY_OF_MONTH);
 			String fechaProxima = actuacion.getFechaProxima().get(Calendar.YEAR)+"-"+actuacion.getFechaProxima().get(Calendar.MONTH)+"-"+actuacion.getFechaProxima().get(Calendar.DAY_OF_MONTH);
-			stAcActuacion = d.createStatement("UPDATE actuaciones SET juzgado = ?,"+" fecha_creacion = ?,"+" fecha_proxima = ?,"+" descripcion = ? WHERE id_actuacion = ?");
+			stAcActuacion = d.createStatement("UPDATE actuaciones SET juzgado = ?,"+" fecha_creacion = datetime(?),"+" fecha_proxima = datetime(?),"+" descripcion = ? WHERE id_actuacion = ?");
 			stAcActuacion.prepare();
 			stAcActuacion.bind(1, actuacion.getJuzgado().getId_juzgado());
 			stAcActuacion.bind(2, fecha);
@@ -195,7 +195,7 @@ public class Persistence implements Cargado, Guardado {
 			d = DatabaseFactory.open(connMgr.getDbLocation());
 			String fecha = actuacion.getFecha().get(Calendar.YEAR)+"-"+actuacion.getFecha().get(Calendar.MONTH + 1)+"-"+actuacion.getFecha().get(Calendar.DAY_OF_MONTH)+" "+actuacion.getFecha().get(Calendar.HOUR_OF_DAY)+":"+actuacion.getFecha().get(Calendar.MINUTE);
 			String fechaProxima = actuacion.getFechaProxima().get(Calendar.YEAR)+"-"+actuacion.getFechaProxima().get(Calendar.MONTH + 1)+"-"+actuacion.getFechaProxima().get(Calendar.DAY_OF_MONTH)+" "+actuacion.getFechaProxima().get(Calendar.HOUR_OF_DAY)+":"+actuacion.getFechaProxima().get(Calendar.MINUTE);
-			Statement stActuacion = d.createStatement("INSERT INTO actuaciones VALUES( NULL,?,?,?,?,?)");
+			Statement stActuacion = d.createStatement("INSERT INTO actuaciones VALUES( NULL,?,?,datetime(?),datetime(?),?)");
 			stActuacion.prepare();
 			stActuacion.bind(1,Integer.parseInt(id_proceso));
 			stActuacion.bind(2,actuacion.getJuzgado().getId_juzgado());
