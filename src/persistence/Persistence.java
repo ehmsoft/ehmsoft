@@ -678,6 +678,10 @@ public class Persistence implements Cargado, Guardado {
 		calendar_return.set(Calendar.YEAR, Integer.parseInt(fecha.substring(0, 4)));
 		calendar_return.set(Calendar.MONTH, Integer.parseInt(fecha.substring(5, 7)) - 1);
 		calendar_return.set(Calendar.DAY_OF_MONTH, Integer.parseInt(fecha.substring(8, 10)));
+		if (fecha.length() > 10){
+			calendar_return.set(Calendar.HOUR_OF_DAY, Integer.parseInt(fecha.substring(11, 13)));
+			calendar_return.set(Calendar.MINUTE, Integer.parseInt(fecha.substring(14, 16)));
+		}
 		return calendar_return;
 	}
 
