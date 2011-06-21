@@ -108,7 +108,7 @@ public class Persistence implements Cargado, Guardado {
 		try{
 			connMgr.prepararBD();
 			d = DatabaseFactory.open(connMgr.getDbLocation());
-			stAcPersona1 = d.createStatement("UPDATE juzgados SET nombre = ? WHERE id_juzgado = ?");
+			stAcPersona1 = d.createStatement("UPDATE juzgados SET nombre = ?,"+" ciudad = ?,"+" telefono = ?,"+" direccion=?,"+" tipo = ? WHERE id_juzgado = ?");
 			stAcPersona1.prepare();
 			stAcPersona1.bind(1, juzgado.getNombre());
 			stAcPersona1.bind(2, juzgado.getId_juzgado());
