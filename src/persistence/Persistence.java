@@ -29,24 +29,27 @@ public class Persistence implements Cargado, Guardado {
 			connMgr.prepararBD();
 			d = DatabaseFactory.open(connMgr.getDbLocation());
 		if(persona.getTipo()==1){
-			stAcPersona1 = d.createStatement("UPDATE demandantes SET cedula = ?,"+" nombre = ?,"+"telefono = ?,"+" direccion = ?,"+" correo= ?,"+" notas= ? WHERE id_demandante = ?");
+			stAcPersona1 = d.createStatement("UPDATE demandantes SET cedula = ?,"+" nombre = ?,"+" telefono = ?,"+" direccion = ?,"+"correo= ?,"+"notas = ? WHERE id_demandante = ?");
 		}
-		else if(persona.getTipo()==2){
-				stAcPersona1 = d.createStatement("UPDATE demandados SET cedula = ?,"+" nombre = ?,"+"telefono = ?,"+" direccion = ?,"+" correo= ?,"+" notas= ? WHERE id_demandante = ?");
+			else if(persona.getTipo()==2){
+				stAcPersona1 = d.createStatement("UPDATE demandados SET cedula = ?,"+" nombre = ?,"+" telefono = ?,"+" direccion = ?,"+"correo= ?,"+" notas = ? WHERE id_demandado = ?");
 			}
-		else{
+			else{
 				throw new Exception("Tipo persona invalido");
 			}
-		stAcPersona1.prepare();
-		stAcPersona1.bind(1, persona.getId());
-		stAcPersona1.bind(2, persona.getNombre());
-		stAcPersona1.bind(3, persona.getTelefono());
-		stAcPersona1.bind(4, persona.getDireccion());
-		stAcPersona1.bind(5, persona.getCorreo());
-		stAcPersona1.bind(6, persona.getNotas());
-		stAcPersona1.bind(7, persona.getId_persona());
-		stAcPersona1.execute();
-		stAcPersona1.close();
+			
+			stAcPersona1.prepare();
+			stAcPersona1.bind(1, persona.getId());
+			stAcPersona1.bind(2, persona.getNombre());
+			stAcPersona1.bind(3, persona.getTelefono());
+			stAcPersona1.bind(4, persona.getDireccion());
+			stAcPersona1.bind(5, persona.getCorreo());
+			stAcPersona1.bind(6, persona.getNotas());
+			stAcPersona1.bind(7, persona.getId_persona());
+			stAcPersona1.execute();
+			stAcPersona1.close();
+		
+			
 		} catch (Exception e){
 			throw e;
 		} finally {
@@ -54,8 +57,6 @@ public class Persistence implements Cargado, Guardado {
 				d.close();
 			}
 		}
-		
-
 	}
 
 	public void guardarPersona(Persona persona) throws Exception {
@@ -102,6 +103,25 @@ public class Persistence implements Cargado, Guardado {
 	}
 
 	public void actualizarJuzgado(Juzgado juzgado) throws Exception {
+		Database d = null;
+		Statement stAcPersona1;
+		try{
+			connMgr.prepararBD();
+			d = DatabaseFactory.open(connMgr.getDbLocation());
+			stAcPersona1 = d.createStatement("UPDATE juzgados SET nombre = ? WHERE id_juzgado = ?");
+			stAcPersona1.prepare();
+			stAcPersona1.bind(1, juzgado.getNombre());
+			stAcPersona1.bind(2, juzgado.getId_juzgado());
+			stAcPersona1.execute();
+			stAcPersona1.close();
+			
+		} catch (Exception e){
+			throw e;
+		} finally {
+			if (d != null){
+				d.close();
+			}
+		}
 		
 
 	}
