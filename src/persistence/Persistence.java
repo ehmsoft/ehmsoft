@@ -104,16 +104,20 @@ public class Persistence implements Cargado, Guardado {
 
 	public void actualizarJuzgado(Juzgado juzgado) throws Exception {
 		Database d = null;
-		Statement stAcPersona1;
+		Statement stAcJuzgado;
 		try{
 			connMgr.prepararBD();
 			d = DatabaseFactory.open(connMgr.getDbLocation());
-			stAcPersona1 = d.createStatement("UPDATE juzgados SET nombre = ?,"+" ciudad = ?,"+" telefono = ?,"+" direccion=?,"+" tipo = ? WHERE id_juzgado = ?");
-			stAcPersona1.prepare();
-			stAcPersona1.bind(1, juzgado.getNombre());
-			stAcPersona1.bind(2, juzgado.getId_juzgado());
-			stAcPersona1.execute();
-			stAcPersona1.close();
+			stAcJuzgado = d.createStatement("UPDATE juzgados SET nombre = ?,"+" ciudad = ?,"+" telefono = ?,"+" direccion=?,"+" tipo = ? WHERE id_juzgado = ?");
+			stAcJuzgado.prepare();
+			stAcJuzgado.bind(1, juzgado.getNombre());
+			stAcJuzgado.bind(2, juzgado.getCiudad());
+			stAcJuzgado.bind(3, juzgado.getTelefono());
+			stAcJuzgado.bind(4, juzgado.getDireccion());
+			stAcJuzgado.bind(5, juzgado.getTipo());
+			stAcJuzgado.bind(6, juzgado.getId_juzgado());
+			stAcJuzgado.execute();
+			stAcJuzgado.close();
 			
 		} catch (Exception e){
 			throw e;
@@ -153,12 +157,35 @@ public class Persistence implements Cargado, Guardado {
 
 	public void borrarJuzgado(Juzgado juzgado) throws Exception {
 		// TODO Auto-generated method stub
-
+		
 	}
 
-	public void actualizarActuacion(Actuacion actuacion) throws Exception {
+	public void actualizarActuacion(Actuacion actuacion) throws Exception {   // id_proceso no se puede cambiar
 		// TODO Auto-generated method stub
-
+		Database d = null;
+		Statement stAcActuacion;
+		try{
+			connMgr.prepararBD();
+			d = DatabaseFactory.open(connMgr.getDbLocation());
+			String fecha = actuacion.getFecha().get(Calendar.YEAR)+"-"+actuacion.getFecha().get(Calendar.MONTH)+"-"+actuacion.getFecha().get(Calendar.DAY_OF_MONTH);
+			String fechaProxima = actuacion.getFechaProxima().get(Calendar.YEAR)+"-"+actuacion.getFechaProxima().get(Calendar.MONTH)+"-"+actuacion.getFechaProxima().get(Calendar.DAY_OF_MONTH);
+			stAcActuacion = d.createStatement("UPDATE juzgados SET juzgado = ?,"+" fecha_creacion = ?,"+" fecha_proxima = ?,"+" descripcion =? WHERE id_actuacion = ?");
+			stAcActuacion.prepare();
+			stAcActuacion.bind(1, actuacion.getJuzgado().getId_juzgado());
+			stAcActuacion.bind(2, fecha);
+			stAcActuacion.bind(3, fechaProxima);
+			stAcActuacion.bind(4, actuacion.getDescripcion());
+			stAcActuacion.bind(5, actuacion.getId_actuacion());
+			stAcActuacion.execute();
+			stAcActuacion.close();
+			
+		} catch (Exception e){
+			throw e;
+		} finally {
+			if (d != null){
+				d.close();
+			}
+		}
 	}
 
 	public void guardarActuacion(Actuacion actuacion, String id_proceso) throws Exception {
