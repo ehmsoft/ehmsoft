@@ -167,8 +167,8 @@ public class Persistence implements Cargado, Guardado {
 		try{
 			connMgr.prepararBD();
 			d = DatabaseFactory.open(connMgr.getDbLocation());
-			String fecha = actuacion.getFecha().get(Calendar.YEAR)+"-"+actuacion.getFecha().get(Calendar.MONTH)+"-"+actuacion.getFecha().get(Calendar.DAY_OF_MONTH);
-			String fechaProxima = actuacion.getFechaProxima().get(Calendar.YEAR)+"-"+actuacion.getFechaProxima().get(Calendar.MONTH)+"-"+actuacion.getFechaProxima().get(Calendar.DAY_OF_MONTH);
+			String fecha = actuacion.getFecha().get(Calendar.YEAR)+"-"+(actuacion.getFecha().get(Calendar.MONTH)+1)+"-"+actuacion.getFecha().get(Calendar.DAY_OF_MONTH);
+			String fechaProxima = actuacion.getFechaProxima().get(Calendar.YEAR)+"-"+(actuacion.getFechaProxima().get(Calendar.MONTH)+1)+"-"+actuacion.getFechaProxima().get(Calendar.DAY_OF_MONTH);
 			stAcActuacion = d.createStatement("UPDATE actuaciones SET juzgado = ?,"+" fecha_creacion = datetime(?),"+" fecha_proxima = datetime(?),"+" descripcion = ? WHERE id_actuacion = ?");
 			stAcActuacion.prepare();
 			stAcActuacion.bind(1, actuacion.getJuzgado().getId_juzgado());
@@ -191,10 +191,38 @@ public class Persistence implements Cargado, Guardado {
 	public void guardarActuacion(Actuacion actuacion, String id_proceso) throws Exception {
 		Database d = null;
 		try{
+			String fecha ="", fechaProxima="";
 			connMgr.prepararBD();
 			d = DatabaseFactory.open(connMgr.getDbLocation());
-			String fecha = actuacion.getFecha().get(Calendar.YEAR)+"-"+actuacion.getFecha().get(Calendar.MONTH + 1)+"-"+actuacion.getFecha().get(Calendar.DAY_OF_MONTH)+" "+actuacion.getFecha().get(Calendar.HOUR_OF_DAY)+":"+actuacion.getFecha().get(Calendar.MINUTE);
-			String fechaProxima = actuacion.getFechaProxima().get(Calendar.YEAR)+"-"+actuacion.getFechaProxima().get(Calendar.MONTH + 1)+"-"+actuacion.getFechaProxima().get(Calendar.DAY_OF_MONTH)+" "+actuacion.getFechaProxima().get(Calendar.HOUR_OF_DAY)+":"+actuacion.getFechaProxima().get(Calendar.MINUTE);
+			//-------------------------------------- comparaciones para l;a fecha de creacion
+			if (actuacion.getFecha().get(Calendar.MONTH) < 10){
+				if (actuacion.getFecha().get(Calendar.DAY_OF_MONTH) < 10){
+					fecha = actuacion.getFecha().get(Calendar.YEAR)+"-"+"0"+(actuacion.getFecha().get(Calendar.MONTH)+1)+"-"+"0"+actuacion.getFecha().get(Calendar.DAY_OF_MONTH)+" "+actuacion.getFecha().get(Calendar.HOUR_OF_DAY)+":"+actuacion.getFecha().get(Calendar.MINUTE);
+				}
+				fecha = actuacion.getFecha().get(Calendar.YEAR)+"-"+"0"+(actuacion.getFecha().get(Calendar.MONTH)+1)+"-"+actuacion.getFecha().get(Calendar.DAY_OF_MONTH)+" "+actuacion.getFecha().get(Calendar.HOUR_OF_DAY)+":"+actuacion.getFecha().get(Calendar.MINUTE);
+			}
+			else if (actuacion.getFecha().get(Calendar.DAY_OF_MONTH) < 10){
+				fecha = actuacion.getFecha().get(Calendar.YEAR)+"-"+(actuacion.getFecha().get(Calendar.MONTH)+1)+"-"+"0"+actuacion.getFecha().get(Calendar.DAY_OF_MONTH)+" "+actuacion.getFecha().get(Calendar.HOUR_OF_DAY)+":"+actuacion.getFecha().get(Calendar.MINUTE);
+			}
+			if (actuacion.getFecha().get(Calendar.MONTH) >= 10 && actuacion.getFecha().get(Calendar.DAY_OF_MONTH) >= 10){
+				fecha = actuacion.getFecha().get(Calendar.YEAR)+"-"+(actuacion.getFecha().get(Calendar.MONTH)+1)+"-"+actuacion.getFecha().get(Calendar.DAY_OF_MONTH)+" "+actuacion.getFecha().get(Calendar.HOUR_OF_DAY)+":"+actuacion.getFecha().get(Calendar.MINUTE);
+			}
+			//-------------------------------- comparaciones para la fecha proxima
+			if (actuacion.getFechaProxima().get(Calendar.MONTH) < 10){
+				if (actuacion.getFechaProxima().get(Calendar.DAY_OF_MONTH) < 10){
+					fechaProxima = actuacion.getFechaProxima().get(Calendar.YEAR)+"-"+"0"+(actuacion.getFechaProxima().get(Calendar.MONTH)+1)+"-"+"0"+(actuacion.getFechaProxima().get(Calendar.DAY_OF_MONTH) + 1)+" "+actuacion.getFechaProxima().get(Calendar.HOUR_OF_DAY)+":"+actuacion.getFechaProxima().get(Calendar.MINUTE);
+				}
+				fechaProxima = actuacion.getFechaProxima().get(Calendar.YEAR)+"-"+"0"+(actuacion.getFechaProxima().get(Calendar.MONTH)+1)+"-"+(actuacion.getFechaProxima().get(Calendar.DAY_OF_MONTH) + 1)+" "+actuacion.getFechaProxima().get(Calendar.HOUR_OF_DAY)+":"+actuacion.getFechaProxima().get(Calendar.MINUTE);
+
+			}
+			else if (actuacion.getFechaProxima().get(Calendar.DAY_OF_MONTH) < 10){
+				fechaProxima = actuacion.getFechaProxima().get(Calendar.YEAR)+"-"+(actuacion.getFechaProxima().get(Calendar.MONTH)+1)+"-"+"0"+(actuacion.getFechaProxima().get(Calendar.DAY_OF_MONTH) + 1)+" "+actuacion.getFechaProxima().get(Calendar.HOUR_OF_DAY)+":"+actuacion.getFechaProxima().get(Calendar.MINUTE);
+
+			}
+			if (actuacion.getFechaProxima().get(Calendar.MONTH) >= 10 && actuacion.getFechaProxima().get(Calendar.DAY_OF_MONTH) >= 10){
+				fechaProxima = actuacion.getFechaProxima().get(Calendar.YEAR)+"-"+(actuacion.getFechaProxima().get(Calendar.MONTH)+1)+"-"+(actuacion.getFechaProxima().get(Calendar.DAY_OF_MONTH) + 1)+" "+actuacion.getFechaProxima().get(Calendar.HOUR_OF_DAY)+":"+actuacion.getFechaProxima().get(Calendar.MINUTE);
+
+			}
 			Statement stActuacion = d.createStatement("INSERT INTO actuaciones VALUES( NULL,?,?,datetime(?),datetime(?),?)");
 			stActuacion.prepare();
 			stActuacion.bind(1,Integer.parseInt(id_proceso));
