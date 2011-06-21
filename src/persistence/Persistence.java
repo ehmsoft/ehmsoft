@@ -169,7 +169,7 @@ public class Persistence implements Cargado, Guardado {
 			d = DatabaseFactory.open(connMgr.getDbLocation());
 			String fecha = actuacion.getFecha().get(Calendar.YEAR)+"-"+actuacion.getFecha().get(Calendar.MONTH)+"-"+actuacion.getFecha().get(Calendar.DAY_OF_MONTH);
 			String fechaProxima = actuacion.getFechaProxima().get(Calendar.YEAR)+"-"+actuacion.getFechaProxima().get(Calendar.MONTH)+"-"+actuacion.getFechaProxima().get(Calendar.DAY_OF_MONTH);
-			stAcActuacion = d.createStatement("UPDATE juzgados SET juzgado = ?,"+" fecha_creacion = ?,"+" fecha_proxima = ?,"+" descripcion =? WHERE id_actuacion = ?");
+			stAcActuacion = d.createStatement("UPDATE actuaciones SET juzgado = ?,"+" fecha_creacion = ?,"+" fecha_proxima = ?,"+" descripcion = ? WHERE id_actuacion = ?");
 			stAcActuacion.prepare();
 			stAcActuacion.bind(1, actuacion.getJuzgado().getId_juzgado());
 			stAcActuacion.bind(2, fecha);
