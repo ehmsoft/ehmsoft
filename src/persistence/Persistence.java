@@ -29,14 +29,24 @@ public class Persistence implements Cargado, Guardado {
 			connMgr.prepararBD();
 			d = DatabaseFactory.open(connMgr.getDbLocation());
 		if(persona.getTipo()==1){
-			stAcPersona1 = d.createStatement("UPDATE demandantes SET cedula = ? WHERE id_demandante = ?");
-			stAcPersona1.prepare();
-			stAcPersona1.bind(1, persona.getId());
-			stAcPersona1.bind(2, persona.getId_persona());
-			stAcPersona1.execute();
-			stAcPersona1.close();
+			stAcPersona1 = d.createStatement("UPDATE demandantes SET cedula = ?,"+" nombre = ?,"+"telefono = ?,"+" direccion = ?,"+" correo= ?,"+" notas= ? WHERE id_demandante = ?");
 		}
-			
+		else if(persona.getTipo()==2){
+				stAcPersona1 = d.createStatement("UPDATE demandados SET cedula = ?,"+" nombre = ?,"+"telefono = ?,"+" direccion = ?,"+" correo= ?,"+" notas= ? WHERE id_demandante = ?");
+			}
+		else{
+				throw new Exception("Tipo persona invalido");
+			}
+		stAcPersona1.prepare();
+		stAcPersona1.bind(1, persona.getId());
+		stAcPersona1.bind(2, persona.getNombre());
+		stAcPersona1.bind(3, persona.getTelefono());
+		stAcPersona1.bind(4, persona.getDireccion());
+		stAcPersona1.bind(5, persona.getCorreo());
+		stAcPersona1.bind(6, persona.getNotas());
+		stAcPersona1.bind(7, persona.getId_persona());
+		stAcPersona1.execute();
+		stAcPersona1.close();
 		} catch (Exception e){
 			throw e;
 		} finally {
