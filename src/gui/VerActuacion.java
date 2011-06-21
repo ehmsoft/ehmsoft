@@ -32,11 +32,11 @@ public class VerActuacion extends MainScreen {
 				.getJuzgado().getNombre());
 
 		_dfFecha = new DateField("Fecha: ", _actuacion.getFecha().getTime()
-				.getTime(), DateField.DATE);
+				.getTime(), DateField.DATE_TIME);
 		_dfFecha.setEditable(false);
 
 		_dfFechaProxima = new DateField("Fecha próxima: ", _actuacion
-				.getFechaProxima().getTime().getTime(), DateField.DATE);
+				.getFechaProxima().getTime().getTime(), DateField.DATE_TIME);
 		_dfFechaProxima.setEditable(false);
 
 		_txtDescripcion = new EditableTextField("Descripció: ",

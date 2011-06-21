@@ -45,11 +45,11 @@ public class NuevaActuacion extends FondoNuevos {
 		addElem(fldJuzgado);
 
 		_dfFecha = new DateField("Fecha: ", System.currentTimeMillis(),
-				DateField.DATE);
+				DateField.DATE_TIME);
 		addElem(_dfFecha);
 
 		_dfFechaProxima = new DateField("Fecha próxima: ",
-				System.currentTimeMillis(), DateField.DATE);
+				System.currentTimeMillis(), DateField.DATE_TIME);
 		addElem(_dfFechaProxima);
 
 		_txtDescripcion = new BasicEditField();

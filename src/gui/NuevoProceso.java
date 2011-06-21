@@ -116,7 +116,7 @@ public class NuevoProceso extends FondoNuevos {
 		_vertical.add(_chPrioridad);
 
 		_dtFecha = new DateField("Fecha de creación: ",
-				System.currentTimeMillis(), DateField.DATE);
+				System.currentTimeMillis(), DateField.DATE_TIME);
 		_dtFecha.setEditable(true);
 		_vertical.add(_dtFecha);
 

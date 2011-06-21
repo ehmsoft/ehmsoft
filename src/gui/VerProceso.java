@@ -65,7 +65,7 @@ public class VerProceso extends MainScreen {
 		add(_txtJuzgado);
 
 		_dfFecha = new DateField("Fecha: ", _proceso.getFecha().getTime()
-				.getTime(), DateField.DATE);
+				.getTime(), DateField.DATE_TIME);
 		_dfFecha.setEditable(false);
 		add(_dfFecha);
 
