@@ -1,5 +1,7 @@
 package gui;
 
+import core.Proceso;
+import net.rim.device.api.ui.MenuItem;
 import net.rim.device.api.ui.UiApplication;
 import net.rim.device.api.ui.container.MainScreen;
 
@@ -28,7 +30,21 @@ public class ListadoProcesos extends MainScreen {
 		_lista.insert(0, "Nuevo proceso");
 
 		add(_lista);
+		addMenuItem(menuVer);
 	}
+	
+	private final MenuItem menuVer = new MenuItem("Ver", 0, 0) {
+
+		public void run() {
+			int index = _lista.getSelectedIndex();
+			VerProcesoController verProceso = new VerProcesoController((Proceso) _lista.get(_lista, index));
+			UiApplication.getUiApplication().pushModalScreen(verProceso.getScreen());
+			verProceso.actualizarProceso();
+			_lista.delete(index);
+			_lista.insert(index,verProceso.getProceso());
+			_lista.setSelectedIndex(index);
+		}
+	};
 
 	public void addProceso(Object proceso) {
 		_lista.insert(_lista.getSize(), proceso);

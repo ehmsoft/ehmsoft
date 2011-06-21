@@ -2,13 +2,16 @@ package gui;
 
 import java.util.Vector;
 
+import core.Persona;
+
+import net.rim.device.api.ui.MenuItem;
 import net.rim.device.api.ui.UiApplication;
 import net.rim.device.api.ui.container.MainScreen;
 
 public class ListadoPersonas extends MainScreen {
 
-	private Object selected;
-	private ListadoPersonasLista lista;
+	private Object _selected;
+	private ListadoPersonasLista _lista;
 
 	public ListadoPersonas(int tipo, Vector fuentes) {
 		super(MainScreen.VERTICAL_SCROLL | MainScreen.VERTICAL_SCROLLBAR);
@@ -18,19 +21,20 @@ public class ListadoPersonas extends MainScreen {
 		else
 			setTitle("Listado de demandados");
 
-		lista = new ListadoPersonasLista(fuentes) {
+		_lista = new ListadoPersonasLista(fuentes) {
 			protected boolean navigationClick(int status, int time) {
-				selected = get(lista, getSelectedIndex());
+				_selected = get(_lista, getSelectedIndex());
 				UiApplication.getUiApplication().popScreen(getScreen());
 				return true;
 			}
 		};
 
 		if (tipo == 1)
-			lista.insert(0, "Nuevo demandante");
+			_lista.insert(0, "Nuevo demandante");
 		else
-			lista.insert(0, "Nuevo demandado");
-		add(lista);
+			_lista.insert(0, "Nuevo demandado");
+		add(_lista);
+		addMenuItem(menuVer);
 	}
 	
 	public ListadoPersonas(int tipo) {
@@ -41,27 +45,41 @@ public class ListadoPersonas extends MainScreen {
 		else
 			setTitle("Listado de demandados");
 
-		lista = new ListadoPersonasLista() {
+		_lista = new ListadoPersonasLista() {
 			protected boolean navigationClick(int status, int time) {
-				selected = get(lista, getSelectedIndex());
+				_selected = get(_lista, getSelectedIndex());
 				UiApplication.getUiApplication().popScreen(getScreen());
 				return true;
 			}
 		};
 
 		if (tipo == 1)
-			lista.insert(0, "Nuevo demandante");
+			_lista.insert(0, "Nuevo demandante");
 		else
-			lista.insert(0, "Nuevo demandado");
-		add(lista);
+			_lista.insert(0, "Nuevo demandado");
+		add(_lista);
+		addMenuItem(menuVer);
 	}
+	
+	private final MenuItem menuVer = new MenuItem("Ver", 0, 0) {
+
+		public void run() {
+			int index = _lista.getSelectedIndex();
+			VerPersonaController verPersona = new VerPersonaController((Persona) _lista.get(_lista, index));
+			UiApplication.getUiApplication().pushModalScreen(verPersona.getScreen());
+			verPersona.actualizarPersona();
+			_lista.delete(index);
+			_lista.insert(index,verPersona.getPersona());
+			_lista.setSelectedIndex(index);
+		}
+	};
 
 	public void addPersona(Object persona) {
-		lista.insert(lista.getSize(), persona);
+		_lista.insert(_lista.getSize(), persona);
 	}
 
 	public Object getSelected() {
-		return selected;
+		return _selected;
 	}
 
 	public boolean onClose() {

@@ -46,7 +46,6 @@ public class VerActuacionController {
 				 cambio = true;
 
 			if (cambio)
-				Dialog.alert("Cambió");
 				_actuacion = new Actuacion(_screen.getJuzgado(), _screen.getFecha(), _screen.getFechaProxima(), _screen.getDescripcion(), _actuacion.getId_actuacion()){
 				public String toString() {
 					return this.getDescripcion();
