@@ -193,8 +193,8 @@ public class Persistence implements Cargado, Guardado {
 		try{
 			connMgr.prepararBD();
 			d = DatabaseFactory.open(connMgr.getDbLocation());
-			String fecha = actuacion.getFecha().get(Calendar.YEAR)+"-"+actuacion.getFecha().get(Calendar.MONTH)+"-"+actuacion.getFecha().get(Calendar.DAY_OF_MONTH);
-			String fechaProxima = actuacion.getFechaProxima().get(Calendar.YEAR)+"-"+actuacion.getFechaProxima().get(Calendar.MONTH)+"-"+actuacion.getFechaProxima().get(Calendar.DAY_OF_MONTH);
+			String fecha = actuacion.getFecha().get(Calendar.YEAR)+"-"+actuacion.getFecha().get(Calendar.MONTH + 1)+"-"+actuacion.getFecha().get(Calendar.DAY_OF_MONTH)+" "+actuacion.getFecha().get(Calendar.HOUR_OF_DAY)+":"+actuacion.getFecha().get(Calendar.MINUTE);
+			String fechaProxima = actuacion.getFechaProxima().get(Calendar.YEAR)+"-"+actuacion.getFechaProxima().get(Calendar.MONTH + 1)+"-"+actuacion.getFechaProxima().get(Calendar.DAY_OF_MONTH)+" "+actuacion.getFechaProxima().get(Calendar.HOUR_OF_DAY)+":"+actuacion.getFechaProxima().get(Calendar.MINUTE);
 			Statement stActuacion = d.createStatement("INSERT INTO actuaciones VALUES( NULL,?,?,?,?,?)");
 			stActuacion.prepare();
 			stActuacion.bind(1,Integer.parseInt(id_proceso));
