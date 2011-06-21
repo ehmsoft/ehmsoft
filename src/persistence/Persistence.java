@@ -224,6 +224,7 @@ public class Persistence implements Cargado, Guardado {
 	public void actualizarCampoPersonalizado(CampoPersonalizado campo)
 	throws Exception {
 		// TODO Auto-generated method stub
+		
 
 	}
 
@@ -270,6 +271,36 @@ public class Persistence implements Cargado, Guardado {
 
 	public void actualizarProceso(Proceso proceso) throws Exception {
 		// TODO Auto-generated method stub
+		Database d = null;
+		Statement stAcProceso;
+		try{
+			connMgr.prepararBD();
+			d = DatabaseFactory.open(connMgr.getDbLocation());
+			String fecha = proceso.getFecha().get(Calendar.YEAR)+"-"+proceso.getFecha().get(Calendar.MONTH)+"-"+proceso.getFecha().get(Calendar.DAY_OF_MONTH);
+			stAcProceso = d.createStatement("UPDATE procesos SET id_demandante = ?,"+" id_demandado = ?,"+" fecha_creacion = ?,"+" radicado = ?,"+" radicado_unico = ?,"+" estado = ?,"+" tipo = ?,"+" notas = ?,"+" prioridad = ?,"+" id_juzgado = ?,"+" id_categoria = ? WHERE id_proceso = ?");
+			stAcProceso.prepare();
+			stAcProceso.bind(1, proceso.getDemandante().getId_persona());
+			stAcProceso.bind(2, proceso.getDemandado().getId_persona());
+			stAcProceso.bind(3, fecha);
+			stAcProceso.bind(4, proceso.getRadicado());
+			stAcProceso.bind(5, proceso.getRadicadoUnico());
+			stAcProceso.bind(6, proceso.getEstado());
+			stAcProceso.bind(7, proceso.getTipo());
+			stAcProceso.bind(8, proceso.getNotas());
+			stAcProceso.bind(9, proceso.getPrioridad());
+			stAcProceso.bind(10, proceso.getJuzgado().getId_juzgado());
+			stAcProceso.bind(11, proceso.getCategoria());
+			stAcProceso.bind(12, proceso.getId_proceso());
+			stAcProceso.execute();
+			stAcProceso.close();
+			
+		} catch (Exception e){
+			throw e;
+		} finally {
+			if (d != null){
+				d.close();
+			}
+		}
 
 	}
 
