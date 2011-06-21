@@ -195,7 +195,7 @@ public class Persistence implements Cargado, Guardado {
 			connMgr.prepararBD();
 			d = DatabaseFactory.open(connMgr.getDbLocation());
 			//-------------------------------------- comparaciones para l;a fecha de creacion
-			if (actuacion.getFecha().get(Calendar.MONTH) < 10){
+			if ((actuacion.getFecha().get(Calendar.MONTH)+ 1) < 10){
 				if (actuacion.getFecha().get(Calendar.DAY_OF_MONTH) < 10){
 					fecha = actuacion.getFecha().get(Calendar.YEAR)+"-"+"0"+(actuacion.getFecha().get(Calendar.MONTH)+1)+"-"+"0"+actuacion.getFecha().get(Calendar.DAY_OF_MONTH)+" "+actuacion.getFecha().get(Calendar.HOUR_OF_DAY)+":"+actuacion.getFecha().get(Calendar.MINUTE);
 				}
@@ -204,23 +204,23 @@ public class Persistence implements Cargado, Guardado {
 			else if (actuacion.getFecha().get(Calendar.DAY_OF_MONTH) < 10){
 				fecha = actuacion.getFecha().get(Calendar.YEAR)+"-"+(actuacion.getFecha().get(Calendar.MONTH)+1)+"-"+"0"+actuacion.getFecha().get(Calendar.DAY_OF_MONTH)+" "+actuacion.getFecha().get(Calendar.HOUR_OF_DAY)+":"+actuacion.getFecha().get(Calendar.MINUTE);
 			}
-			if (actuacion.getFecha().get(Calendar.MONTH) >= 10 && actuacion.getFecha().get(Calendar.DAY_OF_MONTH) >= 10){
+			if ((actuacion.getFecha().get(Calendar.MONTH)+ 1) >= 10 && actuacion.getFecha().get(Calendar.DAY_OF_MONTH) >= 10){
 				fecha = actuacion.getFecha().get(Calendar.YEAR)+"-"+(actuacion.getFecha().get(Calendar.MONTH)+1)+"-"+actuacion.getFecha().get(Calendar.DAY_OF_MONTH)+" "+actuacion.getFecha().get(Calendar.HOUR_OF_DAY)+":"+actuacion.getFecha().get(Calendar.MINUTE);
 			}
 			//-------------------------------- comparaciones para la fecha proxima
-			if (actuacion.getFechaProxima().get(Calendar.MONTH) < 10){
+			if ((actuacion.getFecha().get(Calendar.MONTH)+ 1) < 10){
 				if (actuacion.getFechaProxima().get(Calendar.DAY_OF_MONTH) < 10){
-					fechaProxima = actuacion.getFechaProxima().get(Calendar.YEAR)+"-"+"0"+(actuacion.getFechaProxima().get(Calendar.MONTH)+1)+"-"+"0"+(actuacion.getFechaProxima().get(Calendar.DAY_OF_MONTH) + 1)+" "+actuacion.getFechaProxima().get(Calendar.HOUR_OF_DAY)+":"+actuacion.getFechaProxima().get(Calendar.MINUTE);
+					fechaProxima = actuacion.getFechaProxima().get(Calendar.YEAR)+"-"+"0"+(actuacion.getFechaProxima().get(Calendar.MONTH)+1)+"-"+"0"+(actuacion.getFechaProxima().get(Calendar.DAY_OF_MONTH))+" "+actuacion.getFechaProxima().get(Calendar.HOUR_OF_DAY)+":"+actuacion.getFechaProxima().get(Calendar.MINUTE);
 				}
-				fechaProxima = actuacion.getFechaProxima().get(Calendar.YEAR)+"-"+"0"+(actuacion.getFechaProxima().get(Calendar.MONTH)+1)+"-"+(actuacion.getFechaProxima().get(Calendar.DAY_OF_MONTH) + 1)+" "+actuacion.getFechaProxima().get(Calendar.HOUR_OF_DAY)+":"+actuacion.getFechaProxima().get(Calendar.MINUTE);
+				fechaProxima = actuacion.getFechaProxima().get(Calendar.YEAR)+"-"+"0"+(actuacion.getFechaProxima().get(Calendar.MONTH)+1)+"-"+(actuacion.getFechaProxima().get(Calendar.DAY_OF_MONTH))+" "+actuacion.getFechaProxima().get(Calendar.HOUR_OF_DAY)+":"+actuacion.getFechaProxima().get(Calendar.MINUTE);
 
 			}
 			else if (actuacion.getFechaProxima().get(Calendar.DAY_OF_MONTH) < 10){
-				fechaProxima = actuacion.getFechaProxima().get(Calendar.YEAR)+"-"+(actuacion.getFechaProxima().get(Calendar.MONTH)+1)+"-"+"0"+(actuacion.getFechaProxima().get(Calendar.DAY_OF_MONTH) + 1)+" "+actuacion.getFechaProxima().get(Calendar.HOUR_OF_DAY)+":"+actuacion.getFechaProxima().get(Calendar.MINUTE);
+				fechaProxima = actuacion.getFechaProxima().get(Calendar.YEAR)+"-"+(actuacion.getFechaProxima().get(Calendar.MONTH)+1)+"-"+"0"+(actuacion.getFechaProxima().get(Calendar.DAY_OF_MONTH))+" "+actuacion.getFechaProxima().get(Calendar.HOUR_OF_DAY)+":"+actuacion.getFechaProxima().get(Calendar.MINUTE);
 
 			}
-			if (actuacion.getFechaProxima().get(Calendar.MONTH) >= 10 && actuacion.getFechaProxima().get(Calendar.DAY_OF_MONTH) >= 10){
-				fechaProxima = actuacion.getFechaProxima().get(Calendar.YEAR)+"-"+(actuacion.getFechaProxima().get(Calendar.MONTH)+1)+"-"+(actuacion.getFechaProxima().get(Calendar.DAY_OF_MONTH) + 1)+" "+actuacion.getFechaProxima().get(Calendar.HOUR_OF_DAY)+":"+actuacion.getFechaProxima().get(Calendar.MINUTE);
+			if ((actuacion.getFecha().get(Calendar.MONTH)+ 1) >= 10 && actuacion.getFechaProxima().get(Calendar.DAY_OF_MONTH) >= 10){
+				fechaProxima = actuacion.getFechaProxima().get(Calendar.YEAR)+"-"+(actuacion.getFechaProxima().get(Calendar.MONTH)+1)+"-"+(actuacion.getFechaProxima().get(Calendar.DAY_OF_MONTH))+" "+actuacion.getFechaProxima().get(Calendar.HOUR_OF_DAY)+":"+actuacion.getFechaProxima().get(Calendar.MINUTE);
 
 			}
 			Statement stActuacion = d.createStatement("INSERT INTO actuaciones VALUES( NULL,?,?,datetime(?),datetime(?),?)");
@@ -814,7 +814,7 @@ public class Persistence implements Cargado, Guardado {
 	private Calendar stringToCalendar(String fecha) {
 		Calendar calendar_return = Calendar.getInstance();
 		calendar_return.set(Calendar.YEAR, Integer.parseInt(fecha.substring(0, 4)));
-		calendar_return.set(Calendar.MONTH, Integer.parseInt(fecha.substring(5, 7)));
+		calendar_return.set(Calendar.MONTH, Integer.parseInt(fecha.substring(5, 7)) - 1);
 		calendar_return.set(Calendar.DAY_OF_MONTH, Integer.parseInt(fecha.substring(8, 10)));
 		if (fecha.length() > 10){
 			calendar_return.set(Calendar.HOUR_OF_DAY, Integer.parseInt(fecha.substring(11, 13)));
