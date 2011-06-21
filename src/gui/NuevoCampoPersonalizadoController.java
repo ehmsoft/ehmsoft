@@ -37,7 +37,7 @@ public class NuevoCampoPersonalizadoController {
 			e.printStackTrace();
 		}
 	}
-	
+
 	public void guardarCampo() {
 		_campo = new CampoPersonalizado(_screen.getNombre(), null,
 				_screen.isObligatorio(), _screen.getLongMax(),

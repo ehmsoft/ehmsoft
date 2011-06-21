@@ -30,6 +30,7 @@ public abstract class FondoNuevos extends MainScreen {
 				interno.add(field);
 				super.add(interno);
 			};
+
 			public void delete(Field field) {
 				super.delete(field);
 			}
@@ -38,8 +39,8 @@ public abstract class FondoNuevos extends MainScreen {
 		_vertical.setBorder(BorderFactory.createBitmapBorder(new XYEdges(12,
 				12, 12, 12), borderBitmap));
 	}
-	
-	protected void addElem(Field field){
+
+	protected void addElem(Field field) {
 		_vertical.add(field);
 	}
 }

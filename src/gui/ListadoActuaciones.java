@@ -2,11 +2,10 @@ package gui;
 
 import java.util.Vector;
 
-import core.Actuacion;
-
 import net.rim.device.api.ui.MenuItem;
 import net.rim.device.api.ui.UiApplication;
 import net.rim.device.api.ui.container.MainScreen;
+import core.Actuacion;
 
 public class ListadoActuaciones extends MainScreen {
 
@@ -48,16 +47,18 @@ public class ListadoActuaciones extends MainScreen {
 		add(_lista);
 		addMenuItem(menuVer);
 	}
-	
+
 	private final MenuItem menuVer = new MenuItem("Ver", 0, 0) {
 
 		public void run() {
 			int index = _lista.getSelectedIndex();
-			VerActuacionController verActuacion = new VerActuacionController((Actuacion) _lista.get(_lista, index));
-			UiApplication.getUiApplication().pushModalScreen(verActuacion.getScreen());
+			VerActuacionController verActuacion = new VerActuacionController(
+					(Actuacion) _lista.get(_lista, index));
+			UiApplication.getUiApplication().pushModalScreen(
+					verActuacion.getScreen());
 			verActuacion.actualizarActuacion();
 			_lista.delete(index);
-			_lista.insert(index,verActuacion.getActuacion());
+			_lista.insert(index, verActuacion.getActuacion());
 			_lista.setSelectedIndex(index);
 		}
 	};

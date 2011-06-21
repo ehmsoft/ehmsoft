@@ -3,13 +3,13 @@ package gui;
 import java.util.Calendar;
 import java.util.Date;
 
-import core.Actuacion;
-import core.Juzgado;
 import net.rim.device.api.ui.Field;
 import net.rim.device.api.ui.MenuItem;
 import net.rim.device.api.ui.UiApplication;
 import net.rim.device.api.ui.component.DateField;
 import net.rim.device.api.ui.container.MainScreen;
+import core.Actuacion;
+import core.Juzgado;
 
 public class VerActuacion extends MainScreen {
 
@@ -28,15 +28,19 @@ public class VerActuacion extends MainScreen {
 
 		setTitle("Ver actuación");
 
-		_txtJuzgado = new EditableTextField("Juzgado: ", _actuacion.getJuzgado().getNombre());
+		_txtJuzgado = new EditableTextField("Juzgado: ", _actuacion
+				.getJuzgado().getNombre());
 
-		_dfFecha = new DateField("Fecha: ", _actuacion.getFecha().getTime().getTime(), DateField.DATE);
+		_dfFecha = new DateField("Fecha: ", _actuacion.getFecha().getTime()
+				.getTime(), DateField.DATE);
 		_dfFecha.setEditable(false);
 
-		_dfFechaProxima = new DateField("Fecha próxima: ", _actuacion.getFechaProxima().getTime().getTime(), DateField.DATE);
+		_dfFechaProxima = new DateField("Fecha próxima: ", _actuacion
+				.getFechaProxima().getTime().getTime(), DateField.DATE);
 		_dfFechaProxima.setEditable(false);
 
-		_txtDescripcion = new EditableTextField("Descripció: ", _actuacion.getDescripcion());
+		_txtDescripcion = new EditableTextField("Descripció: ",
+				_actuacion.getDescripcion());
 
 		add(_txtJuzgado);
 		add(_dfFecha);
@@ -53,40 +57,43 @@ public class VerActuacion extends MainScreen {
 			UiApplication.getUiApplication().popScreen(getScreen());
 		}
 	};
-	
+
 	private final MenuItem menuEditar = new MenuItem("Editar", 0, 0) {
 
 		public void run() {
 			Field f = getFieldWithFocus();
-			if(f.equals(_txtJuzgado)) {
-				VerJuzgadoController verJuzgado = new VerJuzgadoController(_juzgado);
-				UiApplication.getUiApplication().pushModalScreen(verJuzgado.getScreen());
+			if (f.equals(_txtJuzgado)) {
+				VerJuzgadoController verJuzgado = new VerJuzgadoController(
+						_juzgado);
+				UiApplication.getUiApplication().pushModalScreen(
+						verJuzgado.getScreen());
 				_juzgado = verJuzgado.getJuzgado();
 				_txtJuzgado.setText(_juzgado.getNombre());
 				_txtJuzgado.setFocus();
 			}
-			if(f.equals(_dfFecha)) {
+			if (f.equals(_dfFecha)) {
 				_dfFecha.setEditable(true);
 				_dfFecha.setFocus();
 			}
-			if(f.equals(_dfFechaProxima)) {
+			if (f.equals(_dfFechaProxima)) {
 				_dfFechaProxima.setEditable(true);
 				_dfFechaProxima.setFocus();
 			}
-			if(f.equals(_txtDescripcion)) {				
+			if (f.equals(_txtDescripcion)) {
 				_txtDescripcion.setEditable();
 				_txtDescripcion.setFocus();
 			}
 		}
 	};
-	
+
 	private final MenuItem menuCambiar = new MenuItem("Cambiar", 0, 0) {
 
 		public void run() {
 			Field f = getFieldWithFocus();
-			if(f.equals(_txtJuzgado)) {
+			if (f.equals(_txtJuzgado)) {
 				ListadoJuzgadosController juzgados = new ListadoJuzgadosController();
-				UiApplication.getUiApplication().pushModalScreen(juzgados.getScreen());
+				UiApplication.getUiApplication().pushModalScreen(
+						juzgados.getScreen());
 				_juzgado = juzgados.getSelected();
 				_txtJuzgado.setText(_juzgado.getNombre());
 				_txtJuzgado.setFocus();

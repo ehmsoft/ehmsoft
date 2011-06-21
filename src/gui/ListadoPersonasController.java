@@ -42,7 +42,7 @@ public class ListadoPersonasController {
 		_screen = new ListadoPersonas(tipo, fuentes);
 		addPersonas();
 	}
-	
+
 	public ListadoPersonasController(int tipo) {
 		_tipo = tipo;
 		try {

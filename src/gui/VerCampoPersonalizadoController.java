@@ -35,13 +35,15 @@ public class VerCampoPersonalizadoController {
 				cambio = true;
 
 			if (cambio)
-				_campo = new CampoPersonalizado(_screen.getNombre(), _screen.getValor(), _screen.isObligatorio(), _screen.getLongitudMax(), _screen.getLongitudMin());
-				persistence.actualizarCampoPersonalizado(_campo);
+				_campo = new CampoPersonalizado(_screen.getNombre(),
+						_screen.getValor(), _screen.isObligatorio(),
+						_screen.getLongitudMax(), _screen.getLongitudMin());
+			persistence.actualizarCampoPersonalizado(_campo);
 		} catch (Exception e) {
 			Dialog.alert("actualizarCampoPersonalizado -> " + e.toString());
 		}
 	}
-	
+
 	public CampoPersonalizado getCampo() {
 		return _campo;
 	}

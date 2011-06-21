@@ -27,16 +27,18 @@ public class ListadoJuzgados extends MainScreen {
 		add(_lista);
 		addMenuItem(menuVer);
 	}
-	
+
 	private final MenuItem menuVer = new MenuItem("Ver", 0, 0) {
 
 		public void run() {
 			int index = _lista.getSelectedIndex();
-			VerJuzgadoController verJuzgado = new VerJuzgadoController((Juzgado) _lista.get(_lista, index));
-			UiApplication.getUiApplication().pushModalScreen(verJuzgado.getScreen());
+			VerJuzgadoController verJuzgado = new VerJuzgadoController(
+					(Juzgado) _lista.get(_lista, index));
+			UiApplication.getUiApplication().pushModalScreen(
+					verJuzgado.getScreen());
 			verJuzgado.actualizarJuzgado();
 			_lista.delete(index);
-			_lista.insert(index,verJuzgado.getJuzgado());
+			_lista.insert(index, verJuzgado.getJuzgado());
 			_lista.setSelectedIndex(index);
 		}
 	};

@@ -30,20 +30,23 @@ public class VerPersonaController {
 				cambio = true;
 			if (!_persona.getDireccion().equals(_screen.getDireccion()))
 				cambio = true;
-			if (!_persona.getCorreo().equals( _screen.getCorreo()))
+			if (!_persona.getCorreo().equals(_screen.getCorreo()))
 				cambio = true;
 			if (!_persona.getNotas().equals(_screen.getNotas()))
 				cambio = true;
 
 			if (cambio) {
-				_persona = new Persona(_persona.getTipo(), _screen.getId(), _screen.getNombre(), _screen.getTelefono(), _screen.getDireccion(), _screen.getCorreo(), _screen.getNotas(), _persona.getId_persona());
+				_persona = new Persona(_persona.getTipo(), _screen.getId(),
+						_screen.getNombre(), _screen.getTelefono(),
+						_screen.getDireccion(), _screen.getCorreo(),
+						_screen.getNotas(), _persona.getId_persona());
 				persistence.actualizarPersona(_persona);
 			}
 		} catch (Exception e) {
 			Dialog.alert("actualizarPersona -> " + e.toString());
 		}
 	}
-	
+
 	public Persona getPersona() {
 		return _persona;
 	}

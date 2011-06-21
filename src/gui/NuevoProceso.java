@@ -165,10 +165,9 @@ public class NuevoProceso extends FondoNuevos {
 				if (o != null && CampoPersonalizado.class.isInstance(o)) {
 					_vertical.delete(field);
 					_valoresCamposPersonalizados.removeElement(field);
-				}
-				else
+				} else
 					throw new Exception();
-			}catch (Exception e) {
+			} catch (Exception e) {
 				Dialog.alert("El elemento no puede ser eliminado");
 			}
 		}

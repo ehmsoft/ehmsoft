@@ -33,7 +33,7 @@ public class VerProceso extends MainScreen {
 	EditableTextField _txtTipo;
 	EditableTextField _txtNotas;
 	NumericChoiceField _nfPrioridad;
-	
+
 	Proceso _proceso;
 	Persona _demandante;
 	Persona _demandado;
@@ -41,7 +41,7 @@ public class VerProceso extends MainScreen {
 	Vector _camposPersonalizados;
 	Vector _txtCampos;
 	Vector _actuaciones;
-	
+
 	public VerProceso(Proceso proceso) {
 		super(MainScreen.VERTICAL_SCROLL | MainScreen.VERTICAL_SCROLLBAR);
 		// TODO Auto-generated constructor stub
@@ -53,162 +53,184 @@ public class VerProceso extends MainScreen {
 		_camposPersonalizados = proceso.getCampos();
 		_actuaciones = proceso.getActuaciones();
 
-		_txtDemandante = new EditableTextField("Demandante: ", _demandante.getNombre());
+		_txtDemandante = new EditableTextField("Demandante: ",
+				_demandante.getNombre());
 		add(_txtDemandante);
-		
-		_txtDemandado = new EditableTextField("Demandado: ", _demandado.getNombre());
+
+		_txtDemandado = new EditableTextField("Demandado: ",
+				_demandado.getNombre());
 		add(_txtDemandado);
-		
+
 		_txtJuzgado = new EditableTextField("Juzgado: ", _juzgado.getNombre());
 		add(_txtJuzgado);
-		
-		_dfFecha = new DateField("Fecha: ", _proceso.getFecha().getTime().getTime(), DateField.DATE);
+
+		_dfFecha = new DateField("Fecha: ", _proceso.getFecha().getTime()
+				.getTime(), DateField.DATE);
 		_dfFecha.setEditable(false);
 		add(_dfFecha);
-		
-		_txtRadicado = new EditableTextField("Radicado: ", _proceso.getRadicado());
+
+		_txtRadicado = new EditableTextField("Radicado: ",
+				_proceso.getRadicado());
 		add(_txtRadicado);
-		
-		_txtRadicadoUnico = new EditableTextField("Radicado unico: ", _proceso.getRadicadoUnico());
+
+		_txtRadicadoUnico = new EditableTextField("Radicado unico: ",
+				_proceso.getRadicadoUnico());
 		add(_txtRadicadoUnico);
-		
-		_ofActuaciones = new ObjectChoiceField("Actuaciones: ", transformActuaciones());	
+
+		_ofActuaciones = new ObjectChoiceField("Actuaciones: ",
+				transformActuaciones());
 		add(_ofActuaciones);
-		
+
 		_txtEstado = new EditableTextField("Estado: ", _proceso.getEstado());
 		add(_txtEstado);
-		
-		_txtCategoria = new EditableTextField("Categría: ", _proceso.getCategoria());
+
+		_txtCategoria = new EditableTextField("Categría: ",
+				_proceso.getCategoria());
 		add(_txtCategoria);
-		
+
 		_txtTipo = new EditableTextField("Tipo: ", _proceso.getTipo());
 		add(_txtTipo);
-		
+
 		_txtNotas = new EditableTextField("Notas: ", _proceso.getNotas());
 		add(_txtNotas);
-		
+
 		_nfPrioridad = new NumericChoiceField("Prioridad: ", 0, 10, 1);
 		_nfPrioridad.setSelectedValue(_proceso.getPrioridad());
 		_nfPrioridad.setEditable(false);
 		add(_nfPrioridad);
-		
+
 		_txtCampos = new Vector();
-		
+
 		addCampos();
 		addMenuItem(menuEditar);
 	}
-	
+
 	private Object[] transformActuaciones() {
 		Enumeration e = _actuaciones.elements();
 		Object[] elements = new Object[_actuaciones.size()];
-		for(int i = 0; i < elements.length; i++) {
-			elements[i] = ((Actuacion)e.nextElement());
+		for (int i = 0; i < elements.length; i++) {
+			elements[i] = ((Actuacion) e.nextElement());
 		}
 		return elements;
 	}
-	
+
 	private void addCampos() {
 		Enumeration e = _camposPersonalizados.elements();
-		
-		while(e.hasMoreElements()) {
-			CampoPersonalizado c = (CampoPersonalizado)e.nextElement();
-			EditableTextField etf = new EditableTextField(c.getNombre()+": ", c.getValor());
+
+		while (e.hasMoreElements()) {
+			CampoPersonalizado c = (CampoPersonalizado) e.nextElement();
+			EditableTextField etf = new EditableTextField(c.getNombre() + ": ",
+					c.getValor());
 			etf.setCookie(c);
 			_txtCampos.addElement(etf);
 			add(etf);
 		}
 	}
-	
+
 	private final MenuItem menuEditar = new MenuItem("Editar", 0, 0) {
 
 		public void run() {
 			Field f = getFieldWithFocus();
-			if(f.equals(_txtDemandante)) {
-				VerPersonaController verPersona = new VerPersonaController(_demandante);
-				UiApplication.getUiApplication().pushModalScreen(verPersona.getScreen());
+			if (f.equals(_txtDemandante)) {
+				VerPersonaController verPersona = new VerPersonaController(
+						_demandante);
+				UiApplication.getUiApplication().pushModalScreen(
+						verPersona.getScreen());
 				verPersona.actualizarPersona();
 				_demandante = verPersona.getPersona();
 				_txtDemandante.setText(_demandante.getNombre());
 				_txtDemandante.setFocus();
 			}
-			if(f.equals(_txtDemandado)) {
-				VerPersonaController verPersona = new VerPersonaController(_demandado);
-				UiApplication.getUiApplication().pushModalScreen(verPersona.getScreen());
+			if (f.equals(_txtDemandado)) {
+				VerPersonaController verPersona = new VerPersonaController(
+						_demandado);
+				UiApplication.getUiApplication().pushModalScreen(
+						verPersona.getScreen());
 				verPersona.actualizarPersona();
 				_demandado = verPersona.getPersona();
 				_txtDemandado.setText(_demandado.getNombre());
 				_txtDemandado.setFocus();
 			}
-			
-			if(f.equals(_txtJuzgado)) {
-				VerJuzgadoController verJuzgado = new VerJuzgadoController(_juzgado);
-				UiApplication.getUiApplication().pushModalScreen(verJuzgado.getScreen());
+
+			if (f.equals(_txtJuzgado)) {
+				VerJuzgadoController verJuzgado = new VerJuzgadoController(
+						_juzgado);
+				UiApplication.getUiApplication().pushModalScreen(
+						verJuzgado.getScreen());
 				verJuzgado.actualizarJuzgado();
 				_juzgado = verJuzgado.getJuzgado();
 				_txtJuzgado.setText(_juzgado.getNombre());
 				_txtJuzgado.setFocus();
 			}
-			
-			if(f.equals(_dfFecha)) {
+
+			if (f.equals(_dfFecha)) {
 				_dfFecha.setEditable(true);
 				_dfFecha.setFocus();
 			}
-			
-			if(f.equals(_txtRadicado)) {
+
+			if (f.equals(_txtRadicado)) {
 				_txtRadicado.setEditable();
 				_txtRadicado.setFocus();
 			}
-			
-			if(f.equals(_txtRadicadoUnico)) {
+
+			if (f.equals(_txtRadicadoUnico)) {
 				_txtRadicadoUnico.setEditable();
 				_txtRadicadoUnico.setFocus();
 			}
-			
-			if(f.equals(_ofActuaciones)) {
-				Actuacion actuacion = (Actuacion)_ofActuaciones.getChoice(_ofActuaciones.getSelectedIndex());
-				VerActuacionController verAtuacion = new VerActuacionController(actuacion);
-				UiApplication.getUiApplication().pushModalScreen(verAtuacion.getScreen());
+
+			if (f.equals(_ofActuaciones)) {
+				Actuacion actuacion = (Actuacion) _ofActuaciones
+						.getChoice(_ofActuaciones.getSelectedIndex());
+				VerActuacionController verAtuacion = new VerActuacionController(
+						actuacion);
+				UiApplication.getUiApplication().pushModalScreen(
+						verAtuacion.getScreen());
 				verAtuacion.actualizarActuacion();
-				_actuaciones.setElementAt(verAtuacion.getActuacion(),_actuaciones.indexOf(actuacion));
+				_actuaciones.setElementAt(verAtuacion.getActuacion(),
+						_actuaciones.indexOf(actuacion));
 				_ofActuaciones.setChoices(transformActuaciones());
 				_ofActuaciones.setFocus();
 			}
-			
-			if(f.equals(_txtEstado)) {
+
+			if (f.equals(_txtEstado)) {
 				_txtEstado.setEditable();
 				_txtEstado.setFocus();
 			}
-			
-			if(f.equals(_txtCategoria)) {
+
+			if (f.equals(_txtCategoria)) {
 				_txtCategoria.setEditable();
 				_txtCategoria.setFocus();
 			}
-			
-			if(f.equals(_txtTipo)) {
+
+			if (f.equals(_txtTipo)) {
 				_txtTipo.setEditable();
 				_txtTipo.setFocus();
 			}
-			
-			if(f.equals(_txtNotas)) {
+
+			if (f.equals(_txtNotas)) {
 				_txtNotas.setEditable();
 				_txtNotas.setFocus();
 			}
-			
-			if(f.equals(_nfPrioridad)) {
+
+			if (f.equals(_nfPrioridad)) {
 				_nfPrioridad.setEditable(true);
 				_nfPrioridad.setFocus();
 			}
-			try{
-				if(CampoPersonalizado.class.isInstance(f.getCookie())) {
-					VerCampoPersonalizadoController verCampo = new VerCampoPersonalizadoController((CampoPersonalizado)f.getCookie());
-					UiApplication.getUiApplication().pushModalScreen(verCampo.getScreen());
+			try {
+				if (CampoPersonalizado.class.isInstance(f.getCookie())) {
+					VerCampoPersonalizadoController verCampo = new VerCampoPersonalizadoController(
+							(CampoPersonalizado) f.getCookie());
+					UiApplication.getUiApplication().pushModalScreen(
+							verCampo.getScreen());
 					verCampo.actualizarCampoPersonalizado();
-					((EditableTextField)f).setText(verCampo.getCampo().getValor());
-					((EditableTextField)f).setLabel(verCampo.getCampo().getNombre()+": ");
-					((EditableTextField)f).setCookie(verCampo.getCampo());
+					((EditableTextField) f).setText(verCampo.getCampo()
+							.getValor());
+					((EditableTextField) f).setLabel(verCampo.getCampo()
+							.getNombre() + ": ");
+					((EditableTextField) f).setCookie(verCampo.getCampo());
 				}
-			}catch(Exception e) {
-				Dialog.alert("Edit Campo -> "+e.toString());
+			} catch (Exception e) {
+				Dialog.alert("Edit Campo -> " + e.toString());
 			}
 		}
 	};

@@ -35,14 +35,16 @@ public class VerJuzgadoController {
 				cambio = true;
 
 			if (cambio) {
-				_juzgado = new Juzgado(_screen.getNombre(), _screen.getCiudad(), _screen.getDireccion(), _screen.getTelefono(), _screen.getTipo());
+				_juzgado = new Juzgado(_screen.getNombre(),
+						_screen.getCiudad(), _screen.getDireccion(),
+						_screen.getTelefono(), _screen.getTipo());
 				persistence.actualizarJuzgado(_juzgado);
 			}
 		} catch (Exception e) {
 			Dialog.alert("actualizarJuzgado -> " + e.toString());
 		}
 	}
-	
+
 	public Juzgado getJuzgado() {
 		return _juzgado;
 	}

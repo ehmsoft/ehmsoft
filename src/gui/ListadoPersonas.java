@@ -2,11 +2,10 @@ package gui;
 
 import java.util.Vector;
 
-import core.Persona;
-
 import net.rim.device.api.ui.MenuItem;
 import net.rim.device.api.ui.UiApplication;
 import net.rim.device.api.ui.container.MainScreen;
+import core.Persona;
 
 public class ListadoPersonas extends MainScreen {
 
@@ -36,7 +35,7 @@ public class ListadoPersonas extends MainScreen {
 		add(_lista);
 		addMenuItem(menuVer);
 	}
-	
+
 	public ListadoPersonas(int tipo) {
 		super(MainScreen.VERTICAL_SCROLL | MainScreen.VERTICAL_SCROLLBAR);
 
@@ -60,16 +59,18 @@ public class ListadoPersonas extends MainScreen {
 		add(_lista);
 		addMenuItem(menuVer);
 	}
-	
+
 	private final MenuItem menuVer = new MenuItem("Ver", 0, 0) {
 
 		public void run() {
 			int index = _lista.getSelectedIndex();
-			VerPersonaController verPersona = new VerPersonaController((Persona) _lista.get(_lista, index));
-			UiApplication.getUiApplication().pushModalScreen(verPersona.getScreen());
+			VerPersonaController verPersona = new VerPersonaController(
+					(Persona) _lista.get(_lista, index));
+			UiApplication.getUiApplication().pushModalScreen(
+					verPersona.getScreen());
 			verPersona.actualizarPersona();
 			_lista.delete(index);
-			_lista.insert(index,verPersona.getPersona());
+			_lista.insert(index, verPersona.getPersona());
 			_lista.setSelectedIndex(index);
 		}
 	};

@@ -1,12 +1,12 @@
 package gui;
 
-import core.CampoPersonalizado;
 import net.rim.device.api.ui.Field;
 import net.rim.device.api.ui.MenuItem;
 import net.rim.device.api.ui.UiApplication;
 import net.rim.device.api.ui.component.BasicEditField;
 import net.rim.device.api.ui.component.CheckboxField;
 import net.rim.device.api.ui.container.MainScreen;
+import core.CampoPersonalizado;
 
 public class VerCampoPersonalizado extends MainScreen {
 
@@ -25,20 +25,23 @@ public class VerCampoPersonalizado extends MainScreen {
 
 		setTitle("Ver camopo personalizado");
 
-		_txtNombre = new EditableTextField("Nombre: ", _campoPersonalizado.getNombre());
+		_txtNombre = new EditableTextField("Nombre: ",
+				_campoPersonalizado.getNombre());
 
-		_txtValor = new EditableTextField("Valor: ", _campoPersonalizado.getValor());
+		_txtValor = new EditableTextField("Valor: ",
+				_campoPersonalizado.getValor());
 
-		_cfObligatorio = new CheckboxField(" Obligatorio", _campoPersonalizado.isObligatorio().booleanValue());
+		_cfObligatorio = new CheckboxField(" Obligatorio", _campoPersonalizado
+				.isObligatorio().booleanValue());
 		_cfObligatorio.setEditable(false);
 
 		_txtLongMax = new EditableTextField(BasicEditField.FILTER_INTEGER);
 		_txtLongMax.setLabel("Longitud máxima");
-		_txtLongMax.setText(_campoPersonalizado.getLongitudMax()+"");
+		_txtLongMax.setText(_campoPersonalizado.getLongitudMax() + "");
 
 		_txtLongMin = new EditableTextField(BasicEditField.FILTER_INTEGER);
 		_txtLongMin.setLabel("Longitud minima");
-		_txtLongMin.setText(_campoPersonalizado.getLongitudMin()+"");
+		_txtLongMin.setText(_campoPersonalizado.getLongitudMin() + "");
 
 		add(_txtNombre);
 		add(_txtValor);
@@ -55,29 +58,29 @@ public class VerCampoPersonalizado extends MainScreen {
 			UiApplication.getUiApplication().popScreen(getScreen());
 		}
 	};
-	
+
 	private final MenuItem menuEditar = new MenuItem("Editar", 0, 0) {
 
 		public void run() {
 			Field f = getFieldWithFocus();
-			
-			if(f.equals(_txtNombre)) {
+
+			if (f.equals(_txtNombre)) {
 				_txtNombre.setEditable();
 				_txtNombre.setFocus();
 			}
-			if(f.equals(_txtValor)) {
+			if (f.equals(_txtValor)) {
 				_txtValor.setEditable();
 				_txtValor.setFocus();
 			}
-			if(f.equals(_cfObligatorio)) {
+			if (f.equals(_cfObligatorio)) {
 				_cfObligatorio.setEditable(true);
 				_cfObligatorio.setFocus();
 			}
-			if(f.equals(_txtLongMax)) {
+			if (f.equals(_txtLongMax)) {
 				_txtLongMax.setEditable();
 				_txtLongMin.setFocus();
 			}
-			if(f.equals(_txtLongMin)) {
+			if (f.equals(_txtLongMin)) {
 				_txtLongMax.setEditable();
 				_txtLongMin.setFocus();
 			}

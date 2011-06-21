@@ -44,7 +44,7 @@ public class ListadoActuacionesController {
 		_screen = new ListadoActuaciones();
 		addActuaciones();
 	}
-	
+
 	public ListadoActuacionesController(Vector fuentes) {
 		try {
 			_persistencia = new Persistence();
@@ -56,7 +56,7 @@ public class ListadoActuacionesController {
 		_screen = new ListadoActuaciones(fuentes);
 		addActuaciones();
 	}
-	
+
 	public ListadoActuacionesController() {
 		try {
 			_persistencia = new Persistence();
@@ -88,7 +88,8 @@ public class ListadoActuacionesController {
 	}
 
 	public Actuacion getSelected() {
-		NuevaActuacionController nuevaActuacion = new NuevaActuacionController(_proceso);
+		NuevaActuacionController nuevaActuacion = new NuevaActuacionController(
+				_proceso);
 		if (String.class.isInstance(_screen.getSelected())) {
 			UiApplication.getUiApplication().pushModalScreen(
 					nuevaActuacion.getScreen());

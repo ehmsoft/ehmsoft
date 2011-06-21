@@ -11,7 +11,8 @@ public class ListadoCamposPersonalizadosLista extends ObjectListField {
 		if (this.get(this, index).getClass() == "Hola".getClass()) {
 			g.drawText((String) this.get(this, index), 0, y);
 		} else {
-			CampoPersonalizado objeto = (CampoPersonalizado) this.get(this, index);
+			CampoPersonalizado objeto = (CampoPersonalizado) this.get(this,
+					index);
 			String nombre = objeto.getNombre();
 			g.drawText(nombre, 0, y);
 		}

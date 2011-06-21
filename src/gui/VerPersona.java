@@ -1,10 +1,10 @@
 package gui;
 
-import core.Persona;
 import net.rim.device.api.ui.MenuItem;
 import net.rim.device.api.ui.UiApplication;
 import net.rim.device.api.ui.component.BasicEditField;
 import net.rim.device.api.ui.container.MainScreen;
+import core.Persona;
 
 public class VerPersona extends MainScreen {
 
@@ -29,18 +29,23 @@ public class VerPersona extends MainScreen {
 		else
 			setTitle("Ver persona");
 
-		_txtNombre = new EditableTextField("Nombre: ", _persona.getNombre(),BasicEditField.NO_NEWLINE);
+		_txtNombre = new EditableTextField("Nombre: ", _persona.getNombre(),
+				BasicEditField.NO_NEWLINE);
 
-		_txtId = new EditableTextField("Cédula: ", _persona.getId(),BasicEditField.NO_NEWLINE);
+		_txtId = new EditableTextField("Cédula: ", _persona.getId(),
+				BasicEditField.NO_NEWLINE);
 
-		_txtTelefono = new EditableTextField("Teléfono: ", _persona.getTelefono(),BasicEditField.NO_NEWLINE);
+		_txtTelefono = new EditableTextField("Teléfono: ",
+				_persona.getTelefono(), BasicEditField.NO_NEWLINE);
 
 		_txtDireccion = new EditableTextField("Dirección: ",
-				_persona.getDireccion(),BasicEditField.NO_NEWLINE);
+				_persona.getDireccion(), BasicEditField.NO_NEWLINE);
 
-		_txtCorreo = new EditableTextField("Correo: ", _persona.getCorreo(),BasicEditField.NO_NEWLINE);
+		_txtCorreo = new EditableTextField("Correo: ", _persona.getCorreo(),
+				BasicEditField.NO_NEWLINE);
 
-		_txtNotas = new EditableTextField("Notas: ", _persona.getNotas(),BasicEditField.NO_NEWLINE);
+		_txtNotas = new EditableTextField("Notas: ", _persona.getNotas(),
+				BasicEditField.NO_NEWLINE);
 
 		add(_txtNombre);
 		add(_txtId);
@@ -58,7 +63,7 @@ public class VerPersona extends MainScreen {
 			UiApplication.getUiApplication().popScreen(getScreen());
 		}
 	};
-	
+
 	private final MenuItem menuEditar = new MenuItem("Editar", 0, 0) {
 
 		public void run() {
