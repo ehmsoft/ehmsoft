@@ -106,11 +106,11 @@ public class Persistence implements Cargado, Guardado {
 			connMgr.prepararBD();
 			d = DatabaseFactory.open(connMgr.getDbLocation());
 		if(persona.getTipo()==1){
-			stDelPersona1 = d.createStatement("DELETE * FROM demandantes WHERE id_demandante = ? ");
+			stDelPersona1 = d.createStatement("DELETE FROM demandantes WHERE id_demandante = ? ");
 			stDelPersona2 = d.createStatement("DELETE id_demandante FROM procesos WHERE id_demandante = ? ");
 		}
 			else if(persona.getTipo()==2){
-				stDelPersona1 = d.createStatement("DELETE * FROM demandados WHERE id_demandante = ? ");
+				stDelPersona1 = d.createStatement("DELETE FROM demandados WHERE id_demandado = ? ");
 				stDelPersona2 = d.createStatement("DELETE id_demandado FROM procesos WHERE id_demandado = ? ");
 			}
 			else{
@@ -118,12 +118,15 @@ public class Persistence implements Cargado, Guardado {
 			}
 			
 			stDelPersona1.prepare();
-			stDelPersona2.prepare();
 			stDelPersona1.bind(1, persona.getId_persona());
-			stDelPersona2.bind(2, persona.getId_persona());
 			stDelPersona1.execute();
-			stDelPersona2.execute();
 			stDelPersona1.close();
+			stDelPersona2.prepare();
+			
+			stDelPersona2.bind(2, persona.getId_persona());
+			
+			stDelPersona2.execute();
+			
 			stDelPersona2.close();
 		
 			
@@ -193,6 +196,23 @@ public class Persistence implements Cargado, Guardado {
 
 	public void borrarJuzgado(Juzgado juzgado) throws Exception {
 		// TODO Auto-generated method stub
+		Database d = null;
+		try{
+			connMgr.prepararBD();
+			d = DatabaseFactory.open(connMgr.getDbLocation());
+			Statement stJuzgado = d.createStatement("DELETE FROM juzgados WHERE id_juzgado = ?");
+			stJuzgado.prepare();
+			stJuzgado.bind(1, juzgado.getId_juzgado());
+			stJuzgado.execute();
+			stJuzgado.close();
+			d.close();
+		} catch (Exception e){
+			throw e;
+		} finally {
+			if (d != null){
+				d.close();
+			}
+		}
 		
 	}
 
