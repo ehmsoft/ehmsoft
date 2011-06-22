@@ -167,13 +167,11 @@ public class Persistence implements Cargado, Guardado {
 		try{
 			connMgr.prepararBD();
 			d = DatabaseFactory.open(connMgr.getDbLocation());
-			String fecha = actuacion.getFecha().get(Calendar.YEAR)+"-"+(actuacion.getFecha().get(Calendar.MONTH)+1)+"-"+actuacion.getFecha().get(Calendar.DAY_OF_MONTH);
-			String fechaProxima = actuacion.getFechaProxima().get(Calendar.YEAR)+"-"+(actuacion.getFechaProxima().get(Calendar.MONTH)+1)+"-"+actuacion.getFechaProxima().get(Calendar.DAY_OF_MONTH);
 			stAcActuacion = d.createStatement("UPDATE actuaciones SET juzgado = ?,"+" fecha_creacion = datetime(?),"+" fecha_proxima = datetime(?),"+" descripcion = ? WHERE id_actuacion = ?");
 			stAcActuacion.prepare();
 			stAcActuacion.bind(1, actuacion.getJuzgado().getId_juzgado());
-			stAcActuacion.bind(2, fecha);
-			stAcActuacion.bind(3, fechaProxima);
+			stAcActuacion.bind(2, calendarToString(actuacion.getFecha()));
+			stAcActuacion.bind(3, calendarToString(actuacion.getFechaProxima()));
 			stAcActuacion.bind(4, actuacion.getDescripcion());
 			stAcActuacion.bind(5, actuacion.getId_actuacion());
 			stAcActuacion.execute();
@@ -191,44 +189,14 @@ public class Persistence implements Cargado, Guardado {
 	public void guardarActuacion(Actuacion actuacion, String id_proceso) throws Exception {
 		Database d = null;
 		try{
-			String fecha ="", fechaProxima="";
 			connMgr.prepararBD();
 			d = DatabaseFactory.open(connMgr.getDbLocation());
-			//-------------------------------------- comparaciones para l;a fecha de creacion
-			if ((actuacion.getFecha().get(Calendar.MONTH)+ 1) < 10){
-				if (actuacion.getFecha().get(Calendar.DAY_OF_MONTH) < 10){
-					fecha = actuacion.getFecha().get(Calendar.YEAR)+"-"+"0"+(actuacion.getFecha().get(Calendar.MONTH)+1)+"-"+"0"+actuacion.getFecha().get(Calendar.DAY_OF_MONTH)+" "+actuacion.getFecha().get(Calendar.HOUR_OF_DAY)+":"+actuacion.getFecha().get(Calendar.MINUTE);
-				}
-				fecha = actuacion.getFecha().get(Calendar.YEAR)+"-"+"0"+(actuacion.getFecha().get(Calendar.MONTH)+1)+"-"+actuacion.getFecha().get(Calendar.DAY_OF_MONTH)+" "+actuacion.getFecha().get(Calendar.HOUR_OF_DAY)+":"+actuacion.getFecha().get(Calendar.MINUTE);
-			}
-			else if (actuacion.getFecha().get(Calendar.DAY_OF_MONTH) < 10){
-				fecha = actuacion.getFecha().get(Calendar.YEAR)+"-"+(actuacion.getFecha().get(Calendar.MONTH)+1)+"-"+"0"+actuacion.getFecha().get(Calendar.DAY_OF_MONTH)+" "+actuacion.getFecha().get(Calendar.HOUR_OF_DAY)+":"+actuacion.getFecha().get(Calendar.MINUTE);
-			}
-			if ((actuacion.getFecha().get(Calendar.MONTH)+ 1) >= 10 && actuacion.getFecha().get(Calendar.DAY_OF_MONTH) >= 10){
-				fecha = actuacion.getFecha().get(Calendar.YEAR)+"-"+(actuacion.getFecha().get(Calendar.MONTH)+1)+"-"+actuacion.getFecha().get(Calendar.DAY_OF_MONTH)+" "+actuacion.getFecha().get(Calendar.HOUR_OF_DAY)+":"+actuacion.getFecha().get(Calendar.MINUTE);
-			}
-			//-------------------------------- comparaciones para la fecha proxima
-			if ((actuacion.getFecha().get(Calendar.MONTH)+ 1) < 10){
-				if (actuacion.getFechaProxima().get(Calendar.DAY_OF_MONTH) < 10){
-					fechaProxima = actuacion.getFechaProxima().get(Calendar.YEAR)+"-"+"0"+(actuacion.getFechaProxima().get(Calendar.MONTH)+1)+"-"+"0"+(actuacion.getFechaProxima().get(Calendar.DAY_OF_MONTH))+" "+actuacion.getFechaProxima().get(Calendar.HOUR_OF_DAY)+":"+actuacion.getFechaProxima().get(Calendar.MINUTE);
-				}
-				fechaProxima = actuacion.getFechaProxima().get(Calendar.YEAR)+"-"+"0"+(actuacion.getFechaProxima().get(Calendar.MONTH)+1)+"-"+(actuacion.getFechaProxima().get(Calendar.DAY_OF_MONTH))+" "+actuacion.getFechaProxima().get(Calendar.HOUR_OF_DAY)+":"+actuacion.getFechaProxima().get(Calendar.MINUTE);
-
-			}
-			else if (actuacion.getFechaProxima().get(Calendar.DAY_OF_MONTH) < 10){
-				fechaProxima = actuacion.getFechaProxima().get(Calendar.YEAR)+"-"+(actuacion.getFechaProxima().get(Calendar.MONTH)+1)+"-"+"0"+(actuacion.getFechaProxima().get(Calendar.DAY_OF_MONTH))+" "+actuacion.getFechaProxima().get(Calendar.HOUR_OF_DAY)+":"+actuacion.getFechaProxima().get(Calendar.MINUTE);
-
-			}
-			if ((actuacion.getFecha().get(Calendar.MONTH)+ 1) >= 10 && actuacion.getFechaProxima().get(Calendar.DAY_OF_MONTH) >= 10){
-				fechaProxima = actuacion.getFechaProxima().get(Calendar.YEAR)+"-"+(actuacion.getFechaProxima().get(Calendar.MONTH)+1)+"-"+(actuacion.getFechaProxima().get(Calendar.DAY_OF_MONTH))+" "+actuacion.getFechaProxima().get(Calendar.HOUR_OF_DAY)+":"+actuacion.getFechaProxima().get(Calendar.MINUTE);
-
-			}
 			Statement stActuacion = d.createStatement("INSERT INTO actuaciones VALUES( NULL,?,?,datetime(?),datetime(?),?)");
 			stActuacion.prepare();
 			stActuacion.bind(1,Integer.parseInt(id_proceso));
 			stActuacion.bind(2,actuacion.getJuzgado().getId_juzgado());
-			stActuacion.bind(3,fecha);
-			stActuacion.bind(4,fechaProxima);
+			stActuacion.bind(3,calendarToString(actuacion.getFecha()));
+			stActuacion.bind(4,calendarToString(actuacion.getFechaProxima()));
 			stActuacion.bind(5,actuacion.getDescripcion());
 			stActuacion.execute(); 
 			stActuacion.close();
@@ -298,18 +266,16 @@ public class Persistence implements Cargado, Guardado {
 	}
 
 	public void actualizarProceso(Proceso proceso) throws Exception {
-		// TODO Auto-generated method stub
 		Database d = null;
 		Statement stAcProceso;
 		try{
 			connMgr.prepararBD();
 			d = DatabaseFactory.open(connMgr.getDbLocation());
-			String fecha = proceso.getFecha().get(Calendar.YEAR)+"-"+proceso.getFecha().get(Calendar.MONTH)+"-"+proceso.getFecha().get(Calendar.DAY_OF_MONTH);
 			stAcProceso = d.createStatement("UPDATE procesos SET id_demandante = ?,"+" id_demandado = ?,"+" fecha_creacion = ?,"+" radicado = ?,"+" radicado_unico = ?,"+" estado = ?,"+" tipo = ?,"+" notas = ?,"+" prioridad = ?,"+" id_juzgado = ?,"+" id_categoria = ? WHERE id_proceso = ?");
 			stAcProceso.prepare();
 			stAcProceso.bind(1, proceso.getDemandante().getId_persona());
 			stAcProceso.bind(2, proceso.getDemandado().getId_persona());
-			stAcProceso.bind(3, fecha);
+			stAcProceso.bind(3, calendarToString(proceso.getFecha()));
 			stAcProceso.bind(4, proceso.getRadicado());
 			stAcProceso.bind(5, proceso.getRadicadoUnico());
 			stAcProceso.bind(6, proceso.getEstado());
@@ -338,12 +304,11 @@ public class Persistence implements Cargado, Guardado {
 		try{
 			connMgr.prepararBD();
 			d = DatabaseFactory.open(connMgr.getDbLocation());
-			String fecha = proceso.getFecha().get(Calendar.YEAR)+"-"+proceso.getFecha().get(Calendar.MONTH)+"-"+proceso.getFecha().get(Calendar.DAY_OF_MONTH);
 			Statement stProceso = d.createStatement("INSERT INTO procesos VALUES(NULL,?,?,?,?,?,?,?,?,?,?," + "'Categoria por defecto')"); 	
 			stProceso.prepare();
 			stProceso.bind(1,proceso.getDemandante().getId_persona());   //ingresa el id del demandante
 			stProceso.bind(2,proceso.getDemandado().getId_persona());
-			stProceso.bind(3,fecha);
+			stProceso.bind(3,calendarToString(proceso.getFecha()));
 			stProceso.bind(4,proceso.getRadicado());
 			stProceso.bind(5,proceso.getRadicadoUnico());
 			stProceso.bind(6,proceso.getEstado());
@@ -821,6 +786,38 @@ public class Persistence implements Cargado, Guardado {
 			calendar_return.set(Calendar.MINUTE, Integer.parseInt(fecha.substring(14, 16)));
 		}
 		return calendar_return;
+	}
+	
+	private String calendarToString (Calendar fecha){
+		String dia,mes,hora,minuto,nuevafecha;
+		
+		if ((fecha.get(Calendar.MONTH)+1) < 10){
+			mes = "0"+(fecha.get(Calendar.MONTH)+1);
+		}
+		else {
+			mes = Integer.toString((fecha.get(Calendar.MONTH)+1));
+		}
+		if (fecha.get(Calendar.DAY_OF_MONTH) < 10){
+			dia = "0"+fecha.get(Calendar.DAY_OF_MONTH);
+		}
+		else {
+			dia = Integer.toString(fecha.get(Calendar.DAY_OF_MONTH));
+		}
+		if (fecha.get(Calendar.HOUR_OF_DAY) < 10){
+			hora = "0"+fecha.get(Calendar.HOUR_OF_DAY);
+		}
+		else {
+			hora = Integer.toString(fecha.get(Calendar.HOUR_OF_DAY));
+		}
+		if (fecha.get(Calendar.MINUTE) < 10){
+			minuto = "0"+fecha.get(Calendar.MINUTE);
+		}
+		else {
+			minuto = Integer.toString(fecha.get(Calendar.MINUTE));
+		}
+		nuevafecha = fecha.get(Calendar.YEAR)+"-"+mes+"-"+dia+" "+hora+":"+minuto;
+		return nuevafecha;
+		
 	}
 
 }
