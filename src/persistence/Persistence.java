@@ -167,7 +167,7 @@ public class Persistence implements Cargado, Guardado {
 		try{
 			connMgr.prepararBD();
 			d = DatabaseFactory.open(connMgr.getDbLocation());
-			stAcActuacion = d.createStatement("UPDATE actuaciones SET juzgado = ?,"+" fecha_creacion = datetime(?),"+" fecha_proxima = datetime(?),"+" descripcion = ? WHERE id_actuacion = ?");
+			stAcActuacion = d.createStatement("UPDATE actuaciones SET id_juzgado = ?,"+" fecha_creacion = datetime(?),"+" fecha_proxima = datetime(?),"+" descripcion = ? WHERE id_actuacion = ?");
 			stAcActuacion.prepare();
 			stAcActuacion.bind(1, actuacion.getJuzgado().getId_juzgado());
 			stAcActuacion.bind(2, calendarToString(actuacion.getFecha()));
