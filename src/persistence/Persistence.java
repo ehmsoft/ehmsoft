@@ -271,7 +271,7 @@ public class Persistence implements Cargado, Guardado {
 		try{
 			connMgr.prepararBD();
 			d = DatabaseFactory.open(connMgr.getDbLocation());
-			stAcProceso = d.createStatement("UPDATE procesos SET id_demandante = ?,"+" id_demandado = ?,"+" fecha_creacion = ?,"+" radicado = ?,"+" radicado_unico = ?,"+" estado = ?,"+" tipo = ?,"+" notas = ?,"+" prioridad = ?,"+" id_juzgado = ?,"+" id_categoria = ? WHERE id_proceso = ?");
+			stAcProceso = d.createStatement("UPDATE procesos SET id_demandante = ?,"+" id_demandado = ?,"+" fecha_creacion = datetime(?),"+" radicado = ?,"+" radicado_unico = ?,"+" estado = ?,"+" tipo = ?,"+" notas = ?,"+" prioridad = ?,"+" id_juzgado = ?,"+" id_categoria = ? WHERE id_proceso = ?");
 			stAcProceso.prepare();
 			stAcProceso.bind(1, proceso.getDemandante().getId_persona());
 			stAcProceso.bind(2, proceso.getDemandado().getId_persona());
@@ -304,7 +304,7 @@ public class Persistence implements Cargado, Guardado {
 		try{
 			connMgr.prepararBD();
 			d = DatabaseFactory.open(connMgr.getDbLocation());
-			Statement stProceso = d.createStatement("INSERT INTO procesos VALUES(NULL,?,?,?,?,?,?,?,?,?,?," + "'Categoria por defecto')"); 	
+			Statement stProceso = d.createStatement("INSERT INTO procesos VALUES(NULL,?,?,datetime(?),?,?,?,?,?,?,?," + "'Categoria por defecto')"); 	
 			stProceso.prepare();
 			stProceso.bind(1,proceso.getDemandante().getId_persona());   //ingresa el id del demandante
 			stProceso.bind(2,proceso.getDemandado().getId_persona());
