@@ -106,29 +106,27 @@ public class Persistence implements Cargado, Guardado {
 			connMgr.prepararBD();
 			d = DatabaseFactory.open(connMgr.getDbLocation());
 		if(persona.getTipo()==1){
-			stDelPersona1 = d.createStatement("DELETE FROM demandantes WHERE id_demandante = ? ");
-			stDelPersona2 = d.createStatement("DELETE id_demandante FROM procesos WHERE id_demandante = ? ");
+			stDelPersona1 = d.createStatement("DELETE FROM demandantes INNER JOIN procesos ON demandantes.id_demandante = procesos.id_demandante WERE demandantes.id_procesos = ? ");
+			stDelPersona2 = d.createStatement("UPDATE procesos SET id_demandante = null WHERE id_demandante = ?");
+
 		}
 			else if(persona.getTipo()==2){
 				stDelPersona1 = d.createStatement("DELETE FROM demandados WHERE id_demandado = ? ");
-				stDelPersona2 = d.createStatement("DELETE id_demandado FROM procesos WHERE id_demandado = ? ");
+				stDelPersona2 = d.createStatement("UPDATE procesos SET id_demandante = null WHERE id_demandante = ?");
 			}
 			else{
 				throw new Exception("Tipo persona invalido");
 			}
 			
 			stDelPersona1.prepare();
-			stDelPersona1.bind(1, persona.getId_persona());
-			stDelPersona1.execute();
-			stDelPersona1.close();
 			stDelPersona2.prepare();
-			
+			stDelPersona1.bind(1, persona.getId_persona());
 			stDelPersona2.bind(2, persona.getId_persona());
-			
+			stDelPersona1.execute();
 			stDelPersona2.execute();
-			
+			stDelPersona1.close();
 			stDelPersona2.close();
-		
+
 			
 		} catch (Exception e){
 			throw e;
