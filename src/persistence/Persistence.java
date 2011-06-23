@@ -278,12 +278,11 @@ public class Persistence implements Cargado, Guardado {
 		try{
 			connMgr.prepararBD();
 			d = DatabaseFactory.open(connMgr.getDbLocation());
-			Statement stDelActuacion = d.createStatement("DELETE FROM actuaciones WHERE id_actuacion = ?)");
+			Statement stDelActuacion = d.createStatement("DELETE FROM actuaciones WHERE id_actuacion = ?");
 			stDelActuacion.prepare();
 			stDelActuacion.bind(1,actuacion.getId_actuacion());
 			stDelActuacion.execute(); 
 			stDelActuacion.close();
-			d.close();
 		} catch (Exception e){
 			throw e;
 		} finally {
@@ -381,7 +380,7 @@ public class Persistence implements Cargado, Guardado {
 		try{
 			connMgr.prepararBD();
 			d = DatabaseFactory.open(connMgr.getDbLocation());
-			Statement stProceso = d.createStatement("INSERT INTO procesos VALUES(NULL,?,?,datetime(?),?,?,?,?,?,?,?," + "'Categoria por defecto')"); 	
+			Statement stProceso = d.createStatement("INSERT INTO procesos VALUES(NULL,?,?,datetime(?),?,?,?,?,?,?,?,1)"); 	
 			stProceso.prepare();
 			stProceso.bind(1,proceso.getDemandante().getId_persona());   //ingresa el id del demandante
 			stProceso.bind(2,proceso.getDemandado().getId_persona());
