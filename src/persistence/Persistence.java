@@ -106,13 +106,13 @@ public class Persistence implements Cargado, Guardado {
 			connMgr.prepararBD();
 			d = DatabaseFactory.open(connMgr.getDbLocation());
 		if(persona.getTipo()==1){
-			stDelPersona1 = d.createStatement("DELETE FROM demandantes INNER JOIN procesos ON demandantes.id_demandante = procesos.id_demandante WERE demandantes.id_procesos = ? ");
+			stDelPersona1 = d.createStatement("DELETE FROM demandantes WHERE id_demandante = ? ");
 			stDelPersona2 = d.createStatement("UPDATE procesos SET id_demandante = null WHERE id_demandante = ?");
 
 		}
 			else if(persona.getTipo()==2){
 				stDelPersona1 = d.createStatement("DELETE FROM demandados WHERE id_demandado = ? ");
-				stDelPersona2 = d.createStatement("UPDATE procesos SET id_demandante = null WHERE id_demandante = ?");
+				stDelPersona2 = d.createStatement("UPDATE procesos SET id_demandado = null WHERE id_demandado = ?");
 			}
 			else{
 				throw new Exception("Tipo persona invalido");
@@ -121,7 +121,7 @@ public class Persistence implements Cargado, Guardado {
 			stDelPersona1.prepare();
 			stDelPersona2.prepare();
 			stDelPersona1.bind(1, persona.getId_persona());
-			stDelPersona2.bind(2, persona.getId_persona());
+			stDelPersona2.bind(1, persona.getId_persona());
 			stDelPersona1.execute();
 			stDelPersona2.execute();
 			stDelPersona1.close();
@@ -198,11 +198,17 @@ public class Persistence implements Cargado, Guardado {
 		try{
 			connMgr.prepararBD();
 			d = DatabaseFactory.open(connMgr.getDbLocation());
-			Statement stJuzgado = d.createStatement("DELETE FROM juzgados WHERE id_juzgado = ?");
-			stJuzgado.prepare();
-			stJuzgado.bind(1, juzgado.getId_juzgado());
-			stJuzgado.execute();
-			stJuzgado.close();
+			Statement stDelJuzgado1 = d.createStatement("DELETE FROM juzgados WHERE id_juzgado = ?");
+			Statement stDelJuzgado2 = d.createStatement("UPDATE procesos SET id_juzgado = null WHERE id_juzgado = ?");
+
+			stDelJuzgado1.prepare();
+			stDelJuzgado2.prepare();
+			stDelJuzgado1.bind(1, juzgado.getId_juzgado());
+			stDelJuzgado2.bind(1, juzgado.getId_juzgado());
+			stDelJuzgado1.execute();
+			stDelJuzgado2.execute();
+			stDelJuzgado1.close();
+			stDelJuzgado1.close();
 			d.close();
 		} catch (Exception e){
 			throw e;
@@ -268,6 +274,23 @@ public class Persistence implements Cargado, Guardado {
 
 	public void borrarActuacion(Actuacion actuacion) throws Exception {
 		// TODO Auto-generated method stub
+		Database d = null;
+		try{
+			connMgr.prepararBD();
+			d = DatabaseFactory.open(connMgr.getDbLocation());
+			Statement stDelActuacion = d.createStatement("DELETE FROM actuaciones WHERE id_actuacion = ?)");
+			stDelActuacion.prepare();
+			stDelActuacion.bind(1,actuacion.getId_actuacion());
+			stDelActuacion.execute(); 
+			stDelActuacion.close();
+			d.close();
+		} catch (Exception e){
+			throw e;
+		} finally {
+			if (d != null){
+				d.close();
+			}
+		}
 
 	}
 
