@@ -28,15 +28,13 @@ public class ListadoPersonasController {
 			try {
 				_vectorPersonas = _persistencia.consultarDemandantes();
 			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				Dialog.alert(e.toString());
 			}
 		else
 			try {
-				_vectorPersonas = _persistencia.consultarDemandantes();
+				_vectorPersonas = _persistencia.consultarDemandados();
 			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				Dialog.alert(e.toString());
 			}
 
 		_screen = new ListadoPersonas(tipo, fuentes);
@@ -61,7 +59,7 @@ public class ListadoPersonasController {
 			}
 		else
 			try {
-				_vectorPersonas = _persistencia.consultarDemandantes();
+				_vectorPersonas = _persistencia.consultarDemandados();
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

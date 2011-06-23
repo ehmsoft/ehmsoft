@@ -23,7 +23,40 @@ public class Persistence implements Cargado, Guardado {
 
 	public void actualizarPersona(Persona persona) throws Exception {
 		// TODO Auto-generated method stub
-
+		Database d = null;
+		Statement stAcPersona1;
+		try{
+			connMgr.prepararBD();
+			d = DatabaseFactory.open(connMgr.getDbLocation());
+		if(persona.getTipo()==1){
+			stAcPersona1 = d.createStatement("UPDATE demandantes SET cedula = ?,"+" nombre = ?,"+" telefono = ?,"+" direccion = ?,"+"correo= ?,"+"notas = ? WHERE id_demandante = ?");
+		}
+			else if(persona.getTipo()==2){
+				stAcPersona1 = d.createStatement("UPDATE demandados SET cedula = ?,"+" nombre = ?,"+" telefono = ?,"+" direccion = ?,"+"correo= ?,"+" notas = ? WHERE id_demandado = ?");
+			}
+			else{
+				throw new Exception("Tipo persona invalido");
+			}
+			
+			stAcPersona1.prepare();
+			stAcPersona1.bind(1, persona.getId());
+			stAcPersona1.bind(2, persona.getNombre());
+			stAcPersona1.bind(3, persona.getTelefono());
+			stAcPersona1.bind(4, persona.getDireccion());
+			stAcPersona1.bind(5, persona.getCorreo());
+			stAcPersona1.bind(6, persona.getNotas());
+			stAcPersona1.bind(7, persona.getId_persona());
+			stAcPersona1.execute();
+			stAcPersona1.close();
+		
+			
+		} catch (Exception e){
+			throw e;
+		} finally {
+			if (d != null){
+				d.close();
+			}
+		}
 	}
 
 	public void guardarPersona(Persona persona) throws Exception {
@@ -66,10 +99,70 @@ public class Persistence implements Cargado, Guardado {
 
 	public void borrarPersona(Persona persona) throws Exception {
 		// TODO Auto-generated method stub
+		Database d = null;
+		Statement stDelPersona1;
+		Statement stDelPersona2;
+		try{
+			connMgr.prepararBD();
+			d = DatabaseFactory.open(connMgr.getDbLocation());
+		if(persona.getTipo()==1){
+			stDelPersona1 = d.createStatement("DELETE FROM demandantes WHERE id_demandante = ? ");
+			stDelPersona2 = d.createStatement("UPDATE procesos SET id_demandante = null WHERE id_demandante = ?");
+
+		}
+			else if(persona.getTipo()==2){
+				stDelPersona1 = d.createStatement("DELETE FROM demandados WHERE id_demandado = ? ");
+				stDelPersona2 = d.createStatement("UPDATE procesos SET id_demandado = null WHERE id_demandado = ?");
+			}
+			else{
+				throw new Exception("Tipo persona invalido");
+			}
+			
+			stDelPersona1.prepare();
+			stDelPersona2.prepare();
+			stDelPersona1.bind(1, persona.getId_persona());
+			stDelPersona2.bind(1, persona.getId_persona());
+			stDelPersona1.execute();
+			stDelPersona2.execute();
+			stDelPersona1.close();
+			stDelPersona2.close();
+
+			
+		} catch (Exception e){
+			throw e;
+		} finally {
+			if (d != null){
+				d.close();
+			}
+		}
+		
 
 	}
 
 	public void actualizarJuzgado(Juzgado juzgado) throws Exception {
+		Database d = null;
+		Statement stAcJuzgado;
+		try{
+			connMgr.prepararBD();
+			d = DatabaseFactory.open(connMgr.getDbLocation());
+			stAcJuzgado = d.createStatement("UPDATE juzgados SET nombre = ?,"+" ciudad = ?,"+" telefono = ?,"+" direccion=?,"+" tipo = ? WHERE id_juzgado = ?");
+			stAcJuzgado.prepare();
+			stAcJuzgado.bind(1, juzgado.getNombre());
+			stAcJuzgado.bind(2, juzgado.getCiudad());
+			stAcJuzgado.bind(3, juzgado.getTelefono());
+			stAcJuzgado.bind(4, juzgado.getDireccion());
+			stAcJuzgado.bind(5, juzgado.getTipo());
+			stAcJuzgado.bind(6, juzgado.getId_juzgado());
+			stAcJuzgado.execute();
+			stAcJuzgado.close();
+			
+		} catch (Exception e){
+			throw e;
+		} finally {
+			if (d != null){
+				d.close();
+			}
+		}
 		
 
 	}
@@ -101,12 +194,56 @@ public class Persistence implements Cargado, Guardado {
 
 	public void borrarJuzgado(Juzgado juzgado) throws Exception {
 		// TODO Auto-generated method stub
+		Database d = null;
+		try{
+			connMgr.prepararBD();
+			d = DatabaseFactory.open(connMgr.getDbLocation());
+			Statement stDelJuzgado1 = d.createStatement("DELETE FROM juzgados WHERE id_juzgado = ?");
+			Statement stDelJuzgado2 = d.createStatement("UPDATE procesos SET id_juzgado = null WHERE id_juzgado = ?");
 
+			stDelJuzgado1.prepare();
+			stDelJuzgado2.prepare();
+			stDelJuzgado1.bind(1, juzgado.getId_juzgado());
+			stDelJuzgado2.bind(1, juzgado.getId_juzgado());
+			stDelJuzgado1.execute();
+			stDelJuzgado2.execute();
+			stDelJuzgado1.close();
+			stDelJuzgado1.close();
+			d.close();
+		} catch (Exception e){
+			throw e;
+		} finally {
+			if (d != null){
+				d.close();
+			}
+		}
+		
 	}
 
-	public void actualizarActuacion(Actuacion actuacion) throws Exception {
+	public void actualizarActuacion(Actuacion actuacion) throws Exception {   // id_proceso no se puede cambiar
 		// TODO Auto-generated method stub
-
+		Database d = null;
+		Statement stAcActuacion;
+		try{
+			connMgr.prepararBD();
+			d = DatabaseFactory.open(connMgr.getDbLocation());
+			stAcActuacion = d.createStatement("UPDATE actuaciones SET id_juzgado = ?,"+" fecha_creacion = datetime(?),"+" fecha_proxima = datetime(?),"+" descripcion = ? WHERE id_actuacion = ?");
+			stAcActuacion.prepare();
+			stAcActuacion.bind(1, actuacion.getJuzgado().getId_juzgado());
+			stAcActuacion.bind(2, calendarToString(actuacion.getFecha()));
+			stAcActuacion.bind(3, calendarToString(actuacion.getFechaProxima()));
+			stAcActuacion.bind(4, actuacion.getDescripcion());
+			stAcActuacion.bind(5, actuacion.getId_actuacion());
+			stAcActuacion.execute();
+			stAcActuacion.close();
+			
+		} catch (Exception e){
+			throw e;
+		} finally {
+			if (d != null){
+				d.close();
+			}
+		}
 	}
 
 	public void guardarActuacion(Actuacion actuacion, String id_proceso) throws Exception {
@@ -114,14 +251,12 @@ public class Persistence implements Cargado, Guardado {
 		try{
 			connMgr.prepararBD();
 			d = DatabaseFactory.open(connMgr.getDbLocation());
-			String fecha = actuacion.getFecha().get(Calendar.YEAR)+"-"+actuacion.getFecha().get(Calendar.MONTH)+"-"+actuacion.getFecha().get(Calendar.DAY_OF_MONTH);
-			String fechaProxima = actuacion.getFechaProxima().get(Calendar.YEAR)+"-"+actuacion.getFechaProxima().get(Calendar.MONTH)+"-"+actuacion.getFechaProxima().get(Calendar.DAY_OF_MONTH);
-			Statement stActuacion = d.createStatement("INSERT INTO actuaciones VALUES( NULL,?,?,?,?,?)");
+			Statement stActuacion = d.createStatement("INSERT INTO actuaciones VALUES( NULL,?,?,datetime(?),datetime(?),?)");
 			stActuacion.prepare();
 			stActuacion.bind(1,Integer.parseInt(id_proceso));
 			stActuacion.bind(2,actuacion.getJuzgado().getId_juzgado());
-			stActuacion.bind(3,fecha);
-			stActuacion.bind(4,fechaProxima);
+			stActuacion.bind(3,calendarToString(actuacion.getFecha()));
+			stActuacion.bind(4,calendarToString(actuacion.getFechaProxima()));
 			stActuacion.bind(5,actuacion.getDescripcion());
 			stActuacion.execute(); 
 			stActuacion.close();
@@ -139,12 +274,29 @@ public class Persistence implements Cargado, Guardado {
 
 	public void borrarActuacion(Actuacion actuacion) throws Exception {
 		// TODO Auto-generated method stub
+		Database d = null;
+		try{
+			connMgr.prepararBD();
+			d = DatabaseFactory.open(connMgr.getDbLocation());
+			Statement stDelActuacion = d.createStatement("DELETE FROM actuaciones WHERE id_actuacion = ?");
+			stDelActuacion.prepare();
+			stDelActuacion.bind(1,actuacion.getId_actuacion());
+			stDelActuacion.execute(); 
+			stDelActuacion.close();
+		} catch (Exception e){
+			throw e;
+		} finally {
+			if (d != null){
+				d.close();
+			}
+		}
 
 	}
 
 	public void actualizarCampoPersonalizado(CampoPersonalizado campo)
 	throws Exception {
 		// TODO Auto-generated method stub
+		
 
 	}
 
@@ -190,7 +342,35 @@ public class Persistence implements Cargado, Guardado {
 	}
 
 	public void actualizarProceso(Proceso proceso) throws Exception {
-		// TODO Auto-generated method stub
+		Database d = null;
+		Statement stAcProceso;
+		try{
+			connMgr.prepararBD();
+			d = DatabaseFactory.open(connMgr.getDbLocation());
+			stAcProceso = d.createStatement("UPDATE procesos SET id_demandante = ?,"+" id_demandado = ?,"+" fecha_creacion = datetime(?),"+" radicado = ?,"+" radicado_unico = ?,"+" estado = ?,"+" tipo = ?,"+" notas = ?,"+" prioridad = ?,"+" id_juzgado = ?,"+" id_categoria = ? WHERE id_proceso = ?");
+			stAcProceso.prepare();
+			stAcProceso.bind(1, proceso.getDemandante().getId_persona());
+			stAcProceso.bind(2, proceso.getDemandado().getId_persona());
+			stAcProceso.bind(3, calendarToString(proceso.getFecha()));
+			stAcProceso.bind(4, proceso.getRadicado());
+			stAcProceso.bind(5, proceso.getRadicadoUnico());
+			stAcProceso.bind(6, proceso.getEstado());
+			stAcProceso.bind(7, proceso.getTipo());
+			stAcProceso.bind(8, proceso.getNotas());
+			stAcProceso.bind(9, proceso.getPrioridad());
+			stAcProceso.bind(10, proceso.getJuzgado().getId_juzgado());
+			stAcProceso.bind(11, proceso.getCategoria());
+			stAcProceso.bind(12, proceso.getId_proceso());
+			stAcProceso.execute();
+			stAcProceso.close();
+			
+		} catch (Exception e){
+			throw e;
+		} finally {
+			if (d != null){
+				d.close();
+			}
+		}
 
 	}
 
@@ -200,12 +380,11 @@ public class Persistence implements Cargado, Guardado {
 		try{
 			connMgr.prepararBD();
 			d = DatabaseFactory.open(connMgr.getDbLocation());
-			String fecha = proceso.getFecha().get(Calendar.YEAR)+"-"+proceso.getFecha().get(Calendar.MONTH)+"-"+proceso.getFecha().get(Calendar.DAY_OF_MONTH);
-			Statement stProceso = d.createStatement("INSERT INTO procesos VALUES(NULL,?,?,?,?,?,?,?,?,?,?," + "'Categoria por defecto')"); 	
+			Statement stProceso = d.createStatement("INSERT INTO procesos VALUES(NULL,?,?,datetime(?),?,?,?,?,?,?,?,1)"); 	
 			stProceso.prepare();
 			stProceso.bind(1,proceso.getDemandante().getId_persona());   //ingresa el id del demandante
 			stProceso.bind(2,proceso.getDemandado().getId_persona());
-			stProceso.bind(3,fecha);
+			stProceso.bind(3,calendarToString(proceso.getFecha()));
 			stProceso.bind(4,proceso.getRadicado());
 			stProceso.bind(5,proceso.getRadicadoUnico());
 			stProceso.bind(6,proceso.getEstado());
@@ -683,6 +862,38 @@ public class Persistence implements Cargado, Guardado {
 			calendar_return.set(Calendar.MINUTE, Integer.parseInt(fecha.substring(14, 16)));
 		}
 		return calendar_return;
+	}
+	
+	private String calendarToString (Calendar fecha){
+		String dia,mes,hora,minuto,nuevafecha;
+		
+		if ((fecha.get(Calendar.MONTH)+1) < 10){
+			mes = "0"+(fecha.get(Calendar.MONTH)+1);
+		}
+		else {
+			mes = Integer.toString((fecha.get(Calendar.MONTH)+1));
+		}
+		if (fecha.get(Calendar.DAY_OF_MONTH) < 10){
+			dia = "0"+fecha.get(Calendar.DAY_OF_MONTH);
+		}
+		else {
+			dia = Integer.toString(fecha.get(Calendar.DAY_OF_MONTH));
+		}
+		if (fecha.get(Calendar.HOUR_OF_DAY) < 10){
+			hora = "0"+fecha.get(Calendar.HOUR_OF_DAY);
+		}
+		else {
+			hora = Integer.toString(fecha.get(Calendar.HOUR_OF_DAY));
+		}
+		if (fecha.get(Calendar.MINUTE) < 10){
+			minuto = "0"+fecha.get(Calendar.MINUTE);
+		}
+		else {
+			minuto = Integer.toString(fecha.get(Calendar.MINUTE));
+		}
+		nuevafecha = fecha.get(Calendar.YEAR)+"-"+mes+"-"+dia+" "+hora+":"+minuto;
+		return nuevafecha;
+		
 	}
 
 }

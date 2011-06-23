@@ -303,6 +303,10 @@ public class NuevoProceso extends FondoNuevos {
 	public String getNotas() {
 		return _txtNotas.getText();
 	}
+	
+	public String getTipo() {
+		return _txtTipo.getText();
+	}
 
 	public Calendar getFecha() {
 		Calendar fecha = Calendar.getInstance();

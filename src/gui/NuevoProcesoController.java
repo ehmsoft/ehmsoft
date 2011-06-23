@@ -44,8 +44,8 @@ public class NuevoProcesoController {
 		Persistence guardado = null;
 		try {
 			guardado = new Persistence();
-		} catch (Exception e1) {
-			e1.printStackTrace();
+		} catch (Exception e) {
+			Dialog.alert(e.toString());
 		}
 		Vector campos = null;
 		try {
@@ -57,12 +57,12 @@ public class NuevoProcesoController {
 					_screen.getDemandado(), _screen.getFecha(),
 					_screen.getJuzgado(), _screen.getRadicado(),
 					_screen.getRadicadoUnico(), null, _screen.getEstado(),
-					_screen.getCategoria(), null, _screen.getNotas(), campos,
+					_screen.getCategoria(), _screen.getTipo(), _screen.getNotas(), campos,
 					_screen.getPrioridad());
 			try {
 				guardado.guardarProceso(_proceso);
 			} catch (Exception e) {
-				e.printStackTrace();
+				Dialog.alert(e.toString());
 			}
 		}
 	}

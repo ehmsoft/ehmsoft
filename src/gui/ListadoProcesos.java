@@ -1,21 +1,20 @@
 package gui;
 
+import persistence.Persistence;
 import net.rim.device.api.ui.MenuItem;
 import net.rim.device.api.ui.UiApplication;
+import net.rim.device.api.ui.component.Dialog;
 import net.rim.device.api.ui.container.MainScreen;
 import core.Proceso;
 
 public class ListadoProcesos extends MainScreen {
 
-	/**
-	 * 
-	 */
 	private Object _selected;
 	private ListadoProcesosLista _lista;
 
-	public ListadoProcesos(Object[] listadoProcesos) {
+	public ListadoProcesos() {
 		super(MainScreen.VERTICAL_SCROLL | MainScreen.VERTICAL_SCROLLBAR);
-		// TODO Auto-generated constructor stub
+
 		setTitle("Listado de procesos");
 
 		_lista = new ListadoProcesosLista() {
@@ -26,11 +25,11 @@ public class ListadoProcesos extends MainScreen {
 			}
 		};
 
-		_lista.set(listadoProcesos);
 		_lista.insert(0, "Nuevo proceso");
 
 		add(_lista);
 		addMenuItem(menuVer);
+		addMenuItem(menuDelete);
 	}
 
 	private final MenuItem menuVer = new MenuItem("Ver", 0, 0) {
@@ -45,6 +44,26 @@ public class ListadoProcesos extends MainScreen {
 			_lista.delete(index);
 			_lista.insert(index, verProceso.getProceso());
 			_lista.setSelectedIndex(index);
+		}
+	};
+	
+	private final MenuItem menuDelete = new MenuItem("Eliminar", 0, 0) {
+
+		public void run() {
+			Persistence persistence = null;
+			try {
+				persistence = new Persistence();
+			} catch (Exception e) {
+				Dialog.alert(e.toString());
+			}
+			int index = _lista.getSelectedIndex();
+			try {
+				persistence.borrarProceso((Proceso) _lista.get(_lista, index));
+			} catch (Exception e) {
+				Dialog.alert(e.toString());
+			}
+
+			_lista.delete(index);
 		}
 	};
 

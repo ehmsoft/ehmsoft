@@ -4,13 +4,13 @@ import java.util.Enumeration;
 import java.util.Vector;
 
 import net.rim.device.api.ui.UiApplication;
+import net.rim.device.api.ui.component.Dialog;
 import persistence.Persistence;
 import core.Proceso;
 
 public class ListadoProcesosController {
 
 	private Persistence _persistencia;
-	private Object[] _procesos;
 	private Vector _vectorProcesos;
 	private ListadoProcesos _screen;
 
@@ -18,35 +18,35 @@ public class ListadoProcesosController {
 		try {
 			_persistencia = new Persistence();
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			Dialog.alert(e.toString());
 		}
 
 		try {
 			_vectorProcesos = _persistencia.consultarProcesos();
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			Dialog.alert(e.toString());
 		}
 
-		if (_vectorProcesos == null)
-			_procesos = new Object[0];
-		else {
-			_procesos = new Object[_vectorProcesos.size()];
-			transformarListado();
-		}
-		_screen = new ListadoProcesos(_procesos);
+		_screen = new ListadoProcesos();
+		addProcesos();
 	}
 
-	private void transformarListado() {
-		int i = 0;
-
-		Enumeration index = _vectorProcesos.elements();
-
-		while (index.hasMoreElements()) {
-			_procesos[i] = index.nextElement();
-			i++;
+	private void addProcesos() {
+		Enumeration index;
+		try {
+			index = _vectorProcesos.elements();
+			while (index.hasMoreElements())
+				_screen.addProceso(index.nextElement());
+		} catch (NullPointerException e) {
+			Dialog.alert(e.toString());
+		} catch (Exception e) {
+			Dialog.alert(e.toString());
 		}
+	}
+	
+	public void setVectorProcesos(Vector procesos) {
+		_vectorProcesos = procesos;
+		addProcesos();
 	}
 
 	public Proceso getSelected() {

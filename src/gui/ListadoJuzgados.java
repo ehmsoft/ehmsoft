@@ -1,9 +1,12 @@
 package gui;
 
+import persistence.Persistence;
 import net.rim.device.api.ui.MenuItem;
 import net.rim.device.api.ui.UiApplication;
+import net.rim.device.api.ui.component.Dialog;
 import net.rim.device.api.ui.container.MainScreen;
 import core.Juzgado;
+import core.Proceso;
 
 public class ListadoJuzgados extends MainScreen {
 
@@ -26,6 +29,7 @@ public class ListadoJuzgados extends MainScreen {
 		_lista.insert(0, "Nuevo juzgado");
 		add(_lista);
 		addMenuItem(menuVer);
+		addMenuItem(menuDelete);
 	}
 
 	private final MenuItem menuVer = new MenuItem("Ver", 0, 0) {
@@ -40,6 +44,26 @@ public class ListadoJuzgados extends MainScreen {
 			_lista.delete(index);
 			_lista.insert(index, verJuzgado.getJuzgado());
 			_lista.setSelectedIndex(index);
+		}
+	};
+	
+	private final MenuItem menuDelete = new MenuItem("Eliminar", 0, 0) {
+
+		public void run() {
+			Persistence persistence = null;
+			try {
+				persistence = new Persistence();
+			} catch (Exception e) {
+				Dialog.alert(e.toString());
+			}
+			int index = _lista.getSelectedIndex();
+			try {
+				persistence.borrarJuzgado((Juzgado) _lista.get(_lista, index));
+			} catch (Exception e) {
+				Dialog.alert(e.toString());
+			}
+
+			_lista.delete(index);
 		}
 	};
 
