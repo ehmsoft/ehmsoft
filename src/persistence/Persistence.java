@@ -418,6 +418,22 @@ public class Persistence implements Cargado, Guardado {
 
 	public void borrarProceso(Proceso proceso) throws Exception {
 		// TODO Auto-generated method stub
+		Database d = null;
+		try{
+			connMgr.prepararBD();
+			d = DatabaseFactory.open(connMgr.getDbLocation());
+			Statement stDelProceso = d.createStatement("DELETE FROM procesos WHERE id_proceso = ?");
+			stDelProceso.prepare();
+			stDelProceso.bind(1,proceso.getId_proceso());
+			stDelProceso.execute(); 
+			stDelProceso.close();
+		} catch (Exception e){
+			throw e;
+		} finally {
+			if (d != null){
+				d.close();
+			}
+		}
 
 	}
 
