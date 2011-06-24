@@ -1,114 +1,105 @@
 package gui;
 
+import java.util.Enumeration;
 import java.util.Vector;
 
-import persistence.Persistence;
-
-import net.rim.device.api.ui.MenuItem;
 import net.rim.device.api.ui.UiApplication;
 import net.rim.device.api.ui.component.Dialog;
-import net.rim.device.api.ui.container.MainScreen;
+import persistence.Persistence;
 import core.Persona;
 
-public class ListadoPersonas extends MainScreen {
+public class ListadoPersonas {
 
-	private Object _selected;
-	private ListadoPersonasLista _lista;
+	private int _tipo;
+	private Persistence _persistencia;
+	private Vector _vectorPersonas;
+	private ListadoPersonasScreen _screen;
 
 	public ListadoPersonas(int tipo, Vector fuentes) {
-		super(MainScreen.VERTICAL_SCROLL | MainScreen.VERTICAL_SCROLLBAR);
+		_tipo = tipo;
+		try {
+			_persistencia = new Persistence();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
 		if (tipo == 1)
-			setTitle("Listado de demandantes");
-		else
-			setTitle("Listado de demandados");
-
-		_lista = new ListadoPersonasLista(fuentes) {
-			protected boolean navigationClick(int status, int time) {
-				_selected = get(_lista, getSelectedIndex());
-				UiApplication.getUiApplication().popScreen(getScreen());
-				return true;
+			try {
+				_vectorPersonas = _persistencia.consultarDemandantes();
+			} catch (Exception e) {
+				Dialog.alert(e.toString());
 			}
-		};
-
-		if (tipo == 1)
-			_lista.insert(0, "Nuevo demandante");
 		else
-			_lista.insert(0, "Nuevo demandado");
-		add(_lista);
-		addMenuItem(menuVer);
+			try {
+				_vectorPersonas = _persistencia.consultarDemandados();
+			} catch (Exception e) {
+				Dialog.alert(e.toString());
+			}
+
+		_screen = new ListadoPersonasScreen(tipo, fuentes);
+		addPersonas();
 	}
 
 	public ListadoPersonas(int tipo) {
-		super(MainScreen.VERTICAL_SCROLL | MainScreen.VERTICAL_SCROLLBAR);
+		_tipo = tipo;
+		try {
+			_persistencia = new Persistence();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
 		if (tipo == 1)
-			setTitle("Listado de demandantes");
-		else
-			setTitle("Listado de demandados");
-
-		_lista = new ListadoPersonasLista() {
-			protected boolean navigationClick(int status, int time) {
-				_selected = get(_lista, getSelectedIndex());
-				UiApplication.getUiApplication().popScreen(getScreen());
-				return true;
+			try {
+				_vectorPersonas = _persistencia.consultarDemandantes();
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
-		};
-
-		if (tipo == 1)
-			_lista.insert(0, "Nuevo demandante");
 		else
-			_lista.insert(0, "Nuevo demandado");
-		add(_lista);
-		addMenuItem(menuVer);
-		addMenuItem(menuDelete);
+			try {
+				_vectorPersonas = _persistencia.consultarDemandados();
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
+		_screen = new ListadoPersonasScreen(tipo);
+		addPersonas();
 	}
 
-	private final MenuItem menuVer = new MenuItem("Ver", 0, 0) {
+	public void setVectorPersonas(Vector personas) {
+		_vectorPersonas = personas;
+		addPersonas();
+	}
 
-		public void run() {
-			int index = _lista.getSelectedIndex();
-			VerPersonaController verPersona = new VerPersonaController(
-					(Persona) _lista.get(_lista, index));
+	private void addPersonas() {
+		Enumeration index;
+		try {
+			index = _vectorPersonas.elements();
+			while (index.hasMoreElements())
+				_screen.addPersona(index.nextElement());
+		} catch (NullPointerException e) {
+
+		} catch (Exception e) {
+			Dialog.alert(e.toString());
+		}
+	}
+
+	public Persona getSelected() {
+		NuevaPersona nuevaPersona = new NuevaPersona(_tipo);
+		if (String.class.isInstance(_screen.getSelected())) {
 			UiApplication.getUiApplication().pushModalScreen(
-					verPersona.getScreen());
-			verPersona.actualizarPersona();
-			_lista.delete(index);
-			_lista.insert(index, verPersona.getPersona());
-			_lista.setSelectedIndex(index);
-		}
-	};
-	
-	private final MenuItem menuDelete = new MenuItem("Eliminar", 0, 0) {
-
-		public void run() {
-			Persistence persistence = null;
-			try {
-				persistence = new Persistence();
-			} catch (Exception e) {
-				Dialog.alert(e.toString());
-			}
-			int index = _lista.getSelectedIndex();
-			try {
-				persistence.borrarPersona((Persona) _lista.get(_lista, index));
-			} catch (Exception e) {
-				Dialog.alert(e.toString());
-			}
-
-			_lista.delete(index);
-		}
-	};
-
-	public void addPersona(Object persona) {
-		_lista.insert(_lista.getSize(), persona);
+					nuevaPersona.getScreen());
+			nuevaPersona.guardarPersona();
+			_screen.addPersona(nuevaPersona.getPersona());
+			return nuevaPersona.getPersona();
+		} else
+			return (Persona) _screen.getSelected();
 	}
 
-	public Object getSelected() {
-		return _selected;
-	}
-
-	public boolean onClose() {
-		UiApplication.getUiApplication().popScreen(getScreen());
-		return true;
+	public ListadoPersonasScreen getScreen() {
+		return _screen;
 	}
 }

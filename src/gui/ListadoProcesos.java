@@ -1,82 +1,67 @@
 package gui;
 
-import persistence.Persistence;
-import net.rim.device.api.ui.MenuItem;
+import java.util.Enumeration;
+import java.util.Vector;
+
 import net.rim.device.api.ui.UiApplication;
 import net.rim.device.api.ui.component.Dialog;
-import net.rim.device.api.ui.container.MainScreen;
+import persistence.Persistence;
 import core.Proceso;
 
-public class ListadoProcesos extends MainScreen {
+public class ListadoProcesos {
 
-	private Object _selected;
-	private ListadoProcesosLista _lista;
+	private Persistence _persistencia;
+	private Vector _vectorProcesos;
+	private ListadoProcesosScreen _screen;
 
 	public ListadoProcesos() {
-		super(MainScreen.VERTICAL_SCROLL | MainScreen.VERTICAL_SCROLLBAR);
+		try {
+			_persistencia = new Persistence();
+		} catch (Exception e) {
+			Dialog.alert(e.toString());
+		}
 
-		setTitle("Listado de procesos");
+		try {
+			_vectorProcesos = _persistencia.consultarProcesos();
+		} catch (Exception e) {
+			Dialog.alert(e.toString());
+		}
 
-		_lista = new ListadoProcesosLista() {
-			protected boolean navigationClick(int status, int time) {
-				_selected = get(_lista, getSelectedIndex());
-				UiApplication.getUiApplication().popScreen(getScreen());
-				return true;
-			}
-		};
-
-		_lista.insert(0, "Nuevo proceso");
-
-		add(_lista);
-		addMenuItem(menuVer);
-		addMenuItem(menuDelete);
+		_screen = new ListadoProcesosScreen();
+		addProcesos();
 	}
 
-	private final MenuItem menuVer = new MenuItem("Ver", 0, 0) {
-
-		public void run() {
-			int index = _lista.getSelectedIndex();
-			VerProcesoController verProceso = new VerProcesoController(
-					(Proceso) _lista.get(_lista, index));
-			UiApplication.getUiApplication().pushModalScreen(
-					verProceso.getScreen());
-			verProceso.actualizarProceso();
-			_lista.delete(index);
-			_lista.insert(index, verProceso.getProceso());
-			_lista.setSelectedIndex(index);
+	private void addProcesos() {
+		Enumeration index;
+		try {
+			index = _vectorProcesos.elements();
+			while (index.hasMoreElements())
+				_screen.addProceso(index.nextElement());
+		} catch (NullPointerException e) {
+			Dialog.alert(e.toString());
+		} catch (Exception e) {
+			Dialog.alert(e.toString());
 		}
-	};
+	}
 	
-	private final MenuItem menuDelete = new MenuItem("Eliminar", 0, 0) {
-
-		public void run() {
-			Persistence persistence = null;
-			try {
-				persistence = new Persistence();
-			} catch (Exception e) {
-				Dialog.alert(e.toString());
-			}
-			int index = _lista.getSelectedIndex();
-			try {
-				persistence.borrarProceso((Proceso) _lista.get(_lista, index));
-			} catch (Exception e) {
-				Dialog.alert(e.toString());
-			}
-
-			_lista.delete(index);
-		}
-	};
-
-	public void addProceso(Object proceso) {
-		_lista.insert(_lista.getSize(), proceso);
+	public void setVectorProcesos(Vector procesos) {
+		_vectorProcesos = procesos;
+		addProcesos();
 	}
 
-	public Object getSelected() {
-		return _selected;
+	public Proceso getSelected() {
+		NuevoProceso nuevoProceso = new NuevoProceso();
+		if (String.class.isInstance(_screen.getSelected())) {
+			UiApplication.getUiApplication().pushModalScreen(
+					nuevoProceso.getScreen());
+			nuevoProceso.guardarProceso();
+			_screen.addProceso(nuevoProceso.getProceso());
+			return nuevoProceso.getProceso();
+		} else
+			return (Proceso) _screen.getSelected();
 	}
 
-	public boolean onClose() {
-		UiApplication.getUiApplication().popScreen(getScreen());
-		return true;
+	public ListadoProcesosScreen getScreen() {
+		return _screen;
 	}
 }

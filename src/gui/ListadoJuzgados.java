@@ -1,82 +1,68 @@
 package gui;
 
-import persistence.Persistence;
-import net.rim.device.api.ui.MenuItem;
+import java.util.Enumeration;
+import java.util.Vector;
+
 import net.rim.device.api.ui.UiApplication;
 import net.rim.device.api.ui.component.Dialog;
-import net.rim.device.api.ui.container.MainScreen;
+import persistence.Persistence;
 import core.Juzgado;
-import core.Proceso;
 
-public class ListadoJuzgados extends MainScreen {
+public class ListadoJuzgados {
 
-	private Object _selected;
-	private ListadoJuzgadosLista _lista;
+	private Persistence _persistencia;
+	private Vector _vectorJuzgados;
+	private ListadoJuzgadosScreen _screen;
 
 	public ListadoJuzgados() {
-		super(MainScreen.VERTICAL_SCROLL | MainScreen.VERTICAL_SCROLLBAR);
-
-		setTitle("Listado de juzgados");
-
-		_lista = new ListadoJuzgadosLista() {
-			protected boolean navigationClick(int status, int time) {
-				_selected = get(_lista, getSelectedIndex());
-				UiApplication.getUiApplication().popScreen(getScreen());
-				return true;
-			}
-		};
-
-		_lista.insert(0, "Nuevo juzgado");
-		add(_lista);
-		addMenuItem(menuVer);
-		addMenuItem(menuDelete);
+		try {
+			_persistencia = new Persistence();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		try {
+			_vectorJuzgados = _persistencia.consultarJuzgados();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		_screen = new ListadoJuzgadosScreen();
+		addJuzgados();
 	}
 
-	private final MenuItem menuVer = new MenuItem("Ver", 0, 0) {
+	private void addJuzgados() {
+		Enumeration index;
+		try {
+			index = _vectorJuzgados.elements();
 
-		public void run() {
-			int index = _lista.getSelectedIndex();
-			VerJuzgadoController verJuzgado = new VerJuzgadoController(
-					(Juzgado) _lista.get(_lista, index));
+			while (index.hasMoreElements())
+				_screen.addJuzgado(index.nextElement());
+		} catch (NullPointerException e) {
+
+		} catch (Exception e) {
+			Dialog.alert(e.toString());
+		}
+	}
+
+	public void setVectorJuzgados(Vector juzgados) {
+		_vectorJuzgados = juzgados;
+		addJuzgados();
+	}
+
+	public Juzgado getSelected() {
+		NuevoJuzgado nuevoJuzgado = new NuevoJuzgado();
+		if (String.class.isInstance(_screen.getSelected())) {
 			UiApplication.getUiApplication().pushModalScreen(
-					verJuzgado.getScreen());
-			verJuzgado.actualizarJuzgado();
-			_lista.delete(index);
-			_lista.insert(index, verJuzgado.getJuzgado());
-			_lista.setSelectedIndex(index);
-		}
-	};
-	
-	private final MenuItem menuDelete = new MenuItem("Eliminar", 0, 0) {
-
-		public void run() {
-			Persistence persistence = null;
-			try {
-				persistence = new Persistence();
-			} catch (Exception e) {
-				Dialog.alert(e.toString());
-			}
-			int index = _lista.getSelectedIndex();
-			try {
-				persistence.borrarJuzgado((Juzgado) _lista.get(_lista, index));
-			} catch (Exception e) {
-				Dialog.alert(e.toString());
-			}
-
-			_lista.delete(index);
-		}
-	};
-
-	public void addJuzgado(Object juzgado) {
-		_lista.insert(_lista.getSize(), juzgado);
+					nuevoJuzgado.getScreen());
+			nuevoJuzgado.guardarJuzgado();
+			_screen.addJuzgado(nuevoJuzgado.getJuzgado());
+			return nuevoJuzgado.getJuzgado();
+		} else
+			return (Juzgado) _screen.getSelected();
 	}
 
-	public Object getSelected() {
-		return _selected;
-	}
-
-	public boolean onClose() {
-		UiApplication.getUiApplication().popScreen(getScreen());
-		return true;
+	public ListadoJuzgadosScreen getScreen() {
+		return _screen;
 	}
 }

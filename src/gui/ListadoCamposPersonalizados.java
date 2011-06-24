@@ -1,43 +1,53 @@
 package gui;
 
+import java.util.Enumeration;
+import java.util.Vector;
+
 import net.rim.device.api.ui.UiApplication;
-import net.rim.device.api.ui.container.MainScreen;
+import net.rim.device.api.ui.component.Dialog;
+import core.CampoPersonalizado;
 
-public class ListadoCamposPersonalizados extends MainScreen {
+public class ListadoCamposPersonalizados {
 
-	/**
-	 * 
-	 */
-	private Object _selected;
-	private ListadoCamposPersonalizadosLista _lista;
+	private Vector _vectorCampos;
+	private ListadoCamposPersonalizadosScreen _screen;
 
 	public ListadoCamposPersonalizados() {
-		super(MainScreen.VERTICAL_SCROLL | MainScreen.VERTICAL_SCROLLBAR);
-
-		setTitle("Listado de campos personalizados");
-
-		_lista = new ListadoCamposPersonalizadosLista() {
-			protected boolean navigationClick(int status, int time) {
-				_selected = get(_lista, getSelectedIndex());
-				return true;
-			}
-		};
-
-		_lista.insert(0, "Nuevo campo personalizado");
-		add(_lista);
+		_screen = new ListadoCamposPersonalizadosScreen();
+		addCampos();
 	}
 
-	public void addCampo(Object campo) {
-		_lista.insert(_lista.getSize(), campo);
+	public void setVectorCampos(Vector campos) {
+		_vectorCampos = campos;
+		addCampos();
 	}
 
-	public Object getSelected() {
-		return _selected;
+	private void addCampos() {
+		Enumeration index;
+		try {
+			index = _vectorCampos.elements();
+			while (index.hasMoreElements())
+				_screen.addCampo(index.nextElement());
+		} catch (NullPointerException e) {
+
+		} catch (Exception e) {
+			Dialog.alert(e.toString());
+		}
 	}
 
-	public boolean onClose() {
-		UiApplication.getUiApplication().popScreen(getScreen());
-		return true;
+	public CampoPersonalizado getSelected() {
+		NuevoCampoPersonalizado nuevoCampo = new NuevoCampoPersonalizado();
+		if (String.class.isInstance(_screen.getSelected())) {
+			UiApplication.getUiApplication().pushModalScreen(
+					nuevoCampo.getScreen());
+			nuevoCampo.guardarCampo();
+			_screen.addCampo(nuevoCampo.getCampo());
+			return nuevoCampo.getCampo();
+		} else
+			return (CampoPersonalizado) _screen.getSelected();
 	}
 
+	public ListadoCamposPersonalizadosScreen getScreen() {
+		return _screen;
+	}
 }

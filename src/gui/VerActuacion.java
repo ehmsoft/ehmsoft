@@ -1,124 +1,63 @@
 package gui;
 
 import java.util.Calendar;
-import java.util.Date;
 
-import net.rim.device.api.ui.Field;
-import net.rim.device.api.ui.MenuItem;
-import net.rim.device.api.ui.UiApplication;
-import net.rim.device.api.ui.component.DateField;
-import net.rim.device.api.ui.container.MainScreen;
+import net.rim.device.api.ui.component.Dialog;
+import persistence.Persistence;
 import core.Actuacion;
-import core.Juzgado;
 
-public class VerActuacion extends MainScreen {
-
-	private EditableTextField _txtJuzgado;
-	private DateField _dfFecha;
-	private DateField _dfFechaProxima;
-	private EditableTextField _txtDescripcion;
+public class VerActuacion {
+	private VerActuacionScreen _screen;
 	private Actuacion _actuacion;
-	private Juzgado _juzgado;
 
 	public VerActuacion(Actuacion actuacion) {
-		super(MainScreen.VERTICAL_SCROLL | MainScreen.VERTICAL_SCROLLBAR);
-
+		_screen = new VerActuacionScreen(actuacion);
 		_actuacion = actuacion;
-		_juzgado = actuacion.getJuzgado();
-
-		setTitle("Ver actuación");
-
-		_txtJuzgado = new EditableTextField("Juzgado: ", _actuacion
-				.getJuzgado().getNombre());
-
-		_dfFecha = new DateField("Fecha: ", _actuacion.getFecha().getTime()
-				.getTime(), DateField.DATE_TIME);
-		_dfFecha.setEditable(false);
-
-		_dfFechaProxima = new DateField("Fecha próxima: ", _actuacion
-				.getFechaProxima().getTime().getTime(), DateField.DATE_TIME);
-		_dfFechaProxima.setEditable(false);
-
-		_txtDescripcion = new EditableTextField("Descripció: ",
-				_actuacion.getDescripcion());
-
-		add(_txtJuzgado);
-		add(_dfFecha);
-		add(_dfFechaProxima);
-		add(_txtDescripcion);
-		addMenuItem(menuGuardar);
-		addMenuItem(menuEditar);
-		addMenuItem(menuCambiar);
 	}
 
-	private final MenuItem menuGuardar = new MenuItem("Guardar", 0, 0) {
+	public VerActuacionScreen getScreen() {
+		return _screen;
+	}
 
-		public void run() {
-			UiApplication.getUiApplication().popScreen(getScreen());
+	public void actualizarActuacion() {
+		try {
+			Persistence persistence = new Persistence();
+			boolean cambio = false;
+
+			Calendar f1 = _actuacion.getFecha();
+			Calendar f2 = _screen.getFecha();
+
+			Calendar fP1 = _actuacion.getFechaProxima();
+			Calendar fP2 = _screen.getFechaProxima();
+
+			if (!_actuacion.getJuzgado().getId_juzgado()
+					.equals(_screen.getJuzgado().getId_juzgado()))
+				cambio = true;
+			if ((f1.get(Calendar.YEAR) != f2.get(Calendar.YEAR))
+					|| (f1.get(Calendar.MONTH) != f2.get(Calendar.MONTH))
+					|| (f1.get(Calendar.DAY_OF_MONTH) != f2
+							.get(Calendar.DAY_OF_MONTH)))
+				cambio = true;
+			if ((fP1.get(Calendar.YEAR) != fP2.get(Calendar.YEAR))
+					|| (fP1.get(Calendar.MONTH) != fP2.get(Calendar.MONTH))
+					|| (fP1.get(Calendar.DAY_OF_MONTH) != fP2
+							.get(Calendar.DAY_OF_MONTH)))
+				cambio = true;
+			if (!_actuacion.getDescripcion().equals(_screen.getDescripcion()))
+				cambio = true;
+
+			if (cambio)
+				_actuacion = new Actuacion(_screen.getJuzgado(),
+						_screen.getFecha(), _screen.getFechaProxima(),
+						_screen.getDescripcion(), _actuacion.getId_actuacion()) {
+					public String toString() {
+						return this.getDescripcion();
+					}
+				};
+			persistence.actualizarActuacion(_actuacion);
+		} catch (Exception e) {
+			Dialog.alert("actualizarActuacion -> " + e.toString());
 		}
-	};
-
-	private final MenuItem menuEditar = new MenuItem("Editar", 0, 0) {
-
-		public void run() {
-			Field f = getFieldWithFocus();
-			if (f.equals(_txtJuzgado)) {
-				VerJuzgadoController verJuzgado = new VerJuzgadoController(
-						_juzgado);
-				UiApplication.getUiApplication().pushModalScreen(
-						verJuzgado.getScreen());
-				_juzgado = verJuzgado.getJuzgado();
-				_txtJuzgado.setText(_juzgado.getNombre());
-				_txtJuzgado.setFocus();
-			}
-			if (f.equals(_dfFecha)) {
-				_dfFecha.setEditable(true);
-				_dfFecha.setFocus();
-			}
-			if (f.equals(_dfFechaProxima)) {
-				_dfFechaProxima.setEditable(true);
-				_dfFechaProxima.setFocus();
-			}
-			if (f.equals(_txtDescripcion)) {
-				_txtDescripcion.setEditable();
-				_txtDescripcion.setFocus();
-			}
-		}
-	};
-
-	private final MenuItem menuCambiar = new MenuItem("Cambiar", 0, 0) {
-
-		public void run() {
-			Field f = getFieldWithFocus();
-			if (f.equals(_txtJuzgado)) {
-				ListadoJuzgadosController juzgados = new ListadoJuzgadosController();
-				UiApplication.getUiApplication().pushModalScreen(
-						juzgados.getScreen());
-				_juzgado = juzgados.getSelected();
-				_txtJuzgado.setText(_juzgado.getNombre());
-				_txtJuzgado.setFocus();
-			}
-		}
-	};
-
-	public Juzgado getJuzgado() {
-		return _juzgado;
-	}
-
-	public Calendar getFecha() {
-		Calendar calendar = Calendar.getInstance();
-		calendar.setTime(new Date(_dfFecha.getDate()));
-		return calendar;
-	}
-
-	public Calendar getFechaProxima() {
-		Calendar calendar = Calendar.getInstance();
-		calendar.setTime(new Date(_dfFechaProxima.getDate()));
-		return calendar;
-	}
-
-	public String getDescripcion() {
-		return _txtDescripcion.getText();
 	}
 
 	public Actuacion getActuacion() {

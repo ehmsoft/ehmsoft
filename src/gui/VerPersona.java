@@ -1,104 +1,50 @@
 package gui;
 
-import net.rim.device.api.ui.MenuItem;
-import net.rim.device.api.ui.UiApplication;
-import net.rim.device.api.ui.component.BasicEditField;
-import net.rim.device.api.ui.container.MainScreen;
+import net.rim.device.api.ui.component.Dialog;
+import persistence.Persistence;
 import core.Persona;
 
-public class VerPersona extends MainScreen {
-
-	private EditableTextField _txtNombre;
-	private EditableTextField _txtId;
-	private EditableTextField _txtTelefono;
-	private EditableTextField _txtDireccion;
-	private EditableTextField _txtCorreo;
-	private EditableTextField _txtNotas;
-
+public class VerPersona {
+	private VerPersonaScreen _screen;
 	private Persona _persona;
 
 	public VerPersona(Persona persona) {
-		super(MainScreen.VERTICAL_SCROLL | MainScreen.VERTICAL_SCROLLBAR);
-
+		_screen = new VerPersonaScreen(persona);
 		_persona = persona;
-
-		if (_persona.getTipo() == 1)
-			setTitle("Ver demandante");
-		else if (_persona.getTipo() == 2)
-			setTitle("Ver demandado");
-		else
-			setTitle("Ver persona");
-
-		_txtNombre = new EditableTextField("Nombre: ", _persona.getNombre(),
-				BasicEditField.NO_NEWLINE);
-
-		_txtId = new EditableTextField("Cédula: ", _persona.getId(),
-				BasicEditField.NO_NEWLINE);
-
-		_txtTelefono = new EditableTextField("Teléfono: ",
-				_persona.getTelefono(), BasicEditField.NO_NEWLINE);
-
-		_txtDireccion = new EditableTextField("Dirección: ",
-				_persona.getDireccion(), BasicEditField.NO_NEWLINE);
-
-		_txtCorreo = new EditableTextField("Correo: ", _persona.getCorreo(),
-				BasicEditField.NO_NEWLINE);
-
-		_txtNotas = new EditableTextField("Notas: ", _persona.getNotas(),
-				BasicEditField.NO_NEWLINE);
-
-		add(_txtNombre);
-		add(_txtId);
-		add(_txtTelefono);
-		add(_txtDireccion);
-		add(_txtCorreo);
-		add(_txtNotas);
-		addMenuItem(menuGuardar);
-		addMenuItem(menuEditar);
 	}
 
-	private final MenuItem menuGuardar = new MenuItem("Guardar", 0, 0) {
+	public VerPersonaScreen getScreen() {
+		return _screen;
+	}
 
-		public void run() {
-			UiApplication.getUiApplication().popScreen(getScreen());
-		}
-	};
+	public void actualizarPersona() {
+		try {
+			Persistence persistence = new Persistence();
+			boolean cambio = false;
 
-	private final MenuItem menuEditar = new MenuItem("Editar", 0, 0) {
+			if (!_persona.getNombre().equals(_screen.getNombre()))
+				cambio = true;
+			if (!_persona.getId().equals(_screen.getId()))
+				cambio = true;
+			if (!_persona.getTelefono().equals(_screen.getTelefono()))
+				cambio = true;
+			if (!_persona.getDireccion().equals(_screen.getDireccion()))
+				cambio = true;
+			if (!_persona.getCorreo().equals(_screen.getCorreo()))
+				cambio = true;
+			if (!_persona.getNotas().equals(_screen.getNotas()))
+				cambio = true;
 
-		public void run() {
-			EditableTextField f = (EditableTextField) getFieldWithFocus();
-			if (f.isEditable())
-				;
-			else {
-				f.setEditable();
-				f.setFocus();
+			if (cambio) {
+				_persona = new Persona(_persona.getTipo(), _screen.getId(),
+						_screen.getNombre(), _screen.getTelefono(),
+						_screen.getDireccion(), _screen.getCorreo(),
+						_screen.getNotas(), _persona.getId_persona());
+				persistence.actualizarPersona(_persona);
 			}
+		} catch (Exception e) {
+			Dialog.alert("actualizarPersona -> " + e.toString());
 		}
-	};
-
-	public String getNombre() {
-		return _txtNombre.getText();
-	}
-
-	public String getId() {
-		return _txtId.getText();
-	}
-
-	public String getTelefono() {
-		return _txtTelefono.getText();
-	}
-
-	public String getDireccion() {
-		return _txtDireccion.getText();
-	}
-
-	public String getCorreo() {
-		return _txtCorreo.getText();
-	}
-
-	public String getNotas() {
-		return _txtNotas.getText();
 	}
 
 	public Persona getPersona() {

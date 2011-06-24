@@ -1,87 +1,40 @@
 package gui;
 
-import net.rim.device.api.ui.MenuItem;
-import net.rim.device.api.ui.UiApplication;
-import net.rim.device.api.ui.component.BasicEditField;
+import persistence.Persistence;
+import core.Juzgado;
 
-public class NuevoJuzgado extends FondoNuevos {
-
-	/**
-	 * 
-	 */
-
-	private BasicEditField _txtNombre;
-	private BasicEditField _txtCiudad;
-	private BasicEditField _txtDireccion;
-	private BasicEditField _txtTelefono;
-	private BasicEditField _txtTipo;
-	private BasicEditField _txtId_juzgado;
+public class NuevoJuzgado {
+	private Juzgado _juzgado;
+	private NuevoJuzgadoScreen _screen;
 
 	public NuevoJuzgado() {
-		setTitle("Nuevo juzgado");
-
-		_txtNombre = new BasicEditField(BasicEditField.NO_NEWLINE);
-		_txtNombre.setLabel("Nombre: ");
-
-		_txtCiudad = new BasicEditField(BasicEditField.NO_NEWLINE);
-		_txtCiudad.setLabel("Ciudad: ");
-
-		_txtDireccion = new BasicEditField(BasicEditField.NO_NEWLINE);
-		_txtDireccion.setLabel("Dirección: ");
-
-		_txtTelefono = new BasicEditField(BasicEditField.NO_NEWLINE);
-		_txtTelefono.setLabel("Teléfono: ");
-
-		_txtTipo = new BasicEditField(BasicEditField.NO_NEWLINE);
-		_txtTipo.setLabel("Tipo: ");
-
-		_txtId_juzgado = new BasicEditField(BasicEditField.NO_NEWLINE);
-		_txtId_juzgado.setLabel("Id del juzgado: ");
-
-		_vertical.add(_txtNombre);
-		_vertical.add(_txtCiudad);
-		_vertical.add(_txtDireccion);
-		_vertical.add(_txtTelefono);
-		_vertical.add(_txtTipo);
-		_vertical.add(_txtId_juzgado);
-		add(_vertical);
-		addMenuItem(menuGuardar);
+		this._screen = new NuevoJuzgadoScreen();
 	}
 
-	private final MenuItem menuGuardar = new MenuItem("Guardar", 0, 0) {
+	public NuevoJuzgadoScreen getScreen() {
+		return _screen;
+	}
 
-		public void run() {
-			// TODO Auto-generated method stub
-			UiApplication.getUiApplication().popScreen(getScreen());
+	public Juzgado getJuzgado() {
+		return _juzgado;
+	}
+
+	public void guardarJuzgado() {
+		Persistence guardado = null;
+		try {
+			guardado = new Persistence();
+		} catch (Exception e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
 		}
-	};
-
-	public String getNombre() {
-		return _txtNombre.getText();
-	}
-
-	public String getCiudad() {
-		return _txtCiudad.getText();
-	}
-
-	public String getDireccion() {
-		return _txtDireccion.getText();
-	}
-
-	public String getTelefono() {
-		return _txtTelefono.getText();
-	}
-
-	public String getTipo() {
-		return _txtTipo.getText();
-	}
-
-	public String getId_juzgado() {
-		return _txtId_juzgado.getText();
-	}
-
-	public boolean onClose() {
-		UiApplication.getUiApplication().popScreen(getScreen());
-		return true;
+		_juzgado = new Juzgado(_screen.getNombre(), _screen.getCiudad(),
+				_screen.getDireccion(), _screen.getTelefono(),
+				_screen.getTelefono());
+		try {
+			guardado.guardarJuzgado(_juzgado);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 }

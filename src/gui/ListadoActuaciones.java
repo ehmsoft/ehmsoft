@@ -1,101 +1,66 @@
 package gui;
 
+import java.util.Enumeration;
 import java.util.Vector;
 
-import persistence.Persistence;
-
-import net.rim.device.api.ui.MenuItem;
 import net.rim.device.api.ui.UiApplication;
 import net.rim.device.api.ui.component.Dialog;
-import net.rim.device.api.ui.container.MainScreen;
+import persistence.Persistence;
 import core.Actuacion;
+import core.Proceso;
 
-public class ListadoActuaciones extends MainScreen {
+public class ListadoActuaciones {
 
-	private Object _selected;
-	private ListadoActuacionesLista _lista;
+	private Persistence _persistencia;
+	private Vector _vectorActuaciones;
+	private ListadoActuacionesScreen _screen;
+	private Proceso _proceso;
 
-	public ListadoActuaciones(Vector fuentes) {
-		super(MainScreen.VERTICAL_SCROLL | MainScreen.VERTICAL_SCROLLBAR);
+	public ListadoActuaciones(Proceso proceso) {
+		_proceso = proceso;
+		try {
+			_persistencia = new Persistence();
+			_vectorActuaciones = _persistencia.consultarActuaciones(proceso);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 
-		setTitle("Listado de actuaciones");
-
-		_lista = new ListadoActuacionesLista(fuentes) {
-			protected boolean navigationClick(int status, int time) {
-				_selected = get(_lista, getSelectedIndex());
-				UiApplication.getUiApplication().popScreen(getScreen());
-				return true;
-			}
-		};
-
-		_lista.insert(0, "Nueva actuación");
-		add(_lista);
-		addMenuItem(menuVer);
+		_screen = new ListadoActuacionesScreen();
+		addActuaciones();
 	}
 
-	public ListadoActuaciones() {
-		super(MainScreen.VERTICAL_SCROLL | MainScreen.VERTICAL_SCROLLBAR);
-
-		setTitle("Nueva actuación");
-
-		_lista = new ListadoActuacionesLista() {
-			protected boolean navigationClick(int status, int time) {
-				_selected = get(_lista, getSelectedIndex());
-				UiApplication.getUiApplication().popScreen(getScreen());
-				return true;
-			}
-		};
-
-		_lista.insert(0, "Nueva actuación");
-		add(_lista);
-		addMenuItem(menuVer);
-		addMenuItem(menuDelete);
+	public void setVectorActuaciones(Vector actuaciones) {
+		_vectorActuaciones = actuaciones;
+		addActuaciones();
 	}
 
-	private final MenuItem menuVer = new MenuItem("Ver", 0, 0) {
+	private void addActuaciones() {
+		Enumeration index;
+		try {
+			index = _vectorActuaciones.elements();
+			while (index.hasMoreElements())
+				_screen.addActuacion(index.nextElement());
+		} catch (NullPointerException e) {
 
-		public void run() {
-			int index = _lista.getSelectedIndex();
-			VerActuacionController verActuacion = new VerActuacionController(
-					(Actuacion) _lista.get(_lista, index));
+		} catch (Exception e) {
+			Dialog.alert(e.toString());
+		}
+	}
+
+	public Actuacion getSelected() {
+		NuevaActuacion nuevaActuacion = new NuevaActuacion(
+				_proceso);
+		if (String.class.isInstance(_screen.getSelected())) {
 			UiApplication.getUiApplication().pushModalScreen(
-					verActuacion.getScreen());
-			verActuacion.actualizarActuacion();
-			_lista.delete(index);
-			_lista.insert(index, verActuacion.getActuacion());
-			_lista.setSelectedIndex(index);
-		}
-	};
-	
-	private final MenuItem menuDelete = new MenuItem("Eliminar", 0, 0) {
-
-		public void run() {
-			Persistence persistence = null;
-			try {
-				persistence = new Persistence();
-			} catch (Exception e) {
-				Dialog.alert(e.toString());
-			}
-			int index = _lista.getSelectedIndex();
-			try {
-				persistence.borrarActuacion((Actuacion) _lista.get(_lista, index));
-			} catch (Exception e) {
-				Dialog.alert(e.toString());
-			}
-			_lista.delete(index);
-		}
-	};
-
-	public void addActuacion(Object actuacion) {
-		_lista.insert(_lista.getSize(), actuacion);
+					nuevaActuacion.getScreen());
+			nuevaActuacion.guardarActuacion();
+			_screen.addActuacion(nuevaActuacion.getActuacion());
+			return nuevaActuacion.getActuacion();
+		} else
+			return (Actuacion) _screen.getSelected();
 	}
 
-	public Object getSelected() {
-		return _selected;
-	}
-
-	public boolean onClose() {
-		UiApplication.getUiApplication().popScreen(getScreen());
-		return true;
+	public ListadoActuacionesScreen getScreen() {
+		return _screen;
 	}
 }

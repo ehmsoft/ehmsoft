@@ -1,113 +1,50 @@
 package gui;
 
-import net.rim.device.api.ui.Field;
-import net.rim.device.api.ui.MenuItem;
-import net.rim.device.api.ui.UiApplication;
-import net.rim.device.api.ui.component.BasicEditField;
-import net.rim.device.api.ui.component.CheckboxField;
-import net.rim.device.api.ui.container.MainScreen;
+import net.rim.device.api.ui.component.Dialog;
+import persistence.Persistence;
 import core.CampoPersonalizado;
 
-public class VerCampoPersonalizado extends MainScreen {
-
-	private EditableTextField _txtNombre;
-	private EditableTextField _txtValor;
-	private CheckboxField _cfObligatorio;
-	private EditableTextField _txtLongMax;
-	private EditableTextField _txtLongMin;
-
-	private CampoPersonalizado _campoPersonalizado;
+public class VerCampoPersonalizado {
+	private VerCampoPersonalizadoScreen _screen;
+	private CampoPersonalizado _campo;
 
 	public VerCampoPersonalizado(CampoPersonalizado campo) {
-		super(MainScreen.VERTICAL_SCROLL | MainScreen.VERTICAL_SCROLLBAR);
-
-		_campoPersonalizado = campo;
-
-		setTitle("Ver camopo personalizado");
-
-		_txtNombre = new EditableTextField("Nombre: ",
-				_campoPersonalizado.getNombre());
-
-		_txtValor = new EditableTextField("Valor: ",
-				_campoPersonalizado.getValor());
-
-		_cfObligatorio = new CheckboxField(" Obligatorio", _campoPersonalizado
-				.isObligatorio().booleanValue());
-		_cfObligatorio.setEditable(false);
-
-		_txtLongMax = new EditableTextField(BasicEditField.FILTER_INTEGER);
-		_txtLongMax.setLabel("Longitud máxima");
-		_txtLongMax.setText(_campoPersonalizado.getLongitudMax() + "");
-
-		_txtLongMin = new EditableTextField(BasicEditField.FILTER_INTEGER);
-		_txtLongMin.setLabel("Longitud minima");
-		_txtLongMin.setText(_campoPersonalizado.getLongitudMin() + "");
-
-		add(_txtNombre);
-		add(_txtValor);
-		add(_cfObligatorio);
-		add(_txtLongMax);
-		add(_txtLongMin);
-		addMenuItem(menuGuardar);
-		addMenuItem(menuEditar);
+		_screen = new VerCampoPersonalizadoScreen(campo);
+		_campo = campo;
 	}
 
-	private final MenuItem menuGuardar = new MenuItem("Guardar", 0, 0) {
+	public VerCampoPersonalizadoScreen getScreen() {
+		return _screen;
+	}
 
-		public void run() {
-			UiApplication.getUiApplication().popScreen(getScreen());
+	public void actualizarCampoPersonalizado() {
+		try {
+			Persistence persistence = new Persistence();
+			boolean cambio = false;
+			CampoPersonalizado campo = _screen.getCampoPersonalizado();
+
+			if (!campo.getNombre().equals(_screen.getNombre()))
+				cambio = true;
+			if (!campo.getValor().equals(_screen.getValor()))
+				cambio = true;
+			if (!campo.isObligatorio().equals(_screen.isObligatorio()))
+				cambio = true;
+			if (campo.getLongitudMax() != _screen.getLongitudMax())
+				cambio = true;
+			if (campo.getLongitudMin() != _screen.getLongitudMin())
+				cambio = true;
+
+			if (cambio)
+				_campo = new CampoPersonalizado(_screen.getNombre(),
+						_screen.getValor(), _screen.isObligatorio(),
+						_screen.getLongitudMax(), _screen.getLongitudMin());
+			persistence.actualizarCampoPersonalizado(_campo);
+		} catch (Exception e) {
+			Dialog.alert("actualizarCampoPersonalizado -> " + e.toString());
 		}
-	};
-
-	private final MenuItem menuEditar = new MenuItem("Editar", 0, 0) {
-
-		public void run() {
-			Field f = getFieldWithFocus();
-
-			if (f.equals(_txtNombre)) {
-				_txtNombre.setEditable();
-				_txtNombre.setFocus();
-			}
-			if (f.equals(_txtValor)) {
-				_txtValor.setEditable();
-				_txtValor.setFocus();
-			}
-			if (f.equals(_cfObligatorio)) {
-				_cfObligatorio.setEditable(true);
-				_cfObligatorio.setFocus();
-			}
-			if (f.equals(_txtLongMax)) {
-				_txtLongMax.setEditable();
-				_txtLongMin.setFocus();
-			}
-			if (f.equals(_txtLongMin)) {
-				_txtLongMax.setEditable();
-				_txtLongMin.setFocus();
-			}
-		}
-	};
-
-	public String getNombre() {
-		return _txtNombre.getText();
 	}
 
-	public String getValor() {
-		return _txtValor.getText();
-	}
-
-	public Boolean isObligatorio() {
-		return new Boolean(_cfObligatorio.getChecked());
-	}
-
-	public int getLongitudMax() {
-		return Integer.parseInt(_txtLongMax.getText());
-	}
-
-	public int getLongitudMin() {
-		return Integer.parseInt(_txtLongMin.getText());
-	}
-
-	public CampoPersonalizado getCampoPersonalizado() {
-		return _campoPersonalizado;
+	public CampoPersonalizado getCampo() {
+		return _campo;
 	}
 }

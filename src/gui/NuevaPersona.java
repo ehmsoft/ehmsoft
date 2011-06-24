@@ -1,91 +1,41 @@
 package gui;
 
-import net.rim.device.api.ui.MenuItem;
-import net.rim.device.api.ui.UiApplication;
-import net.rim.device.api.ui.component.BasicEditField;
+import net.rim.device.api.ui.component.Dialog;
+import persistence.Persistence;
+import core.Persona;
 
-public class NuevaPersona extends FondoNuevos {
-
-	private int _tipo;
-	private BasicEditField _txtNombre;
-	private BasicEditField _txtCedula;
-	private BasicEditField _txtDireccion;
-	private BasicEditField _txtTelefono;
-	private BasicEditField _txtCorreo;
-	private BasicEditField _txtNotas;
+public class NuevaPersona {
+	private Persona _persona;
+	private NuevaPersonaScreen _screen;
 
 	public NuevaPersona(int tipo) {
-		// TODO Auto-generated constructor stub
-		super();
-		_tipo = tipo;
-		if (tipo == 1)
-			setTitle("Nuevo demandante");
-		else
-			setTitle("Nuevo demandado");
-
-		// Se inicializan con el estilo
-		_txtNombre = new BasicEditField(BasicEditField.NO_NEWLINE);
-		_txtNombre.setLabel("Nombre: ");
-		_txtCedula = new BasicEditField(BasicEditField.NO_NEWLINE);
-		_txtCedula.setLabel("Id: ");
-		_txtDireccion = new BasicEditField(BasicEditField.NO_NEWLINE);
-		_txtDireccion.setLabel("Dirección: ");
-		_txtNotas = new BasicEditField();
-		_txtNotas.setLabel("Notas: ");
-		_txtTelefono = new BasicEditField(BasicEditField.NO_NEWLINE);
-		_txtTelefono.setLabel("Teléfono: ");
-		_txtCorreo = new BasicEditField(BasicEditField.NO_NEWLINE);
-		_txtCorreo.setLabel("Correo: ");
-		// Se agregan los elementos a la pantalla
-
-		_vertical.add(_txtNombre);
-		_vertical.add(_txtCedula);
-		_vertical.add(_txtDireccion);
-		_vertical.add(_txtTelefono);
-		_vertical.add(_txtCorreo);
-		_vertical.add(_txtNotas);
-		add(_vertical);
-		addMenuItem(menuGuardar);
+		this._screen = new NuevaPersonaScreen(tipo);
 	}
 
-	private final MenuItem menuGuardar = new MenuItem("Guardar", 0, 0) {
+	public NuevaPersonaScreen getScreen() {
+		return _screen;
+	}
 
-		public void run() {
-			// TODO Auto-generated method stub
-			UiApplication.getUiApplication().popScreen(getScreen());
+	public Persona getPersona() {
+		return _persona;
+	}
+
+	public void guardarPersona() {
+		Persistence guardado = null;
+		try {
+			guardado = new Persistence();
+		} catch (Exception e) {
+			Dialog.alert(e.toString());
 		}
-	};
-
-	public int getTipo() {
-		return _tipo;
-	}
-
-	public String getNombre() {
-		return _txtNombre.getText();
-	}
-
-	public String getCedula() {
-		return _txtCedula.getText();
-	}
-
-	public String getDireccion() {
-		return _txtDireccion.getText();
-	}
-
-	public String getTelefono() {
-		return _txtTelefono.getText();
-	}
-
-	public String getCorreo() {
-		return _txtCorreo.getText();
-	}
-
-	public String getNotas() {
-		return _txtNotas.getText();
-	}
-
-	public boolean onClose() {
-		UiApplication.getUiApplication().popScreen(getScreen());
-		return true;
+		_persona = new Persona(_screen.getTipo(), _screen.getCedula(),
+				_screen.getNombre(), _screen.getTelefono(),
+				_screen.getDireccion(), _screen.getCorreo(), _screen.getNotas());
+		try {
+			guardado.guardarPersona(_persona);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			Dialog.alert(e.toString());
+		}
 	}
 }

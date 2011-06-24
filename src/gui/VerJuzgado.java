@@ -1,79 +1,48 @@
 package gui;
 
-import net.rim.device.api.ui.MenuItem;
-import net.rim.device.api.ui.UiApplication;
-import net.rim.device.api.ui.container.MainScreen;
+import net.rim.device.api.ui.component.Dialog;
+import persistence.Persistence;
 import core.Juzgado;
 
-public class VerJuzgado extends MainScreen {
-
-	EditableTextField _txtNombre;
-	EditableTextField _txtCiudad;
-	EditableTextField _txtDireccion;
-	EditableTextField _txtTelefono;
-	EditableTextField _txtTipo;
-
-	Juzgado _juzgado;
+public class VerJuzgado {
+	private VerJuzgadoScreen _screen;
+	private Juzgado _juzgado;
 
 	public VerJuzgado(Juzgado juzgado) {
-		super(MainScreen.VERTICAL_SCROLL | MainScreen.VERTICAL_SCROLLBAR);
-
-		setTitle("Ver juzgado");
+		_screen = new VerJuzgadoScreen(juzgado);
 		_juzgado = juzgado;
-
-		_txtNombre = new EditableTextField("Nombre: ", _juzgado.getNombre());
-		_txtCiudad = new EditableTextField("Ciudad: ", _juzgado.getCiudad());
-		_txtDireccion = new EditableTextField("Direccion: ",
-				_juzgado.getDireccion());
-		_txtTelefono = new EditableTextField("Teléfono: ",
-				_juzgado.getTelefono());
-		_txtTipo = new EditableTextField("Tipo: ", _juzgado.getTipo());
-
-		add(_txtNombre);
-		add(_txtCiudad);
-		add(_txtDireccion);
-		add(_txtTelefono);
-		add(_txtTipo);
-		addMenuItem(menuGuardar);
-		addMenuItem(menuEditar);
 	}
 
-	private final MenuItem menuGuardar = new MenuItem("Guardar", 0, 0) {
+	public VerJuzgadoScreen getScreen() {
+		return _screen;
+	}
 
-		public void run() {
-			UiApplication.getUiApplication().popScreen(getScreen());
-		}
-	};
+	public void actualizarJuzgado() {
+		try {
+			Persistence persistence = new Persistence();
+			boolean cambio = false;
+			Juzgado juzgado = _screen.getJuzgado();
 
-	private final MenuItem menuEditar = new MenuItem("Editar", 0, 0) {
+			if (!juzgado.getNombre().equals(_screen.getNombre()))
+				cambio = true;
+			if (!juzgado.getCiudad().equals(_screen.getCiudad()))
+				cambio = true;
+			if (!juzgado.getTelefono().equals(_screen.getTelefono()))
+				cambio = true;
+			if (!juzgado.getDireccion().equals(_screen.getDireccion()))
+				cambio = true;
+			if (!juzgado.getTipo().equals(_screen.getTipo()))
+				cambio = true;
 
-		public void run() {
-			EditableTextField f = (EditableTextField) getFieldWithFocus();
-			if (!f.isEditable()) {
-				f.setEditable();
-				f.setFocus();
+			if (cambio) {
+				_juzgado = new Juzgado(_screen.getNombre(),
+						_screen.getCiudad(), _screen.getDireccion(),
+						_screen.getTelefono(), _screen.getTipo());
+				persistence.actualizarJuzgado(_juzgado);
 			}
+		} catch (Exception e) {
+			Dialog.alert("actualizarJuzgado -> " + e.toString());
 		}
-	};
-
-	public String getNombre() {
-		return _txtNombre.getText();
-	}
-
-	public String getCiudad() {
-		return _txtCiudad.getText();
-	}
-
-	public String getTelefono() {
-		return _txtTelefono.getText();
-	}
-
-	public String getDireccion() {
-		return _txtDireccion.getText();
-	}
-
-	public String getTipo() {
-		return _txtTipo.getText();
 	}
 
 	public Juzgado getJuzgado() {
