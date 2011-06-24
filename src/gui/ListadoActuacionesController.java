@@ -16,53 +16,13 @@ public class ListadoActuacionesController {
 	private ListadoActuaciones _screen;
 	private Proceso _proceso;
 
-	public ListadoActuacionesController(Proceso proceso, Vector fuentes) {
-		try {
-			_persistencia = new Persistence();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
-		try {
-			_vectorActuaciones = _persistencia.consultarActuaciones(proceso);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
-		_screen = new ListadoActuaciones(fuentes);
-		addActuaciones();
-	}
-
 	public ListadoActuacionesController(Proceso proceso) {
+		_proceso = proceso;
 		try {
 			_persistencia = new Persistence();
 			_vectorActuaciones = _persistencia.consultarActuaciones(proceso);
 		} catch (Exception e) {
 			e.printStackTrace();
-		}
-
-		_screen = new ListadoActuaciones();
-		addActuaciones();
-	}
-
-	public ListadoActuacionesController(Vector fuentes) {
-		try {
-			_persistencia = new Persistence();
-		} catch (Exception e) {
-			e.printStackTrace();
-			Dialog.alert(e.toString());
-		}
-
-		_screen = new ListadoActuaciones(fuentes);
-		addActuaciones();
-	}
-
-	public ListadoActuacionesController() {
-		try {
-			_persistencia = new Persistence();
-		} catch (Exception e) {
-			e.printStackTrace();
-			Dialog.alert(e.toString());
 		}
 
 		_screen = new ListadoActuaciones();

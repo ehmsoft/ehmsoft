@@ -41,10 +41,16 @@ public class NuevaActuacionController {
 				_screen.getFechaProxima(), _screen.getDescripcion());
 		try {
 			guardado = new Persistence();
+		}catch(Exception e) {
+			Dialog.alert("New -> "+e.toString());
+		}
+		try {
 			guardado.guardarActuacion(_actuacion, _proceso.getId_proceso());
-		} catch (Exception e) {
-			Dialog.alert(e.toString());
-			e.printStackTrace();
+		} catch (java.lang.NullPointerException e) {
+			Dialog.alert("Error interno: No se asignó proceso");
+		}
+		catch (Exception e) {
+			Dialog.alert("Guardar -> "+e.toString());
 		}
 	}
 }

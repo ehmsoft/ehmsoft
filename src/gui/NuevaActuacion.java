@@ -66,6 +66,7 @@ public class NuevaActuacion extends FondoNuevos {
 			UiApplication.getUiApplication().pushModalScreen(
 					juzgados.getScreen());
 			_btnJuzgado.setLabel(juzgados.getSelected().getNombre());
+			_juzgado = juzgados.getSelected();
 		}
 	};
 
@@ -75,11 +76,19 @@ public class NuevaActuacion extends FondoNuevos {
 			if (_txtDescripcion.getTextLength() == 0) {
 				Object[] ask = { "Si", "No" };
 				int sel = Dialog.ask(
-						"¿Está seguro que no desea agregar descripción?", ask,
+						"¿Desea agregar una descripción?", ask,
 						1);
-				if (sel == 0)
-					UiApplication.getUiApplication().popScreen(getScreen());
-			} else
+				if (sel == 1) {
+					if(_juzgado != null)
+						UiApplication.getUiApplication().popScreen(getScreen());
+					else
+						Dialog.alert("Debe seleccionar un juzgado");
+				}
+			}
+			else if(_juzgado == null) {
+				Dialog.alert("Debe seleccionar un juzgado");
+			}
+			else
 				UiApplication.getUiApplication().popScreen(getScreen());
 		}
 	};

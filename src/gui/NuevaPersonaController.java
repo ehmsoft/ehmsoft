@@ -24,10 +24,8 @@ public class NuevaPersonaController {
 		Persistence guardado = null;
 		try {
 			guardado = new Persistence();
-		} catch (Exception e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-			Dialog.alert(e1.toString());
+		} catch (Exception e) {
+			Dialog.alert(e.toString());
 		}
 		_persona = new Persona(_screen.getTipo(), _screen.getCedula(),
 				_screen.getNombre(), _screen.getTelefono(),
