@@ -33,6 +33,9 @@ public class NuevoProceso {
 	}
 
 	public Proceso getProceso() {
+		if(_proceso == null) {
+			guardarProceso();			
+		}
 		return _proceso;
 	}
 

@@ -32,6 +32,9 @@ public class NuevaActuacion {
 	}
 
 	public Actuacion getActuacion() {
+		if(_actuacion == null) {
+			guardarActuacion();
+		}
 		return _actuacion;
 	}
 

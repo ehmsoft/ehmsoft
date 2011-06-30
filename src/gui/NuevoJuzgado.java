@@ -16,6 +16,9 @@ public class NuevoJuzgado {
 	}
 
 	public Juzgado getJuzgado() {
+		if(_juzgado == null) {
+			guardarJuzgado();
+		}
 		return _juzgado;
 	}
 

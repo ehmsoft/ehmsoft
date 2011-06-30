@@ -17,6 +17,9 @@ public class NuevaPersona {
 	}
 
 	public Persona getPersona() {
+		if(_persona == null) {
+			guardarPersona();
+		}
 		return _persona;
 	}
 
