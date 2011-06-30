@@ -18,9 +18,6 @@ import core.Juzgado;
 
 public class NuevaActuacionScreen extends FondoNuevos {
 
-	/**
-	 * 
-	 */
 	private ButtonField _btnJuzgado;
 	private DateField _dfFecha;
 	private DateField _dfFechaProxima;
@@ -28,6 +25,10 @@ public class NuevaActuacionScreen extends FondoNuevos {
 
 	private Juzgado _juzgado;
 
+	/**
+	 * Crea una NuevaActuacionScreen inicializando los componentes
+	 * y agregandolos a la pantalla
+	 */
 	public NuevaActuacionScreen() {
 		setTitle("Nueva actuación");
 
@@ -37,7 +38,7 @@ public class NuevaActuacionScreen extends FondoNuevos {
 				USE_ALL_WIDTH);
 
 		_btnJuzgado = new ButtonField("Seleccionar", FIELD_RIGHT);
-		_btnJuzgado.setChangeListener(listenerSeleccionar);
+		_btnJuzgado.setChangeListener(listenerJuzgado);
 		fldLeftJuzgado.add(new LabelField("Juzgado: "));
 		fldRightJuzgado.add(_btnJuzgado);
 		fldJuzgado.add(fldLeftJuzgado);
@@ -60,13 +61,12 @@ public class NuevaActuacionScreen extends FondoNuevos {
 		addMenuItem(menuGuardar);
 	}
 
-	private FieldChangeListener listenerSeleccionar = new FieldChangeListener() {
+	private FieldChangeListener listenerJuzgado = new FieldChangeListener() {
 		public void fieldChanged(Field field, int context) {
 			ListadoJuzgados juzgados = new ListadoJuzgados();
 			UiApplication.getUiApplication().pushModalScreen(
 					juzgados.getScreen());
-			_btnJuzgado.setLabel(juzgados.getSelected().getNombre());
-			_juzgado = juzgados.getSelected();
+			setJuzgado(juzgados.getSelected());
 		}
 	};
 
@@ -93,14 +93,26 @@ public class NuevaActuacionScreen extends FondoNuevos {
 		}
 	};
 
+	/**
+	 * @return el Juzgado asociado al objeto, en caso de no existir
+	 * se retorna null
+	 */
 	public Juzgado getJuzgado() {
 		return _juzgado;
 	}
 
+	/**
+	 * @param juzgado Se asigna al Objeto un Juzgado
+	 */
 	public void setJuzgado(Juzgado juzgado) {
+		_btnJuzgado.setLabel(juzgado.getNombre());
 		_juzgado = juzgado;
 	}
 
+	/**
+	 * @return La fecha ingresada en la pantalla, en caso de no exixtir
+	 * se retorna null
+	 */
 	public Calendar getFecha() {
 		Calendar fecha = Calendar.getInstance();
 		Date date = new Date(_dfFecha.getDate());
@@ -108,6 +120,10 @@ public class NuevaActuacionScreen extends FondoNuevos {
 		return fecha;
 	}
 
+	/**
+	 * @return La fecha proxima ingresada en la pantalla, en caso de no existir
+	 * se retorna null
+	 */
 	public Calendar getFechaProxima() {
 		Calendar fecha = Calendar.getInstance();
 		Date date = new Date(_dfFechaProxima.getDate());
@@ -115,6 +131,10 @@ public class NuevaActuacionScreen extends FondoNuevos {
 		return fecha;
 	}
 
+	/**
+	 * @return La descripcion ingresada en la pantalla, en caso de no existir
+	 * se retorna null
+	 */
 	public String getDescripcion() {
 		String descripcion = null;
 		try {

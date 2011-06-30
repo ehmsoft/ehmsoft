@@ -16,22 +16,41 @@ public class NuevoProceso {
 	private Proceso _proceso;
 	private NuevoProcesoScreen _screen;
 
+	/**
+	 * Se crea un NuevoProceso y le asocia una pantalla, con este objeto se 
+	 * crearan nuevos Procesos
+	 */
 	public NuevoProceso() {
 		_screen = new NuevoProcesoScreen();
 	}
 
+	/**
+	 * @param demandante Se asigna una Persona demandante a la creacion
+	 * del Proceso
+	 */
 	public void setDemandante(Persona demandante) {
 		_screen.setDemandante(demandante);
 	}
 
+	/**
+	 * @param demandado Se asigna una Persona demandado a la creacion
+	 * del Proceso
+	 */
 	public void setDemandado(Persona demandado) {
 		_screen.setDemandado(demandado);
 	}
 
+	/**
+	 * @param juzgado Se asigna un Juzgado a la creacion del Proceso
+	 */
 	public void setJuzgado(Juzgado juzgado) {
 		_screen.setJuzgado(juzgado);
 	}
 
+	/**
+	 * @return El nuevo Proceso, sí este no ha sido guardado con el metodo
+	 * guardarProceso(); se realiza el llamado a este metodo
+	 */
 	public Proceso getProceso() {
 		if(_proceso == null) {
 			guardarProceso();			
@@ -39,10 +58,17 @@ public class NuevoProceso {
 		return _proceso;
 	}
 
+	/**
+	 * @return La pantalla asociada al objeto
+	 */
 	public NuevoProcesoScreen getScreen() {
 		return _screen;
 	}
 
+	/**
+	 * Se crea el nuevo Proceso, basado en los datos capturados por la pantalla
+	 * y se guarda en la base de datos
+	 */
 	public void guardarProceso() {
 		Persistence guardado = null;
 		try {

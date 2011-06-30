@@ -8,14 +8,26 @@ public class NuevaPersona {
 	private Persona _persona;
 	private NuevaPersonaScreen _screen;
 
+	/**
+	 * @param tipo Se crea una NuevaPersona, con un tipo:
+	 * 1 para demandante
+	 * 2 para demandado
+	 */
 	public NuevaPersona(int tipo) {
-		this._screen = new NuevaPersonaScreen(tipo);
+		_screen = new NuevaPersonaScreen(tipo);
 	}
 
+	/**
+	 * @return La pantalla asociada al objeto
+	 */
 	public NuevaPersonaScreen getScreen() {
 		return _screen;
 	}
 
+	/**
+	 * @return la nueva Persona creada, sí esta no ha sido guardada
+	 * previamente con guardarPersona(); se invoca dicho metodo
+	 */
 	public Persona getPersona() {
 		if(_persona == null) {
 			guardarPersona();
@@ -23,6 +35,10 @@ public class NuevaPersona {
 		return _persona;
 	}
 
+	/**
+	 * Crea el nuevo objeto Persona, y lo guarda en la base de datos
+	 * usando la informacion capturada desde la pantalla
+	 */
 	public void guardarPersona() {
 		Persistence guardado = null;
 		try {
@@ -36,9 +52,7 @@ public class NuevaPersona {
 		try {
 			guardado.guardarPersona(_persona);
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			Dialog.alert(e.toString());
+			Dialog.alert("guardarPersona() -> " + e.toString());
 		}
 	}
 }

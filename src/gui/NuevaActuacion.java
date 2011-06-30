@@ -10,27 +10,50 @@ public class NuevaActuacion {
 	private NuevaActuacionScreen _screen;
 	private Proceso _proceso;
 
+	/**
+	 * Se crea una NuevaActuacion sin proceso asociado, este debe
+	 * ser asignado con setProceso(); o si no se generaria excepcion
+	 * en el guardado
+	 */
 	public NuevaActuacion() {
 		_screen = new NuevaActuacionScreen();
 	}
 
+	/**
+	 * @param proceso Se crea una NuevaActuacion con proceso asociado
+	 */
 	public NuevaActuacion(Proceso proceso) {
 		_proceso = proceso;
 		_screen = new NuevaActuacionScreen();
 	}
 
+	/**
+	 * @param proceso se asocia al objeto NuevaActuacion, despues
+	 * de esta haber sido creada
+	 */
 	public void setProceso(Proceso proceso) {
 		_proceso = proceso;
 	}
 
+	/**
+	 * @return El Proceso asociado al objeto NuevaActuacion
+	 */
 	public Proceso getProceso() {
 		return _proceso;
 	}
 
+	/**
+	 * @return La pantalla asociada al objeto NuevaActuacion
+	 */
 	public NuevaActuacionScreen getScreen() {
 		return _screen;
 	}
 
+	/**
+	 * @return La nueva actuacion creada, sí esta no ha sido
+	 * guardada previamente con guardarActuacion(); se invoca
+	 * dicho metodo
+	 */
 	public Actuacion getActuacion() {
 		if(_actuacion == null) {
 			guardarActuacion();
@@ -38,6 +61,10 @@ public class NuevaActuacion {
 		return _actuacion;
 	}
 
+	/**
+	 * Crea el nuevo objeto Actuacion y la guarda
+	 *  en la base de datos usando la informacion capturada desde la pantalla
+	 */
 	public void guardarActuacion() {
 		Persistence guardado = null;
 		_actuacion = new Actuacion(_screen.getJuzgado(), _screen.getFecha(),
@@ -49,10 +76,7 @@ public class NuevaActuacion {
 		}
 		try {
 			guardado.guardarActuacion(_actuacion, _proceso.getId_proceso());
-		} catch (java.lang.NullPointerException e) {
-			Dialog.alert("Error interno: No se asignó proceso");
-		}
-		catch (Exception e) {
+		} catch (Exception e) {
 			Dialog.alert("Guardar -> "+e.toString());
 		}
 	}

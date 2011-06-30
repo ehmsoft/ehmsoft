@@ -14,8 +14,12 @@ public class NuevaPersonaScreen extends FondoNuevos {
 	private BasicEditField _txtCorreo;
 	private BasicEditField _txtNotas;
 
+	/**
+	 * @param tipo Se crea una NuevaPersonaScreen con el tipo de Persona:
+	 * 1 para demandante
+	 * 2 para demandado
+	 */
 	public NuevaPersonaScreen(int tipo) {
-		// TODO Auto-generated constructor stub
 		super();
 		_tipo = tipo;
 		if (tipo == 1)
@@ -51,35 +55,63 @@ public class NuevaPersonaScreen extends FondoNuevos {
 	private final MenuItem menuGuardar = new MenuItem("Guardar", 0, 0) {
 
 		public void run() {
-			// TODO Auto-generated method stub
 			UiApplication.getUiApplication().popScreen(getScreen());
 		}
 	};
 
+	/**
+	 * @return El tipo de la nueva Persona:
+	 * 1 para demandante
+	 * 2 para demandado
+	 */
 	public int getTipo() {
 		return _tipo;
 	}
 
+	/**
+	 * @return El nombre ingresado en la pantalla, en caso de no
+	 * existir se retorna null
+	 */
 	public String getNombre() {
 		return _txtNombre.getText();
 	}
 
+	/**
+	 * @return La cedula ingresada en la pantalla, en caso de no
+	 * existir se retorna null
+	 */
 	public String getCedula() {
 		return _txtCedula.getText();
 	}
 
+	/**
+	 * @return La direccion ingresada en la pantalla, en caso de no
+	 * existir se retorna null
+	 */
 	public String getDireccion() {
 		return _txtDireccion.getText();
 	}
 
+	/**
+	 * @return El telefono ingresado en la pantalla, en caso de no
+	 * existir se retorna null
+	 */
 	public String getTelefono() {
 		return _txtTelefono.getText();
 	}
 
+	/**
+	 * @return El correo ingresado en la pantalla, en caso de no
+	 * existir se retorna null
+	 */
 	public String getCorreo() {
 		return _txtCorreo.getText();
 	}
 
+	/**
+	 * @return Las notas ingresadas en la pantalla, en caso de no
+	 * existir se retorna null
+	 */
 	public String getNotas() {
 		return _txtNotas.getText();
 	}

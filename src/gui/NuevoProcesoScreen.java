@@ -22,9 +22,6 @@ import core.Persona;
 
 public class NuevoProcesoScreen extends FondoNuevos {
 
-	/**
-	 * Pantalla para crear un nuevo proceso
-	 */
 	private ObjectChoiceField _chEstado;
 	private ObjectChoiceField _chCategoria;
 	private NumericChoiceField _chPrioridad;
@@ -47,6 +44,10 @@ public class NuevoProcesoScreen extends FondoNuevos {
 	private Juzgado _juzgado;
 	private Vector _valoresCamposPersonalizados;
 
+	/**
+	 * Crea un NuevoProcesoScreen con los elementos para la captura de los
+	 * datos para el nuevo Proceso
+	 */
 	public NuevoProcesoScreen() {
 		setTitle("Nuevo Proceso");
 		_valoresCamposPersonalizados = new Vector();
@@ -238,6 +239,9 @@ public class NuevoProcesoScreen extends FondoNuevos {
 		}
 	};
 
+	/**
+	 * @param campo Agrega un campo personalizado al Proceso en creacion
+	 */
 	public void addCampoPersonalizado(CampoPersonalizado campo) {
 		BasicEditField campoP = new BasicEditField();
 		campoP.setLabel(campo.getNombre() + ": ");
@@ -248,66 +252,113 @@ public class NuevoProcesoScreen extends FondoNuevos {
 		_valoresCamposPersonalizados.addElement(campoP);
 	}
 
+	/**
+	 * @param demandante Se asigna una Persona demandante al Proceso en creacion
+	 */
 	public void setDemandante(Persona demandante) {
 		_btnDemandante.setLabel(demandante.getNombre());
 		_demandante = demandante;
 	}
 
+	/**
+	 * @param demandado Se asigna una Persona demandado al Proceso en creacion
+	 */
 	public void setDemandado(Persona demandado) {
 		_btnDemandado.setLabel(demandado.getNombre());
 		_demandado = demandado;
 	}
 
+	/**
+	 * @param juzgado Se asigna un Juzgado al Proceso en creacion
+	 */
 	public void setJuzgado(Juzgado juzgado) {
 		_btnJuzgado.setLabel(juzgado.getNombre());
 		_juzgado = juzgado;
 	}
 
+	/**
+	 * @return El vector que contiene los BasicTextField que representan los
+	 * campos personalizados, cada uno de estos contiene a su vez un coockie
+	 * en el cual esta almacenado el objeto CampoPersonalizado
+	 */
 	public Vector getValores() {
 		return _valoresCamposPersonalizados;
 	}
 
+	/**
+	 * @return La Persona demandante asociada al nuevo Proceso en creacion
+	 */
 	public Persona getDemandante() {
 		return _demandante;
 	}
 
+	/**
+	 * @return La Persona demandado asociada al nuevo Proceso en creacion
+	 */
 	public Persona getDemandado() {
 		return _demandado;
 	}
 
+	/**
+	 * @return El Juzgado asociado al nuevo Proceso en creacion
+	 */
 	public Juzgado getJuzgado() {
 		return _juzgado;
 	}
 
+	/**
+	 * @return La cadena con el radicado ingresado en la pantalla
+	 */
 	public String getRadicado() {
 		return _txtRadicado.getText();
 	}
 
+	/**
+	 * @return La cadena con el radicado unico ingresado en la pantalla
+	 */
 	public String getRadicadoUnico() {
 		return _txtRadicadoUnico.getText();
 	}
 
+	/**
+	 * @return La cadena con el estado ingresado en la pantalla
+	 */
 	public String getEstado() {
 		return (String) _chEstado.getChoice(_chEstado.getSelectedIndex());
 	}
 
+	/**
+	 * @return La cadena con la categoria ingresada en la pantalla
+	 */
 	public String getCategoria() {
 		return (String) _chEstado.getChoice(_chCategoria.getSelectedIndex());
 	}
 
+	/**
+	 * @return El numero que representa la prioridad ingresada en la pantalla
+	 */
 	public short getPrioridad() {
 		return Short.parseShort((String) _chPrioridad.getChoice(_chEstado
 				.getSelectedIndex()));
 	}
 
+	/**
+	 * @return La cadena con las notas ingresadas en la pantalla
+	 */
 	public String getNotas() {
 		return _txtNotas.getText();
 	}
 	
+	/**
+	 * @return La cadena con el tipo ingresado en la pantalla
+	 */
 	public String getTipo() {
 		return _txtTipo.getText();
 	}
 
+	/**
+	 * @return El Calendar con la fecha ingresada en la pantalla
+	 */
 	public Calendar getFecha() {
 		Calendar fecha = Calendar.getInstance();
 
