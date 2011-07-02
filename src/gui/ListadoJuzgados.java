@@ -55,9 +55,14 @@ public class ListadoJuzgados {
 		if (String.class.isInstance(_screen.getSelected())) {
 			UiApplication.getUiApplication().pushModalScreen(
 					nuevoJuzgado.getScreen());
-			nuevoJuzgado.guardarJuzgado();
-			_screen.addJuzgado(nuevoJuzgado.getJuzgado());
-			return nuevoJuzgado.getJuzgado();
+			Juzgado juzgado = null;
+			try {
+				juzgado = nuevoJuzgado.getJuzgado();
+			} catch(Exception e) {
+				return null;
+			}
+			_screen.addJuzgado(juzgado);
+			return juzgado;
 		} else
 			return (Juzgado) _screen.getSelected();
 	}

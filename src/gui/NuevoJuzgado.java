@@ -26,7 +26,7 @@ public class NuevoJuzgado {
 	 * @return El nuevo Juzgado, sí este no ha sido creado y aguardado con
 	 * guardarJuzgado(); se llama dicho método
 	 */
-	public Juzgado getJuzgado() {
+	public Juzgado getJuzgado() throws Exception{
 		if(_juzgado == null) {
 			guardarJuzgado();
 		}
@@ -37,20 +37,25 @@ public class NuevoJuzgado {
 	 * Crea el nuevo Juzgado en base a los datos capturados desde la pantalla
 	 * y guardandolo en la base de datos
 	 */
-	public void guardarJuzgado() {
-		Persistence guardado = null;
-		try {
-			guardado = new Persistence();
-		} catch (Exception e) {
-			Dialog.alert(e.toString());
-		}
-		_juzgado = new Juzgado(_screen.getNombre(), _screen.getCiudad(),
-				_screen.getDireccion(), _screen.getTelefono(),
-				_screen.getTelefono());
-		try {
-			guardado.guardarJuzgado(_juzgado);
-		} catch (Exception e) {
-			Dialog.alert(e.toString());
+	public void guardarJuzgado() throws Exception {
+		if (_screen.isGuardado()) {
+			Persistence guardado = null;
+			try {
+				guardado = new Persistence();
+			} catch (Exception e) {
+				Dialog.alert(e.toString());
+			}
+			_juzgado = new Juzgado(_screen.getNombre(), _screen.getCiudad(),
+					_screen.getDireccion(), _screen.getTelefono(),
+					_screen.getTelefono());
+			try {
+				guardado.guardarJuzgado(_juzgado);
+			} catch (Exception e) {
+				Dialog.alert(e.toString());
+			}
+		} 
+		else {
+			throw new Exception("No se esta guardando el elemento");
 		}
 	}
 }
