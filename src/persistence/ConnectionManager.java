@@ -186,6 +186,11 @@ public class ConnectionManager {
 			st.prepare();
 			st.execute();
 			st.close();
+			//Insertar la categoria por defecto
+			st = d.createStatement("INSERT INTO 'categorias' VALUES(1,"+"'Por Defecto')");
+			st.prepare();
+			st.execute();
+			st.close();
 			//Insertar la versión de la base de datos Llave 999
 			st = d.createStatement("INSERT INTO 'preferencias' VALUES(999,"+"'0.1')");
 			st.prepare();
