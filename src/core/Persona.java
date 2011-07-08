@@ -40,6 +40,16 @@ public class Persona {
 		this.notas = notas;
 		this.id_persona = id_persona;
 	}
+	public Persona(int tipo) {
+		this.tipo = tipo;
+		this.id = null;
+		this.nombre = null;
+		this.telefono = null;
+		this.direccion = null;
+		this.correo = null;
+		this.notas = null;
+		this.id_persona = null;
+	}
 	//Fin Constructores
 	
 	//Getters
