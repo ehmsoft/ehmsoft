@@ -25,6 +25,14 @@ public class Juzgado {
 		this.tipo = tipo;
 		this.id_juzgado = id_juzgado;
 	}
+	public Juzgado() {
+		this.nombre = null;
+		this.ciudad = null;
+		this.direccion = null;
+		this.telefono = null;
+		this.tipo = null;
+		this.id_juzgado = null;
+	}
 	//Fin Constructores
 	//Getters
 	public String getNombre() {
