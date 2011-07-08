@@ -36,6 +36,7 @@ public class VerJuzgadoScreen extends MainScreen {
 		add(_txtTipo);
 		addMenuItem(menuGuardar);
 		addMenuItem(menuEditar);
+		addMenuItem(menuEditarTodo);
 	}
 
 	private final MenuItem menuGuardar = new MenuItem("Guardar", 0, 0) {
@@ -53,6 +54,17 @@ public class VerJuzgadoScreen extends MainScreen {
 				f.setEditable();
 				f.setFocus();
 			}
+		}
+	};
+	
+	private final MenuItem menuEditarTodo = new MenuItem("Editar todo", 0, 0) {
+
+		public void run() {
+			_txtNombre.setEditable();
+			_txtCiudad.setEditable();
+			_txtDireccion.setEditable();
+			_txtTelefono.setEditable();
+			_txtTipo.setEditable();
 		}
 	};
 
