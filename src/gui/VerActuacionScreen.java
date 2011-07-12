@@ -48,6 +48,7 @@ public class VerActuacionScreen extends MainScreen {
 		add(_txtDescripcion);
 		addMenuItem(menuGuardar);
 		addMenuItem(menuEditar);
+		addMenuItem(menuEditarTodo);
 		addMenuItem(menuCambiar);
 	}
 
@@ -83,6 +84,16 @@ public class VerActuacionScreen extends MainScreen {
 				_txtDescripcion.setEditable();
 				_txtDescripcion.setFocus();
 			}
+		}
+	};
+	
+	private final MenuItem menuEditarTodo = new MenuItem("Editar todo", 0, 0) {
+
+		public void run() {
+			_txtJuzgado.setEditable();
+			_dfFecha.setEditable(true);
+			_dfFechaProxima.setEditable(true);
+			_txtDescripcion.setEditable();
 		}
 	};
 

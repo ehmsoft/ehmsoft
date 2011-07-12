@@ -103,6 +103,7 @@ public class VerProcesoScreen extends MainScreen {
 
 		addCampos();
 		addMenuItem(menuEditar);
+		addMenuItem(menuEditarTodo);
 	}
 
 	private Object[] transformActuaciones() {
@@ -235,6 +236,24 @@ public class VerProcesoScreen extends MainScreen {
 		}
 	};
 
+	private final MenuItem menuEditarTodo = new MenuItem("Editar todo", 0, 0) {
+
+		public void run() {
+			_txtDemandante.setEditable();
+			_txtDemandado.setEditable();
+			_dfFecha.setEditable(true);
+			_txtJuzgado.setEditable();
+			_txtRadicado.setEditable();
+			_txtRadicadoUnico.setEditable();
+			_ofActuaciones.setEditable(true);
+			_txtEstado.setEditable();
+			_txtCategoria.setEditable();
+			_txtTipo.setEditable();
+			_txtNotas.setEditable();
+			_nfPrioridad.setEditable(true);
+		}
+	};
+	
 	public Persona getDemandante() {
 		return _demandante;
 	}
