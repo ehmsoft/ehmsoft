@@ -5,6 +5,7 @@ import net.rim.device.api.ui.MenuItem;
 import net.rim.device.api.ui.UiApplication;
 import net.rim.device.api.ui.component.BasicEditField;
 import net.rim.device.api.ui.component.CheckboxField;
+import net.rim.device.api.ui.component.Dialog;
 import net.rim.device.api.ui.container.MainScreen;
 import core.CampoPersonalizado;
 
@@ -17,9 +18,12 @@ public class VerCampoPersonalizadoScreen extends MainScreen {
 	private EditableTextField _txtLongMin;
 
 	private CampoPersonalizado _campoPersonalizado;
+	
+	private boolean _guardar;
 
 	public VerCampoPersonalizadoScreen(CampoPersonalizado campo) {
 		super(MainScreen.VERTICAL_SCROLL | MainScreen.VERTICAL_SCROLLBAR);
+		_guardar = false;
 
 		_campoPersonalizado = campo;
 
@@ -56,6 +60,7 @@ public class VerCampoPersonalizadoScreen extends MainScreen {
 	private final MenuItem menuGuardar = new MenuItem("Guardar", 0, 0) {
 
 		public void run() {
+			_guardar = true;
 			UiApplication.getUiApplication().popScreen(getScreen());
 		}
 	};
@@ -121,5 +126,37 @@ public class VerCampoPersonalizadoScreen extends MainScreen {
 
 	public CampoPersonalizado getCampoPersonalizado() {
 		return _campoPersonalizado;
+	}
+	
+	public boolean isGuardado() {
+		return _guardar;
+	}
+	
+	public boolean onClose() {
+		boolean cambio = false;
+		if (!_campoPersonalizado.getNombre().equals(this.getNombre()))
+			cambio = true;
+		if (!_campoPersonalizado.getValor().equals(this.getValor()))
+			cambio = true;
+		if (!_campoPersonalizado.isObligatorio().equals(this.isObligatorio()))
+			cambio = true;
+		if (_campoPersonalizado.getLongitudMax() != this.getLongitudMax())
+			cambio = true;
+		if (_campoPersonalizado.getLongitudMin() != this.getLongitudMin())
+			cambio = true;
+		if (!cambio) {
+			UiApplication.getUiApplication().popScreen(getScreen());
+			return true;
+		} else {
+			Object[] ask = { "Si", "No" };
+			int sel = Dialog.ask("¿Desea descartar los cambios realizados?",
+					ask, 1);
+			if (sel == 0) {
+				UiApplication.getUiApplication().popScreen(getScreen());
+				return true;
+			} else {
+				return false;
+			}
+		}
 	}
 }
