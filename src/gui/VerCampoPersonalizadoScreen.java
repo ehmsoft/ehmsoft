@@ -148,10 +148,13 @@ public class VerCampoPersonalizadoScreen extends MainScreen {
 			UiApplication.getUiApplication().popScreen(getScreen());
 			return true;
 		} else {
-			Object[] ask = { "Si", "No" };
-			int sel = Dialog.ask("¿Desea descartar los cambios realizados?",
-					ask, 1);
+			Object[] ask = { "Guardar", "Descartar", "Cancelar" };
+			int sel = Dialog.ask("Se han detectado cambios", ask, 1);
 			if (sel == 0) {
+				_guardar = true;
+				UiApplication.getUiApplication().popScreen(getScreen());
+				return true;
+			} else if (sel == 1) {
 				UiApplication.getUiApplication().popScreen(getScreen());
 				return true;
 			} else {

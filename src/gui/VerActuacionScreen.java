@@ -7,6 +7,7 @@ import net.rim.device.api.ui.Field;
 import net.rim.device.api.ui.MenuItem;
 import net.rim.device.api.ui.UiApplication;
 import net.rim.device.api.ui.component.DateField;
+import net.rim.device.api.ui.component.Dialog;
 import net.rim.device.api.ui.container.MainScreen;
 import core.Actuacion;
 import core.Juzgado;
@@ -19,9 +20,13 @@ public class VerActuacionScreen extends MainScreen {
 	private EditableTextField _txtDescripcion;
 	private Actuacion _actuacion;
 	private Juzgado _juzgado;
+	
+	private boolean _guardar;
 
-	public VerActuacionScreen(Actuacion actuacion) {
+ 	public VerActuacionScreen(Actuacion actuacion) {
 		super(MainScreen.VERTICAL_SCROLL | MainScreen.VERTICAL_SCROLLBAR);
+		
+		_guardar = false;
 
 		_actuacion = actuacion;
 		_juzgado = actuacion.getJuzgado();
@@ -55,6 +60,7 @@ public class VerActuacionScreen extends MainScreen {
 	private final MenuItem menuGuardar = new MenuItem("Guardar", 0, 0) {
 
 		public void run() {
+			_guardar = true;
 			UiApplication.getUiApplication().popScreen(getScreen());
 		}
 	};
@@ -134,5 +140,51 @@ public class VerActuacionScreen extends MainScreen {
 
 	public Actuacion getActuacion() {
 		return _actuacion;
+	}
+	
+	public boolean isGuardado() {
+		return _guardar;
+	}
+	
+	public boolean onClose() {
+		boolean cambio = false;
+		Calendar f1 = _actuacion.getFecha();
+		Calendar f2 = this.getFecha();
+
+		Calendar fP1 = _actuacion.getFechaProxima();
+		Calendar fP2 = this.getFechaProxima();
+
+		if (!_actuacion.getJuzgado().getId_juzgado()
+				.equals(this.getJuzgado().getId_juzgado()))
+			cambio = true;
+		if ((f1.get(Calendar.YEAR) != f2.get(Calendar.YEAR))
+				|| (f1.get(Calendar.MONTH) != f2.get(Calendar.MONTH))
+				|| (f1.get(Calendar.DAY_OF_MONTH) != f2
+						.get(Calendar.DAY_OF_MONTH)))
+			cambio = true;
+		if ((fP1.get(Calendar.YEAR) != fP2.get(Calendar.YEAR))
+				|| (fP1.get(Calendar.MONTH) != fP2.get(Calendar.MONTH))
+				|| (fP1.get(Calendar.DAY_OF_MONTH) != fP2
+						.get(Calendar.DAY_OF_MONTH)))
+			cambio = true;
+		if (!_actuacion.getDescripcion().equals(this.getDescripcion()))
+			cambio = true;
+		if (!cambio) {
+			UiApplication.getUiApplication().popScreen(getScreen());
+			return true;
+		} else {
+			Object[] ask = { "Guardar", "Descartar", "Cancelar" };
+			int sel = Dialog.ask("Se han detectado cambios", ask, 1);
+			if (sel == 0) {
+				_guardar = true;
+				UiApplication.getUiApplication().popScreen(getScreen());
+				return true;
+			} else if (sel == 1) {
+				UiApplication.getUiApplication().popScreen(getScreen());
+				return true;
+			} else {
+				return false;
+			}
+		}
 	}
 }

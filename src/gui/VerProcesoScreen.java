@@ -41,10 +41,12 @@ public class VerProcesoScreen extends MainScreen {
 	Vector _camposPersonalizados;
 	Vector _txtCampos;
 	Vector _actuaciones;
+	
+	private boolean _guardar = false;
 
 	public VerProcesoScreen(Proceso proceso) {
 		super(MainScreen.VERTICAL_SCROLL | MainScreen.VERTICAL_SCROLLBAR);
-		// TODO Auto-generated constructor stub
+		
 		setTitle("Ver proceso");
 		_proceso = proceso;
 		_demandante = proceso.getDemandante();
@@ -102,6 +104,7 @@ public class VerProcesoScreen extends MainScreen {
 		_txtCampos = new Vector();
 
 		addCampos();
+		addMenuItem(menuGuardar);
 		addMenuItem(menuEditar);
 		addMenuItem(menuEditarTodo);
 	}
@@ -127,6 +130,14 @@ public class VerProcesoScreen extends MainScreen {
 			add(etf);
 		}
 	}
+	
+	private final MenuItem menuGuardar = new MenuItem("Guardar",0,0) {
+		
+		public void run() {
+			_guardar = true;
+			UiApplication.getUiApplication().popScreen(getScreen());
+		}
+	};
 
 	private final MenuItem menuEditar = new MenuItem("Editar", 0, 0) {
 
@@ -310,5 +321,67 @@ public class VerProcesoScreen extends MainScreen {
 
 	public Vector getCampos() {
 		return _camposPersonalizados;
+	}
+	
+	public boolean isGuardado() {
+		return _guardar;
+	}
+	
+	public boolean onClose() {
+		boolean cambio = false;
+		
+		Calendar f1 = _proceso.getFecha();
+		Calendar f2 = this.getFecha();
+
+		if (_proceso.getDemandante().getId_persona()
+				.equals(this.getDemandante().getId_persona()))
+			cambio = true;
+		if (_proceso.getDemandado().getId_persona()
+				.equals(this.getDemandado().getId_persona()))
+			cambio = true;
+		if (_proceso.getJuzgado().getId_juzgado()
+				.equals(this.getJuzgado().getId_juzgado()))
+			cambio = true;
+		if ((f1.get(Calendar.YEAR) != f2.get(Calendar.YEAR))
+				|| (f1.get(Calendar.MONTH) != f2.get(Calendar.MONTH))
+				|| (f1.get(Calendar.DAY_OF_MONTH) != f2
+						.get(Calendar.DAY_OF_MONTH)))
+			cambio = true;
+		if (_proceso.getRadicado().equals(this.getRadicado()))
+			cambio = true;
+		if (_proceso.getRadicadoUnico().equals(this.getRadicadoUnico()))
+			cambio = true;
+		if (_proceso.getActuaciones().equals(this.getActuaciones()))
+			cambio = true;
+		if (_proceso.getEstado().equals(this.getEstado()))
+			cambio = true;
+		if (_proceso.getCategoria().equals(this.getCategoria()))
+			cambio = true;
+		if (_proceso.getTipo().equals(this.getTipo()))
+			cambio = true;
+		if (_proceso.getNotas().equals(this.getNotas()))
+			cambio = true;
+		if (_proceso.getPrioridad() != this.getPrioridad())
+			cambio = true;
+		if (_proceso.getCampos().equals(this.getCampos()))
+			cambio = true;
+		
+		if(!cambio) {
+			UiApplication.getUiApplication().popScreen(getScreen());
+			return true;
+		} else {
+			Object[] ask = { "Guardar", "Descartar", "Cancelar" };
+			int sel = Dialog.ask("Se han detectado cambios", ask, 1);
+			if (sel == 0) {
+				_guardar = true;
+				UiApplication.getUiApplication().popScreen(getScreen());
+				return true;
+			} else if (sel == 1) {
+				UiApplication.getUiApplication().popScreen(getScreen());
+				return true;
+			} else {
+				return false;
+			}
+		}
 	}
 }
