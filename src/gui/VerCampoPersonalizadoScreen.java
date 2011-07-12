@@ -50,6 +50,7 @@ public class VerCampoPersonalizadoScreen extends MainScreen {
 		add(_txtLongMin);
 		addMenuItem(menuGuardar);
 		addMenuItem(menuEditar);
+		addMenuItem(menuEditarTodo);
 	}
 
 	private final MenuItem menuGuardar = new MenuItem("Guardar", 0, 0) {
@@ -87,6 +88,17 @@ public class VerCampoPersonalizadoScreen extends MainScreen {
 		}
 	};
 
+	private final MenuItem menuEditarTodo = new MenuItem("Editar todo", 0, 0) {
+
+		public void run() {
+			_txtNombre.setEditable();
+			_txtValor.setEditable();
+			_cfObligatorio.setEditable(true);
+			_txtLongMax.setEditable();
+			_txtLongMin.setEditable();
+		}
+	};
+	
 	public String getNombre() {
 		return _txtNombre.getText();
 	}
