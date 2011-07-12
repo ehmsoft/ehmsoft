@@ -2,21 +2,26 @@ package gui;
 
 import net.rim.device.api.ui.MenuItem;
 import net.rim.device.api.ui.UiApplication;
+import net.rim.device.api.ui.component.Dialog;
 import net.rim.device.api.ui.container.MainScreen;
 import core.Juzgado;
 
 public class VerJuzgadoScreen extends MainScreen {
 
-	EditableTextField _txtNombre;
-	EditableTextField _txtCiudad;
-	EditableTextField _txtDireccion;
-	EditableTextField _txtTelefono;
-	EditableTextField _txtTipo;
+	private EditableTextField _txtNombre;
+	private EditableTextField _txtCiudad;
+	private EditableTextField _txtDireccion;
+	private EditableTextField _txtTelefono;
+	private EditableTextField _txtTipo;
 
-	Juzgado _juzgado;
+	private Juzgado _juzgado;
+	
+	private boolean _guardar;
 
 	public VerJuzgadoScreen(Juzgado juzgado) {
 		super(MainScreen.VERTICAL_SCROLL | MainScreen.VERTICAL_SCROLLBAR);
+		
+		_guardar = false;
 
 		setTitle("Ver juzgado");
 		_juzgado = juzgado;
@@ -42,6 +47,7 @@ public class VerJuzgadoScreen extends MainScreen {
 	private final MenuItem menuGuardar = new MenuItem("Guardar", 0, 0) {
 
 		public void run() {
+			_guardar = true;
 			UiApplication.getUiApplication().popScreen(getScreen());
 		}
 	};
@@ -90,5 +96,37 @@ public class VerJuzgadoScreen extends MainScreen {
 
 	public Juzgado getJuzgado() {
 		return _juzgado;
+	}
+	
+	public boolean isGuardado() {
+		return _guardar;
+	}
+	
+	public boolean onClose() {
+		boolean cambio = false;
+		if (!_juzgado.getNombre().equals(this.getNombre()))
+			cambio = true;
+		if (!_juzgado.getCiudad().equals(this.getCiudad()))
+			cambio = true;
+		if (!_juzgado.getTelefono().equals(this.getTelefono()))
+			cambio = true;
+		if (!_juzgado.getDireccion().equals(this.getDireccion()))
+			cambio = true;
+		if (!_juzgado.getTipo().equals(this.getTipo()))
+			cambio = true;
+		if(!cambio) {
+			UiApplication.getUiApplication().popScreen(getScreen());
+			return true;
+		} else {
+			Object[] ask = { "Si", "No" };
+			int sel = Dialog.ask("¿Desea descartar los cambios realizados?",
+					ask, 1);
+			if (sel == 0) {
+				UiApplication.getUiApplication().popScreen(getScreen());
+				return true;
+			} else {
+				return false;
+			}
+		}
 	}
 }
