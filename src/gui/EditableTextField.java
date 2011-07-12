@@ -61,6 +61,10 @@ public class EditableTextField extends HorizontalFieldManager {
 	public String getText() {
 		return _txtField.getText();
 	}
+	
+	public int getTextLength() {
+		return _txtField.getTextLength();
+	}
 
 	public void setEditable() {
 		long style = _txtField.getStyle();
