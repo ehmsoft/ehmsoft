@@ -200,15 +200,19 @@ public class Persistence implements Cargado, Guardado {
 			d = DatabaseFactory.open(connMgr.getDbLocation());
 			Statement stDelJuzgado1 = d.createStatement("DELETE FROM juzgados WHERE id_juzgado = ?");
 			Statement stDelJuzgado2 = d.createStatement("UPDATE procesos SET id_juzgado = null WHERE id_juzgado = ?");
-
+			Statement stDelJuzgado3 = d.createStatement("UPDATE actuaciones SET id_juzgado = null WHERE id_juzgado = ?");
 			stDelJuzgado1.prepare();
 			stDelJuzgado2.prepare();
+			stDelJuzgado3.prepare();
 			stDelJuzgado1.bind(1, juzgado.getId_juzgado());
 			stDelJuzgado2.bind(1, juzgado.getId_juzgado());
+			stDelJuzgado3.bind(1, juzgado.getId_juzgado());
 			stDelJuzgado1.execute();
 			stDelJuzgado2.execute();
+			stDelJuzgado3.execute();
 			stDelJuzgado1.close();
-			stDelJuzgado1.close();
+			stDelJuzgado2.close();
+			stDelJuzgado3.close();
 			d.close();
 		} catch (Exception e){
 			throw e;
@@ -217,6 +221,9 @@ public class Persistence implements Cargado, Guardado {
 				d.close();
 			}
 		}
+		
+		
+		
 		
 	}
 
