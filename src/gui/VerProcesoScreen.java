@@ -84,7 +84,7 @@ public class VerProcesoScreen extends MainScreen {
 		_txtEstado = new EditableTextField("Estado: ", _proceso.getEstado());
 		add(_txtEstado);
 
-		_txtCategoria = new EditableTextField("Categría: ",
+		_txtCategoria = new EditableTextField("Categoría: ",
 				_proceso.getCategoria());
 		add(_txtCategoria);
 
