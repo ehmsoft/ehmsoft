@@ -333,13 +333,13 @@ public class VerProcesoScreen extends MainScreen {
 		Calendar f1 = _proceso.getFecha();
 		Calendar f2 = this.getFecha();
 
-		if (_proceso.getDemandante().getId_persona()
+		if (!_proceso.getDemandante().getId_persona()
 				.equals(this.getDemandante().getId_persona()))
 			cambio = true;
-		if (_proceso.getDemandado().getId_persona()
+		if (!_proceso.getDemandado().getId_persona()
 				.equals(this.getDemandado().getId_persona()))
 			cambio = true;
-		if (_proceso.getJuzgado().getId_juzgado()
+		if (!_proceso.getJuzgado().getId_juzgado()
 				.equals(this.getJuzgado().getId_juzgado()))
 			cambio = true;
 		if ((f1.get(Calendar.YEAR) != f2.get(Calendar.YEAR))
@@ -347,23 +347,23 @@ public class VerProcesoScreen extends MainScreen {
 				|| (f1.get(Calendar.DAY_OF_MONTH) != f2
 						.get(Calendar.DAY_OF_MONTH)))
 			cambio = true;
-		if (_proceso.getRadicado().equals(this.getRadicado()))
+		if (!_proceso.getRadicado().equals(this.getRadicado()))
 			cambio = true;
-		if (_proceso.getRadicadoUnico().equals(this.getRadicadoUnico()))
+		if (!_proceso.getRadicadoUnico().equals(this.getRadicadoUnico()))
 			cambio = true;
-		if (_proceso.getActuaciones().equals(this.getActuaciones()))
+		if (!_proceso.getActuaciones().equals(this.getActuaciones()))
 			cambio = true;
-		if (_proceso.getEstado().equals(this.getEstado()))
+		if (!_proceso.getEstado().equals(this.getEstado()))
 			cambio = true;
-		if (_proceso.getCategoria().equals(this.getCategoria()))
+		if (!_proceso.getCategoria().equals(this.getCategoria()))
 			cambio = true;
-		if (_proceso.getTipo().equals(this.getTipo()))
+		if (!_proceso.getTipo().equals(this.getTipo()))
 			cambio = true;
-		if (_proceso.getNotas().equals(this.getNotas()))
+		if (!_proceso.getNotas().equals(this.getNotas()))
 			cambio = true;
 		if (_proceso.getPrioridad() != this.getPrioridad())
 			cambio = true;
-		if (_proceso.getCampos().equals(this.getCampos()))
+		if (!_proceso.getCampos().equals(this.getCampos()))
 			cambio = true;
 		
 		if(!cambio) {
