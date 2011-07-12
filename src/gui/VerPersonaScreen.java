@@ -55,6 +55,7 @@ public class VerPersonaScreen extends MainScreen {
 		add(_txtNotas);
 		addMenuItem(menuGuardar);
 		addMenuItem(menuEditar);
+		addMenuItem(menuEditarTodo);
 	}
 
 	private final MenuItem menuGuardar = new MenuItem("Guardar", 0, 0) {
@@ -74,6 +75,18 @@ public class VerPersonaScreen extends MainScreen {
 				f.setEditable();
 				f.setFocus();
 			}
+		}
+	};
+	
+	private final MenuItem menuEditarTodo = new MenuItem("Editar todo", 0, 0) {
+
+		public void run() {
+			_txtNombre.setEditable();
+			_txtId.setEditable();
+			_txtTelefono.setEditable();
+			_txtDireccion.setEditable();
+			_txtCorreo.setEditable();
+			_txtNotas.setEditable();
 		}
 	};
 
