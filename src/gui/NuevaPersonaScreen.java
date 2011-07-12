@@ -3,6 +3,7 @@ package gui;
 import net.rim.device.api.ui.MenuItem;
 import net.rim.device.api.ui.UiApplication;
 import net.rim.device.api.ui.component.BasicEditField;
+import net.rim.device.api.ui.component.Dialog;
 
 public class NuevaPersonaScreen extends FondoNuevos {
 
@@ -13,6 +14,7 @@ public class NuevaPersonaScreen extends FondoNuevos {
 	private BasicEditField _txtTelefono;
 	private BasicEditField _txtCorreo;
 	private BasicEditField _txtNotas;
+	private boolean _guardar;
 
 	/**
 	 * @param tipo Se crea una NuevaPersonaScreen con el tipo de Persona:
@@ -21,6 +23,7 @@ public class NuevaPersonaScreen extends FondoNuevos {
 	 */
 	public NuevaPersonaScreen(int tipo) {
 		super();
+		_guardar = false;
 		_tipo = tipo;
 		if (tipo == 1)
 			setTitle("Nuevo demandante");
@@ -55,6 +58,7 @@ public class NuevaPersonaScreen extends FondoNuevos {
 	private final MenuItem menuGuardar = new MenuItem("Guardar", 0, 0) {
 
 		public void run() {
+			_guardar = true;
 			UiApplication.getUiApplication().popScreen(getScreen());
 		}
 	};
@@ -115,9 +119,32 @@ public class NuevaPersonaScreen extends FondoNuevos {
 	public String getNotas() {
 		return _txtNotas.getText();
 	}
+	
+	/**
+	 * @return Si el objeto sera guardado o no
+	 */
+	public boolean isGuardado() {
+		return _guardar;
+	}
 
 	public boolean onClose() {
-		UiApplication.getUiApplication().popScreen(getScreen());
-		return true;
+		if (_txtNombre.getTextLength() == 0 && _txtCedula.getTextLength() == 0
+				&& _txtDireccion.getTextLength() == 0
+				&& _txtTelefono.getTextLength() == 0
+				&& _txtCorreo.getTextLength() == 0
+				&& _txtNotas.getTextLength() == 0) {
+			UiApplication.getUiApplication().popScreen(getScreen());
+			return true;
+		} else {
+			Object[] ask = { "Si", "No" };
+			int sel = Dialog.ask("¿Desea descartar los cambios realizados?",
+					ask, 1);
+			if (sel == 0) {
+				UiApplication.getUiApplication().popScreen(getScreen());
+				return true;
+			} else {
+				return false;
+			}
+		}
 	}
 }

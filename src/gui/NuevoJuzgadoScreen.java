@@ -3,6 +3,7 @@ package gui;
 import net.rim.device.api.ui.MenuItem;
 import net.rim.device.api.ui.UiApplication;
 import net.rim.device.api.ui.component.BasicEditField;
+import net.rim.device.api.ui.component.Dialog;
 
 public class NuevoJuzgadoScreen extends FondoNuevos {
 
@@ -11,6 +12,7 @@ public class NuevoJuzgadoScreen extends FondoNuevos {
 	private BasicEditField _txtDireccion;
 	private BasicEditField _txtTelefono;
 	private BasicEditField _txtTipo;
+	private boolean _guardar;
 
 	/**
 	 * Crea un NuevoJuzgadoScreen que es la pantalla para capturar los datos
@@ -46,6 +48,7 @@ public class NuevoJuzgadoScreen extends FondoNuevos {
 	private final MenuItem menuGuardar = new MenuItem("Guardar", 0, 0) {
 
 		public void run() {
+			_guardar = true;
 			UiApplication.getUiApplication().popScreen(getScreen());
 		}
 	};
@@ -84,9 +87,31 @@ public class NuevoJuzgadoScreen extends FondoNuevos {
 	public String getTipo() {
 		return _txtTipo.getText();
 	}
+	
+	/**
+	 * @return Si el objeto sera guardado o no
+	 */
+	public boolean isGuardado() {
+		return _guardar;
+	}
 
 	public boolean onClose() {
-		UiApplication.getUiApplication().popScreen(getScreen());
-		return true;
+		if (_txtNombre.getTextLength() == 0 && _txtCiudad.getTextLength() == 0
+				&& _txtDireccion.getTextLength() == 0
+				&& _txtTelefono.getTextLength() == 0
+				&& _txtTipo.getTextLength() == 0) {
+			UiApplication.getUiApplication().popScreen(getScreen());
+			return true;
+		} else {
+			Object[] ask = { "Si", "No" };
+			int sel = Dialog.ask("¿Desea descartar los cambios realizados?",
+					ask, 1);
+			if (sel == 0) {
+				UiApplication.getUiApplication().popScreen(getScreen());
+				return true;
+			} else {
+				return false;
+			}
+		}
 	}
 }

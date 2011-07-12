@@ -92,11 +92,19 @@ public class ListadoPersonas {
 		if (String.class.isInstance(_screen.getSelected())) {
 			UiApplication.getUiApplication().pushModalScreen(
 					nuevaPersona.getScreen());
-			nuevaPersona.guardarPersona();
-			_screen.addPersona(nuevaPersona.getPersona());
-			return nuevaPersona.getPersona();
-		} else
+			Persona persona = null;
+			try {
+				persona = nuevaPersona.getPersona();
+				nuevaPersona = null;
+			} catch (Exception e) {
+				return null;
+			}
+			_screen.addPersona(persona);
+			return persona;
+		} 
+		else {
 			return (Persona) _screen.getSelected();
+		}
 	}
 
 	public ListadoPersonasScreen getScreen() {
