@@ -196,30 +196,30 @@ public class ConnectionManager {
 			//Insertar los valores vacíos
 			st = d.createStatement("INSERT INTO demandantes VALUES(1, "+
             		"'No id', "+
-            		"'vacío', "+
-            		"'vacío', "+
-            		"'vacío', "+
-            		"'vacío', "+
-            		"'vacío')");
+            		"'vacio', "+
+            		"'vacio', "+
+            		"'vacio', "+
+            		"'vacio', "+
+            		"'vacio')");
             st.prepare();
             st.execute();
             st.close();
             st = d.createStatement("INSERT INTO demandados VALUES(1,"+
             		"'No id', "+
-            		"'vacío', "+
-            		"'vacío', "+
-            		"'vacío', "+
-            		"'vacío', "+
-            		"'vacío')");
+            		"'vacio', "+
+            		"'vacio', "+
+            		"'vacio', "+
+            		"'vacio', "+
+            		"'vacio')");
             st.prepare();
             st.execute();
             st.close();
             st = d.createStatement("INSERT INTO juzgados VALUES(1,"+
-            		"'vacío',"+
-            		"'vacío', "+
-            		"'vacío',"+
-            		"'vacío', "+
-            		"'vacío')");
+            		"'vacio',"+
+            		"'vacio', "+
+            		"'vacio',"+
+            		"'vacio', "+
+            		"'vacio')");
             st.prepare();
             st.execute();
             st.close();
