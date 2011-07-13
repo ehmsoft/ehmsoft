@@ -223,9 +223,6 @@ public class Persistence implements Cargado, Guardado {
 			}
 		}
 		
-		
-		
-		
 	}
 
 	public void actualizarActuacion(Actuacion actuacion) throws Exception {   // id_proceso no se puede cambiar
@@ -486,7 +483,28 @@ public class Persistence implements Cargado, Guardado {
 
 	public void borrarCategoria(Categoria categoria) throws Exception {
 		// TODO Auto-generated method stub
-		
+		Database d = null;
+		try{
+			connMgr.prepararBD();
+			d = DatabaseFactory.open(connMgr.getDbLocation());
+			Statement stDelCategoria1 = d.createStatement("DELETE FROM categorias WHERE id_categoria = ?");
+			Statement stDelCategoria2 = d.createStatement("UPDATE procesos SET id_categoria = 1 WHERE id_categoria = ?");
+			stDelCategoria1.prepare();
+			stDelCategoria2.prepare();
+			stDelCategoria1.bind(1, categoria.getId_categoria());
+			stDelCategoria2.bind(1, categoria.getId_categoria());
+			stDelCategoria1.execute();
+			stDelCategoria2.execute();
+			stDelCategoria1.close();
+			stDelCategoria2.close();
+		} catch (Exception e){
+			throw e;
+		} finally {
+			if (d != null){
+				d.close();
+			}
+		}
+
 	}
 
 	public Vector consultarDemandantes() throws Exception {//Devuelve una vector iterable de todos los demandantes
