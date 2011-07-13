@@ -16,5 +16,5 @@ public interface Cargado {
 	public Actuacion consultarActuacion(String id_actuacion) throws Exception;
 	public Vector consultarJuzgados() throws Exception;
 	public Juzgado consultarJuzgado(String id_juzgado) throws Exception;
-	
+	public Categoria consultarCategoria(String id_categoria) throws Exception;
 }
