@@ -271,6 +271,7 @@ public class Persistence implements Cargado, Guardado {
 			stActuacion.bind(5,actuacion.getDescripcion());
 			stActuacion.execute(); 
 			stActuacion.close();
+			actuacion.setId_actuacion(Long.toString(d.lastInsertedRowID()));
 			d.close();
 		} catch (Exception e){
 			throw e;
@@ -333,7 +334,6 @@ public class Persistence implements Cargado, Guardado {
 			stAtributosProceso.bind(3,campo.getValor());
 			stAtributosProceso.execute();
 			stAtributosProceso.close();	
-			
 			d.close();
 		} catch (Exception e){
 			throw e;
@@ -404,7 +404,8 @@ public class Persistence implements Cargado, Guardado {
 			stProceso.bind(10,proceso.getJuzgado().getId_juzgado());
 			stProceso.execute();
 			IDproceso = d.lastInsertedRowID();
-			stProceso.close();				
+			stProceso.close();			
+			proceso.setId_proceso(Long.toString(d.lastInsertedRowID()));
 			d.close();
 		} catch (Exception e){
 			throw e;
