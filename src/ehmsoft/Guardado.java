@@ -23,4 +23,8 @@ public interface Guardado {
 	public void actualizarProceso(Proceso proceso) throws Exception;
 	public void guardarProceso(Proceso proceso) throws Exception;
 	public void borrarProceso(Proceso proceso) throws Exception;
+	//Categorias
+	public void actualizarCategoria(Categoria categoria) throws Exception;
+	public void guardarCategoria(Categoria categoria) throws Exception;
+	public void borrarCategoria(Categoria categoria) throws Exception;
 }
