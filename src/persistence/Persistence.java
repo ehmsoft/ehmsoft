@@ -86,8 +86,7 @@ public class Persistence implements Cargado, Guardado {
 			stPersona1.bind(6, persona.getNotas());
 			stPersona1.execute();
 			stPersona1.close();
-			persona.setId(Long.toString(d.lastInsertedRowID()));
-			d.close();
+			persona.setId_persona((Long.toString(d.lastInsertedRowID())));
 			
 		} catch (Exception e){
 			throw e;
@@ -185,7 +184,6 @@ public class Persistence implements Cargado, Guardado {
 			stJuzgado.execute();
 			stJuzgado.close();
 			juzgado.setId_juzgado(Long.toString(d.lastInsertedRowID()));
-			d.close();
 		} catch (Exception e){
 			throw e;
 		} finally {
@@ -217,7 +215,6 @@ public class Persistence implements Cargado, Guardado {
 			stDelJuzgado1.close();
 			stDelJuzgado2.close();
 			stDelJuzgado3.close();
-			d.close();
 		} catch (Exception e){
 			throw e;
 		} finally {
@@ -272,7 +269,6 @@ public class Persistence implements Cargado, Guardado {
 			stActuacion.execute(); 
 			stActuacion.close();
 			actuacion.setId_actuacion(Long.toString(d.lastInsertedRowID()));
-			d.close();
 		} catch (Exception e){
 			throw e;
 		} finally {
@@ -334,7 +330,6 @@ public class Persistence implements Cargado, Guardado {
 			stAtributosProceso.bind(3,campo.getValor());
 			stAtributosProceso.execute();
 			stAtributosProceso.close();	
-			d.close();
 		} catch (Exception e){
 			throw e;
 		} finally {
@@ -406,7 +401,6 @@ public class Persistence implements Cargado, Guardado {
 			IDproceso = d.lastInsertedRowID();
 			stProceso.close();			
 			proceso.setId_proceso(Long.toString(d.lastInsertedRowID()));
-			d.close();
 		} catch (Exception e){
 			throw e;
 		} finally {
