@@ -223,9 +223,6 @@ public class Persistence implements Cargado, Guardado {
 			}
 		}
 		
-		
-		
-		
 	}
 
 	public void actualizarActuacion(Actuacion actuacion) throws Exception {   // id_proceso no se puede cambiar
@@ -443,18 +440,76 @@ public class Persistence implements Cargado, Guardado {
 	}
 
 	public void actualizarCategoria(Categoria categoria) throws Exception {
-		// TODO Auto-generated method stub
+		Database d = null;
+		try{
+			connMgr.prepararBD();
+			d = DatabaseFactory.open(connMgr.getDbLocation());
+			Statement stCategoria = d.createStatement("UPDATE categorias SET descripcion = ?,"+" WHERE id_categoria = ?");
+			stCategoria.prepare();
+			stCategoria.bind(1, categoria.getDescripcion());
+			stCategoria.bind(2, categoria.getId_categoria());
+			stCategoria.execute();
+			stCategoria.close();
+		} catch (Exception e){
+			throw e;
+		} finally {
+			if (d != null){
+				d.close();
+			}
+		}
 		
 	}
 
 	public void guardarCategoria(Categoria categoria) throws Exception {
-		// TODO Auto-generated method stub
+		Database d = null;
+		try{
+			connMgr.prepararBD();
+			d = DatabaseFactory.open(connMgr.getDbLocation());
+			Statement stCategoria = d.createStatement("INSERT INTO categorias VALUES( NULL,?)");
+			stCategoria.prepare();
+			stCategoria.bind(1, categoria.getDescripcion());
+			stCategoria.execute();
+			stCategoria.close();
+			categoria.setId_categoria(Long.toString(d.lastInsertedRowID()));
+		} catch (Exception e){
+			throw e;
+		} finally {
+			if (d != null){
+				d.close();
+			}
+		}
 		
 	}
 
 	public void borrarCategoria(Categoria categoria) throws Exception {
 		// TODO Auto-generated method stub
-		
+		if (Integer.parseInt(categoria.getId_categoria()) != 1){
+			Database d = null;
+			try{
+				connMgr.prepararBD();
+				d = DatabaseFactory.open(connMgr.getDbLocation());
+				Statement stDelCategoria1 = d.createStatement("DELETE FROM categorias WHERE id_categoria = ?");
+				Statement stDelCategoria2 = d.createStatement("UPDATE procesos SET id_categoria = 1 WHERE id_categoria = ?");
+				stDelCategoria1.prepare();
+				stDelCategoria2.prepare();
+				stDelCategoria1.bind(1, categoria.getId_categoria());
+				stDelCategoria2.bind(1, categoria.getId_categoria());
+				stDelCategoria1.execute();
+				stDelCategoria2.execute();
+				stDelCategoria1.close();
+				stDelCategoria2.close();
+			} catch (Exception e){
+				throw e;
+			} finally {
+				if (d != null){
+					d.close();
+				}
+			}
+		}
+		else{
+			throw new Exception("la categoria por defecto no se puede borrar");
+		}
+
 	}
 
 	public Vector consultarDemandantes() throws Exception {//Devuelve una vector iterable de todos los demandantes
