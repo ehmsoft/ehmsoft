@@ -193,7 +193,37 @@ public class ConnectionManager {
 			st.prepare();
 			st.execute();
 			st.close();
-			//Insertar la versión de la base de datos Llave 999
+			//Insertar los valores vacíos
+			st = d.createStatement("INSERT INTO demandantes VALUES(1, "+
+            		"'No id', "+
+            		"'vacio', "+
+            		"'vacio', "+
+            		"'vacio', "+
+            		"'vacio', "+
+            		"'vacio')");
+            st.prepare();
+            st.execute();
+            st.close();
+            st = d.createStatement("INSERT INTO demandados VALUES(1,"+
+            		"'No id', "+
+            		"'vacio', "+
+            		"'vacio', "+
+            		"'vacio', "+
+            		"'vacio', "+
+            		"'vacio')");
+            st.prepare();
+            st.execute();
+            st.close();
+            st = d.createStatement("INSERT INTO juzgados VALUES(1,"+
+            		"'vacio',"+
+            		"'vacio', "+
+            		"'vacio',"+
+            		"'vacio', "+
+            		"'vacio')");
+            st.prepare();
+            st.execute();
+            st.close();
+          //Insertar la versión de la base de datos Llave 999
 			st = d.createStatement("INSERT INTO 'preferencias' VALUES(999,"+"'0.2')");
 			st.prepare();
 			st.execute();

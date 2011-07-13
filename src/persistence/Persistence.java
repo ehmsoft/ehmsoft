@@ -86,7 +86,8 @@ public class Persistence implements Cargado, Guardado {
 			stPersona1.bind(6, persona.getNotas());
 			stPersona1.execute();
 			stPersona1.close();
-			d.close();
+			persona.setId_persona((Long.toString(d.lastInsertedRowID())));
+			
 		} catch (Exception e){
 			throw e;
 		} finally {
@@ -94,6 +95,7 @@ public class Persistence implements Cargado, Guardado {
 				d.close();
 			}
 		}
+		
 		
 	}
 
@@ -107,12 +109,12 @@ public class Persistence implements Cargado, Guardado {
 			d = DatabaseFactory.open(connMgr.getDbLocation());
 		if(persona.getTipo()==1){
 			stDelPersona1 = d.createStatement("DELETE FROM demandantes WHERE id_demandante = ? ");
-			stDelPersona2 = d.createStatement("UPDATE procesos SET id_demandante = null WHERE id_demandante = ?");
+			stDelPersona2 = d.createStatement("UPDATE procesos SET id_demandante = 1 WHERE id_demandante = ?");
 
 		}
 			else if(persona.getTipo()==2){
 				stDelPersona1 = d.createStatement("DELETE FROM demandados WHERE id_demandado = ? ");
-				stDelPersona2 = d.createStatement("UPDATE procesos SET id_demandado = null WHERE id_demandado = ?");
+				stDelPersona2 = d.createStatement("UPDATE procesos SET id_demandado = 1 WHERE id_demandado = ?");
 			}
 			else{
 				throw new Exception("Tipo persona invalido");
@@ -181,7 +183,7 @@ public class Persistence implements Cargado, Guardado {
 			stJuzgado.bind(5, juzgado.getTipo());
 			stJuzgado.execute();
 			stJuzgado.close();
-			d.close();
+			juzgado.setId_juzgado(Long.toString(d.lastInsertedRowID()));
 		} catch (Exception e){
 			throw e;
 		} finally {
@@ -199,8 +201,8 @@ public class Persistence implements Cargado, Guardado {
 			connMgr.prepararBD();
 			d = DatabaseFactory.open(connMgr.getDbLocation());
 			Statement stDelJuzgado1 = d.createStatement("DELETE FROM juzgados WHERE id_juzgado = ?");
-			Statement stDelJuzgado2 = d.createStatement("UPDATE procesos SET id_juzgado = null WHERE id_juzgado = ?");
-			Statement stDelJuzgado3 = d.createStatement("UPDATE actuaciones SET id_juzgado = null WHERE id_juzgado = ?");
+			Statement stDelJuzgado2 = d.createStatement("UPDATE procesos SET id_juzgado = 1 WHERE id_juzgado = ?");
+			Statement stDelJuzgado3 = d.createStatement("UPDATE actuaciones SET id_juzgado = 1 WHERE id_juzgado = ?");
 			stDelJuzgado1.prepare();
 			stDelJuzgado2.prepare();
 			stDelJuzgado3.prepare();
@@ -213,7 +215,6 @@ public class Persistence implements Cargado, Guardado {
 			stDelJuzgado1.close();
 			stDelJuzgado2.close();
 			stDelJuzgado3.close();
-			d.close();
 		} catch (Exception e){
 			throw e;
 		} finally {
@@ -267,7 +268,7 @@ public class Persistence implements Cargado, Guardado {
 			stActuacion.bind(5,actuacion.getDescripcion());
 			stActuacion.execute(); 
 			stActuacion.close();
-			d.close();
+			actuacion.setId_actuacion(Long.toString(d.lastInsertedRowID()));
 		} catch (Exception e){
 			throw e;
 		} finally {
@@ -329,8 +330,6 @@ public class Persistence implements Cargado, Guardado {
 			stAtributosProceso.bind(3,campo.getValor());
 			stAtributosProceso.execute();
 			stAtributosProceso.close();	
-			
-			d.close();
 		} catch (Exception e){
 			throw e;
 		} finally {
@@ -400,8 +399,8 @@ public class Persistence implements Cargado, Guardado {
 			stProceso.bind(10,proceso.getJuzgado().getId_juzgado());
 			stProceso.execute();
 			IDproceso = d.lastInsertedRowID();
-			stProceso.close();				
-			d.close();
+			stProceso.close();			
+			proceso.setId_proceso(Long.toString(d.lastInsertedRowID()));
 		} catch (Exception e){
 			throw e;
 		} finally {
