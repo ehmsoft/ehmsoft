@@ -477,7 +477,9 @@ public class Persistence implements Cargado, Guardado {
 				String correo = row.getString(5);
 				String notas = row.getString(6);
 				Persona per = new Persona(1, cedula, nombre, telefono, direccion, correo, notas, Integer.toString(id_demandante));
-				demandantes.addElement(per);
+				if (id_demandante != 1){
+					demandantes.addElement(per);
+				}
 			}
 			st.close();
 			cursor.close();
@@ -510,7 +512,9 @@ public class Persistence implements Cargado, Guardado {
 				String correo = row.getString(5);
 				String notas = row.getString(6);
 				Persona per = new Persona(2, cedula, nombre, telefono, direccion, correo, notas, Integer.toString(id_demandado));
-				demandados.addElement(per);
+				if(id_demandado != 1){
+					demandados.addElement(per);
+				}
 
 			}
 			st.close();
@@ -544,7 +548,9 @@ public class Persistence implements Cargado, Guardado {
 				String correo = row.getString(5);
 				String notas = row.getString(6);
 				Persona per = new Persona(2, cedula, nombre, telefono, direccion, correo, notas, Integer.toString(id_demandado));
-				pers.addElement(per);
+				if(id_demandado != 1){
+					pers.addElement(per);
+				}
 			}
 			st.close();
 			cursor.close();
@@ -562,7 +568,9 @@ public class Persistence implements Cargado, Guardado {
 				String correo = row.getString(5);
 				String notas = row.getString(6);
 				Persona per = new Persona(1, cedula, nombre, telefono, direccion, correo, notas, Integer.toString(id_demandante));
-				pers.addElement(per);
+				if (id_demandante != 1){
+					pers.addElement(per);
+				}
 			}
 			st.close();
 			cursor.close();
@@ -827,7 +835,9 @@ public class Persistence implements Cargado, Guardado {
 				String direccion = row.getString(4);
 				String telefono = row.getString(5);
 				Juzgado juz = new Juzgado(nombre, ciudad, direccion, telefono, tipo, Integer.toString(id_juzgado));
-				juzgados.addElement(juz);
+				if(id_juzgado != 1){
+					juzgados.addElement(juz);
+				}
 			}
 			st.close();
 			cursor.close();
