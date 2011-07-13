@@ -13,7 +13,7 @@ public class Proceso {
 	private String radicadoUnico;
 	private Vector actuaciones;
 	private String estado;
-	private String categoria;
+	private Categoria categoria;
 	private String tipo;
 	private String notas;
 	private Vector campos;
@@ -21,7 +21,7 @@ public class Proceso {
 	//Constructores
 	public Proceso(Persona demandante, Persona demandado, Calendar fecha,
 			Juzgado juzgado, String radicado, String radicadoUnico,
-			Vector actuaciones, String estado, String categoria, String tipo,
+			Vector actuaciones, String estado, Categoria categoria, String tipo,
 			String notas, Vector campos, int prioridad) {
 		this.demandante = demandante;
 		this.demandado = demandado;
@@ -40,7 +40,7 @@ public class Proceso {
 	public Proceso(String id_proceso, Persona demandante, Persona demandado,
 			Calendar fecha, Juzgado juzgado, String radicado,
 			String radicadoUnico, Vector actuaciones, String estado,
-			String categoria, String tipo, String notas, Vector campos,
+			Categoria categoria, String tipo, String notas, Vector campos,
 			int prioridad) {
 		this.id_proceso = id_proceso;
 		this.demandante = demandante;
@@ -98,7 +98,7 @@ public class Proceso {
 	public String getEstado() {
 		return estado;
 	}
-	public String getCategoria() {
+	public Categoria getCategoria() {
 		return categoria;
 	}
 	public String getTipo() {
@@ -146,7 +146,7 @@ public class Proceso {
 	public void setEstado(String estado) {
 		this.estado = estado;
 	}
-	public void setCategoria(String categoria) {
+	public void setCategoria(Categoria categoria) {
 		this.categoria = categoria;
 	}
 	public void setTipo(String tipo) {
