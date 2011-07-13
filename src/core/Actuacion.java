@@ -8,6 +8,7 @@ public class Actuacion {
 	private Calendar fechaProxima;
 	private String descripcion;
 	private String id_actuacion;
+	private String uid;
 	//Constructores
 	public Actuacion(Juzgado juzgado, Calendar fecha, Calendar fechaProxima,String descripcion) {
 		this.juzgado = juzgado;
@@ -24,6 +25,15 @@ public class Actuacion {
 		this.id_actuacion = id_actuacion;
 	}
 
+	public Actuacion(Juzgado juzgado, Calendar fecha, Calendar fechaProxima,
+			String descripcion, String id_actuacion, String uid) {
+		this.juzgado = juzgado;
+		this.fecha = fecha;
+		this.fechaProxima = fechaProxima;
+		this.descripcion = descripcion;
+		this.id_actuacion = id_actuacion;
+		this.uid = uid;
+	}
 	//Fin Constructores
 
 	//Getters
@@ -43,7 +53,13 @@ public class Actuacion {
 		return id_actuacion;
 	}
 
+	public String getUid() {
+		return uid;
+	}
 	//Setters
+	public void setUid(String uid) {
+		this.uid = uid;
+	}
 	public void setId_actuacion(String id_actuacion) {
 		this.id_actuacion = id_actuacion;
 	}
