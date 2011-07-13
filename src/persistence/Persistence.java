@@ -926,6 +926,61 @@ public class Persistence implements Cargado, Guardado {
 		}
 		return juz;
 	}
+	public Categoria consultarCategoria(String id_categoria) throws Exception {
+		Database d = null;
+		Categoria cat = null;
+		try{
+			connMgr.prepararBD();
+			d = DatabaseFactory.open(connMgr.getDbLocation());
+			Statement st = d.createStatement("SELECT id_categoria, descripcion FROM categorias where id_categoria = ?");
+			st.prepare();
+			st.bind(1, id_categoria);
+			Cursor cursor = st.getCursor();
+			if(cursor.next())
+			{                    
+				Row row = cursor.getRow();
+				String descripcion = row.getString(1);
+				cat = new Categoria(id_categoria,descripcion);
+			}
+			st.close();
+			cursor.close();
+		} catch (Exception e){
+			throw e;
+		} finally {
+			if (d != null){
+				d.close();
+			}
+		}
+		return cat;
+	}
+	public Vector consultarCategorias() throws Exception {
+		Database d = null;
+		Vector categorias = new Vector();
+		try{
+			connMgr.prepararBD();
+			d = DatabaseFactory.open(connMgr.getDbLocation());
+			Statement st = d.createStatement("SELECT id_categoria, descripcion FROM categorias order by descripcion");
+			st.prepare();
+			Cursor cursor = st.getCursor();
+			while(cursor.next())
+			{                    
+				Row row = cursor.getRow();
+				String id_categoria = row.getString(0);
+				String descripcion = row.getString(1);
+				Categoria cat = new Categoria(id_categoria,descripcion);
+				categorias.addElement(cat);
+			}
+			st.close();
+			cursor.close();
+		} catch (Exception e){
+			throw e;
+		} finally {
+			if (d != null){
+				d.close();
+			}
+		}
+		return categorias;
+	}
 	private Calendar stringToCalendar(String fecha) {
 		Calendar calendar_return = Calendar.getInstance();
 		calendar_return.set(Calendar.YEAR, Integer.parseInt(fecha.substring(0, 4)));
@@ -969,9 +1024,6 @@ public class Persistence implements Cargado, Guardado {
 		return nuevafecha;
 		
 	}
-	public Categoria consultarCategoria(String id_categoria) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
-	}
+	
 
 }
