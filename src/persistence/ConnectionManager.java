@@ -95,7 +95,8 @@ public class ConnectionManager {
 					"'id_juzgado' INTEGER,"+
 					"'fecha_creacion' DATE,"+
 					"'fecha_proxima' DATE,"+
-					"'descripcion' TEXT,FOREIGN KEY(id_proceso) REFERENCES procesos(id_proceso),FOREIGN KEY(id_juzgado) REFERENCES juzgados(id_juzgado), UNIQUE("+
+					"'descripcion' TEXT,"+
+					"'uid' TEXT,FOREIGN KEY(id_proceso) REFERENCES procesos(id_proceso),FOREIGN KEY(id_juzgado) REFERENCES juzgados(id_juzgado), UNIQUE("+
 					"'id_proceso',"+
 					"'id_juzgado',"+
 					"'fecha_creacion',"+
@@ -125,7 +126,8 @@ public class ConnectionManager {
 			st.close();
 			//Crear tabla Atributos por Proceso
 			st = d.createStatement("CREATE TABLE 'atributos_proceso'("+
-					"'id_atributo',"+
+					"'id_atributo_proceso' INTEGER PRIMARY KEY,"+
+					"'id_atributo' INTEGER,"+
 					"'id_proceso' INTEGER,"+
 					"'valor' TEXT,FOREIGN KEY(id_atributo) REFERENCES atributos(id_atributo),FOREIGN KEY(id_proceso) REFERENCES procesos(id_proceso),UNIQUE("+
 					"'id_atributo',"+
@@ -192,7 +194,7 @@ public class ConnectionManager {
 			st.execute();
 			st.close();
 			//Insertar la versión de la base de datos Llave 999
-			st = d.createStatement("INSERT INTO 'preferencias' VALUES(999,"+"'0.1')");
+			st = d.createStatement("INSERT INTO 'preferencias' VALUES(999,"+"'0.2')");
 			st.prepare();
 			st.execute();
 			st.close();
