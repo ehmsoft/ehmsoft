@@ -443,12 +443,27 @@ public class Persistence implements Cargado, Guardado {
 	}
 
 	public void actualizarCategoria(Categoria categoria) throws Exception {
-		// TODO Auto-generated method stub
+		Database d = null;
+		try{
+			connMgr.prepararBD();
+			d = DatabaseFactory.open(connMgr.getDbLocation());
+			Statement stCategoria = d.createStatement("UPDATE categorias SET descripcion = ?,"+" WHERE id_categoria = ?");
+			stCategoria.prepare();
+			stCategoria.bind(1, categoria.getDescripcion());
+			stCategoria.bind(2, categoria.getId_categoria());
+			stCategoria.execute();
+			stCategoria.close();
+		} catch (Exception e){
+			throw e;
+		} finally {
+			if (d != null){
+				d.close();
+			}
+		}
 		
 	}
 
 	public void guardarCategoria(Categoria categoria) throws Exception {
-		// TODO Auto-generated method stub
 		Database d = null;
 		try{
 			connMgr.prepararBD();
@@ -466,7 +481,6 @@ public class Persistence implements Cargado, Guardado {
 				d.close();
 			}
 		}
-		
 		
 	}
 
