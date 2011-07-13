@@ -10,6 +10,10 @@ public class Categoria {
 	public Categoria(String descripcion) {
 		this.descripcion = descripcion;
 	}
+	public Categoria() {
+		this.id_categoria = null;
+		this.descripcion = null;
+	}
 	public String getId_categoria() {
 		return id_categoria;
 	}

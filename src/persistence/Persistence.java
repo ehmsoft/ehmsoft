@@ -443,6 +443,21 @@ public class Persistence implements Cargado, Guardado {
 
 	}
 
+	public void actualizarCategoria(Categoria categoria) throws Exception {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void guardarCategoria(Categoria categoria) throws Exception {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void borrarCategoria(Categoria categoria) throws Exception {
+		// TODO Auto-generated method stub
+		
+	}
+
 	public Vector consultarDemandantes() throws Exception {//Devuelve una vector iterable de todos los demandantes
 		Database d = null;
 		Vector demandantes = new Vector();
@@ -643,10 +658,12 @@ public class Persistence implements Cargado, Guardado {
 				Persona demandante = new Persona(1);
 				Persona demandado = new Persona(2);
 				Juzgado juzgado = new Juzgado();
+				Categoria categoria = new Categoria();
 				demandante.setId_persona(Integer.toString(id_demandante));
 				demandado.setId_persona(Integer.toString(id_demandado));
 				juzgado.setId_juzgado(Integer.toString(id_juzgado));
-				Proceso proceso = new Proceso(Integer.toString(id_proceso), demandante, demandado, stringToCalendar(fecha_creacion), juzgado, radicado, radicado_unico, new Vector(), estado, "Por Defecto", tipo, notas, new Vector(), Integer.parseInt(prioridad));
+				categoria.setId_categoria(Integer.toString(id_categoria));
+				Proceso proceso = new Proceso(Integer.toString(id_proceso), demandante, demandado, stringToCalendar(fecha_creacion), juzgado, radicado, radicado_unico, new Vector(), estado, categoria, tipo, notas, new Vector(), Integer.parseInt(prioridad));
 				procesos.addElement(proceso);
 			}
 			st.close();
@@ -665,6 +682,7 @@ public class Persistence implements Cargado, Guardado {
 			proceso_act.setDemandado(consultarPersona(proceso_act.getDemandado().getId_persona(), 2));
 			proceso_act.setJuzgado(consultarJuzgado(proceso_act.getJuzgado().getId_juzgado()));
 			proceso_act.setActuaciones(consultarActuaciones(proceso_act));
+			proceso_act.setCategoria(consultarCategoria(proceso_act.getCategoria().getId_categoria()));
 		}
 		return procesos;
 	}
@@ -696,10 +714,12 @@ public class Persistence implements Cargado, Guardado {
 				Persona demandante = new Persona(1);
 				Persona demandado = new Persona(2);
 				Juzgado juzgado = new Juzgado();
+				Categoria categoria = new Categoria();
 				demandante.setId_persona(Integer.toString(id_demandante));
 				demandado.setId_persona(Integer.toString(id_demandado));
 				juzgado.setId_juzgado(Integer.toString(id_juzgado));
-				proceso = new Proceso(id_proceso, demandante, demandado, stringToCalendar(fecha_creacion), juzgado, radicado, radicado_unico, new Vector(), estado, "Por Defecto", tipo, notas, new Vector(), Integer.parseInt(prioridad));
+				categoria.setId_categoria(Integer.toString(id_categoria));
+				proceso = new Proceso(id_proceso, demandante, demandado, stringToCalendar(fecha_creacion), juzgado, radicado, radicado_unico, new Vector(), estado, categoria, tipo, notas, new Vector(), Integer.parseInt(prioridad));
 			}
 			st.close();
 			cursor.close();
@@ -714,6 +734,7 @@ public class Persistence implements Cargado, Guardado {
 		proceso.setDemandado(consultarPersona(proceso.getDemandado().getId_persona(), 2));
 		proceso.setJuzgado(consultarJuzgado(proceso.getJuzgado().getId_juzgado()));
 		proceso.setActuaciones(consultarActuaciones(proceso));
+		proceso.setCategoria(consultarCategoria(proceso.getCategoria().getId_categoria()));
 		return proceso;
 	}
 
@@ -893,6 +914,10 @@ public class Persistence implements Cargado, Guardado {
 		nuevafecha = fecha.get(Calendar.YEAR)+"-"+mes+"-"+dia+" "+hora+":"+minuto;
 		return nuevafecha;
 		
+	}
+	public Categoria consultarCategoria(String id_categoria) throws Exception {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }
