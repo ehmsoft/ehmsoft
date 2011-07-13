@@ -449,6 +449,24 @@ public class Persistence implements Cargado, Guardado {
 
 	public void guardarCategoria(Categoria categoria) throws Exception {
 		// TODO Auto-generated method stub
+		Database d = null;
+		try{
+			connMgr.prepararBD();
+			d = DatabaseFactory.open(connMgr.getDbLocation());
+			Statement stCategoria = d.createStatement("INSERT INTO categorias VALUES( NULL,?)");
+			stCategoria.prepare();
+			stCategoria.bind(1, categoria.getDescripcion());
+			stCategoria.execute();
+			stCategoria.close();
+			categoria.setId_categoria(Long.toString(d.lastInsertedRowID()));
+		} catch (Exception e){
+			throw e;
+		} finally {
+			if (d != null){
+				d.close();
+			}
+		}
+		
 		
 	}
 
