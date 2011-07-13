@@ -17,6 +17,7 @@ import net.rim.device.api.ui.component.ObjectChoiceField;
 import net.rim.device.api.ui.container.HorizontalFieldManager;
 import net.rim.device.api.ui.container.VerticalFieldManager;
 import core.CampoPersonalizado;
+import core.Categoria;
 import core.Juzgado;
 import core.Persona;
 
@@ -330,8 +331,8 @@ public class NuevoProcesoScreen extends FondoNuevos {
 	/**
 	 * @return La cadena con la categoria ingresada en la pantalla
 	 */
-	public String getCategoria() {
-		return (String) _chEstado.getChoice(_chCategoria.getSelectedIndex());
+	public Categoria getCategoria() {
+		return (Categoria)_chEstado.getChoice(_chCategoria.getSelectedIndex());
 	}
 
 	/**

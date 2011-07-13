@@ -15,6 +15,7 @@ import net.rim.device.api.ui.component.ObjectChoiceField;
 import net.rim.device.api.ui.container.MainScreen;
 import core.Actuacion;
 import core.CampoPersonalizado;
+import core.Categoria;
 import core.Juzgado;
 import core.Persona;
 import core.Proceso;
@@ -38,6 +39,7 @@ public class VerProcesoScreen extends MainScreen {
 	Persona _demandante;
 	Persona _demandado;
 	Juzgado _juzgado;
+	Categoria _categoria;
 	Vector _camposPersonalizados;
 	Vector _txtCampos;
 	Vector _actuaciones;
@@ -54,6 +56,7 @@ public class VerProcesoScreen extends MainScreen {
 		_juzgado = proceso.getJuzgado();
 		_camposPersonalizados = proceso.getCampos();
 		_actuaciones = proceso.getActuaciones();
+		_categoria = proceso.getCategoria();
 
 		_txtDemandante = new EditableTextField("Demandante: ",
 				_demandante.getNombre());
@@ -87,7 +90,7 @@ public class VerProcesoScreen extends MainScreen {
 		add(_txtEstado);
 
 		_txtCategoria = new EditableTextField("Categoría: ",
-				_proceso.getCategoria());
+				_proceso.getCategoria().getDescripcion());
 		add(_txtCategoria);
 
 		_txtTipo = new EditableTextField("Tipo: ", _proceso.getTipo());
@@ -299,8 +302,8 @@ public class VerProcesoScreen extends MainScreen {
 		return _txtEstado.getText();
 	}
 
-	public String getCategoria() {
-		return _txtCategoria.getText();
+	public Categoria getCategoria() {
+		return _categoria;
 	}
 
 	public String getTipo() {
