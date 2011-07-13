@@ -437,6 +437,17 @@ public class Persistence implements Cargado, Guardado {
 			}
 		}
 
+		Vector cp = new Vector();
+				cp= proceso.getActuaciones();
+				if (cp != null){
+					Enumeration e = cp.elements();
+					while (e.hasMoreElements()){
+						borrarActuacion((Actuacion)e.nextElement());
+					}
+				}
+				
+		
+
 	}
 
 	public void actualizarCategoria(Categoria categoria) throws Exception {
