@@ -86,7 +86,9 @@ public class Persistence implements Cargado, Guardado {
 			stPersona1.bind(6, persona.getNotas());
 			stPersona1.execute();
 			stPersona1.close();
+			persona.setId(Long.toString(d.lastInsertedRowID()));
 			d.close();
+			
 		} catch (Exception e){
 			throw e;
 		} finally {
@@ -94,6 +96,7 @@ public class Persistence implements Cargado, Guardado {
 				d.close();
 			}
 		}
+		
 		
 	}
 
@@ -181,6 +184,7 @@ public class Persistence implements Cargado, Guardado {
 			stJuzgado.bind(5, juzgado.getTipo());
 			stJuzgado.execute();
 			stJuzgado.close();
+			juzgado.setId_juzgado(Long.toString(d.lastInsertedRowID()));
 			d.close();
 		} catch (Exception e){
 			throw e;
