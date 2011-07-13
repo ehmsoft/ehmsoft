@@ -17,4 +17,5 @@ public interface Cargado {
 	public Vector consultarJuzgados() throws Exception;
 	public Juzgado consultarJuzgado(String id_juzgado) throws Exception;
 	public Categoria consultarCategoria(String id_categoria) throws Exception;
+	public Vector consultarCategorias() throws Exception;
 }
