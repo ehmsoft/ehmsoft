@@ -6,7 +6,6 @@ import net.rim.device.api.ui.UiApplication;
 import net.rim.device.api.ui.component.Dialog;
 import net.rim.device.api.ui.container.MainScreen;
 import core.Juzgado;
-import core.Proceso;
 
 public class ListadoJuzgadosScreen extends MainScreen {
 
@@ -20,6 +19,16 @@ public class ListadoJuzgadosScreen extends MainScreen {
 
 		_lista = new ListadoJuzgadosLista() {
 			protected boolean navigationClick(int status, int time) {
+				if (String.class.isInstance(get(_lista, getSelectedIndex()))) {
+					NuevoJuzgado n = new NuevoJuzgado();
+					UiApplication.getUiApplication().pushModalScreen(
+							n.getScreen());
+					try {
+						addJuzgado(n.getJuzgado());
+					} catch (Exception e) {
+						return true;
+					}
+				}
 				_selected = get(_lista, getSelectedIndex());
 				UiApplication.getUiApplication().popScreen(getScreen());
 				return true;
