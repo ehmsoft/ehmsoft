@@ -48,16 +48,22 @@ public class ListadoActuaciones {
 	}
 
 	public Actuacion getSelected() {
-		NuevaActuacion nuevaActuacion = new NuevaActuacion(
-				_proceso);
+		NuevaActuacion nuevaActuacion = new NuevaActuacion(_proceso);
 		if (String.class.isInstance(_screen.getSelected())) {
 			UiApplication.getUiApplication().pushModalScreen(
 					nuevaActuacion.getScreen());
-			nuevaActuacion.guardarActuacion();
-			_screen.addActuacion(nuevaActuacion.getActuacion());
-			return nuevaActuacion.getActuacion();
-		} else
+			Actuacion actuacion = null;
+			try {
+				actuacion = nuevaActuacion.getActuacion();
+				nuevaActuacion = null;
+			} catch (Exception e) {
+				return null;
+			}
+			_screen.addActuacion(actuacion);
+			return actuacion;
+		} else {
 			return (Actuacion) _screen.getSelected();
+		}
 	}
 
 	public ListadoActuacionesScreen getScreen() {

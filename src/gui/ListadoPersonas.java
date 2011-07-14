@@ -101,8 +101,7 @@ public class ListadoPersonas {
 			}
 			_screen.addPersona(persona);
 			return persona;
-		} 
-		else {
+		} else {
 			return (Persona) _screen.getSelected();
 		}
 	}
