@@ -48,8 +48,29 @@ public class NuevoJuzgadoScreen extends FondoNuevos {
 	private final MenuItem menuGuardar = new MenuItem("Guardar", 0, 0) {
 
 		public void run() {
-			_guardar = true;
-			UiApplication.getUiApplication().popScreen(getScreen());
+			if (_txtNombre.getTextLength() == 0
+					|| _txtTelefono.getTextLength() == 0) {
+				Object[] ask = { "Guardar", "Cancelar" };
+				int sel = Dialog.ask(
+						"Nombre y/o Teléfono se considera(n) importante(s)",
+						ask, 1);
+				if (sel == 0) {
+					if (_txtNombre.getTextLength() == 0
+							&& _txtCiudad.getTextLength() == 0
+							&& _txtDireccion.getTextLength() == 0
+							&& _txtTelefono.getTextLength() == 0
+							&& _txtTipo.getTextLength() == 0) {
+						Dialog.inform("Todos los campos están vacíos, no se guardará");
+						UiApplication.getUiApplication().popScreen(getScreen());
+					} else {
+						_guardar = true;
+						UiApplication.getUiApplication().popScreen(getScreen());
+					}
+				}
+			} else {
+				_guardar = true;
+				UiApplication.getUiApplication().popScreen(getScreen());
+			}
 		}
 	};
 

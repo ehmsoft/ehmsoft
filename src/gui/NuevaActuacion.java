@@ -66,18 +66,21 @@ public class NuevaActuacion {
 	 *  en la base de datos usando la informacion capturada desde la pantalla
 	 */
 	public void guardarActuacion() {
-		Persistence guardado = null;
-		_actuacion = new Actuacion(_screen.getJuzgado(), _screen.getFecha(),
-				_screen.getFechaProxima(), _screen.getDescripcion());
-		try {
-			guardado = new Persistence();
-		}catch(Exception e) {
-			Dialog.alert("New -> "+e.toString());
-		}
-		try {
-			guardado.guardarActuacion(_actuacion, _proceso.getId_proceso());
-		} catch (Exception e) {
-			Dialog.alert("Guardar -> "+e.toString());
+		if (_screen.isGuardado()) {
+			Persistence guardado = null;
+			_actuacion = new Actuacion(_screen.getJuzgado(),
+					_screen.getFecha(), _screen.getFechaProxima(),
+					_screen.getDescripcion());
+			try {
+				guardado = new Persistence();
+			} catch (Exception e) {
+				Dialog.alert("New -> " + e.toString());
+			}
+			try {
+				guardado.guardarActuacion(_actuacion, _proceso.getId_proceso());
+			} catch (Exception e) {
+				Dialog.alert("Guardar -> " + e.toString());
+			}
 		}
 	}
 }
