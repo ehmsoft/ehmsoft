@@ -28,10 +28,12 @@ public class ListadoJuzgadosScreen extends MainScreen {
 					} catch (Exception e) {
 						return true;
 					}
+					return true;
+				} else {
+					_selected = get(_lista, getSelectedIndex());
+					UiApplication.getUiApplication().popScreen(getScreen());
+					return true;
 				}
-				_selected = get(_lista, getSelectedIndex());
-				UiApplication.getUiApplication().popScreen(getScreen());
-				return true;
 			}
 		};
 
