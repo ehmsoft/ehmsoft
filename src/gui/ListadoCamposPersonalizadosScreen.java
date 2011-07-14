@@ -5,9 +5,6 @@ import net.rim.device.api.ui.container.MainScreen;
 
 public class ListadoCamposPersonalizadosScreen extends MainScreen {
 
-	/**
-	 * 
-	 */
 	private Object _selected;
 	private ListadoCamposPersonalizadosLista _lista;
 
@@ -18,8 +15,21 @@ public class ListadoCamposPersonalizadosScreen extends MainScreen {
 
 		_lista = new ListadoCamposPersonalizadosLista() {
 			protected boolean navigationClick(int status, int time) {
-				_selected = get(_lista, getSelectedIndex());
-				return true;
+				if (String.class.isInstance(get(_lista, getSelectedIndex()))) {
+					NuevoCampoPersonalizado n = new NuevoCampoPersonalizado();
+					UiApplication.getUiApplication().pushModalScreen(
+							n.getScreen());
+					try {
+						addCampo(n.getCampo());
+					} catch (Exception e) {
+						return true;
+					}
+					return true;
+				} else {
+					_selected = get(_lista, getSelectedIndex());
+					UiApplication.getUiApplication().popScreen(getScreen());
+					return true;
+				}
 			}
 		};
 

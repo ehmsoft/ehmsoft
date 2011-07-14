@@ -3,7 +3,6 @@ package gui;
 import java.util.Enumeration;
 import java.util.Vector;
 
-import net.rim.device.api.ui.UiApplication;
 import net.rim.device.api.ui.component.Dialog;
 import core.CampoPersonalizado;
 
@@ -36,15 +35,7 @@ public class ListadoCamposPersonalizados {
 	}
 
 	public CampoPersonalizado getSelected() {
-		NuevoCampoPersonalizado nuevoCampo = new NuevoCampoPersonalizado();
-		if (String.class.isInstance(_screen.getSelected())) {
-			UiApplication.getUiApplication().pushModalScreen(
-					nuevoCampo.getScreen());
-			nuevoCampo.guardarCampo();
-			_screen.addCampo(nuevoCampo.getCampo());
-			return nuevoCampo.getCampo();
-		} else
-			return (CampoPersonalizado) _screen.getSelected();
+		return (CampoPersonalizado) _screen.getSelected();
 	}
 
 	public ListadoCamposPersonalizadosScreen getScreen() {
