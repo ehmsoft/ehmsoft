@@ -1,7 +1,5 @@
 package gui;
 
-import java.util.Vector;
-
 import persistence.Persistence;
 
 import net.rim.device.api.ui.MenuItem;
@@ -14,34 +12,12 @@ public class ListadoPersonasScreen extends MainScreen {
 
 	private Object _selected;
 	private ListadoPersonasLista _lista;
-
-	public ListadoPersonasScreen(int tipo, Vector fuentes) {
-		super(MainScreen.VERTICAL_SCROLL | MainScreen.VERTICAL_SCROLLBAR);
-
-		if (tipo == 1)
-			setTitle("Listado de demandantes");
-		else
-			setTitle("Listado de demandados");
-
-		_lista = new ListadoPersonasLista(fuentes) {
-			protected boolean navigationClick(int status, int time) {
-				_selected = get(_lista, getSelectedIndex());
-				UiApplication.getUiApplication().popScreen(getScreen());
-				return true;
-			}
-		};
-
-		if (tipo == 1)
-			_lista.insert(0, "Nuevo demandante");
-		else
-			_lista.insert(0, "Nuevo demandado");
-		add(_lista);
-		addMenuItem(menuVer);
-	}
+	private int _tipo;
 
 	public ListadoPersonasScreen(int tipo) {
 		super(MainScreen.VERTICAL_SCROLL | MainScreen.VERTICAL_SCROLLBAR);
-
+		
+		_tipo = tipo;
 		if (tipo == 1)
 			setTitle("Listado de demandantes");
 		else
@@ -49,9 +25,21 @@ public class ListadoPersonasScreen extends MainScreen {
 
 		_lista = new ListadoPersonasLista() {
 			protected boolean navigationClick(int status, int time) {
-				_selected = get(_lista, getSelectedIndex());
-				UiApplication.getUiApplication().popScreen(getScreen());
-				return true;
+				if (String.class.isInstance(get(_lista, getSelectedIndex()))) {
+					NuevaPersona n = new NuevaPersona(_tipo);
+					UiApplication.getUiApplication().pushModalScreen(
+							n.getScreen());
+					try {
+						addPersona(n.getPersona());
+					} catch (Exception e) {
+						return true;
+					}
+					return true;
+				} else {
+					_selected = get(_lista, getSelectedIndex());
+					UiApplication.getUiApplication().popScreen(getScreen());
+					return true;
+				}
 			}
 		};
 
