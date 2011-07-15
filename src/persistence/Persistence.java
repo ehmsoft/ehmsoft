@@ -256,7 +256,7 @@ public class Persistence implements Cargado, Guardado {
 		try{
 			connMgr.prepararBD();
 			d = DatabaseFactory.open(connMgr.getDbLocation());
-			Statement stActuacion = d.createStatement("INSERT INTO actuaciones VALUES( NULL,?,?,datetime(?),datetime(?),?)");
+			Statement stActuacion = d.createStatement("INSERT INTO actuaciones (id_actuacion,id_proceso, id_juzgado, fecha_creacion, fecha_proxima, descripcion) VALUES( NULL,?,?,datetime(?),datetime(?),?)");
 			stActuacion.prepare();
 			stActuacion.bind(1,Integer.parseInt(id_proceso));
 			stActuacion.bind(2,actuacion.getJuzgado().getId_juzgado());
