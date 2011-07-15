@@ -69,10 +69,10 @@ public class Persistence implements Cargado, Guardado {
 			connMgr.prepararBD();
 			d = DatabaseFactory.open(connMgr.getDbLocation());
 		if(persona.getTipo()==1){
-			stPersona1 = d.createStatement("INSERT INTO demandantes VALUES(NULL,?,?,?,?,?,?)");
+			stPersona1 = d.createStatement("INSERT INTO demandantes (id_demandante,cedula,nombre,telefono,direccion,correo,notas) VALUES(NULL,?,?,?,?,?,?)");
 		}
 		else if(persona.getTipo()==2){
-			stPersona1 = d.createStatement("INSERT INTO demandados VALUES(NULL,?,?,?,?,?,?)");
+			stPersona1 = d.createStatement("INSERT INTO demandados (id_demandados,cedula,nombre,telefono,direccion,correo,notas)  VALUES(NULL,?,?,?,?,?,?)");
 		}
 		else{
 			throw new Exception("Tipo persona invalido");
@@ -174,7 +174,7 @@ public class Persistence implements Cargado, Guardado {
 		try{
 			connMgr.prepararBD();
 			d = DatabaseFactory.open(connMgr.getDbLocation());
-			Statement stJuzgado = d.createStatement("INSERT INTO juzgados VALUES( NULL,?,?,?,?,?)");
+			Statement stJuzgado = d.createStatement("INSERT INTO juzgados (id_juzgado,nombre,ciudad,telefono,direccion,tipo) VALUES( NULL,?,?,?,?,?)");
 			stJuzgado.prepare();
 			stJuzgado.bind(1, juzgado.getNombre());
 			stJuzgado.bind(2, juzgado.getCiudad());
@@ -383,7 +383,7 @@ public class Persistence implements Cargado, Guardado {
 		try{
 			connMgr.prepararBD();
 			d = DatabaseFactory.open(connMgr.getDbLocation());
-			Statement stProceso = d.createStatement("INSERT INTO procesos VALUES(NULL,?,?,datetime(?),?,?,?,?,?,?,?,?)"); 	
+			Statement stProceso = d.createStatement("INSERT INTO procesos (id_proceso,id_demandante,id_demandado,fecha_creacion,radicado,radicado_unico,estado,tipo,notas,prioridad,id_juzgado,id_categoria) VALUES(NULL,?,?,datetime(?),?,?,?,?,?,?,?,?)"); 	
 			stProceso.prepare();
 			stProceso.bind(1,proceso.getDemandante().getId_persona());   //ingresa el id del demandante
 			stProceso.bind(2,proceso.getDemandado().getId_persona());
@@ -490,7 +490,7 @@ public class Persistence implements Cargado, Guardado {
 		try{
 			connMgr.prepararBD();
 			d = DatabaseFactory.open(connMgr.getDbLocation());
-			Statement stCategoria = d.createStatement("INSERT INTO categorias VALUES( NULL,?)");
+			Statement stCategoria = d.createStatement("INSERT INTO categorias (id_categoria,descripcion) VALUES( NULL,?)");
 			stCategoria.prepare();
 			stCategoria.bind(1, categoria.getDescripcion());
 			stCategoria.execute();
