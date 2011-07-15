@@ -26,7 +26,7 @@ import core.Persona;
 
 public class NuevoProcesoScreen extends FondoNuevos {
 
-	private BasicEditField _chEstado;
+	private BasicEditField _txtEstado;
 	private ObjectChoiceField _chCategoria;
 	private NumericChoiceField _chPrioridad;
 	private DateField _dtFecha;
@@ -106,9 +106,9 @@ public class NuevoProcesoScreen extends FondoNuevos {
 		_txtTipo.setLabel("Tipo: ");
 		_vertical.add(_txtTipo);
 
-		_chEstado = new BasicEditField(BasicEditField.NO_NEWLINE);
-		_chEstado.setLabel("Estado:");
-		_vertical.add(_chEstado);
+		_txtEstado = new BasicEditField(BasicEditField.NO_NEWLINE);
+		_txtEstado.setLabel("Estado:");
+		_vertical.add(_txtEstado);
 		
 		Vector v = new Vector();
 		try {
@@ -346,7 +346,7 @@ public class NuevoProcesoScreen extends FondoNuevos {
 	 * @return La cadena con el estado ingresado en la pantalla
 	 */
 	public String getEstado() {
-		return (String) _chEstado.getText();
+		return (String) _txtEstado.getText();
 	}
 
 	/**
@@ -393,7 +393,29 @@ public class NuevoProcesoScreen extends FondoNuevos {
 	}
 
 	public boolean onClose() {
-		UiApplication.getUiApplication().popScreen(getScreen());
-		return true;
+		if (_demandante == null && _demandado == null && _juzgado == null &&
+				_txtRadicado.getTextLength() == 0 && _txtRadicadoUnico.getTextLength() == 0 &&
+				_txtTipo.getTextLength() == 0 && _txtEstado.getTextLength() == 0 &&
+				_txtNotas.getTextLength() == 0) {
+			UiApplication.getUiApplication().popScreen(getScreen());
+			return true;
+		} else {
+			Object[] ask = { "Guardar", "Descartar", "Cancelar" };
+			int sel = Dialog.ask("Se han detectado cambios", ask, 2);
+			if (sel == 0) {
+				_guardar = true;
+				UiApplication.getUiApplication().popScreen(getScreen());
+				return true;
+			}
+			if(sel == 1) {
+				UiApplication.getUiApplication().popScreen(getScreen());
+				return true;
+			}
+			if(sel == 2) {
+				return false;
+			}
+			else
+				return false;
+		}
 	}
 }

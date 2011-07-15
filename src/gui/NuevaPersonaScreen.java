@@ -159,13 +159,21 @@ public class NuevaPersonaScreen extends FondoNuevos {
 			return true;
 		} else {
 			Object[] ask = { "Guardar", "Descartar", "Cancelar" };
-			int sel = Dialog.ask("Se han detectado cambios", ask, 0);
+			int sel = Dialog.ask("Se han detectado cambios", ask, 2);
 			if (sel == 0) {
+				_guardar = true;
 				UiApplication.getUiApplication().popScreen(getScreen());
 				return true;
-			} else {
+			}
+			if(sel == 1) {
+				UiApplication.getUiApplication().popScreen(getScreen());
+				return true;
+			}
+			if(sel == 2) {
 				return false;
 			}
+			else
+				return false;
 		}
 	}
 }
