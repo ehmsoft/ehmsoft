@@ -78,7 +78,10 @@ public class NuevaActuacion {
 			}
 			try {
 				guardado.guardarActuacion(_actuacion, _proceso.getId_proceso());
-			} catch (Exception e) {
+			} catch(NullPointerException e) {
+				throw e;
+			}
+			catch (Exception e) {
 				Dialog.alert("Guardar -> " + e.toString());
 			}
 		} else {
