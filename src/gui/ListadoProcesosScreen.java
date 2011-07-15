@@ -19,9 +19,21 @@ public class ListadoProcesosScreen extends MainScreen {
 
 		_lista = new ListadoProcesosLista() {
 			protected boolean navigationClick(int status, int time) {
-				_selected = get(_lista, getSelectedIndex());
-				UiApplication.getUiApplication().popScreen(getScreen());
-				return true;
+				if (String.class.isInstance(get(_lista, getSelectedIndex()))) {
+					NuevoProceso n = new NuevoProceso();
+					UiApplication.getUiApplication().pushModalScreen(
+							n.getScreen());
+					try {
+						addProceso(n.getProceso());
+					} catch (Exception e) {
+						return true;
+					}
+					return true;
+				} else {
+					_selected = get(_lista, getSelectedIndex());
+					UiApplication.getUiApplication().popScreen(getScreen());
+					return true;
+				}
 			}
 		};
 

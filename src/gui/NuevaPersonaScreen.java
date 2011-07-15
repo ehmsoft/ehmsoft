@@ -58,8 +58,30 @@ public class NuevaPersonaScreen extends FondoNuevos {
 	private final MenuItem menuGuardar = new MenuItem("Guardar", 0, 0) {
 
 		public void run() {
-			_guardar = true;
-			UiApplication.getUiApplication().popScreen(getScreen());
+			if (_txtNombre.getTextLength() == 0
+					|| _txtTelefono.getTextLength() == 0) {
+				Object[] ask = { "Guardar", "Cancelar" };
+				int sel = Dialog.ask(
+						"Nombre y/o Teléfono se considera(n) importante(s)",
+						ask, 1);
+				if (sel == 0) {
+					if (_txtNombre.getTextLength() == 0
+							&& _txtCedula.getTextLength() == 0
+							&& _txtDireccion.getTextLength() == 0
+							&& _txtTelefono.getTextLength() == 0
+							&& _txtCorreo.getTextLength() == 0
+							&& _txtNotas.getTextLength() == 0) {
+						Dialog.inform("Todos los campos están vacíos, no se guardará");
+						UiApplication.getUiApplication().popScreen(getScreen());
+					} else {
+						_guardar = true;
+						UiApplication.getUiApplication().popScreen(getScreen());
+					}
+				}
+			} else {
+				_guardar = true;
+				UiApplication.getUiApplication().popScreen(getScreen());
+			}
 		}
 	};
 
@@ -136,9 +158,8 @@ public class NuevaPersonaScreen extends FondoNuevos {
 			UiApplication.getUiApplication().popScreen(getScreen());
 			return true;
 		} else {
-			Object[] ask = { "Si", "No" };
-			int sel = Dialog.ask("¿Desea descartar los cambios realizados?",
-					ask, 1);
+			Object[] ask = { "Guardar", "Descartar", "Cancelar" };
+			int sel = Dialog.ask("Se han detectado cambios", ask, 0);
 			if (sel == 0) {
 				UiApplication.getUiApplication().popScreen(getScreen());
 				return true;

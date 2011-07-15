@@ -24,6 +24,8 @@ public class NuevaActuacionScreen extends FondoNuevos {
 	private BasicEditField _txtDescripcion;
 
 	private Juzgado _juzgado;
+	
+	private boolean _guardar;
 
 	/**
 	 * Crea una NuevaActuacionScreen inicializando los componentes
@@ -74,22 +76,22 @@ public class NuevaActuacionScreen extends FondoNuevos {
 
 		public void run() {
 			if (_txtDescripcion.getTextLength() == 0) {
-				Object[] ask = { "Si", "No" };
-				int sel = Dialog.ask(
-						"¿Desea agregar una descripción?", ask,
-						1);
-				if (sel == 1) {
-					if(_juzgado != null)
+				Dialog.alert("Debe agregar una descripción");
+			} else if (_juzgado == null) {
+				Object[] ask = { "Guardar", "Cancelar" };
+				int sel = Dialog.ask("Juzgado se considera importante", ask, 1);
+				if (sel == 0) {
+					if (_txtDescripcion.getTextLength() == 0) {
+						Dialog.alert("Debe agregar una descripción");
+					} else {
+						_guardar = true;
 						UiApplication.getUiApplication().popScreen(getScreen());
-					else
-						Dialog.alert("Debe seleccionar un juzgado");
+					}
 				}
-			}
-			else if(_juzgado == null) {
-				Dialog.alert("Debe seleccionar un juzgado");
-			}
-			else
+			} else {
+				_guardar = true;
 				UiApplication.getUiApplication().popScreen(getScreen());
+			}
 		}
 	};
 
@@ -144,9 +146,13 @@ public class NuevaActuacionScreen extends FondoNuevos {
 		}
 		return descripcion;
 	}
+	
+	public boolean isGuardado() {
+		return _guardar;
+	}
 
 	public boolean onClose() {
-		UiApplication.getUiApplication().pushScreen(getScreen());
+		UiApplication.getUiApplication().popScreen(getScreen());
 		return true;
 	}
 }

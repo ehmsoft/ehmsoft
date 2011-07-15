@@ -54,7 +54,7 @@ public class NuevaActuacion {
 	 * guardada previamente con guardarActuacion(); se invoca
 	 * dicho metodo
 	 */
-	public Actuacion getActuacion() {
+	public Actuacion getActuacion() throws Exception{
 		if(_actuacion == null) {
 			guardarActuacion();
 		}
@@ -65,19 +65,24 @@ public class NuevaActuacion {
 	 * Crea el nuevo objeto Actuacion y la guarda
 	 *  en la base de datos usando la informacion capturada desde la pantalla
 	 */
-	public void guardarActuacion() {
-		Persistence guardado = null;
-		_actuacion = new Actuacion(_screen.getJuzgado(), _screen.getFecha(),
-				_screen.getFechaProxima(), _screen.getDescripcion());
-		try {
-			guardado = new Persistence();
-		}catch(Exception e) {
-			Dialog.alert("New -> "+e.toString());
-		}
-		try {
-			guardado.guardarActuacion(_actuacion, _proceso.getId_proceso());
-		} catch (Exception e) {
-			Dialog.alert("Guardar -> "+e.toString());
+	public void guardarActuacion() throws Exception{
+		if (_screen.isGuardado()) {
+			Persistence guardado = null;
+			_actuacion = new Actuacion(_screen.getJuzgado(),
+					_screen.getFecha(), _screen.getFechaProxima(),
+					_screen.getDescripcion());
+			try {
+				guardado = new Persistence();
+			} catch (Exception e) {
+				Dialog.alert("New -> " + e.toString());
+			}
+			try {
+				guardado.guardarActuacion(_actuacion, _proceso.getId_proceso());
+			} catch (Exception e) {
+				Dialog.alert("Guardar -> " + e.toString());
+			}
+		} else {
+			throw new Exception("No se esta guardando el elemento");
 		}
 	}
 }

@@ -1,7 +1,5 @@
 package gui;
 
-import java.util.Vector;
-
 import persistence.Persistence;
 
 import net.rim.device.api.ui.MenuItem;
@@ -9,40 +7,37 @@ import net.rim.device.api.ui.UiApplication;
 import net.rim.device.api.ui.component.Dialog;
 import net.rim.device.api.ui.container.MainScreen;
 import core.Actuacion;
+import core.Proceso;
 
 public class ListadoActuacionesScreen extends MainScreen {
 
 	private Object _selected;
 	private ListadoActuacionesLista _lista;
+	private Proceso _proceso;
 
-	public ListadoActuacionesScreen(Vector fuentes) {
+	public ListadoActuacionesScreen(Proceso proceso) {
 		super(MainScreen.VERTICAL_SCROLL | MainScreen.VERTICAL_SCROLLBAR);
-
-		setTitle("Listado de actuaciones");
-
-		_lista = new ListadoActuacionesLista(fuentes) {
-			protected boolean navigationClick(int status, int time) {
-				_selected = get(_lista, getSelectedIndex());
-				UiApplication.getUiApplication().popScreen(getScreen());
-				return true;
-			}
-		};
-
-		_lista.insert(0, "Nueva actuación");
-		add(_lista);
-		addMenuItem(menuVer);
-	}
-
-	public ListadoActuacionesScreen() {
-		super(MainScreen.VERTICAL_SCROLL | MainScreen.VERTICAL_SCROLLBAR);
+		
+		_proceso = proceso;
 
 		setTitle("Nueva actuación");
 
 		_lista = new ListadoActuacionesLista() {
 			protected boolean navigationClick(int status, int time) {
-				_selected = get(_lista, getSelectedIndex());
-				UiApplication.getUiApplication().popScreen(getScreen());
-				return true;
+				if (String.class.isInstance(get(_lista, getSelectedIndex()))) {
+					NuevaActuacion n = new NuevaActuacion(_proceso);
+					UiApplication.getUiApplication().pushModalScreen(n.getScreen());
+					try {
+					addActuacion(n.getActuacion());
+					} catch(Exception e) {
+						return true;
+					}
+					return true;
+				} else {
+					_selected = get(_lista, getSelectedIndex());
+					UiApplication.getUiApplication().popScreen(getScreen());
+					return true;
+				}
 			}
 		};
 

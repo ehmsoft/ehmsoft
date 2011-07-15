@@ -47,7 +47,7 @@ public class NuevoJuzgado {
 			}
 			_juzgado = new Juzgado(_screen.getNombre(), _screen.getCiudad(),
 					_screen.getDireccion(), _screen.getTelefono(),
-					_screen.getTelefono());
+					_screen.getTipo());
 			try {
 				guardado.guardarJuzgado(_juzgado);
 			} catch (Exception e) {

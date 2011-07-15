@@ -998,9 +998,9 @@ public class Persistence implements Cargado, Guardado {
 			while(cursor.next())
 			{                    
 				Row row = cursor.getRow();
-				String id_categoria = row.getString(0);
+				int id_categoria = row.getInteger(0);
 				String descripcion = row.getString(1);
-				Categoria cat = new Categoria(id_categoria,descripcion);
+				Categoria cat = new Categoria(Integer.toString(id_categoria),descripcion);
 				categorias.addElement(cat);
 			}
 			st.close();
