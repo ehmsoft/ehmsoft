@@ -5,6 +5,8 @@ import java.util.Date;
 import java.util.Enumeration;
 import java.util.Vector;
 
+import persistence.Persistence;
+
 import net.rim.device.api.ui.Field;
 import net.rim.device.api.ui.MenuItem;
 import net.rim.device.api.ui.UiApplication;
@@ -112,6 +114,7 @@ public class VerProcesoScreen extends MainScreen {
 		addMenuItem(menuEditarTodo);
 		addMenuItem(menuAddActuacion);
 		addMenuItem(menuCambiar);
+		addMenuItem(menuEliminar);
 	}
 
 	private Object[] transformActuaciones() {
@@ -319,6 +322,46 @@ public class VerProcesoScreen extends MainScreen {
 		}
 	};
 	
+	private final MenuItem menuEliminar = new MenuItem("Eliminar", 0, 0) {
+
+		public void run() {
+			Field f = getFieldWithFocus();
+			if (f.equals(_txtDemandante)) {
+				Persistence p;
+				try {
+					p = new Persistence();
+					p.borrarPersona(_demandante);
+					_demandante = null;
+					_txtDemandante.setText("Vacio");
+				} catch(Exception e) {
+					Dialog.alert(e.toString());
+				}
+			}
+			if (f.equals(_txtDemandado)) {
+				Persistence p;
+				try {
+					p = new Persistence();
+					p.borrarPersona(_demandado);
+					_demandado = null;
+					_txtDemandado.setText("Vacio");
+				} catch(Exception e) {
+					Dialog.alert(e.toString());
+				}
+			}
+			if (f.equals(_txtJuzgado)) {
+				Persistence p;
+				try {
+					p = new Persistence();
+					p.borrarJuzgado(_juzgado);
+					_juzgado = null;
+					_txtJuzgado.setText("Vacio");
+				} catch(Exception e) {
+					Dialog.alert(e.toString());
+				}
+			}
+		}
+	};
+	
 	private final MenuItem menuAddActuacion = new MenuItem("Agregar actuación", 0, 0) {
 
 		public void run() {
@@ -390,65 +433,82 @@ public class VerProcesoScreen extends MainScreen {
 	public Vector getCampos() {
 		return _camposPersonalizados;
 	}
-	
+
 	public boolean isGuardado() {
 		return _guardar;
 	}
-	
+
 	public boolean onClose() {
 		boolean cambio = false;
-		
+
 		Calendar f1 = _proceso.getFecha();
 		Calendar f2 = this.getFecha();
 
-		if (!_proceso.getDemandante().getId_persona()
-				.equals(this.getDemandante().getId_persona()))
-			cambio = true;
-		if (!_proceso.getDemandado().getId_persona()
-				.equals(this.getDemandado().getId_persona()))
-			cambio = true;
-		if (!_proceso.getJuzgado().getId_juzgado()
-				.equals(this.getJuzgado().getId_juzgado()))
-			cambio = true;
-		if ((f1.get(Calendar.YEAR) != f2.get(Calendar.YEAR))
-				|| (f1.get(Calendar.MONTH) != f2.get(Calendar.MONTH))
-				|| (f1.get(Calendar.DAY_OF_MONTH) != f2
-						.get(Calendar.DAY_OF_MONTH)))
-			cambio = true;
-		if (!_proceso.getRadicado().equals(this.getRadicado()))
-			cambio = true;
-		if (!_proceso.getRadicadoUnico().equals(this.getRadicadoUnico()))
-			cambio = true;
-		if (!_proceso.getActuaciones().equals(this.getActuaciones()))
-			cambio = true;
-		if (!_proceso.getEstado().equals(this.getEstado()))
-			cambio = true;
-		if (!_proceso.getCategoria().equals(this.getCategoria()))
-			cambio = true;
-		if (!_proceso.getTipo().equals(this.getTipo()))
-			cambio = true;
-		if (!_proceso.getNotas().equals(this.getNotas()))
-			cambio = true;
-		if (_proceso.getPrioridad() != this.getPrioridad())
-			cambio = true;
-		if (!_proceso.getCampos().equals(this.getCampos()))
-			cambio = true;
-		
-		if(!cambio) {
-			UiApplication.getUiApplication().popScreen(getScreen());
-			return true;
-		} else {
-			Object[] ask = { "Guardar", "Descartar", "Cancelar" };
-			int sel = Dialog.ask("Se han detectado cambios", ask, 1);
-			if (sel == 0) {
-				_guardar = true;
-				UiApplication.getUiApplication().popScreen(getScreen());
-				return true;
-			} else if (sel == 1) {
+		try {
+			if (!_proceso.getDemandante().getId_persona()
+					.equals(this.getDemandante().getId_persona())) {
+				cambio = true;
+			}
+			if (!_proceso.getDemandado().getId_persona()
+					.equals(this.getDemandado().getId_persona())) {
+				cambio = true;
+			}
+			if (!_proceso.getJuzgado().getId_juzgado()
+					.equals(this.getJuzgado().getId_juzgado())) {
+				cambio = true;
+			}
+		} catch (NullPointerException e) {
+		} finally {
+			if ((f1.get(Calendar.YEAR) != f2.get(Calendar.YEAR))
+					|| (f1.get(Calendar.MONTH) != f2.get(Calendar.MONTH))
+					|| (f1.get(Calendar.DAY_OF_MONTH) != f2
+							.get(Calendar.DAY_OF_MONTH))) {
+				cambio = true;
+			}
+			if (!_proceso.getRadicado().equals(this.getRadicado())) {
+				cambio = true;
+			}
+			else if (!_proceso.getRadicadoUnico().equals(this.getRadicadoUnico())) {
+				cambio = true;
+			}
+			else if (!_proceso.getActuaciones().equals(this.getActuaciones())) {
+				cambio = true;
+			}
+			else if (!_proceso.getEstado().equals(this.getEstado())) {
+				cambio = true;
+			}
+			else if (!_proceso.getCategoria().equals(this.getCategoria())) {
+				cambio = true;
+			}
+			else if (!_proceso.getTipo().equals(this.getTipo())) {
+				cambio = true;
+			}
+			else if (!_proceso.getNotas().equals(this.getNotas())) {
+				cambio = true;
+			}
+			else if (_proceso.getPrioridad() != this.getPrioridad()) {
+				cambio = true;
+			}
+			else if (!_proceso.getCampos().equals(this.getCampos())) {
+				cambio = true;
+			}
+
+			if (!cambio) {
 				UiApplication.getUiApplication().popScreen(getScreen());
 				return true;
 			} else {
-				return false;
+				Object[] ask = { "Guardar", "Descartar", "Cancelar" };
+				int sel = Dialog.ask("Se han detectado cambios", ask, 1);
+				if (sel == 0) {
+					_guardar = true;
+					UiApplication.getUiApplication().popScreen(getScreen());
+					return true;
+				} else if (sel == 1) {
+					UiApplication.getUiApplication().popScreen(getScreen());
+					return true;
+				} else {
+					return false;
+				}
 			}
 		}
 	}
