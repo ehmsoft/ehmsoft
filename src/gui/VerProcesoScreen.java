@@ -219,7 +219,10 @@ public class VerProcesoScreen extends MainScreen {
 			}
 
 			if (f.equals(_txtCategoria)) {
-				_txtCategoria.setEditable();
+				ListadoCategorias l = new ListadoCategorias();
+				UiApplication.getUiApplication().pushModalScreen(l.getScreen());
+				_categoria = l.getSelected();
+				_txtCategoria.setText(_categoria.getDescripcion());
 				_txtCategoria.setFocus();
 			}
 
@@ -267,7 +270,6 @@ public class VerProcesoScreen extends MainScreen {
 			_txtRadicadoUnico.setEditable();
 			_ofActuaciones.setEditable(true);
 			_txtEstado.setEditable();
-			_txtCategoria.setEditable();
 			_txtTipo.setEditable();
 			_txtNotas.setEditable();
 			_nfPrioridad.setEditable(true);
@@ -281,9 +283,9 @@ public class VerProcesoScreen extends MainScreen {
 			UiApplication.getUiApplication().pushModalScreen(n.getScreen());
 			try {
 				_actuaciones.addElement(n.getActuacion());
+				_ofActuaciones.setChoices(transformActuaciones());
 			} catch (Exception e) {
 			}
-			_ofActuaciones.setChoices(transformActuaciones());
 		}
 	};
 	
