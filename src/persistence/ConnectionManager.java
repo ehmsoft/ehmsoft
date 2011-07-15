@@ -189,7 +189,7 @@ public class ConnectionManager {
 			st.execute();
 			st.close();
 			//Insertar la categoria por defecto
-			st = d.createStatement("INSERT INTO 'categorias' VALUES(1,"+"'Por Defecto')");
+			st = d.createStatement("INSERT INTO 'categorias' VALUES(1,"+"'Ninguna')");
 			st.prepare();
 			st.execute();
 			st.close();
