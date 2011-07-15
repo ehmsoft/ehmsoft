@@ -416,6 +416,18 @@ public class Persistence implements Cargado, Guardado {
 			}
 			
 		}
+		
+		Vector ac = new Vector();
+		ac= proceso.getActuaciones();
+		if (ac != null){
+			Enumeration e = ac.elements();
+			while (e.hasMoreElements()){
+				guardarActuacion((Actuacion)e.nextElement(),id_proceso);
+				
+			}
+			
+		}
+		
 	}
 
 	public void borrarProceso(Proceso proceso) throws Exception {
@@ -425,27 +437,22 @@ public class Persistence implements Cargado, Guardado {
 			connMgr.prepararBD();
 			d = DatabaseFactory.open(connMgr.getDbLocation());
 			Statement stDelProceso = d.createStatement("DELETE FROM procesos WHERE id_proceso = ?");
+			Statement stDelActuaciones = d.createStatement("DELETE FROM actuaciones WHERE id_proceso = ?");
 			stDelProceso.prepare();
+			stDelActuaciones.prepare();
 			stDelProceso.bind(1,proceso.getId_proceso());
-			stDelProceso.execute(); 
+			stDelActuaciones.bind(1,proceso.getId_proceso());
+			stDelProceso.execute();
+			stDelActuaciones.execute();
 			stDelProceso.close();
+			stDelActuaciones.close();
 		} catch (Exception e){
 			throw e;
 		} finally {
 			if (d != null){
 				d.close();
 			}
-		}
-
-		Vector cp = new Vector();
-				cp= proceso.getActuaciones();
-				if (cp != null){
-					Enumeration e = cp.elements();
-					while (e.hasMoreElements()){
-						borrarActuacion((Actuacion)e.nextElement());
-					}
-				}
-				
+		}		
 		
 
 	}
@@ -455,7 +462,7 @@ public class Persistence implements Cargado, Guardado {
 		try{
 			connMgr.prepararBD();
 			d = DatabaseFactory.open(connMgr.getDbLocation());
-			Statement stCategoria = d.createStatement("UPDATE categorias SET descripcion = ?,"+" WHERE id_categoria = ?");
+			Statement stCategoria = d.createStatement("UPDATE categorias SET descripcion = ? WHERE id_categoria = ?");
 			stCategoria.prepare();
 			stCategoria.bind(1, categoria.getDescripcion());
 			stCategoria.bind(2, categoria.getId_categoria());
