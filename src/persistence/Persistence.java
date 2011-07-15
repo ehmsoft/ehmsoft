@@ -350,7 +350,7 @@ public class Persistence implements Cargado, Guardado {
 		try{
 			connMgr.prepararBD();
 			d = DatabaseFactory.open(connMgr.getDbLocation());
-			stAcProceso = d.createStatement("UPDATE procesos SET id_demandante = ?,"+" id_demandado = ?,"+" fecha_creacion = datetime(?),"+" radicado = ?,"+" radicado_unico = ?,"+" estado = ?,"+" tipo = ?,"+" notas = ?,"+" prioridad = ?,"+" id_juzgado = ?,"+" id_categoria = 1 WHERE id_proceso = ?");
+			stAcProceso = d.createStatement("UPDATE procesos SET id_demandante = ?,"+" id_demandado = ?,"+" fecha_creacion = datetime(?),"+" radicado = ?,"+" radicado_unico = ?,"+" estado = ?,"+" tipo = ?,"+" notas = ?,"+" prioridad = ?,"+" id_juzgado = ?,"+" id_categoria = ? WHERE id_proceso = ?");
 			stAcProceso.prepare();
 			stAcProceso.bind(1, proceso.getDemandante().getId_persona());
 			stAcProceso.bind(2, proceso.getDemandado().getId_persona());
@@ -362,7 +362,8 @@ public class Persistence implements Cargado, Guardado {
 			stAcProceso.bind(8, proceso.getNotas());
 			stAcProceso.bind(9, proceso.getPrioridad());
 			stAcProceso.bind(10, proceso.getJuzgado().getId_juzgado());
-			stAcProceso.bind(11, proceso.getId_proceso());
+			stAcProceso.bind(11, proceso.getCategoria().getId_categoria());
+			stAcProceso.bind(12, proceso.getId_proceso());
 			stAcProceso.execute();
 			stAcProceso.close();
 			
@@ -382,7 +383,7 @@ public class Persistence implements Cargado, Guardado {
 		try{
 			connMgr.prepararBD();
 			d = DatabaseFactory.open(connMgr.getDbLocation());
-			Statement stProceso = d.createStatement("INSERT INTO procesos VALUES(NULL,?,?,datetime(?),?,?,?,?,?,?,?,1)"); 	
+			Statement stProceso = d.createStatement("INSERT INTO procesos VALUES(NULL,?,?,datetime(?),?,?,?,?,?,?,?,?)"); 	
 			stProceso.prepare();
 			stProceso.bind(1,proceso.getDemandante().getId_persona());   //ingresa el id del demandante
 			stProceso.bind(2,proceso.getDemandado().getId_persona());
@@ -394,6 +395,7 @@ public class Persistence implements Cargado, Guardado {
 			stProceso.bind(8,proceso.getNotas());
 			stProceso.bind(9,proceso.getPrioridad());
 			stProceso.bind(10,proceso.getJuzgado().getId_juzgado());
+			stProceso.bind(11,proceso.getCategoria().getId_categoria());
 			stProceso.execute();
 			IDproceso = d.lastInsertedRowID();
 			stProceso.close();			
