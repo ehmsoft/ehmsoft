@@ -38,7 +38,7 @@ public class VerJuzgado {
 				if (cambio) {
 					_juzgado = new Juzgado(_screen.getNombre(),
 							_screen.getCiudad(), _screen.getDireccion(),
-							_screen.getTelefono(), _screen.getTipo());
+							_screen.getTelefono(), _screen.getTipo(), _juzgado.getId_juzgado());
 					persistence.actualizarJuzgado(_juzgado);
 				}
 			} catch (Exception e) {

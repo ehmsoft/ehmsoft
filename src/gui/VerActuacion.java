@@ -19,7 +19,7 @@ public class VerActuacion {
 		return _screen;
 	}
 
-	public void actualizarActuacion() {
+	public void actualizarActuacion() throws Exception{
 		if (_screen.isGuardado()) {
 			try {
 				Persistence persistence = new Persistence();
@@ -61,6 +61,16 @@ public class VerActuacion {
 			} catch (Exception e) {
 				Dialog.alert("actualizarActuacion -> " + e.toString());
 			}
+		}
+		if(_screen.isEliminado()) {
+			Persistence p;
+			try {
+				p = new Persistence();
+				p.borrarActuacion(_actuacion);
+			} catch(Exception e) {
+				Dialog.alert(e.toString());
+			}
+			throw new Exception("Se está eliminando la actuación con id: "+_actuacion.getId_actuacion());
 		}
 	}
 
