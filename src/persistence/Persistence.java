@@ -458,22 +458,27 @@ public class Persistence implements Cargado, Guardado {
 	}
 
 	public void actualizarCategoria(Categoria categoria) throws Exception {
-		Database d = null;
-		try{
-			connMgr.prepararBD();
-			d = DatabaseFactory.open(connMgr.getDbLocation());
-			Statement stCategoria = d.createStatement("UPDATE categorias SET descripcion = ? WHERE id_categoria = ?");
-			stCategoria.prepare();
-			stCategoria.bind(1, categoria.getDescripcion());
-			stCategoria.bind(2, categoria.getId_categoria());
-			stCategoria.execute();
-			stCategoria.close();
-		} catch (Exception e){
-			throw e;
-		} finally {
-			if (d != null){
-				d.close();
+		if (Integer.parseInt(categoria.getId_categoria()) != 1){
+			Database d = null;
+			try{
+				connMgr.prepararBD();
+				d = DatabaseFactory.open(connMgr.getDbLocation());
+				Statement stCategoria = d.createStatement("UPDATE categorias SET descripcion = ? WHERE id_categoria = ?");
+				stCategoria.prepare();
+				stCategoria.bind(1, categoria.getDescripcion());
+				stCategoria.bind(2, categoria.getId_categoria());
+				stCategoria.execute();
+				stCategoria.close();
+			} catch (Exception e){
+				throw e;
+			} finally {
+				if (d != null){
+					d.close();
+				}
 			}
+		}
+		else{
+			throw new Exception("la categoria por defecto no se puede borrar");
 		}
 		
 	}
