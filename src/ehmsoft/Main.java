@@ -28,7 +28,5 @@ public class Main extends UiApplication
     {        
         // Push a screen onto the UI stack for rendering.
         pushScreen(new ScreenMain());
-    
-
     }
 }

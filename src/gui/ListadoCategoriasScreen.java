@@ -52,12 +52,14 @@ public class ListadoCategoriasScreen extends MainScreen {
 					verCategoria.getScreen());
 			try {
 				verCategoria.actualizarCategoria();
+				_lista.delete(index);
+				_lista.insert(index, verCategoria.getCategoria());
+				_lista.setSelectedIndex(index);
+			} catch(NullPointerException e) {
+				
 			} catch (Exception e) {
 				_lista.delete(index);
 			}
-			_lista.delete(index);
-			_lista.insert(index, verCategoria.getCategoria());
-			_lista.setSelectedIndex(index);
 		}
 	};
 	
