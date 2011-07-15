@@ -50,7 +50,11 @@ public class ListadoCategoriasScreen extends MainScreen {
 					(Categoria) _lista.get(_lista, index));
 			UiApplication.getUiApplication().pushModalScreen(
 					verCategoria.getScreen());
-			verCategoria.actualizarCategoria();
+			try {
+				verCategoria.actualizarCategoria();
+			} catch (Exception e) {
+				_lista.delete(index);
+			}
 			_lista.delete(index);
 			_lista.insert(index, verCategoria.getCategoria());
 			_lista.setSelectedIndex(index);

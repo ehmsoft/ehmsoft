@@ -55,7 +55,11 @@ public class ListadoActuacionesScreen extends MainScreen {
 					(Actuacion) _lista.get(_lista, index));
 			UiApplication.getUiApplication().pushModalScreen(
 					verActuacion.getScreen());
-			verActuacion.actualizarActuacion();
+			try {
+				verActuacion.actualizarActuacion();
+			} catch (Exception e) {
+				_lista.delete(index);
+			}
 			_lista.delete(index);
 			_lista.insert(index, verActuacion.getActuacion());
 			_lista.setSelectedIndex(index);

@@ -14,6 +14,7 @@ public class VerCategoriaScreen extends MainScreen {
 	private Categoria _categoria;
 	
 	private boolean _guardar;
+	private boolean _eliminar;
 
 	public VerCategoriaScreen(Categoria categoria) {
 		super(MainScreen.VERTICAL_SCROLL | MainScreen.VERTICAL_SCROLLBAR);
@@ -52,6 +53,18 @@ public class VerCategoriaScreen extends MainScreen {
 			}
 		}
 	};
+	
+	private final MenuItem menuEliminar = new MenuItem("Eliminar", 0, 0) {
+
+		public void run() {
+			Object[] ask = { "Si", "No"};
+			int sel = Dialog.ask("¿Desea eliminar la categoría?", ask, 1);
+			if(sel == 0) {
+				_eliminar = true;
+				UiApplication.getUiApplication().popScreen(getScreen());
+			}
+		}
+	};
 
 	public String getDescripcion() {
 		return _txtDescripcion.getText();
@@ -63,6 +76,10 @@ public class VerCategoriaScreen extends MainScreen {
 	
 	public boolean isGuardado() {
 		return _guardar;
+	}
+	
+	public boolean isEliminado() {
+		return _eliminar;
 	}
 	
 	public boolean onClose() {

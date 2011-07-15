@@ -21,12 +21,11 @@ public class VerActuacionScreen extends MainScreen {
 	private Actuacion _actuacion;
 	private Juzgado _juzgado;
 	
-	private boolean _guardar;
+	private boolean _guardar = false;
+	private boolean _eliminar = false;
 
  	public VerActuacionScreen(Actuacion actuacion) {
 		super(MainScreen.VERTICAL_SCROLL | MainScreen.VERTICAL_SCROLLBAR);
-		
-		_guardar = false;
 
 		_actuacion = actuacion;
 		_juzgado = actuacion.getJuzgado();
@@ -55,6 +54,7 @@ public class VerActuacionScreen extends MainScreen {
 		addMenuItem(menuEditar);
 		addMenuItem(menuEditarTodo);
 		addMenuItem(menuCambiar);
+		addMenuItem(menuEliminar);
 	}
 
 	private final MenuItem menuGuardar = new MenuItem("Guardar", 0, 0) {
@@ -117,6 +117,18 @@ public class VerActuacionScreen extends MainScreen {
 			}
 		}
 	};
+	
+	private final MenuItem menuEliminar = new MenuItem("Eliminar", 0, 0) {
+
+		public void run() {
+			Object[] ask = { "Si", "No"};
+			int sel = Dialog.ask("¿Desea eliminar la actuación?", ask, 1);
+			if(sel == 0) {
+				_eliminar = true;
+				UiApplication.getUiApplication().popScreen(getScreen());
+			}
+		}
+	};
 
 	public Juzgado getJuzgado() {
 		return _juzgado;
@@ -144,6 +156,10 @@ public class VerActuacionScreen extends MainScreen {
 	
 	public boolean isGuardado() {
 		return _guardar;
+	}
+	
+	public boolean isEliminado() {
+		return _eliminar;
 	}
 	
 	public boolean onClose() {
