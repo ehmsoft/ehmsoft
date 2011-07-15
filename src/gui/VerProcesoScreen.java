@@ -110,6 +110,7 @@ public class VerProcesoScreen extends MainScreen {
 		addMenuItem(menuGuardar);
 		addMenuItem(menuEditar);
 		addMenuItem(menuEditarTodo);
+		addMenuItem(menuAddActuacion);
 	}
 
 	private Object[] transformActuaciones() {
@@ -200,7 +201,12 @@ public class VerProcesoScreen extends MainScreen {
 						actuacion);
 				UiApplication.getUiApplication().pushModalScreen(
 						verAtuacion.getScreen());
-				verAtuacion.actualizarActuacion();
+				try {
+					verAtuacion.actualizarActuacion();
+				} catch (Exception e) {
+					_actuaciones.removeElement(actuacion);
+					_ofActuaciones.setChoices(transformActuaciones());
+				}
 				_actuaciones.setElementAt(verAtuacion.getActuacion(),
 						_actuaciones.indexOf(actuacion));
 				_ofActuaciones.setChoices(transformActuaciones());
@@ -265,6 +271,19 @@ public class VerProcesoScreen extends MainScreen {
 			_txtTipo.setEditable();
 			_txtNotas.setEditable();
 			_nfPrioridad.setEditable(true);
+		}
+	};
+	
+	private final MenuItem menuAddActuacion = new MenuItem("Agregar actuación", 0, 0) {
+
+		public void run() {
+			NuevaActuacion n = new NuevaActuacion();
+			UiApplication.getUiApplication().pushModalScreen(n.getScreen());
+			try {
+				_actuaciones.addElement(n.getActuacion());
+			} catch (Exception e) {
+			}
+			_ofActuaciones.setChoices(transformActuaciones());
 		}
 	};
 	

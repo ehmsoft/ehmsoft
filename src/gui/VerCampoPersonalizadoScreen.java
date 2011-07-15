@@ -20,6 +20,7 @@ public class VerCampoPersonalizadoScreen extends MainScreen {
 	private CampoPersonalizado _campoPersonalizado;
 	
 	private boolean _guardar;
+	private boolean _eliminar;
 
 	public VerCampoPersonalizadoScreen(CampoPersonalizado campo) {
 		super(MainScreen.VERTICAL_SCROLL | MainScreen.VERTICAL_SCROLLBAR);
@@ -55,6 +56,7 @@ public class VerCampoPersonalizadoScreen extends MainScreen {
 		addMenuItem(menuGuardar);
 		addMenuItem(menuEditar);
 		addMenuItem(menuEditarTodo);
+		addMenuItem(menuEliminar);
 	}
 
 	private final MenuItem menuGuardar = new MenuItem("Guardar", 0, 0) {
@@ -104,6 +106,17 @@ public class VerCampoPersonalizadoScreen extends MainScreen {
 		}
 	};
 	
+	private final MenuItem menuEliminar = new MenuItem("Eliminar", 0, 0) {
+
+		public void run() {
+			Object[] ask = { "Si", "No"};
+			int sel = Dialog.ask("¿Desea eliminar el campo?", ask, 1);
+			if(sel == 0) {
+				_eliminar = true;
+			}
+		}
+	};
+	
 	public String getNombre() {
 		return _txtNombre.getText();
 	}
@@ -130,6 +143,10 @@ public class VerCampoPersonalizadoScreen extends MainScreen {
 	
 	public boolean isGuardado() {
 		return _guardar;
+	}
+	
+	public boolean isEliminado() {
+		return _eliminar;
 	}
 	
 	public boolean onClose() {

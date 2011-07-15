@@ -103,5 +103,8 @@ public class Persona {
 	public void setNotas(String notas) {
 		this.notas = notas;
 	}
+	public String toString() {
+		return getNombre();
+	}
 	
 }

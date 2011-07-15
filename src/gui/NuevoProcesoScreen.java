@@ -1,7 +1,10 @@
 package gui;
 
 import java.util.Calendar;
+import java.util.Enumeration;
 import java.util.Vector;
+
+import persistence.Persistence;
 
 import net.rim.device.api.ui.Field;
 import net.rim.device.api.ui.FieldChangeListener;
@@ -23,7 +26,7 @@ import core.Persona;
 
 public class NuevoProcesoScreen extends FondoNuevos {
 
-	private ObjectChoiceField _chEstado;
+	private BasicEditField _chEstado;
 	private ObjectChoiceField _chCategoria;
 	private NumericChoiceField _chPrioridad;
 	private DateField _dtFecha;
@@ -44,6 +47,8 @@ public class NuevoProcesoScreen extends FondoNuevos {
 	private Persona _demandado;
 	private Juzgado _juzgado;
 	private Vector _valoresCamposPersonalizados;
+	
+	private boolean _guardar = false;
 
 	/**
 	 * Crea un NuevoProcesoScreen con los elementos para la captura de los
@@ -101,16 +106,30 @@ public class NuevoProcesoScreen extends FondoNuevos {
 		_txtTipo.setLabel("Tipo: ");
 		_vertical.add(_txtTipo);
 
-		_chEstado = new ObjectChoiceField();
+		_chEstado = new BasicEditField(BasicEditField.NO_NEWLINE);
 		_chEstado.setLabel("Estado:");
-		Object[] initialChoiceEstado = { "Nuevo" };
-		_chEstado.setChoices(initialChoiceEstado);
 		_vertical.add(_chEstado);
+		
+		Vector v = new Vector();
+		try {
+			Persistence p = new Persistence();
+			v = p.consultarCategorias();
+		} catch (Exception e) {
+			Dialog.alert(e.toString());
+		}
+		
+		Enumeration e = v.elements();
+		Object[] o = new Object[v.size()];
+		int i = 0;
 
 		_chCategoria = new ObjectChoiceField();
 		_chCategoria.setLabel("Categoria:");
-		Object[] initialChoiceCategoria = { "Nueva" };
-		_chCategoria.setChoices(initialChoiceCategoria);
+		
+		while(e.hasMoreElements()) {
+			o[i] = e.nextElement();
+			i++;
+		}
+		_chCategoria.setChoices(o);		
 		_vertical.add(_chCategoria);
 
 		_chPrioridad = new NumericChoiceField("Prioridad", 1, 10, 1);
@@ -152,8 +171,10 @@ public class NuevoProcesoScreen extends FondoNuevos {
 				Dialog.alert("Debe seleccionar un demandado");
 			else if (_juzgado == null)
 				Dialog.alert("Debe Seleccionar un juzgado");
-			else
+			else {
+				_guardar = true;
 				UiApplication.getUiApplication().popScreen(getScreen());
+			}
 		}
 	};
 
@@ -325,21 +346,21 @@ public class NuevoProcesoScreen extends FondoNuevos {
 	 * @return La cadena con el estado ingresado en la pantalla
 	 */
 	public String getEstado() {
-		return (String) _chEstado.getChoice(_chEstado.getSelectedIndex());
+		return (String) _chEstado.getText();
 	}
 
 	/**
 	 * @return La cadena con la categoria ingresada en la pantalla
 	 */
 	public Categoria getCategoria() {
-		return (Categoria)_chEstado.getChoice(_chCategoria.getSelectedIndex());
+		return (Categoria)_chCategoria.getChoice(_chCategoria.getSelectedIndex());
 	}
 
 	/**
 	 * @return El numero que representa la prioridad ingresada en la pantalla
 	 */
 	public short getPrioridad() {
-		return Short.parseShort((String) _chPrioridad.getChoice(_chEstado
+		return Short.parseShort((String) _chPrioridad.getChoice(_chPrioridad
 				.getSelectedIndex()));
 	}
 
@@ -365,6 +386,10 @@ public class NuevoProcesoScreen extends FondoNuevos {
 
 		fecha.setTime(fecha.getTime());
 		return fecha;
+	}
+	
+	public boolean isGuardar() {
+		return _guardar;
 	}
 
 	public boolean onClose() {

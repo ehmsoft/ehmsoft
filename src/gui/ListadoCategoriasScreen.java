@@ -1,67 +1,62 @@
 package gui;
 
 import persistence.Persistence;
-
+import core.Categoria;
 import net.rim.device.api.ui.MenuItem;
 import net.rim.device.api.ui.UiApplication;
 import net.rim.device.api.ui.component.Dialog;
 import net.rim.device.api.ui.container.MainScreen;
-import core.Actuacion;
-import core.Proceso;
 
-public class ListadoActuacionesScreen extends MainScreen {
+public class ListadoCategoriasScreen extends MainScreen {
+	
+	private Categoria _selected;
+	private ListadoCategoriasLista _lista;
 
-	private Object _selected;
-	private ListadoActuacionesLista _lista;
-	private Proceso _proceso;
-
-	public ListadoActuacionesScreen(Proceso proceso) {
+	public ListadoCategoriasScreen() {
 		super(MainScreen.VERTICAL_SCROLL | MainScreen.VERTICAL_SCROLLBAR);
+		setTitle("Listado de categorías");
 		
-		_proceso = proceso;
-
-		setTitle("Nueva actuación");
-
-		_lista = new ListadoActuacionesLista() {
+		_lista = new ListadoCategoriasLista() {
 			protected boolean navigationClick(int status, int time) {
 				if (String.class.isInstance(get(_lista, getSelectedIndex()))) {
-					NuevaActuacion n = new NuevaActuacion(_proceso);
-					UiApplication.getUiApplication().pushModalScreen(n.getScreen());
+					NuevaCategoria n = new NuevaCategoria();
+					UiApplication.getUiApplication().pushModalScreen(
+							n.getScreen());
 					try {
-					addActuacion(n.getActuacion());
-					} catch(Exception e) {
+						addCategoria(n.getCategoria());
+					} catch (Exception e) {
 						return true;
 					}
 					return true;
 				} else {
-					_selected = get(_lista, getSelectedIndex());
+					_selected = (Categoria)get(_lista, getSelectedIndex());
 					UiApplication.getUiApplication().popScreen(getScreen());
 					return true;
 				}
 			}
 		};
-
-		_lista.insert(0, "Nueva actuación");
+		
+		_lista.insert(0, "Nueva categoría");
 		add(_lista);
 		addMenuItem(menuVer);
 		addMenuItem(menuDelete);
 	}
-
+	
 	private final MenuItem menuVer = new MenuItem("Ver", 0, 0) {
 
 		public void run() {
 			int index = _lista.getSelectedIndex();
-			VerActuacion verActuacion = new VerActuacion(
-					(Actuacion) _lista.get(_lista, index));
+			VerCategoria verCategoria = new VerCategoria(
+					(Categoria) _lista.get(_lista, index));
 			UiApplication.getUiApplication().pushModalScreen(
-					verActuacion.getScreen());
+					verCategoria.getScreen());
 			try {
-				verActuacion.actualizarActuacion();
+				verCategoria.actualizarCategoria();
 			} catch (Exception e) {
 				_lista.delete(index);
 			}
 			_lista.delete(index);
-			_lista.insert(index, verActuacion.getActuacion());
+			_lista.insert(index, verCategoria.getCategoria());
 			_lista.setSelectedIndex(index);
 		}
 	};
@@ -77,19 +72,20 @@ public class ListadoActuacionesScreen extends MainScreen {
 			}
 			int index = _lista.getSelectedIndex();
 			try {
-				persistence.borrarActuacion((Actuacion) _lista.get(_lista, index));
+				persistence.borrarCategoria((Categoria) _lista.get(_lista, index));
 			} catch (Exception e) {
 				Dialog.alert(e.toString());
 			}
+
 			_lista.delete(index);
 		}
 	};
-
-	public void addActuacion(Object actuacion) {
-		_lista.insert(_lista.getSize(), actuacion);
+	
+	public void addCategoria(Categoria categoria) {
+		_lista.insert(_lista.getSize(), categoria);
 	}
 
-	public Object getSelected() {
+	public Categoria getSelected() {
 		return _selected;
 	}
 

@@ -51,7 +51,7 @@ public class NuevoProceso {
 	 * @return El nuevo Proceso, sí este no ha sido guardado con el metodo
 	 * guardarProceso(); se realiza el llamado a este metodo
 	 */
-	public Proceso getProceso() {
+	public Proceso getProceso() throws Exception{
 		if(_proceso == null) {
 			guardarProceso();			
 		}
@@ -69,30 +69,35 @@ public class NuevoProceso {
 	 * Se crea el nuevo Proceso, basado en los datos capturados por la pantalla
 	 * y se guarda en la base de datos
 	 */
-	public void guardarProceso() {
-		Persistence guardado = null;
-		try {
-			guardado = new Persistence();
-		} catch (Exception e) {
-			Dialog.alert(e.toString());
-		}
-		Vector campos = null;
-		try {
-			campos = asignarValores(_screen.getValores());
-		} catch (Exception e) {
-			Dialog.alert(e.toString());
-		} finally {
-			_proceso = new Proceso(_screen.getDemandante(),
-					_screen.getDemandado(), _screen.getFecha(),
-					_screen.getJuzgado(), _screen.getRadicado(),
-					_screen.getRadicadoUnico(), null, _screen.getEstado(),
-					_screen.getCategoria(), _screen.getTipo(), _screen.getNotas(), campos,
-					_screen.getPrioridad());
+	public void guardarProceso() throws Exception{
+		if (_screen.isGuardar()) {
+			Persistence guardado = null;
 			try {
-				guardado.guardarProceso(_proceso);
+				guardado = new Persistence();
 			} catch (Exception e) {
 				Dialog.alert(e.toString());
 			}
+			Vector campos = null;
+			try {
+				campos = asignarValores(_screen.getValores());
+			} catch (Exception e) {
+				Dialog.alert(e.toString());
+			} finally {
+				_proceso = new Proceso(_screen.getDemandante(),
+						_screen.getDemandado(), _screen.getFecha(),
+						_screen.getJuzgado(), _screen.getRadicado(),
+						_screen.getRadicadoUnico(), null, _screen.getEstado(),
+						_screen.getCategoria(), _screen.getTipo(),
+						_screen.getNotas(), campos, _screen.getPrioridad());
+				try {
+					guardado.guardarProceso(_proceso);
+				} catch (Exception e) {
+					Dialog.alert(e.toString());
+				}
+			}
+		}
+		else {
+			throw new Exception("No se guardará el proceso");
 		}
 	}
 
