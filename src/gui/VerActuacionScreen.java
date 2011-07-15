@@ -111,9 +111,13 @@ public class VerActuacionScreen extends MainScreen {
 				ListadoJuzgados juzgados = new ListadoJuzgados();
 				UiApplication.getUiApplication().pushModalScreen(
 						juzgados.getScreen());
+				try {
 				_juzgado = juzgados.getSelected();
 				_txtJuzgado.setText(_juzgado.getNombre());
 				_txtJuzgado.setFocus();
+				} catch(NullPointerException e) {
+					
+				}				
 			}
 		}
 	};
