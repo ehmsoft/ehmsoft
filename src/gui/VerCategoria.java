@@ -30,7 +30,10 @@ public class VerCategoria {
 					_categoria = new Categoria(_categoria.getId_categoria(), _screen.getDescripcion());
 					persistence.actualizarCategoria(_categoria);
 				}
-			} catch (Exception e) {
+			} catch (NullPointerException e) {
+				throw e;
+			}
+			catch (Exception e) {
 				Dialog.alert("actualizarCategoria -> " + e.toString());
 			}
 		}
