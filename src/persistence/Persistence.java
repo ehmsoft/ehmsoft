@@ -478,7 +478,7 @@ public class Persistence implements Cargado, Guardado {
 			}
 		}
 		else{
-			throw new Exception("la categoria por defecto no se puede borrar");
+			throw new NullPointerException();
 		}
 		
 	}
@@ -530,7 +530,7 @@ public class Persistence implements Cargado, Guardado {
 			}
 		}
 		else{
-			throw new Exception("la categoria por defecto no se puede borrar");
+			throw new NullPointerException();
 		}
 
 	}
