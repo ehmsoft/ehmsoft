@@ -47,6 +47,8 @@ public class NuevoProcesoScreen extends FondoNuevos {
 	private Persona _demandado;
 	private Juzgado _juzgado;
 	private Vector _valoresCamposPersonalizados;
+	
+	private boolean _guardar = false;
 
 	/**
 	 * Crea un NuevoProcesoScreen con los elementos para la captura de los
@@ -169,8 +171,10 @@ public class NuevoProcesoScreen extends FondoNuevos {
 				Dialog.alert("Debe seleccionar un demandado");
 			else if (_juzgado == null)
 				Dialog.alert("Debe Seleccionar un juzgado");
-			else
+			else {
+				_guardar = true;
 				UiApplication.getUiApplication().popScreen(getScreen());
+			}
 		}
 	};
 
@@ -382,6 +386,10 @@ public class NuevoProcesoScreen extends FondoNuevos {
 
 		fecha.setTime(fecha.getTime());
 		return fecha;
+	}
+	
+	public boolean isGuardar() {
+		return _guardar;
 	}
 
 	public boolean onClose() {
