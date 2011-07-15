@@ -111,6 +111,7 @@ public class VerProcesoScreen extends MainScreen {
 		addMenuItem(menuEditar);
 		addMenuItem(menuEditarTodo);
 		addMenuItem(menuAddActuacion);
+		addMenuItem(menuCambiar);
 	}
 
 	private Object[] transformActuaciones() {
@@ -203,14 +204,14 @@ public class VerProcesoScreen extends MainScreen {
 						verAtuacion.getScreen());
 				try {
 					verAtuacion.actualizarActuacion();
+					_actuaciones.setElementAt(verAtuacion.getActuacion(),
+							_actuaciones.indexOf(actuacion));
+					_ofActuaciones.setChoices(transformActuaciones());
+					_ofActuaciones.setFocus();
 				} catch (Exception e) {
 					_actuaciones.removeElement(actuacion);
 					_ofActuaciones.setChoices(transformActuaciones());
 				}
-				_actuaciones.setElementAt(verAtuacion.getActuacion(),
-						_actuaciones.indexOf(actuacion));
-				_ofActuaciones.setChoices(transformActuaciones());
-				_ofActuaciones.setFocus();
 			}
 
 			if (f.equals(_txtEstado)) {
@@ -276,15 +277,58 @@ public class VerProcesoScreen extends MainScreen {
 		}
 	};
 	
+	private final MenuItem menuCambiar = new MenuItem("Cambiar", 0, 0) {
+
+		public void run() {
+			Field f = getFieldWithFocus();
+			if (f.equals(_txtDemandante)) {
+				ListadoPersonas l = new ListadoPersonas(1);
+				UiApplication.getUiApplication().pushModalScreen(
+						l.getScreen());
+				try {
+					_demandante = l.getSelected();
+					_txtDemandante.setText(_demandante.getNombre());
+					_txtDemandante.setFocus();
+				} catch (NullPointerException e) {
+				}
+			}
+			
+			if (f.equals(_txtDemandado)) {
+				ListadoPersonas l = new ListadoPersonas(2);
+				UiApplication.getUiApplication().pushModalScreen(
+						l.getScreen());
+				try {
+					_demandado = l.getSelected();
+					_txtDemandado.setText(_demandado.getNombre());
+					_txtDemandado.setFocus();
+				} catch (NullPointerException e) {
+				}
+			}
+			
+			if (f.equals(_txtJuzgado)) {
+				ListadoJuzgados l = new ListadoJuzgados();
+				UiApplication.getUiApplication().pushModalScreen(
+						l.getScreen());
+				try {
+					_juzgado = l.getSelected();
+					_txtJuzgado.setText(_juzgado.getNombre());
+					_txtJuzgado.setFocus();
+				} catch (NullPointerException e) {
+				}
+			}
+		}
+	};
+	
 	private final MenuItem menuAddActuacion = new MenuItem("Agregar actuación", 0, 0) {
 
 		public void run() {
-			NuevaActuacion n = new NuevaActuacion();
+			NuevaActuacion n = new NuevaActuacion(_proceso);
 			UiApplication.getUiApplication().pushModalScreen(n.getScreen());
 			try {
 				_actuaciones.addElement(n.getActuacion());
 				_ofActuaciones.setChoices(transformActuaciones());
 			} catch (Exception e) {
+				Dialog.alert(e.toString());
 			}
 		}
 	};

@@ -31,6 +31,7 @@ public class VerCategoriaScreen extends MainScreen {
 		add(_txtDescripcion);
 		addMenuItem(menuGuardar);
 		addMenuItem(menuEditar);
+		addMenuItem(menuEliminar);
 	}
 
 	private final MenuItem menuGuardar = new MenuItem("Guardar", 0, 0) {
