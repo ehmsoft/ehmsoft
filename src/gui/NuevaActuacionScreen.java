@@ -24,12 +24,12 @@ public class NuevaActuacionScreen extends FondoNuevos {
 	private BasicEditField _txtDescripcion;
 
 	private Juzgado _juzgado;
-	
+
 	private boolean _guardar;
 
 	/**
-	 * Crea una NuevaActuacionScreen inicializando los componentes
-	 * y agregandolos a la pantalla
+	 * Crea una NuevaActuacionScreen inicializando los componentes y
+	 * agregandolos a la pantalla
 	 */
 	public NuevaActuacionScreen() {
 		setTitle("Nueva actuación");
@@ -96,15 +96,16 @@ public class NuevaActuacionScreen extends FondoNuevos {
 	};
 
 	/**
-	 * @return el Juzgado asociado al objeto, en caso de no existir
-	 * se retorna null
+	 * @return el Juzgado asociado al objeto, en caso de no existir se retorna
+	 *         null
 	 */
 	public Juzgado getJuzgado() {
 		return _juzgado;
 	}
 
 	/**
-	 * @param juzgado Se asigna al Objeto un Juzgado
+	 * @param juzgado
+	 *            Se asigna al Objeto un Juzgado
 	 */
 	public void setJuzgado(Juzgado juzgado) {
 		_btnJuzgado.setLabel(juzgado.getNombre());
@@ -112,8 +113,8 @@ public class NuevaActuacionScreen extends FondoNuevos {
 	}
 
 	/**
-	 * @return La fecha ingresada en la pantalla, en caso de no exixtir
-	 * se retorna null
+	 * @return La fecha ingresada en la pantalla, en caso de no exixtir se
+	 *         retorna null
 	 */
 	public Calendar getFecha() {
 		Calendar fecha = Calendar.getInstance();
@@ -124,7 +125,7 @@ public class NuevaActuacionScreen extends FondoNuevos {
 
 	/**
 	 * @return La fecha proxima ingresada en la pantalla, en caso de no existir
-	 * se retorna null
+	 *         se retorna null
 	 */
 	public Calendar getFechaProxima() {
 		Calendar fecha = Calendar.getInstance();
@@ -134,8 +135,8 @@ public class NuevaActuacionScreen extends FondoNuevos {
 	}
 
 	/**
-	 * @return La descripcion ingresada en la pantalla, en caso de no existir
-	 * se retorna null
+	 * @return La descripcion ingresada en la pantalla, en caso de no existir se
+	 *         retorna null
 	 */
 	public String getDescripcion() {
 		String descripcion = null;
@@ -146,7 +147,7 @@ public class NuevaActuacionScreen extends FondoNuevos {
 		}
 		return descripcion;
 	}
-	
+
 	public boolean isGuardado() {
 		return _guardar;
 	}
@@ -163,14 +164,13 @@ public class NuevaActuacionScreen extends FondoNuevos {
 				UiApplication.getUiApplication().popScreen(getScreen());
 				return true;
 			}
-			if(sel == 1) {
+			if (sel == 1) {
 				UiApplication.getUiApplication().popScreen(getScreen());
 				return true;
 			}
-			if(sel == 2) {
+			if (sel == 2) {
 				return false;
-			}
-			else
+			} else
 				return false;
 		}
 	}

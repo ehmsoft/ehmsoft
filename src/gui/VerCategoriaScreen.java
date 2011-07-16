@@ -12,21 +12,21 @@ public class VerCategoriaScreen extends MainScreen {
 	private EditableTextField _txtDescripcion;
 
 	private Categoria _categoria;
-	
+
 	private boolean _guardar;
 	private boolean _eliminar;
 
 	public VerCategoriaScreen(Categoria categoria) {
 		super(MainScreen.VERTICAL_SCROLL | MainScreen.VERTICAL_SCROLLBAR);
-		
+
 		_guardar = false;
 
 		_categoria = categoria;
-		
+
 		setTitle("Ver categoría");
 
-		_txtDescripcion = new EditableTextField("Nombre: ", _categoria.getDescripcion(),
-				BasicEditField.NO_NEWLINE);
+		_txtDescripcion = new EditableTextField("Nombre: ",
+				_categoria.getDescripcion(), BasicEditField.NO_NEWLINE);
 
 		add(_txtDescripcion);
 		addMenuItem(menuGuardar);
@@ -54,13 +54,13 @@ public class VerCategoriaScreen extends MainScreen {
 			}
 		}
 	};
-	
+
 	private final MenuItem menuEliminar = new MenuItem("Eliminar", 0, 0) {
 
 		public void run() {
-			Object[] ask = { "Si", "No"};
+			Object[] ask = { "Si", "No" };
 			int sel = Dialog.ask("¿Desea eliminar la categoría?", ask, 1);
-			if(sel == 0) {
+			if (sel == 0) {
 				_eliminar = true;
 				UiApplication.getUiApplication().popScreen(getScreen());
 			}
@@ -74,20 +74,20 @@ public class VerCategoriaScreen extends MainScreen {
 	public Categoria getCategoria() {
 		return _categoria;
 	}
-	
+
 	public boolean isGuardado() {
 		return _guardar;
 	}
-	
+
 	public boolean isEliminado() {
 		return _eliminar;
 	}
-	
+
 	public boolean onClose() {
 		boolean cambio = false;
 		if (!_categoria.getDescripcion().equals(this.getDescripcion()))
 			cambio = true;
-		if(!cambio) {
+		if (!cambio) {
 			UiApplication.getUiApplication().popScreen(getScreen());
 			return true;
 		} else {

@@ -17,7 +17,7 @@ public class VerCampoPersonalizado {
 		return _screen;
 	}
 
-	public void actualizarCampoPersonalizado() throws Exception{
+	public void actualizarCampoPersonalizado() throws Exception {
 		if (_screen.isGuardado()) {
 			try {
 				Persistence persistence = new Persistence();
@@ -44,12 +44,12 @@ public class VerCampoPersonalizado {
 				Dialog.alert("actualizarCampoPersonalizado -> " + e.toString());
 			}
 		}
-		if(_screen.isEliminado()) {
+		if (_screen.isEliminado()) {
 			Persistence p;
 			try {
 				p = new Persistence();
 				p.borrarCampoPersonalizado(_campo);
-			} catch(Exception e) {
+			} catch (Exception e) {
 				Dialog.alert(e.toString());
 			}
 			throw new Exception("Se está eliminando el campo");

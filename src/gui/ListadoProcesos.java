@@ -42,7 +42,7 @@ public class ListadoProcesos {
 			Dialog.alert(e.toString());
 		}
 	}
-	
+
 	public void setVectorProcesos(Vector procesos) {
 		_vectorProcesos = procesos;
 		addProcesos();

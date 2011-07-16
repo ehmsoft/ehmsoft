@@ -17,12 +17,12 @@ public class VerPersonaScreen extends MainScreen {
 	private EditableTextField _txtNotas;
 
 	private Persona _persona;
-	
+
 	private boolean _guardar;
 
 	public VerPersonaScreen(Persona persona) {
 		super(MainScreen.VERTICAL_SCROLL | MainScreen.VERTICAL_SCROLLBAR);
-		
+
 		_guardar = false;
 
 		_persona = persona;
@@ -83,7 +83,7 @@ public class VerPersonaScreen extends MainScreen {
 			}
 		}
 	};
-	
+
 	private final MenuItem menuEditarTodo = new MenuItem("Editar todo", 0, 0) {
 
 		public void run() {
@@ -123,11 +123,11 @@ public class VerPersonaScreen extends MainScreen {
 	public Persona getPersona() {
 		return _persona;
 	}
-	
+
 	public boolean isGuardado() {
 		return _guardar;
 	}
-	
+
 	public boolean onClose() {
 		boolean cambio = false;
 		if (!_persona.getNombre().equals(this.getNombre()))
@@ -142,7 +142,7 @@ public class VerPersonaScreen extends MainScreen {
 			cambio = true;
 		if (!_persona.getNotas().equals(this.getNotas()))
 			cambio = true;
-		if(!cambio) {
+		if (!cambio) {
 			UiApplication.getUiApplication().popScreen(getScreen());
 			return true;
 		} else {

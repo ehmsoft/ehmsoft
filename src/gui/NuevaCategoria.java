@@ -5,27 +5,27 @@ import persistence.Persistence;
 import core.Categoria;
 
 public class NuevaCategoria {
-	
+
 	private Categoria _categoria;
 	private NuevaCategoriaScreen _screen;
-	
+
 	public NuevaCategoria() {
 		_screen = new NuevaCategoriaScreen();
 	}
-	
+
 	public NuevaCategoriaScreen getScreen() {
 		return _screen;
 	}
-	
+
 	public Categoria getCategoria() throws Exception {
-		if(_categoria == null) {
+		if (_categoria == null) {
 			guardarCategoria();
 		}
 		return _categoria;
 	}
-	
+
 	public void guardarCategoria() throws Exception {
-		if(_screen.isGuardado()){
+		if (_screen.isGuardado()) {
 			Persistence guardado = null;
 			try {
 				guardado = new Persistence();

@@ -15,12 +15,12 @@ public class VerJuzgadoScreen extends MainScreen {
 	private EditableTextField _txtTipo;
 
 	private Juzgado _juzgado;
-	
+
 	private boolean _guardar;
 
 	public VerJuzgadoScreen(Juzgado juzgado) {
 		super(MainScreen.VERTICAL_SCROLL | MainScreen.VERTICAL_SCROLLBAR);
-		
+
 		_guardar = false;
 
 		setTitle("Ver juzgado");
@@ -62,7 +62,7 @@ public class VerJuzgadoScreen extends MainScreen {
 			}
 		}
 	};
-	
+
 	private final MenuItem menuEditarTodo = new MenuItem("Editar todo", 0, 0) {
 
 		public void run() {
@@ -97,11 +97,11 @@ public class VerJuzgadoScreen extends MainScreen {
 	public Juzgado getJuzgado() {
 		return _juzgado;
 	}
-	
+
 	public boolean isGuardado() {
 		return _guardar;
 	}
-	
+
 	public boolean onClose() {
 		boolean cambio = false;
 		if (!_juzgado.getNombre().equals(this.getNombre()))
@@ -114,10 +114,10 @@ public class VerJuzgadoScreen extends MainScreen {
 			cambio = true;
 		if (!_juzgado.getTipo().equals(this.getTipo()))
 			cambio = true;
-		if(!cambio) {
+		if (!cambio) {
 			UiApplication.getUiApplication().popScreen(getScreen());
 			return true;
-		}else {
+		} else {
 			Object[] ask = { "Guardar", "Descartar", "Cancelar" };
 			int sel = Dialog.ask("Se han detectado cambios", ask, 1);
 			if (sel == 0) {

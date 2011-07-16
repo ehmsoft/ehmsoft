@@ -17,9 +17,9 @@ public class NuevaPersonaScreen extends FondoNuevos {
 	private boolean _guardar;
 
 	/**
-	 * @param tipo Se crea una NuevaPersonaScreen con el tipo de Persona:
-	 * 1 para demandante
-	 * 2 para demandado
+	 * @param tipo
+	 *            Se crea una NuevaPersonaScreen con el tipo de Persona: 1 para
+	 *            demandante 2 para demandado
 	 */
 	public NuevaPersonaScreen(int tipo) {
 		super();
@@ -86,62 +86,60 @@ public class NuevaPersonaScreen extends FondoNuevos {
 	};
 
 	/**
-	 * @return El tipo de la nueva Persona:
-	 * 1 para demandante
-	 * 2 para demandado
+	 * @return El tipo de la nueva Persona: 1 para demandante 2 para demandado
 	 */
 	public int getTipo() {
 		return _tipo;
 	}
 
 	/**
-	 * @return El nombre ingresado en la pantalla, en caso de no
-	 * existir se retorna null
+	 * @return El nombre ingresado en la pantalla, en caso de no existir se
+	 *         retorna null
 	 */
 	public String getNombre() {
 		return _txtNombre.getText();
 	}
 
 	/**
-	 * @return La cedula ingresada en la pantalla, en caso de no
-	 * existir se retorna null
+	 * @return La cedula ingresada en la pantalla, en caso de no existir se
+	 *         retorna null
 	 */
 	public String getCedula() {
 		return _txtCedula.getText();
 	}
 
 	/**
-	 * @return La direccion ingresada en la pantalla, en caso de no
-	 * existir se retorna null
+	 * @return La direccion ingresada en la pantalla, en caso de no existir se
+	 *         retorna null
 	 */
 	public String getDireccion() {
 		return _txtDireccion.getText();
 	}
 
 	/**
-	 * @return El telefono ingresado en la pantalla, en caso de no
-	 * existir se retorna null
+	 * @return El telefono ingresado en la pantalla, en caso de no existir se
+	 *         retorna null
 	 */
 	public String getTelefono() {
 		return _txtTelefono.getText();
 	}
 
 	/**
-	 * @return El correo ingresado en la pantalla, en caso de no
-	 * existir se retorna null
+	 * @return El correo ingresado en la pantalla, en caso de no existir se
+	 *         retorna null
 	 */
 	public String getCorreo() {
 		return _txtCorreo.getText();
 	}
 
 	/**
-	 * @return Las notas ingresadas en la pantalla, en caso de no
-	 * existir se retorna null
+	 * @return Las notas ingresadas en la pantalla, en caso de no existir se
+	 *         retorna null
 	 */
 	public String getNotas() {
 		return _txtNotas.getText();
 	}
-	
+
 	/**
 	 * @return Si el objeto sera guardado o no
 	 */
@@ -165,14 +163,13 @@ public class NuevaPersonaScreen extends FondoNuevos {
 				UiApplication.getUiApplication().popScreen(getScreen());
 				return true;
 			}
-			if(sel == 1) {
+			if (sel == 1) {
 				UiApplication.getUiApplication().popScreen(getScreen());
 				return true;
 			}
-			if(sel == 2) {
+			if (sel == 2) {
 				return false;
-			}
-			else
+			} else
 				return false;
 		}
 	}

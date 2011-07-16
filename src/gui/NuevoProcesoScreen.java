@@ -47,12 +47,12 @@ public class NuevoProcesoScreen extends FondoNuevos {
 	private Persona _demandado;
 	private Juzgado _juzgado;
 	private Vector _valoresCamposPersonalizados;
-	
+
 	private boolean _guardar = false;
 
 	/**
-	 * Crea un NuevoProcesoScreen con los elementos para la captura de los
-	 * datos para el nuevo Proceso
+	 * Crea un NuevoProcesoScreen con los elementos para la captura de los datos
+	 * para el nuevo Proceso
 	 */
 	public NuevoProcesoScreen() {
 		setTitle("Nuevo Proceso");
@@ -109,7 +109,7 @@ public class NuevoProcesoScreen extends FondoNuevos {
 		_txtEstado = new BasicEditField(BasicEditField.NO_NEWLINE);
 		_txtEstado.setLabel("Estado:");
 		_vertical.add(_txtEstado);
-		
+
 		Vector v = new Vector();
 		try {
 			Persistence p = new Persistence();
@@ -117,19 +117,19 @@ public class NuevoProcesoScreen extends FondoNuevos {
 		} catch (Exception e) {
 			Dialog.alert(e.toString());
 		}
-		
+
 		Enumeration e = v.elements();
 		Object[] o = new Object[v.size()];
 		int i = 0;
 
 		_chCategoria = new ObjectChoiceField();
 		_chCategoria.setLabel("Categoria:");
-		
-		while(e.hasMoreElements()) {
+
+		while (e.hasMoreElements()) {
 			o[i] = e.nextElement();
 			i++;
 		}
-		_chCategoria.setChoices(o);		
+		_chCategoria.setChoices(o);
 		_vertical.add(_chCategoria);
 
 		_chPrioridad = new NumericChoiceField("Prioridad", 1, 10, 1);
@@ -198,8 +198,7 @@ public class NuevoProcesoScreen extends FondoNuevos {
 
 	private FieldChangeListener listenerBtnDemandante = new FieldChangeListener() {
 		public void fieldChanged(Field field, int context) {
-			ListadoPersonas demandantes = new ListadoPersonas(
-					1);
+			ListadoPersonas demandantes = new ListadoPersonas(1);
 			UiApplication.getUiApplication().pushModalScreen(
 					demandantes.getScreen());
 			try {
@@ -215,8 +214,7 @@ public class NuevoProcesoScreen extends FondoNuevos {
 
 	private FieldChangeListener listenerBtnDemandado = new FieldChangeListener() {
 		public void fieldChanged(Field field, int context) {
-			ListadoPersonas demandados = new ListadoPersonas(
-					2);
+			ListadoPersonas demandados = new ListadoPersonas(2);
 			UiApplication.getUiApplication().pushModalScreen(
 					demandados.getScreen());
 			try {
@@ -262,7 +260,8 @@ public class NuevoProcesoScreen extends FondoNuevos {
 	};
 
 	/**
-	 * @param campo Agrega un campo personalizado al Proceso en creacion
+	 * @param campo
+	 *            Agrega un campo personalizado al Proceso en creacion
 	 */
 	public void addCampoPersonalizado(CampoPersonalizado campo) {
 		BasicEditField campoP = new BasicEditField();
@@ -275,7 +274,8 @@ public class NuevoProcesoScreen extends FondoNuevos {
 	}
 
 	/**
-	 * @param demandante Se asigna una Persona demandante al Proceso en creacion
+	 * @param demandante
+	 *            Se asigna una Persona demandante al Proceso en creacion
 	 */
 	public void setDemandante(Persona demandante) {
 		_btnDemandante.setLabel(demandante.getNombre());
@@ -283,7 +283,8 @@ public class NuevoProcesoScreen extends FondoNuevos {
 	}
 
 	/**
-	 * @param demandado Se asigna una Persona demandado al Proceso en creacion
+	 * @param demandado
+	 *            Se asigna una Persona demandado al Proceso en creacion
 	 */
 	public void setDemandado(Persona demandado) {
 		_btnDemandado.setLabel(demandado.getNombre());
@@ -291,7 +292,8 @@ public class NuevoProcesoScreen extends FondoNuevos {
 	}
 
 	/**
-	 * @param juzgado Se asigna un Juzgado al Proceso en creacion
+	 * @param juzgado
+	 *            Se asigna un Juzgado al Proceso en creacion
 	 */
 	public void setJuzgado(Juzgado juzgado) {
 		_btnJuzgado.setLabel(juzgado.getNombre());
@@ -300,8 +302,8 @@ public class NuevoProcesoScreen extends FondoNuevos {
 
 	/**
 	 * @return El vector que contiene los BasicTextField que representan los
-	 * campos personalizados, cada uno de estos contiene a su vez un coockie
-	 * en el cual esta almacenado el objeto CampoPersonalizado
+	 *         campos personalizados, cada uno de estos contiene a su vez un
+	 *         coockie en el cual esta almacenado el objeto CampoPersonalizado
 	 */
 	public Vector getValores() {
 		return _valoresCamposPersonalizados;
@@ -353,7 +355,8 @@ public class NuevoProcesoScreen extends FondoNuevos {
 	 * @return La cadena con la categoria ingresada en la pantalla
 	 */
 	public Categoria getCategoria() {
-		return (Categoria)_chCategoria.getChoice(_chCategoria.getSelectedIndex());
+		return (Categoria) _chCategoria.getChoice(_chCategoria
+				.getSelectedIndex());
 	}
 
 	/**
@@ -370,7 +373,7 @@ public class NuevoProcesoScreen extends FondoNuevos {
 	public String getNotas() {
 		return _txtNotas.getText();
 	}
-	
+
 	/**
 	 * @return La cadena con el tipo ingresado en la pantalla
 	 */
@@ -387,16 +390,18 @@ public class NuevoProcesoScreen extends FondoNuevos {
 		fecha.setTime(fecha.getTime());
 		return fecha;
 	}
-	
+
 	public boolean isGuardar() {
 		return _guardar;
 	}
 
 	public boolean onClose() {
-		if (_demandante == null && _demandado == null && _juzgado == null &&
-				_txtRadicado.getTextLength() == 0 && _txtRadicadoUnico.getTextLength() == 0 &&
-				_txtTipo.getTextLength() == 0 && _txtEstado.getTextLength() == 0 &&
-				_txtNotas.getTextLength() == 0) {
+		if (_demandante == null && _demandado == null && _juzgado == null
+				&& _txtRadicado.getTextLength() == 0
+				&& _txtRadicadoUnico.getTextLength() == 0
+				&& _txtTipo.getTextLength() == 0
+				&& _txtEstado.getTextLength() == 0
+				&& _txtNotas.getTextLength() == 0) {
 			UiApplication.getUiApplication().popScreen(getScreen());
 			return true;
 		} else {
@@ -407,14 +412,13 @@ public class NuevoProcesoScreen extends FondoNuevos {
 				UiApplication.getUiApplication().popScreen(getScreen());
 				return true;
 			}
-			if(sel == 1) {
+			if (sel == 1) {
 				UiApplication.getUiApplication().popScreen(getScreen());
 				return true;
 			}
-			if(sel == 2) {
+			if (sel == 2) {
 				return false;
-			}
-			else
+			} else
 				return false;
 		}
 	}

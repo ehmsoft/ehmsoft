@@ -108,7 +108,7 @@ public class NuevoJuzgadoScreen extends FondoNuevos {
 	public String getTipo() {
 		return _txtTipo.getText();
 	}
-	
+
 	/**
 	 * @return Si el objeto sera guardado o no
 	 */
@@ -131,14 +131,13 @@ public class NuevoJuzgadoScreen extends FondoNuevos {
 				UiApplication.getUiApplication().popScreen(getScreen());
 				return true;
 			}
-			if(sel == 1) {
+			if (sel == 1) {
 				UiApplication.getUiApplication().popScreen(getScreen());
 				return true;
 			}
-			if(sel == 2) {
+			if (sel == 2) {
 				return false;
-			}
-			else
+			} else
 				return false;
 		}
 	}

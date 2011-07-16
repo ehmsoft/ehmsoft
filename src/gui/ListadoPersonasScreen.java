@@ -16,7 +16,7 @@ public class ListadoPersonasScreen extends MainScreen {
 
 	public ListadoPersonasScreen(int tipo) {
 		super(MainScreen.VERTICAL_SCROLL | MainScreen.VERTICAL_SCROLLBAR);
-		
+
 		_tipo = tipo;
 		if (tipo == 1)
 			setTitle("Listado de demandantes");
@@ -56,8 +56,8 @@ public class ListadoPersonasScreen extends MainScreen {
 
 		public void run() {
 			int index = _lista.getSelectedIndex();
-			VerPersona verPersona = new VerPersona(
-					(Persona) _lista.get(_lista, index));
+			VerPersona verPersona = new VerPersona((Persona) _lista.get(_lista,
+					index));
 			UiApplication.getUiApplication().pushModalScreen(
 					verPersona.getScreen());
 			verPersona.actualizarPersona();
@@ -66,7 +66,7 @@ public class ListadoPersonasScreen extends MainScreen {
 			_lista.setSelectedIndex(index);
 		}
 	};
-	
+
 	private final MenuItem menuDelete = new MenuItem("Eliminar", 0, 0) {
 
 		public void run() {

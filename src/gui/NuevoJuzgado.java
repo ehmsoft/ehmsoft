@@ -24,18 +24,18 @@ public class NuevoJuzgado {
 
 	/**
 	 * @return El nuevo Juzgado, sí este no ha sido creado y aguardado con
-	 * guardarJuzgado(); se llama dicho método
+	 *         guardarJuzgado(); se llama dicho método
 	 */
-	public Juzgado getJuzgado() throws Exception{
-		if(_juzgado == null) {
+	public Juzgado getJuzgado() throws Exception {
+		if (_juzgado == null) {
 			guardarJuzgado();
 		}
 		return _juzgado;
 	}
 
 	/**
-	 * Crea el nuevo Juzgado en base a los datos capturados desde la pantalla
-	 * y guardandolo en la base de datos
+	 * Crea el nuevo Juzgado en base a los datos capturados desde la pantalla y
+	 * guardandolo en la base de datos
 	 */
 	public void guardarJuzgado() throws Exception {
 		if (_screen.isGuardado()) {
@@ -53,8 +53,7 @@ public class NuevoJuzgado {
 			} catch (Exception e) {
 				Dialog.alert(e.toString());
 			}
-		} 
-		else {
+		} else {
 			throw new Exception("No se esta guardando el elemento");
 		}
 	}

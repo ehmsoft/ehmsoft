@@ -18,7 +18,7 @@ public class ListadoActuacionesScreen extends MainScreen {
 
 	public ListadoActuacionesScreen(Proceso proceso) {
 		super(MainScreen.VERTICAL_SCROLL | MainScreen.VERTICAL_SCROLLBAR);
-		
+
 		_proceso = proceso;
 
 		setTitle("Nueva actuación");
@@ -27,10 +27,11 @@ public class ListadoActuacionesScreen extends MainScreen {
 			protected boolean navigationClick(int status, int time) {
 				if (String.class.isInstance(get(_lista, getSelectedIndex()))) {
 					NuevaActuacion n = new NuevaActuacion(_proceso);
-					UiApplication.getUiApplication().pushModalScreen(n.getScreen());
+					UiApplication.getUiApplication().pushModalScreen(
+							n.getScreen());
 					try {
-					addActuacion(n.getActuacion());
-					} catch(Exception e) {
+						addActuacion(n.getActuacion());
+					} catch (Exception e) {
 						return true;
 					}
 					return true;
@@ -45,9 +46,10 @@ public class ListadoActuacionesScreen extends MainScreen {
 		_lista.insert(0, "Nueva actuación");
 		add(_lista);
 	}
-	
+
 	protected void makeMenu(Menu menu, int instance) {
-		if (!String.class.isInstance(_lista.get(_lista, _lista.getSelectedIndex()))) {
+		if (!String.class.isInstance(_lista.get(_lista,
+				_lista.getSelectedIndex()))) {
 			menu.add(menuVer);
 			menu.add(menuDelete);
 		}
@@ -71,7 +73,7 @@ public class ListadoActuacionesScreen extends MainScreen {
 			_lista.setSelectedIndex(index);
 		}
 	};
-	
+
 	private final MenuItem menuDelete = new MenuItem("Eliminar", 0, 0) {
 
 		public void run() {
@@ -83,7 +85,8 @@ public class ListadoActuacionesScreen extends MainScreen {
 			}
 			int index = _lista.getSelectedIndex();
 			try {
-				persistence.borrarActuacion((Actuacion) _lista.get(_lista, index));
+				persistence.borrarActuacion((Actuacion) _lista.get(_lista,
+						index));
 			} catch (Exception e) {
 				Dialog.alert(e.toString());
 			}

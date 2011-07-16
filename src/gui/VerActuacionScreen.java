@@ -20,11 +20,11 @@ public class VerActuacionScreen extends MainScreen {
 	private EditableTextField _txtDescripcion;
 	private Actuacion _actuacion;
 	private Juzgado _juzgado;
-	
+
 	private boolean _guardar = false;
 	private boolean _eliminar = false;
 
- 	public VerActuacionScreen(Actuacion actuacion) {
+	public VerActuacionScreen(Actuacion actuacion) {
 		super(MainScreen.VERTICAL_SCROLL | MainScreen.VERTICAL_SCROLLBAR);
 
 		_actuacion = actuacion;
@@ -70,8 +70,7 @@ public class VerActuacionScreen extends MainScreen {
 		public void run() {
 			Field f = getFieldWithFocus();
 			if (f.equals(_txtJuzgado)) {
-				VerJuzgado verJuzgado = new VerJuzgado(
-						_juzgado);
+				VerJuzgado verJuzgado = new VerJuzgado(_juzgado);
 				UiApplication.getUiApplication().pushModalScreen(
 						verJuzgado.getScreen());
 				_juzgado = verJuzgado.getJuzgado();
@@ -92,7 +91,7 @@ public class VerActuacionScreen extends MainScreen {
 			}
 		}
 	};
-	
+
 	private final MenuItem menuEditarTodo = new MenuItem("Editar todo", 0, 0) {
 
 		public void run() {
@@ -112,22 +111,22 @@ public class VerActuacionScreen extends MainScreen {
 				UiApplication.getUiApplication().pushModalScreen(
 						juzgados.getScreen());
 				try {
-				_juzgado = juzgados.getSelected();
-				_txtJuzgado.setText(_juzgado.getNombre());
-				_txtJuzgado.setFocus();
-				} catch(NullPointerException e) {
-					
-				}				
+					_juzgado = juzgados.getSelected();
+					_txtJuzgado.setText(_juzgado.getNombre());
+					_txtJuzgado.setFocus();
+				} catch (NullPointerException e) {
+
+				}
 			}
 		}
 	};
-	
+
 	private final MenuItem menuEliminar = new MenuItem("Eliminar", 0, 0) {
 
 		public void run() {
-			Object[] ask = { "Si", "No"};
+			Object[] ask = { "Si", "No" };
 			int sel = Dialog.ask("¿Desea eliminar la actuación?", ask, 1);
-			if(sel == 0) {
+			if (sel == 0) {
 				_eliminar = true;
 				UiApplication.getUiApplication().popScreen(getScreen());
 			}
@@ -157,15 +156,15 @@ public class VerActuacionScreen extends MainScreen {
 	public Actuacion getActuacion() {
 		return _actuacion;
 	}
-	
+
 	public boolean isGuardado() {
 		return _guardar;
 	}
-	
+
 	public boolean isEliminado() {
 		return _eliminar;
 	}
-	
+
 	public boolean onClose() {
 		boolean cambio = false;
 		Calendar f1 = _actuacion.getFecha();

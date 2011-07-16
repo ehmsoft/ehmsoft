@@ -11,16 +11,16 @@ public class NuevaActuacion {
 	private Proceso _proceso;
 
 	/**
-	 * Se crea una NuevaActuacion sin proceso asociado, este debe
-	 * ser asignado con setProceso(); o si no se generaria excepcion
-	 * en el guardado
+	 * Se crea una NuevaActuacion sin proceso asociado, este debe ser asignado
+	 * con setProceso(); o si no se generaria excepcion en el guardado
 	 */
 	public NuevaActuacion() {
 		_screen = new NuevaActuacionScreen();
 	}
 
 	/**
-	 * @param proceso Se crea una NuevaActuacion con proceso asociado
+	 * @param proceso
+	 *            Se crea una NuevaActuacion con proceso asociado
 	 */
 	public NuevaActuacion(Proceso proceso) {
 		_proceso = proceso;
@@ -28,8 +28,9 @@ public class NuevaActuacion {
 	}
 
 	/**
-	 * @param proceso se asocia al objeto NuevaActuacion, despues
-	 * de esta haber sido creada
+	 * @param proceso
+	 *            se asocia al objeto NuevaActuacion, despues de esta haber sido
+	 *            creada
 	 */
 	public void setProceso(Proceso proceso) {
 		_proceso = proceso;
@@ -50,22 +51,21 @@ public class NuevaActuacion {
 	}
 
 	/**
-	 * @return La nueva actuacion creada, sí esta no ha sido
-	 * guardada previamente con guardarActuacion(); se invoca
-	 * dicho metodo
+	 * @return La nueva actuacion creada, sí esta no ha sido guardada
+	 *         previamente con guardarActuacion(); se invoca dicho metodo
 	 */
-	public Actuacion getActuacion() throws Exception{
-		if(_actuacion == null) {
+	public Actuacion getActuacion() throws Exception {
+		if (_actuacion == null) {
 			guardarActuacion();
 		}
 		return _actuacion;
 	}
 
 	/**
-	 * Crea el nuevo objeto Actuacion y la guarda
-	 *  en la base de datos usando la informacion capturada desde la pantalla
+	 * Crea el nuevo objeto Actuacion y la guarda en la base de datos usando la
+	 * informacion capturada desde la pantalla
 	 */
-	public void guardarActuacion() throws Exception{
+	public void guardarActuacion() throws Exception {
 		if (_screen.isGuardado()) {
 			Persistence guardado = null;
 			_actuacion = new Actuacion(_screen.getJuzgado(),
@@ -78,10 +78,9 @@ public class NuevaActuacion {
 			}
 			try {
 				guardado.guardarActuacion(_actuacion, _proceso.getId_proceso());
-			} catch(NullPointerException e) {
+			} catch (NullPointerException e) {
 				throw e;
-			}
-			catch (Exception e) {
+			} catch (Exception e) {
 				Dialog.alert("Guardar -> " + e.toString());
 			}
 		} else {

@@ -47,8 +47,8 @@ public class ListadoJuzgadosScreen extends MainScreen {
 
 		public void run() {
 			int index = _lista.getSelectedIndex();
-			VerJuzgado verJuzgado = new VerJuzgado(
-					(Juzgado) _lista.get(_lista, index));
+			VerJuzgado verJuzgado = new VerJuzgado((Juzgado) _lista.get(_lista,
+					index));
 			UiApplication.getUiApplication().pushModalScreen(
 					verJuzgado.getScreen());
 			verJuzgado.actualizarJuzgado();
@@ -57,7 +57,7 @@ public class ListadoJuzgadosScreen extends MainScreen {
 			_lista.setSelectedIndex(index);
 		}
 	};
-	
+
 	private final MenuItem menuDelete = new MenuItem("Eliminar", 0, 0) {
 
 		public void run() {

@@ -48,8 +48,8 @@ public class ListadoProcesosScreen extends MainScreen {
 
 		public void run() {
 			int index = _lista.getSelectedIndex();
-			VerProceso verProceso = new VerProceso(
-					(Proceso) _lista.get(_lista, index));
+			VerProceso verProceso = new VerProceso((Proceso) _lista.get(_lista,
+					index));
 			UiApplication.getUiApplication().pushModalScreen(
 					verProceso.getScreen());
 			verProceso.actualizarProceso();
@@ -58,7 +58,7 @@ public class ListadoProcesosScreen extends MainScreen {
 			_lista.setSelectedIndex(index);
 		}
 	};
-	
+
 	private final MenuItem menuDelete = new MenuItem("Eliminar", 0, 0) {
 
 		public void run() {

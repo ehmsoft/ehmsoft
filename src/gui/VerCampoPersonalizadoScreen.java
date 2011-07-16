@@ -18,7 +18,7 @@ public class VerCampoPersonalizadoScreen extends MainScreen {
 	private EditableTextField _txtLongMin;
 
 	private CampoPersonalizado _campoPersonalizado;
-	
+
 	private boolean _guardar;
 	private boolean _eliminar;
 
@@ -105,18 +105,18 @@ public class VerCampoPersonalizadoScreen extends MainScreen {
 			_txtLongMin.setEditable();
 		}
 	};
-	
+
 	private final MenuItem menuEliminar = new MenuItem("Eliminar", 0, 0) {
 
 		public void run() {
-			Object[] ask = { "Si", "No"};
+			Object[] ask = { "Si", "No" };
 			int sel = Dialog.ask("¿Desea eliminar el campo?", ask, 1);
-			if(sel == 0) {
+			if (sel == 0) {
 				_eliminar = true;
 			}
 		}
 	};
-	
+
 	public String getNombre() {
 		return _txtNombre.getText();
 	}
@@ -140,15 +140,15 @@ public class VerCampoPersonalizadoScreen extends MainScreen {
 	public CampoPersonalizado getCampoPersonalizado() {
 		return _campoPersonalizado;
 	}
-	
+
 	public boolean isGuardado() {
 		return _guardar;
 	}
-	
+
 	public boolean isEliminado() {
 		return _eliminar;
 	}
-	
+
 	public boolean onClose() {
 		boolean cambio = false;
 		if (!_campoPersonalizado.getNombre().equals(this.getNombre()))
