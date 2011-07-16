@@ -62,7 +62,7 @@ public class VerActuacion {
 				Dialog.alert("actualizarActuacion -> " + e.toString());
 			}
 		}
-		if (_screen.isEliminado()) {
+		else if (_screen.isEliminado()) {
 			Persistence p;
 			try {
 				p = new Persistence();

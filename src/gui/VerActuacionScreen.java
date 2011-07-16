@@ -8,6 +8,7 @@ import net.rim.device.api.ui.MenuItem;
 import net.rim.device.api.ui.UiApplication;
 import net.rim.device.api.ui.component.DateField;
 import net.rim.device.api.ui.component.Dialog;
+import net.rim.device.api.ui.component.Menu;
 import net.rim.device.api.ui.container.MainScreen;
 import core.Actuacion;
 import core.Juzgado;
@@ -43,18 +44,28 @@ public class VerActuacionScreen extends MainScreen {
 				.getFechaProxima().getTime().getTime(), DateField.DATE_TIME);
 		_dfFechaProxima.setEditable(false);
 
-		_txtDescripcion = new EditableTextField("Descripció: ",
+		_txtDescripcion = new EditableTextField("Descripción: ",
 				_actuacion.getDescripcion());
 
 		add(_txtJuzgado);
 		add(_dfFecha);
 		add(_dfFechaProxima);
 		add(_txtDescripcion);
-		addMenuItem(menuGuardar);
-		addMenuItem(menuEditar);
-		addMenuItem(menuEditarTodo);
-		addMenuItem(menuCambiar);
 		addMenuItem(menuEliminar);
+	}
+	
+	protected void makeMenu(Menu menu, int instance) {
+		Field focus = UiApplication.getUiApplication().getActiveScreen()
+		.getFieldWithFocus();
+		if(focus.equals(_txtJuzgado)) {
+			menu.add(menuCambiar);
+			menu.addSeparator();
+		}
+		menu.add(menuEditar);
+		menu.add(menuEditarTodo);
+		menu.addSeparator();
+		menu.add(menuEliminar);
+		menu.add(menuGuardar);
 	}
 
 	private final MenuItem menuGuardar = new MenuItem("Guardar", 0, 0) {

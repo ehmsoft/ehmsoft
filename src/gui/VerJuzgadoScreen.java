@@ -3,6 +3,7 @@ package gui;
 import net.rim.device.api.ui.MenuItem;
 import net.rim.device.api.ui.UiApplication;
 import net.rim.device.api.ui.component.Dialog;
+import net.rim.device.api.ui.component.Menu;
 import net.rim.device.api.ui.container.MainScreen;
 import core.Juzgado;
 
@@ -16,12 +17,11 @@ public class VerJuzgadoScreen extends MainScreen {
 
 	private Juzgado _juzgado;
 
-	private boolean _guardar;
+	private boolean _guardar = false;
+	private boolean _eliminar = false;
 
 	public VerJuzgadoScreen(Juzgado juzgado) {
 		super(MainScreen.VERTICAL_SCROLL | MainScreen.VERTICAL_SCROLLBAR);
-
-		_guardar = false;
 
 		setTitle("Ver juzgado");
 		_juzgado = juzgado;
@@ -39,9 +39,14 @@ public class VerJuzgadoScreen extends MainScreen {
 		add(_txtDireccion);
 		add(_txtTelefono);
 		add(_txtTipo);
-		addMenuItem(menuGuardar);
-		addMenuItem(menuEditar);
-		addMenuItem(menuEditarTodo);
+	}
+	
+	protected void makeMenu(Menu menu, int instance) {
+		menu.add(menuEditar);
+		menu.add(menuEditarTodo);
+		menu.addSeparator();
+		menu.add(menuEliminar);
+		menu.add(menuGuardar);
 	}
 
 	private final MenuItem menuGuardar = new MenuItem("Guardar", 0, 0) {
@@ -49,6 +54,18 @@ public class VerJuzgadoScreen extends MainScreen {
 		public void run() {
 			_guardar = true;
 			UiApplication.getUiApplication().popScreen(getScreen());
+		}
+	};
+	
+	private final MenuItem menuEliminar = new MenuItem("Eliminar", 0, 0) {
+
+		public void run() {
+			Object[] ask = { "Si", "No" };
+			int sel = Dialog.ask("¿Desea eliminar lel juzgado?", ask, 1);
+			if (sel == 0) {
+				_eliminar = true;
+				UiApplication.getUiApplication().popScreen(getScreen());
+			}
 		}
 	};
 
@@ -100,6 +117,10 @@ public class VerJuzgadoScreen extends MainScreen {
 
 	public boolean isGuardado() {
 		return _guardar;
+	}
+	
+	public boolean isEliminado() {
+		return _eliminar;
 	}
 
 	public boolean onClose() {

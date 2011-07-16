@@ -307,10 +307,15 @@ public class VerProcesoScreen extends MainScreen {
 				VerJuzgado verJuzgado = new VerJuzgado(_juzgado);
 				UiApplication.getUiApplication().pushModalScreen(
 						verJuzgado.getScreen());
-				verJuzgado.actualizarJuzgado();
-				_juzgado = verJuzgado.getJuzgado();
-				_txtJuzgado.setText(_juzgado.getNombre());
-				_txtJuzgado.setFocus();
+				try {
+					verJuzgado.actualizarJuzgado();
+					_juzgado = verJuzgado.getJuzgado();
+					_txtJuzgado.setText(_juzgado.getNombre());
+				} catch (NullPointerException e) {
+					_juzgado = null;
+					_txtJuzgado.setText("vacio");
+					_txtJuzgado.setFocus();
+				}
 			}
 
 			if (f.equals(_dfFecha)) {

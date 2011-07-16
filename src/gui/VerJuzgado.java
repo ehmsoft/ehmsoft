@@ -17,7 +17,7 @@ public class VerJuzgado {
 		return _screen;
 	}
 
-	public void actualizarJuzgado() {
+	public void actualizarJuzgado() throws NullPointerException{
 		if (_screen.isGuardado()) {
 			try {
 				Persistence persistence = new Persistence();
@@ -45,6 +45,17 @@ public class VerJuzgado {
 			} catch (Exception e) {
 				Dialog.alert("actualizarJuzgado -> " + e.toString());
 			}
+		}
+		else if (_screen.isEliminado()) {
+			Persistence p;
+			try {
+				p = new Persistence();
+				p.borrarJuzgado(_juzgado);
+			} catch (Exception e) {
+				Dialog.alert(e.toString());
+			}
+			throw new NullPointerException("Se está eliminando el juzgado con id: "
+					+ _juzgado.getId_juzgado());
 		}
 	}
 

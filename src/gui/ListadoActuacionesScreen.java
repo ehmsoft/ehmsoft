@@ -65,12 +65,12 @@ public class ListadoActuacionesScreen extends MainScreen {
 					verActuacion.getScreen());
 			try {
 				verActuacion.actualizarActuacion();
+				_lista.delete(index);
+				_lista.insert(index, verActuacion.getActuacion());
+				_lista.setSelectedIndex(index);
 			} catch (Exception e) {
 				_lista.delete(index);
 			}
-			_lista.delete(index);
-			_lista.insert(index, verActuacion.getActuacion());
-			_lista.setSelectedIndex(index);
 		}
 	};
 

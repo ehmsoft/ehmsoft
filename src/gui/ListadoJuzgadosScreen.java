@@ -58,10 +58,14 @@ public class ListadoJuzgadosScreen extends MainScreen {
 					index));
 			UiApplication.getUiApplication().pushModalScreen(
 					verJuzgado.getScreen());
-			verJuzgado.actualizarJuzgado();
-			_lista.delete(index);
-			_lista.insert(index, verJuzgado.getJuzgado());
-			_lista.setSelectedIndex(index);
+			try {
+				verJuzgado.actualizarJuzgado();
+				_lista.delete(index);
+				_lista.insert(index, verJuzgado.getJuzgado());
+				_lista.setSelectedIndex(index);
+			} catch (NullPointerException e) {
+				_lista.delete(index);
+			}
 		}
 	};
 
