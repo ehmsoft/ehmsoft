@@ -77,20 +77,24 @@ public class ListadoActuacionesScreen extends MainScreen {
 	private final MenuItem menuDelete = new MenuItem("Eliminar", 0, 0) {
 
 		public void run() {
-			Persistence persistence = null;
-			try {
-				persistence = new Persistence();
-			} catch (Exception e) {
-				Dialog.alert(e.toString());
+			Object[] ask = { "Si", "No" };
+			int sel = Dialog.ask("¿Desdea eliminar la actuación?", ask, 1);
+			if (sel == 0) {
+				Persistence persistence = null;
+				try {
+					persistence = new Persistence();
+				} catch (Exception e) {
+					Dialog.alert(e.toString());
+				}
+				int index = _lista.getSelectedIndex();
+				try {
+					persistence.borrarActuacion((Actuacion) _lista.get(_lista,
+							index));
+				} catch (Exception e) {
+					Dialog.alert(e.toString());
+				}
+				_lista.delete(index);
 			}
-			int index = _lista.getSelectedIndex();
-			try {
-				persistence.borrarActuacion((Actuacion) _lista.get(_lista,
-						index));
-			} catch (Exception e) {
-				Dialog.alert(e.toString());
-			}
-			_lista.delete(index);
 		}
 	};
 
