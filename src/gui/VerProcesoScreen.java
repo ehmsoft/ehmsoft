@@ -47,12 +47,12 @@ public class VerProcesoScreen extends MainScreen {
 	Vector _camposPersonalizados;
 	Vector _txtCampos;
 	Vector _actuaciones;
-	
+
 	private boolean _guardar = false;
 
 	public VerProcesoScreen(Proceso proceso) {
 		super(MainScreen.VERTICAL_SCROLL | MainScreen.VERTICAL_SCROLLBAR);
-		
+
 		setTitle("Ver proceso");
 		_proceso = proceso;
 		_demandante = proceso.getDemandante();
@@ -93,8 +93,8 @@ public class VerProcesoScreen extends MainScreen {
 		_txtEstado = new EditableTextField("Estado: ", _proceso.getEstado());
 		add(_txtEstado);
 
-		_txtCategoria = new EditableTextField("Categoría: ",
-				_proceso.getCategoria().getDescripcion());
+		_txtCategoria = new EditableTextField("Categoría: ", _proceso
+				.getCategoria().getDescripcion());
 		add(_txtCategoria);
 
 		_txtTipo = new EditableTextField("Tipo: ", _proceso.getTipo());
@@ -111,56 +111,144 @@ public class VerProcesoScreen extends MainScreen {
 		_txtCampos = new Vector();
 
 		addCampos();
-		addMenuItem(menuGuardar);
-		addMenuItem(menuEditar);
-		addMenuItem(menuEditarTodo);
-		addMenuItem(menuAddActuacion);
-		addMenuItem(menuCambiar);
-		addMenuItem(menuEliminar);
 	}
-	
+
 	protected void makeMenu(Menu menu, int instance) {
 		Field focus = UiApplication.getUiApplication().getActiveScreen()
 				.getFieldWithFocus();
-		if (focus.equals(_txtDemandante) || focus.equals(_txtDemandado) || focus.equals(_txtJuzgado)) {
+		if (focus.equals(_ofActuaciones)) {
+			menu.add(menuAddActuacion);
+			menu.addSeparator();
+		}
+		menu.add(menuEditar);
+		menu.add(menuEditarTodo);
+		if (!focus.equals(_ofActuaciones)) {
+			menu.add(menuAddActuacion);
+		}
+		menu.addSeparator();
+		if (focus.equals(_txtDemandante) || focus.equals(_txtDemandado)
+				|| focus.equals(_txtJuzgado)) {
 			ContextMenu contextMenu = focus.getContextMenu();
 			if (!contextMenu.isEmpty()) {
 				menu.add(contextMenu);
 				menu.addSeparator();
 			}
-			menu.add(itemEliminar);
+			menu.add(menuCambiar);
+			menu.add(menuEliminar);
+			menu.add(menuEliminarDef);
+		} else if (focus.equals(_txtCategoria)) {
+			menu.add(menuCambiarCategoria);
 		}
+		menu.add(menuGuardar);
 	}
-	
-private final MenuItem itemEliminar = new MenuItem("Eliminar del proceso",0,0) {
-		
+
+	private final MenuItem menuCambiarCategoria = new MenuItem("Cambiar", 0, 0) {
+
+		public void run() {
+			ListadoCategorias l = new ListadoCategorias();
+			UiApplication.getUiApplication().pushModalScreen(l.getScreen());
+			try {
+				_categoria = l.getSelected();
+				_txtCategoria.setText(_categoria.getDescripcion());
+			} catch (NullPointerException e) {
+
+			} catch (Exception e) {
+				Dialog.alert(e.toString());
+			} finally {
+				l = null;
+			}
+		}
+	};
+
+	private final MenuItem menuEliminar = new MenuItem("Eliminar del proceso",
+			0, 0) {
+
 		public void run() {
 			Object[] ask = { "Confirmar", "Cancelar" };
-			
-			Field f = UiApplication.getUiApplication().getActiveScreen().getFieldWithFocus();
-			if(f.equals(_txtDemandante)) {
-				int sel = Dialog.ask("Se eliminará el demandante del proceso", ask, 1);
-				if(sel == 0) {
+
+			Field f = UiApplication.getUiApplication().getActiveScreen()
+					.getFieldWithFocus();
+			if (f.equals(_txtDemandante)) {
+				int sel = Dialog.ask("Se eliminará el demandante del proceso",
+						ask, 1);
+				if (sel == 0) {
 					_demandante = null;
 					_txtDemandante.setText("vacio");
 				}
-			}
-			else if(f.equals(_txtDemandado)) {
-				
-			}
-			else if(f.equals(_txtJuzgado)) {
-				
+			} else if (f.equals(_txtDemandado)) {
+				int sel = Dialog.ask("Se eliminará el demandado del proceso",
+						ask, 1);
+				if (sel == 0) {
+					_demandado = null;
+					_txtDemandado.setText("vacio");
+				}
+			} else if (f.equals(_txtJuzgado)) {
+				int sel = Dialog.ask("Se eliminará el juzgado del proceso",
+						ask, 1);
+				if (sel == 0) {
+					_juzgado = null;
+					_txtJuzgado.setText("vacio");
+				}
 			}
 		}
-};
+	};
 
-private final MenuItem itemEliminarDefinitivo = new MenuItem("Eliminar definitivamente",0,0) {
-	
-	public void run() {
-		Object[] ask = { "Guardar", "Descartar", "Cancelar" };
-		int sel = Dialog.ask("¿Qué?", ask, 1);
-	}
-};
+	private final MenuItem menuEliminarDef = new MenuItem(
+			"Eliminar definitivamente", 0, 0) {
+
+		public void run() {
+			Object[] ask = { "Confirmar", "Cancelar" };
+
+			Field f = UiApplication.getUiApplication().getActiveScreen()
+					.getFieldWithFocus();
+			if (f.equals(_txtDemandante)) {
+				int sel = Dialog.ask(
+						"Se eliminará el demandante definitivamente", ask, 1);
+				if (sel == 0) {
+					Persistence p;
+					try {
+						p = new Persistence();
+						p.borrarPersona(_demandante);
+						_demandante = null;
+						_txtDemandante.setText("vacio");
+					} catch (Exception e) {
+						Dialog.alert(e.toString());
+						p = null;
+					}
+				}
+			} else if (f.equals(_txtDemandado)) {
+				int sel = Dialog.ask(
+						"Se eliminará el demandado definitivamente", ask, 1);
+				if (sel == 0) {
+					Persistence p;
+					try {
+						p = new Persistence();
+						p.borrarPersona(_demandado);
+						_demandante = null;
+						_txtDemandado.setText("vacio");
+					} catch (Exception e) {
+						Dialog.alert(e.toString());
+						p = null;
+					}
+				}
+			} else if (f.equals(_txtJuzgado)) {
+				int sel = Dialog.ask("Se eliminará el juzgado definitivamente",
+						ask, 1);
+				if (sel == 0) {
+					Persistence p;
+					try {
+						p = new Persistence();
+						p.borrarJuzgado(_juzgado);
+						_juzgado = null;
+						_txtJuzgado.setText("vacio");
+					} catch (Exception e) {
+						Dialog.alert(e.toString());
+						p = null;
+					}
+				}
+			}
+		}
+	};
 
 	private Object[] transformActuaciones() {
 		Enumeration e = _actuaciones.elements();
@@ -183,9 +271,9 @@ private final MenuItem itemEliminarDefinitivo = new MenuItem("Eliminar definitiv
 			add(etf);
 		}
 	}
-	
-	private final MenuItem menuGuardar = new MenuItem("Guardar",0,0) {
-		
+
+	private final MenuItem menuGuardar = new MenuItem("Guardar", 0, 0) {
+
 		public void run() {
 			_guardar = true;
 			UiApplication.getUiApplication().popScreen(getScreen());
@@ -197,8 +285,7 @@ private final MenuItem itemEliminarDefinitivo = new MenuItem("Eliminar definitiv
 		public void run() {
 			Field f = getFieldWithFocus();
 			if (f.equals(_txtDemandante)) {
-				VerPersona verPersona = new VerPersona(
-						_demandante);
+				VerPersona verPersona = new VerPersona(_demandante);
 				UiApplication.getUiApplication().pushModalScreen(
 						verPersona.getScreen());
 				verPersona.actualizarPersona();
@@ -207,8 +294,7 @@ private final MenuItem itemEliminarDefinitivo = new MenuItem("Eliminar definitiv
 				_txtDemandante.setFocus();
 			}
 			if (f.equals(_txtDemandado)) {
-				VerPersona verPersona = new VerPersona(
-						_demandado);
+				VerPersona verPersona = new VerPersona(_demandado);
 				UiApplication.getUiApplication().pushModalScreen(
 						verPersona.getScreen());
 				verPersona.actualizarPersona();
@@ -218,8 +304,7 @@ private final MenuItem itemEliminarDefinitivo = new MenuItem("Eliminar definitiv
 			}
 
 			if (f.equals(_txtJuzgado)) {
-				VerJuzgado verJuzgado = new VerJuzgado(
-						_juzgado);
+				VerJuzgado verJuzgado = new VerJuzgado(_juzgado);
 				UiApplication.getUiApplication().pushModalScreen(
 						verJuzgado.getScreen());
 				verJuzgado.actualizarJuzgado();
@@ -246,8 +331,7 @@ private final MenuItem itemEliminarDefinitivo = new MenuItem("Eliminar definitiv
 			if (f.equals(_ofActuaciones)) {
 				Actuacion actuacion = (Actuacion) _ofActuaciones
 						.getChoice(_ofActuaciones.getSelectedIndex());
-				VerActuacion verAtuacion = new VerActuacion(
-						actuacion);
+				VerActuacion verAtuacion = new VerActuacion(actuacion);
 				UiApplication.getUiApplication().pushModalScreen(
 						verAtuacion.getScreen());
 				try {
@@ -324,15 +408,14 @@ private final MenuItem itemEliminarDefinitivo = new MenuItem("Eliminar definitiv
 			_nfPrioridad.setEditable(true);
 		}
 	};
-	
+
 	private final MenuItem menuCambiar = new MenuItem("Cambiar", 0, 0) {
 
 		public void run() {
 			Field f = getFieldWithFocus();
 			if (f.equals(_txtDemandante)) {
 				ListadoPersonas l = new ListadoPersonas(1);
-				UiApplication.getUiApplication().pushModalScreen(
-						l.getScreen());
+				UiApplication.getUiApplication().pushModalScreen(l.getScreen());
 				try {
 					_demandante = l.getSelected();
 					_txtDemandante.setText(_demandante.getNombre());
@@ -340,11 +423,10 @@ private final MenuItem itemEliminarDefinitivo = new MenuItem("Eliminar definitiv
 				} catch (NullPointerException e) {
 				}
 			}
-			
+
 			if (f.equals(_txtDemandado)) {
 				ListadoPersonas l = new ListadoPersonas(2);
-				UiApplication.getUiApplication().pushModalScreen(
-						l.getScreen());
+				UiApplication.getUiApplication().pushModalScreen(l.getScreen());
 				try {
 					_demandado = l.getSelected();
 					_txtDemandado.setText(_demandado.getNombre());
@@ -352,11 +434,10 @@ private final MenuItem itemEliminarDefinitivo = new MenuItem("Eliminar definitiv
 				} catch (NullPointerException e) {
 				}
 			}
-			
+
 			if (f.equals(_txtJuzgado)) {
 				ListadoJuzgados l = new ListadoJuzgados();
-				UiApplication.getUiApplication().pushModalScreen(
-						l.getScreen());
+				UiApplication.getUiApplication().pushModalScreen(l.getScreen());
 				try {
 					_juzgado = l.getSelected();
 					_txtJuzgado.setText(_juzgado.getNombre());
@@ -366,48 +447,9 @@ private final MenuItem itemEliminarDefinitivo = new MenuItem("Eliminar definitiv
 			}
 		}
 	};
-	
-	private final MenuItem menuEliminar = new MenuItem("Eliminar", 0, 0) {
 
-		public void run() {
-			Field f = getFieldWithFocus();
-			if (f.equals(_txtDemandante)) {
-				Persistence p;
-				try {
-					p = new Persistence();
-					p.borrarPersona(_demandante);
-					_demandante = null;
-					_txtDemandante.setText("Vacio");
-				} catch(Exception e) {
-					Dialog.alert(e.toString());
-				}
-			}
-			if (f.equals(_txtDemandado)) {
-				Persistence p;
-				try {
-					p = new Persistence();
-					p.borrarPersona(_demandado);
-					_demandado = null;
-					_txtDemandado.setText("Vacio");
-				} catch(Exception e) {
-					Dialog.alert(e.toString());
-				}
-			}
-			if (f.equals(_txtJuzgado)) {
-				Persistence p;
-				try {
-					p = new Persistence();
-					p.borrarJuzgado(_juzgado);
-					_juzgado = null;
-					_txtJuzgado.setText("Vacio");
-				} catch(Exception e) {
-					Dialog.alert(e.toString());
-				}
-			}
-		}
-	};
-	
-	private final MenuItem menuAddActuacion = new MenuItem("Agregar actuación", 0, 0) {
+	private final MenuItem menuAddActuacion = new MenuItem("Agregar actuación",
+			0, 0) {
 
 		public void run() {
 			NuevaActuacion n = new NuevaActuacion(_proceso);
@@ -420,7 +462,7 @@ private final MenuItem itemEliminarDefinitivo = new MenuItem("Eliminar definitiv
 			}
 		}
 	};
-	
+
 	public Persona getDemandante() {
 		return _demandante;
 	}
@@ -489,71 +531,88 @@ private final MenuItem itemEliminarDefinitivo = new MenuItem("Eliminar definitiv
 		Calendar f1 = _proceso.getFecha();
 		Calendar f2 = this.getFecha();
 
-		try {
+		if (_demandante != null) {
 			if (!_proceso.getDemandante().getId_persona()
 					.equals(this.getDemandante().getId_persona())) {
 				cambio = true;
 			}
+		} else if (_demandante == null && _proceso.getDemandante() == null)
+			;
+		else if (_demandante == null) {
+			cambio = true;
+		}
+
+		if (_demandado != null) {
 			if (!_proceso.getDemandado().getId_persona()
 					.equals(this.getDemandado().getId_persona())) {
 				cambio = true;
 			}
+		} else if (_demandado == null && _proceso.getDemandado() == null)
+			;
+		else if (_demandado == null) {
+			cambio = true;
+		}
+
+		if (_juzgado != null) {
 			if (!_proceso.getJuzgado().getId_juzgado()
 					.equals(this.getJuzgado().getId_juzgado())) {
 				cambio = true;
 			}
-		} catch (NullPointerException e) {
-		} finally {
-			if ((f1.get(Calendar.YEAR) != f2.get(Calendar.YEAR))
-					|| (f1.get(Calendar.MONTH) != f2.get(Calendar.MONTH))
-					|| (f1.get(Calendar.DAY_OF_MONTH) != f2
-							.get(Calendar.DAY_OF_MONTH))) {
-				cambio = true;
-			}
-			if (!_proceso.getRadicado().equals(this.getRadicado())) {
-				cambio = true;
-			}
-			else if (!_proceso.getRadicadoUnico().equals(this.getRadicadoUnico())) {
-				cambio = true;
-			}
-			else if (!_proceso.getActuaciones().equals(this.getActuaciones())) {
-				cambio = true;
-			}
-			else if (!_proceso.getEstado().equals(this.getEstado())) {
-				cambio = true;
-			}
-			else if (!_proceso.getCategoria().equals(this.getCategoria())) {
-				cambio = true;
-			}
-			else if (!_proceso.getTipo().equals(this.getTipo())) {
-				cambio = true;
-			}
-			else if (!_proceso.getNotas().equals(this.getNotas())) {
-				cambio = true;
-			}
-			else if (_proceso.getPrioridad() != this.getPrioridad()) {
-				cambio = true;
-			}
-			else if (!_proceso.getCampos().equals(this.getCampos())) {
-				cambio = true;
-			}
+		} else if (_juzgado == null && _proceso.getJuzgado() == null)
+			;
+		else if (_juzgado == null) {
+			cambio = true;
+		}
 
-			if (!cambio) {
+		if ((f1.get(Calendar.YEAR) != f2.get(Calendar.YEAR))
+				|| (f1.get(Calendar.MONTH) != f2.get(Calendar.MONTH))
+				|| (f1.get(Calendar.DAY_OF_MONTH) != f2
+						.get(Calendar.DAY_OF_MONTH))) {
+			cambio = true;
+		}
+		if (!_proceso.getRadicado().equals(this.getRadicado())) {
+			cambio = true;
+		}
+		if (!_proceso.getRadicadoUnico().equals(this.getRadicadoUnico())) {
+			cambio = true;
+		}
+		if (!_proceso.getActuaciones().equals(this.getActuaciones())) {
+			cambio = true;
+		}
+		if (!_proceso.getEstado().equals(this.getEstado())) {
+			cambio = true;
+		}
+		if (!_proceso.getCategoria().equals(this.getCategoria())) {
+			cambio = true;
+		}
+		if (!_proceso.getTipo().equals(this.getTipo())) {
+			cambio = true;
+		}
+		if (!_proceso.getNotas().equals(this.getNotas())) {
+			cambio = true;
+		}
+		if (_proceso.getPrioridad() != this.getPrioridad()) {
+			cambio = true;
+		}
+		if (!_proceso.getCampos().equals(this.getCampos())) {
+			cambio = true;
+		}
+
+		if (!cambio) {
+			UiApplication.getUiApplication().popScreen(getScreen());
+			return true;
+		} else {
+			Object[] ask = { "Guardar", "Descartar", "Cancelar" };
+			int sel = Dialog.ask("Se han detectado cambios", ask, 2);
+			if (sel == 0) {
+				_guardar = true;
+				UiApplication.getUiApplication().popScreen(getScreen());
+				return true;
+			} else if (sel == 1) {
 				UiApplication.getUiApplication().popScreen(getScreen());
 				return true;
 			} else {
-				Object[] ask = { "Guardar", "Descartar", "Cancelar" };
-				int sel = Dialog.ask("Se han detectado cambios", ask, 1);
-				if (sel == 0) {
-					_guardar = true;
-					UiApplication.getUiApplication().popScreen(getScreen());
-					return true;
-				} else if (sel == 1) {
-					UiApplication.getUiApplication().popScreen(getScreen());
-					return true;
-				} else {
-					return false;
-				}
+				return false;
 			}
 		}
 	}
