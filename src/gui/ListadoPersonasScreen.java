@@ -5,6 +5,7 @@ import persistence.Persistence;
 import net.rim.device.api.ui.MenuItem;
 import net.rim.device.api.ui.UiApplication;
 import net.rim.device.api.ui.component.Dialog;
+import net.rim.device.api.ui.component.Menu;
 import net.rim.device.api.ui.container.MainScreen;
 import core.Persona;
 
@@ -48,8 +49,14 @@ public class ListadoPersonasScreen extends MainScreen {
 		else
 			_lista.insert(0, "Nuevo demandado");
 		add(_lista);
-		addMenuItem(menuVer);
-		addMenuItem(menuDelete);
+	}
+	
+	protected void makeMenu(Menu menu, int instance) {
+		if (!String.class.isInstance(_lista.get(_lista,
+				_lista.getSelectedIndex()))) {
+			menu.add(menuVer);
+			menu.add(menuDelete);
+		}
 	}
 
 	private final MenuItem menuVer = new MenuItem("Ver", 0, 0) {
