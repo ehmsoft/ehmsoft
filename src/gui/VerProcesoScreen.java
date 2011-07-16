@@ -7,11 +7,13 @@ import java.util.Vector;
 
 import persistence.Persistence;
 
+import net.rim.device.api.ui.ContextMenu;
 import net.rim.device.api.ui.Field;
 import net.rim.device.api.ui.MenuItem;
 import net.rim.device.api.ui.UiApplication;
 import net.rim.device.api.ui.component.DateField;
 import net.rim.device.api.ui.component.Dialog;
+import net.rim.device.api.ui.component.Menu;
 import net.rim.device.api.ui.component.NumericChoiceField;
 import net.rim.device.api.ui.component.ObjectChoiceField;
 import net.rim.device.api.ui.container.MainScreen;
@@ -116,6 +118,49 @@ public class VerProcesoScreen extends MainScreen {
 		addMenuItem(menuCambiar);
 		addMenuItem(menuEliminar);
 	}
+	
+	protected void makeMenu(Menu menu, int instance) {
+		Field focus = UiApplication.getUiApplication().getActiveScreen()
+				.getFieldWithFocus();
+		if (focus.equals(_txtDemandante) || focus.equals(_txtDemandado) || focus.equals(_txtJuzgado)) {
+			ContextMenu contextMenu = focus.getContextMenu();
+			if (!contextMenu.isEmpty()) {
+				menu.add(contextMenu);
+				menu.addSeparator();
+			}
+			menu.add(itemEliminar);
+		}
+	}
+	
+private final MenuItem itemEliminar = new MenuItem("Eliminar del proceso",0,0) {
+		
+		public void run() {
+			Object[] ask = { "Confirmar", "Cancelar" };
+			
+			Field f = UiApplication.getUiApplication().getActiveScreen().getFieldWithFocus();
+			if(f.equals(_txtDemandante)) {
+				int sel = Dialog.ask("Se eliminará el demandante del proceso", ask, 1);
+				if(sel == 0) {
+					_demandante = null;
+					_txtDemandante.setText("vacio");
+				}
+			}
+			else if(f.equals(_txtDemandado)) {
+				
+			}
+			else if(f.equals(_txtJuzgado)) {
+				
+			}
+		}
+};
+
+private final MenuItem itemEliminarDefinitivo = new MenuItem("Eliminar definitivamente",0,0) {
+	
+	public void run() {
+		Object[] ask = { "Guardar", "Descartar", "Cancelar" };
+		int sel = Dialog.ask("¿Qué?", ask, 1);
+	}
+};
 
 	private Object[] transformActuaciones() {
 		Enumeration e = _actuaciones.elements();
