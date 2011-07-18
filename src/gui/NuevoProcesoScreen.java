@@ -198,16 +198,17 @@ public class NuevoProcesoScreen extends FondoNuevos {
 
 	private FieldChangeListener listenerBtnDemandante = new FieldChangeListener() {
 		public void fieldChanged(Field field, int context) {
-			ListadoPersonas demandantes = new ListadoPersonas(1);
+			ListadoPersonas l = new ListadoPersonas(1);
 			UiApplication.getUiApplication().pushModalScreen(
-					demandantes.getScreen());
+					l.getScreen());
 			try {
-				_demandante = demandantes.getSelected();
+				_demandante = l.getSelected();
 				_btnDemandante.setLabel(_demandante.getNombre());
 			} catch (NullPointerException e) {
 				if (_demandante == null)
-					Dialog.alert(_demandante.toString()
-							+ "Debe seleccionar un demandante");
+					Dialog.alert("Debe seleccionar un demandante");
+			} finally {
+				l = null;
 			}
 		}
 	};
