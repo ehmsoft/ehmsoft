@@ -385,6 +385,7 @@ public class Persistence implements Cargado, Guardado {
 			stAcProceso.bind(12, proceso.getId_proceso());
 			stAcProceso.execute();
 			stAcProceso.close();
+			proceso = consultarProceso(proceso.getId_proceso());
 			
 		} catch (Exception e){
 			throw e;
