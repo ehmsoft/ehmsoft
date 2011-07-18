@@ -4,6 +4,7 @@ import net.rim.device.api.ui.MenuItem;
 import net.rim.device.api.ui.UiApplication;
 import net.rim.device.api.ui.component.BasicEditField;
 import net.rim.device.api.ui.component.Dialog;
+import net.rim.device.api.ui.component.Menu;
 import net.rim.device.api.ui.container.MainScreen;
 import core.Persona;
 
@@ -18,12 +19,11 @@ public class VerPersonaScreen extends MainScreen {
 
 	private Persona _persona;
 
-	private boolean _guardar;
+	private boolean _guardar = false;
+	private boolean _eliminar = false;
 
 	public VerPersonaScreen(Persona persona) {
 		super(MainScreen.VERTICAL_SCROLL | MainScreen.VERTICAL_SCROLLBAR);
-
-		_guardar = false;
 
 		_persona = persona;
 
@@ -58,9 +58,14 @@ public class VerPersonaScreen extends MainScreen {
 		add(_txtDireccion);
 		add(_txtCorreo);
 		add(_txtNotas);
-		addMenuItem(menuGuardar);
-		addMenuItem(menuEditar);
-		addMenuItem(menuEditarTodo);
+	}
+	
+	protected void makeMenu(Menu menu, int instance) {
+		menu.add(menuEditar);
+		menu.add(menuEditarTodo);
+		menu.addSeparator();
+		menu.add(menuEliminar);
+		menu.add(menuGuardar);
 	}
 
 	private final MenuItem menuGuardar = new MenuItem("Guardar", 0, 0) {
@@ -68,6 +73,23 @@ public class VerPersonaScreen extends MainScreen {
 		public void run() {
 			_guardar = true;
 			UiApplication.getUiApplication().popScreen(getScreen());
+		}
+	};
+	
+	private final MenuItem menuEliminar = new MenuItem("Eliminar", 0, 0) {
+
+		public void run() {
+			Object[] ask = { "Si", "No" };
+			int sel = 1;
+			if(_persona.getTipo() == 1) {
+				sel = Dialog.ask("¿Desea eliminar el demandante?", ask, 1);
+			} else if (_persona.getTipo() == 2) {
+				sel = Dialog.ask("¿Desea eliminar el demandado?", ask, 1);
+			}
+			if (sel == 0) {
+				_eliminar = true;
+				UiApplication.getUiApplication().popScreen(getScreen());
+			}
 		}
 	};
 
@@ -126,6 +148,10 @@ public class VerPersonaScreen extends MainScreen {
 
 	public boolean isGuardado() {
 		return _guardar;
+	}
+	
+	public boolean isEliminado() {
+		return _eliminar;
 	}
 
 	public boolean onClose() {

@@ -4,6 +4,7 @@ import net.rim.device.api.ui.MenuItem;
 import net.rim.device.api.ui.UiApplication;
 import net.rim.device.api.ui.component.BasicEditField;
 import net.rim.device.api.ui.component.Dialog;
+import net.rim.device.api.ui.component.Menu;
 import net.rim.device.api.ui.container.MainScreen;
 import core.Categoria;
 
@@ -29,9 +30,13 @@ public class VerCategoriaScreen extends MainScreen {
 				_categoria.getDescripcion(), BasicEditField.NO_NEWLINE);
 
 		add(_txtDescripcion);
-		addMenuItem(menuGuardar);
-		addMenuItem(menuEditar);
-		addMenuItem(menuEliminar);
+	}
+	
+	protected void makeMenu(Menu menu, int instance) {
+		menu.add(menuEditar);
+		menu.addSeparator();
+		menu.add(menuEliminar);
+		menu.add(menuGuardar);
 	}
 
 	private final MenuItem menuGuardar = new MenuItem("Guardar", 0, 0) {

@@ -135,7 +135,6 @@ public class VerProcesoScreen extends MainScreen {
 			}
 			menu.add(menuCambiar);
 			menu.add(menuEliminar);
-			menu.add(menuEliminarDef);
 		} else if (focus.equals(_txtCategoria)) {
 			menu.add(menuCambiarCategoria);
 		}
@@ -188,63 +187,6 @@ public class VerProcesoScreen extends MainScreen {
 				if (sel == 0) {
 					_juzgado = null;
 					_txtJuzgado.setText("vacio");
-				}
-			}
-		}
-	};
-
-	private final MenuItem menuEliminarDef = new MenuItem(
-			"Eliminar definitivamente", 0, 0) {
-
-		public void run() {
-			Object[] ask = { "Confirmar", "Cancelar" };
-
-			Field f = UiApplication.getUiApplication().getActiveScreen()
-					.getFieldWithFocus();
-			if (f.equals(_txtDemandante)) {
-				int sel = Dialog.ask(
-						"Se eliminará el demandante definitivamente", ask, 1);
-				if (sel == 0) {
-					Persistence p;
-					try {
-						p = new Persistence();
-						p.borrarPersona(_demandante);
-						_demandante = null;
-						_txtDemandante.setText("vacio");
-					} catch (Exception e) {
-						Dialog.alert(e.toString());
-						p = null;
-					}
-				}
-			} else if (f.equals(_txtDemandado)) {
-				int sel = Dialog.ask(
-						"Se eliminará el demandado definitivamente", ask, 1);
-				if (sel == 0) {
-					Persistence p;
-					try {
-						p = new Persistence();
-						p.borrarPersona(_demandado);
-						_demandante = null;
-						_txtDemandado.setText("vacio");
-					} catch (Exception e) {
-						Dialog.alert(e.toString());
-						p = null;
-					}
-				}
-			} else if (f.equals(_txtJuzgado)) {
-				int sel = Dialog.ask("Se eliminará el juzgado definitivamente",
-						ask, 1);
-				if (sel == 0) {
-					Persistence p;
-					try {
-						p = new Persistence();
-						p.borrarJuzgado(_juzgado);
-						_juzgado = null;
-						_txtJuzgado.setText("vacio");
-					} catch (Exception e) {
-						Dialog.alert(e.toString());
-						p = null;
-					}
 				}
 			}
 		}

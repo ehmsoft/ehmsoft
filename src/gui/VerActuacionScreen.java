@@ -51,7 +51,6 @@ public class VerActuacionScreen extends MainScreen {
 		add(_dfFecha);
 		add(_dfFechaProxima);
 		add(_txtDescripcion);
-		addMenuItem(menuEliminar);
 	}
 	
 	protected void makeMenu(Menu menu, int instance) {

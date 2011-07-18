@@ -46,6 +46,16 @@ public class VerPersona {
 			} catch (Exception e) {
 				Dialog.alert("actualizarPersona -> " + e.toString());
 			}
+		} else if(_screen.isEliminado()) {
+			Persistence p;
+			try {
+				p = new Persistence();
+				p.borrarPersona(_persona);
+			} catch (Exception e) {
+				Dialog.alert(e.toString());
+			}
+			throw new NullPointerException("Se está eliminando la persona con id: "
+					+ _persona.getId_persona());
 		}
 	}
 
