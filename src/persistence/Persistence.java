@@ -352,8 +352,21 @@ public class Persistence implements Cargado, Guardado {
 			d = DatabaseFactory.open(connMgr.getDbLocation());
 			stAcProceso = d.createStatement("UPDATE procesos SET id_demandante = ?,"+" id_demandado = ?,"+" fecha_creacion = datetime(?),"+" radicado = ?,"+" radicado_unico = ?,"+" estado = ?,"+" tipo = ?,"+" notas = ?,"+" prioridad = ?,"+" id_juzgado = ?,"+" id_categoria = ? WHERE id_proceso = ?");
 			stAcProceso.prepare();
-			stAcProceso.bind(1, proceso.getDemandante().getId_persona());
-			stAcProceso.bind(2, proceso.getDemandado().getId_persona());
+			if (proceso.getDemandante()== null)
+			{
+				stAcProceso.bind(1,"1");
+				
+			}
+			else {
+				stAcProceso.bind(1, proceso.getDemandante().getId_persona());
+			}
+			if (proceso.getDemandado()== null){
+				stAcProceso.bind(2,"1");
+			}
+			else {
+				stAcProceso.bind(2, proceso.getDemandado().getId_persona());				
+			}
+			
 			stAcProceso.bind(3, calendarToString(proceso.getFecha()));
 			stAcProceso.bind(4, proceso.getRadicado());
 			stAcProceso.bind(5, proceso.getRadicadoUnico());
@@ -361,7 +374,13 @@ public class Persistence implements Cargado, Guardado {
 			stAcProceso.bind(7, proceso.getTipo());
 			stAcProceso.bind(8, proceso.getNotas());
 			stAcProceso.bind(9, proceso.getPrioridad());
-			stAcProceso.bind(10, proceso.getJuzgado().getId_juzgado());
+			if (proceso.getJuzgado()== null){
+				stAcProceso.bind(10,"1");
+			}
+			else{
+				stAcProceso.bind(10, proceso.getJuzgado().getId_juzgado());
+			}
+			
 			stAcProceso.bind(11, proceso.getCategoria().getId_categoria());
 			stAcProceso.bind(12, proceso.getId_proceso());
 			stAcProceso.execute();
