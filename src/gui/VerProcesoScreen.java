@@ -120,7 +120,25 @@ public class VerProcesoScreen extends MainScreen {
 			menu.add(menuAddActuacion);
 			menu.addSeparator();
 		}
-		menu.add(menuEditar);
+
+		if (_demandante != null) {
+			if (!_demandante.getId_persona().equals("1")) {
+				menu.add(menuEditar);
+			}
+		}
+
+		if (_demandado != null) {
+			if (!_demandado.getId_persona().equals("1")) {
+				menu.add(menuEditar);
+			}
+		}
+
+		if (_juzgado != null) {
+			if (!_juzgado.getId_juzgado().equals("1")) {
+				menu.add(menuEditar);
+			}
+		}
+
 		menu.add(menuEditarTodo);
 		if (!focus.equals(_ofActuaciones)) {
 			menu.add(menuAddActuacion);
