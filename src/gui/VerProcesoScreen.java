@@ -120,23 +120,33 @@ public class VerProcesoScreen extends MainScreen {
 			menu.add(menuAddActuacion);
 			menu.addSeparator();
 		}
-
-		if (_demandante != null) {
-			if (!_demandante.getId_persona().equals("1")) {
-				menu.add(menuEditar);
+		
+		if (focus.equals(_txtDemandante)) {
+			if (_demandante != null) {
+				if (!_demandante.getId_persona().equals("1")) {
+					menu.add(menuEditar);
+				}
 			}
 		}
 
-		if (_demandado != null) {
-			if (!_demandado.getId_persona().equals("1")) {
-				menu.add(menuEditar);
+		else if (focus.equals(_txtDemandado)) {
+			if (_demandado != null) {
+				if (!_demandado.getId_persona().equals("1")) {
+					menu.add(menuEditar);
+				}
 			}
 		}
 
-		if (_juzgado != null) {
-			if (!_juzgado.getId_juzgado().equals("1")) {
-				menu.add(menuEditar);
+		else if (focus.equals(_txtDemandado)) {
+			if (_juzgado != null) {
+				if (!_juzgado.getId_juzgado().equals("1")) {
+					menu.add(menuEditar);
+				}
 			}
+		}
+		
+		else {
+			menu.add(menuEditar);
 		}
 
 		menu.add(menuEditarTodo);
@@ -146,11 +156,6 @@ public class VerProcesoScreen extends MainScreen {
 		menu.addSeparator();
 		if (focus.equals(_txtDemandante) || focus.equals(_txtDemandado)
 				|| focus.equals(_txtJuzgado)) {
-			ContextMenu contextMenu = focus.getContextMenu();
-			if (!contextMenu.isEmpty()) {
-				menu.add(contextMenu);
-				menu.addSeparator();
-			}
 			menu.add(menuCambiar);
 			menu.add(menuEliminar);
 		} else if (focus.equals(_txtCategoria)) {
@@ -360,10 +365,7 @@ public class VerProcesoScreen extends MainScreen {
 	private final MenuItem menuEditarTodo = new MenuItem("Editar todo", 0, 0) {
 
 		public void run() {
-			_txtDemandante.setEditable();
-			_txtDemandado.setEditable();
 			_dfFecha.setEditable(true);
-			_txtJuzgado.setEditable();
 			_txtRadicado.setEditable();
 			_txtRadicadoUnico.setEditable();
 			_ofActuaciones.setEditable(true);
