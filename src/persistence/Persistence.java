@@ -332,16 +332,22 @@ public class Persistence implements Cargado, Guardado {
 			Statement stAcAtributo = d.createStatement("UPDATE atributos SET nombre = ?,"
 							+ " naturaleza = ?,"
 							+ " longitud_max = ?,"
-							+ " longitud_min = ? WHERE id_atributo_proceso = ?");
+							+ " longitud_min = ? WHERE id_atributo = ?");
 			stAcAtributo.prepare();
 			stAcAtributo.bind(1, campo.getNombre());
 			stAcAtributo.bind(2, campo.isObligatorio().toString());
 			stAcAtributo.bind(3, campo.getLongitudMax());
 			stAcAtributo.bind(4, campo.getLongitudMin());
-			stAcAtributo.bind(5, campo.);
-			stAcAtributo.bind(6, actuacion.getUid());
+			stAcAtributo.bind(5, campo.getId_campo());
 			stAcAtributo.execute();
 			stAcAtributo.close();
+			
+			Statement stAcAtributoProceso = d.createStatement("UPDATE atributos_proceso SET valor = ? WHERE id_atributo_proceso = ?");
+			stAcAtributoProceso.prepare();
+			stAcAtributoProceso.bind(1, campo.getValor());
+			stAcAtributoProceso.bind(2, campo.getId_campo());
+			stAcAtributoProceso.execute();
+			stAcAtributoProceso.close();
 
 		} catch (Exception e) {
 			throw e;

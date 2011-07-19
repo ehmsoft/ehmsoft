@@ -42,6 +42,12 @@ public class CampoPersonalizado {
 	public int getLongitudMin() {
 		return longitudMin;
 	}
+	public String getId_campo() {
+		return id_campo;
+	}
+	public void setId_campo(String id_campo) {
+		this.id_campo = id_campo;
+	}
 	//Setters
 	public void setNombre(String nombre) {
 		this.nombre = nombre;
