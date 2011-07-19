@@ -72,8 +72,9 @@ public class NuevaActuacionScreen extends FondoNormal {
 		public void fieldChanged(Field field, int context) {
 			if(_cbCita.getChecked()) {
 				
-				NuevaCitaScreen n = new NuevaCitaScreen(getDescripcion(), new Date(_dfFechaProxima.getDate()));
-				UiApplication.getUiApplication().pushModalScreen(n);
+				NuevaCita n = new NuevaCita(getDescripcion(), new Date(_dfFechaProxima.getDate()));
+				UiApplication.getUiApplication().pushModalScreen(n.getScreen());
+				n.guardarCita();
 			}
 		}
 	};
