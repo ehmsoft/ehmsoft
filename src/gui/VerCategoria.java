@@ -17,7 +17,7 @@ public class VerCategoria {
 		return _screen;
 	}
 
-	public void actualizarCategoria() throws Exception {
+	public void actualizarCategoria() {
 		if (_screen.isGuardado()) {
 			try {
 				Persistence persistence = new Persistence();
@@ -32,8 +32,6 @@ public class VerCategoria {
 							_screen.getDescripcion());
 					persistence.actualizarCategoria(_categoria);
 				}
-			} catch (NullPointerException e) {
-				throw e;
 			} catch (Exception e) {
 				Dialog.alert("actualizarCategoria -> " + e.toString());
 			}
@@ -43,15 +41,15 @@ public class VerCategoria {
 			try {
 				p = new Persistence();
 				p.borrarCategoria(_categoria);
+				_categoria = p.consultarCategoria("1");
 			} catch (Exception e) {
 				Dialog.alert(e.toString());
 			}
-			throw new Exception("Se está eliminando la categoría con id: "
-					+ _categoria.getId_categoria());
 		}
 	}
 
 	public Categoria getCategoria() {
+		actualizarCategoria();
 		return _categoria;
 	}
 }

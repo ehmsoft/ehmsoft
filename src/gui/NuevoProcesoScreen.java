@@ -15,6 +15,7 @@ import net.rim.device.api.ui.component.ButtonField;
 import net.rim.device.api.ui.component.DateField;
 import net.rim.device.api.ui.component.Dialog;
 import net.rim.device.api.ui.component.LabelField;
+import net.rim.device.api.ui.component.Menu;
 import net.rim.device.api.ui.component.NumericChoiceField;
 import net.rim.device.api.ui.component.ObjectChoiceField;
 import net.rim.device.api.ui.container.HorizontalFieldManager;
@@ -24,10 +25,11 @@ import core.Categoria;
 import core.Juzgado;
 import core.Persona;
 
-public class NuevoProcesoScreen extends FondoNuevos {
+public class NuevoProcesoScreen extends FondoNormal {
 
 	private BasicEditField _txtEstado;
 	private ObjectChoiceField _chCategoria;
+	private ObjectChoiceField _chActuaciones;
 	private NumericChoiceField _chPrioridad;
 	private DateField _dtFecha;
 	private BasicEditField _txtTipo;
@@ -47,6 +49,7 @@ public class NuevoProcesoScreen extends FondoNuevos {
 	private Persona _demandado;
 	private Juzgado _juzgado;
 	private Vector _valoresCamposPersonalizados;
+	private Vector _actuaciones;
 
 	private boolean _guardar = false;
 
@@ -57,6 +60,7 @@ public class NuevoProcesoScreen extends FondoNuevos {
 	public NuevoProcesoScreen() {
 		setTitle("Nuevo Proceso");
 		_valoresCamposPersonalizados = new Vector();
+		_actuaciones = new Vector();
 
 		HorizontalFieldManager fldDemandante = new HorizontalFieldManager();
 		VerticalFieldManager fldRightDemandante = new VerticalFieldManager(
@@ -68,7 +72,7 @@ public class NuevoProcesoScreen extends FondoNuevos {
 		fldRightDemandante.add(_btnDemandante);
 		fldDemandante.add(fldLeftDemandante);
 		fldDemandante.add(fldRightDemandante);
-		_vertical.add(fldDemandante);
+		add(fldDemandante);
 
 		HorizontalFieldManager fldDemandado = new HorizontalFieldManager();
 		VerticalFieldManager fldRightDemandado = new VerticalFieldManager(
@@ -80,7 +84,7 @@ public class NuevoProcesoScreen extends FondoNuevos {
 		fldRightDemandado.add(_btnDemandado);
 		fldDemandado.add(fldLeftDemandado);
 		fldDemandado.add(fldRightDemandado);
-		_vertical.add(fldDemandado);
+		add(fldDemandado);
 
 		HorizontalFieldManager fldJuzgado = new HorizontalFieldManager();
 		VerticalFieldManager fldRightJuzgado = new VerticalFieldManager(
@@ -92,24 +96,60 @@ public class NuevoProcesoScreen extends FondoNuevos {
 		fldRightJuzgado.add(_btnJuzgado);
 		fldJuzgado.add(fldLeftJuzgado);
 		fldJuzgado.add(fldRightJuzgado);
-		_vertical.add(fldJuzgado);
+		add(fldJuzgado);
 
 		_txtRadicado = new BasicEditField(BasicEditField.NO_NEWLINE);
 		_txtRadicado.setLabel("Radicado: ");
-		_vertical.add(_txtRadicado);
+		add(_txtRadicado);
 
 		_txtRadicadoUnico = new BasicEditField(BasicEditField.NO_NEWLINE);
 		_txtRadicadoUnico.setLabel("Radicado unico: ");
-		_vertical.add(_txtRadicadoUnico);
+		add(_txtRadicadoUnico);
 
 		_txtTipo = new BasicEditField(BasicEditField.NO_NEWLINE);
 		_txtTipo.setLabel("Tipo: ");
-		_vertical.add(_txtTipo);
+		add(_txtTipo);
 
 		_txtEstado = new BasicEditField(BasicEditField.NO_NEWLINE);
 		_txtEstado.setLabel("Estado:");
-		_vertical.add(_txtEstado);
+		add(_txtEstado);
 
+		_chCategoria = new ObjectChoiceField();
+		_chCategoria.setLabel("Categoria:");
+
+		_chCategoria.setChoices(addCategorias());
+		add(_chCategoria);
+		
+		_chActuaciones = new ObjectChoiceField();
+		_chActuaciones.setLabel("Actuaciones:");
+		add(_chActuaciones);
+
+		_chPrioridad = new NumericChoiceField("Prioridad", 1, 10, 1);
+		_chPrioridad.setSelectedIndex(4);
+		add(_chPrioridad);
+
+		_dtFecha = new DateField("Fecha de creación: ",
+				System.currentTimeMillis(), DateField.DATE_TIME);
+		_dtFecha.setEditable(true);
+		add(_dtFecha);
+
+		_txtNotas = new BasicEditField();
+		_txtNotas.setLabel("Notas: ");
+		add(_txtNotas);
+
+		_fldCampoPersonalizado = new HorizontalFieldManager();
+		_fldRightCampoPersonalizado = new VerticalFieldManager(USE_ALL_WIDTH);
+		_fldLeftCampoPersonalizado = new VerticalFieldManager();
+		_btnCampoPersonalizado = new ButtonField("Nuevo", FIELD_RIGHT);
+		_btnCampoPersonalizado.setChangeListener(listenerBtnCampoPersonalizado);
+		_fldLeftCampoPersonalizado.add(new LabelField("Campo personalizado: "));
+		_fldRightCampoPersonalizado.add(_btnCampoPersonalizado);
+		_fldCampoPersonalizado.add(_fldLeftCampoPersonalizado);
+		_fldCampoPersonalizado.add(_fldRightCampoPersonalizado);
+		add(_fldCampoPersonalizado);
+	}
+	
+	private Object[] addCategorias() {
 		Vector v = new Vector();
 		try {
 			Persistence p = new Persistence();
@@ -121,46 +161,75 @@ public class NuevoProcesoScreen extends FondoNuevos {
 		Enumeration e = v.elements();
 		Object[] o = new Object[v.size()];
 		int i = 0;
-
-		_chCategoria = new ObjectChoiceField();
-		_chCategoria.setLabel("Categoria:");
-
+		
 		while (e.hasMoreElements()) {
 			o[i] = e.nextElement();
 			i++;
 		}
-		_chCategoria.setChoices(o);
-		_vertical.add(_chCategoria);
-
-		_chPrioridad = new NumericChoiceField("Prioridad", 1, 10, 1);
-		_chPrioridad.setSelectedIndex(4);
-		_vertical.add(_chPrioridad);
-
-		_dtFecha = new DateField("Fecha de creación: ",
-				System.currentTimeMillis(), DateField.DATE_TIME);
-		_dtFecha.setEditable(true);
-		_vertical.add(_dtFecha);
-
-		_txtNotas = new BasicEditField();
-		_txtNotas.setLabel("Notas: ");
-		_vertical.add(_txtNotas);
-
-		_fldCampoPersonalizado = new HorizontalFieldManager();
-		_fldRightCampoPersonalizado = new VerticalFieldManager(USE_ALL_WIDTH);
-		_fldLeftCampoPersonalizado = new VerticalFieldManager();
-		_btnCampoPersonalizado = new ButtonField("Nuevo", FIELD_RIGHT);
-		_btnCampoPersonalizado.setChangeListener(listenerBtnCampoPersonalizado);
-		_fldLeftCampoPersonalizado.add(new LabelField("Campo personalizado: "));
-		_fldRightCampoPersonalizado.add(_btnCampoPersonalizado);
-		_fldCampoPersonalizado.add(_fldLeftCampoPersonalizado);
-		_fldCampoPersonalizado.add(_fldRightCampoPersonalizado);
-		_vertical.add(_fldCampoPersonalizado);
-
-		add(_vertical);
-
-		addMenuItem(menuGuardar);
-		addMenuItem(menuEliminar);
+		
+		return o;
 	}
+	
+	private Object[] addActuaciones() {
+		Enumeration e = _actuaciones.elements();
+		Object[] o = new Object[_actuaciones.size()];
+		int i = 0;
+		
+		while (e.hasMoreElements()) {
+			o[i] = e.nextElement();
+			i ++;
+		}
+		return o;
+	}
+	
+	protected void makeMenu(Menu menu, int instance) {
+		Field f = UiApplication.getUiApplication().getActiveScreen().getFieldWithFocus();
+		if(f.equals(_btnDemandante) || f.equals(_btnDemandado) || f.equals(_btnJuzgado)) {
+			menu.add(menuEliminar);
+			menu.addSeparator();
+		}
+		else if(f.equals(_chCategoria)) {
+			menu.add(menuAddCategoria);
+			menu.addSeparator();
+		}
+		else if(f.equals(_chActuaciones)) {
+			menu.add(menuAddActuacion);
+			menu.addSeparator();
+		}
+		menu.add(menuGuardar);
+	}
+	
+	private final MenuItem menuAddActuacion = new MenuItem("Nueva actuación",
+			0, 0) {
+
+		public void run() {
+			NuevaActuacion n = new NuevaActuacion();
+			UiApplication.getUiApplication().pushModalScreen(n.getScreen());
+			try {
+				_actuaciones.addElement(n.getActuacion(false));
+				_chActuaciones.setChoices(addActuaciones());
+			} catch (Exception e) {
+
+			}
+		}
+	};
+	
+	private final MenuItem menuAddCategoria = new MenuItem("Nueva categoría", 0, 0) {
+
+		public void run() {
+			NuevaCategoria n = new NuevaCategoria();
+			UiApplication.getUiApplication().pushModalScreen(n.getScreen());
+			try {
+				n.guardarCategoria();
+				_chCategoria.setChoices(addCategorias());
+				_chCategoria.setSelectedIndex(n.getCategoria());
+			} catch (Exception e) {
+
+			} finally {
+				n = null;
+			}
+		}
+	};
 
 	private final MenuItem menuGuardar = new MenuItem("Guardar", 0, 0) {
 
@@ -181,12 +250,12 @@ public class NuevoProcesoScreen extends FondoNuevos {
 	private final MenuItem menuEliminar = new MenuItem("Eliminar", 0, 0) {
 
 		public void run() {
-			Field field = _vertical.getFieldWithFocus();
+			Field field = getFieldWithFocus();
 			try {
 				Object o = ((BasicEditField) (((VerticalFieldManager) field)
 						.getField(1))).getCookie();
 				if (o != null && CampoPersonalizado.class.isInstance(o)) {
-					_vertical.delete(field);
+					delete(field);
 					_valoresCamposPersonalizados.removeElement(field);
 				} else
 					throw new Exception();
@@ -270,7 +339,7 @@ public class NuevoProcesoScreen extends FondoNuevos {
 		campoP.setCookie(campo);
 		if (campo.getLongitudMax() != 0)
 			campoP.setMaxSize(campo.getLongitudMax());
-		_vertical.add(campoP);
+		add(campoP);
 		_valoresCamposPersonalizados.addElement(campoP);
 	}
 
@@ -308,6 +377,10 @@ public class NuevoProcesoScreen extends FondoNuevos {
 	 */
 	public Vector getValores() {
 		return _valoresCamposPersonalizados;
+	}
+	
+	public Vector getActuaciones() {
+		return _actuaciones;
 	}
 
 	/**
