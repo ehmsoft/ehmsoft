@@ -6,7 +6,12 @@ import net.rim.blackberry.api.pdap.BlackBerryEventList;
 import javax.microedition.pim.EventList;
 import javax.microedition.pim.PIM;
 public class CalendarManager {
+	//Parametro para duracion por defecto de una cita. 1 hora
 	private static long DURACION_CITA = 3600000;
+	/**
+	 * @param fecha Fecha de inicio de la cita
+	 * @param descripcion Resumen de la cita
+	 */
 	public static String agregarCita(Date fecha, String descripcion) throws Exception{
 		EventList el = null;
 		String uid = null;
@@ -36,6 +41,11 @@ public class CalendarManager {
 		}
 		return uid;
 	}
+	/**
+	 * @param fecha Fecha de inicio de la cita
+	 * @param descripcion Resumen de la cita
+	 * @param alarma Segundos antes de fecha en que sonara la alarma
+	 */
 	public static String agregarCita(Date fecha, String descripcion, int alarma) throws Exception{
 		EventList el = null;
 		String uid = null;
@@ -104,6 +114,10 @@ public class CalendarManager {
 			}
 		}
 	}
+	/**
+	 * @param fecha Fecha de inicio de la cita
+	 * @param descripcion Resumen de la cita
+	 */
 	public static boolean actualizarCita(String uid, Date fecha, String descripcion) throws Exception{
 		boolean flag = false;
 		BlackBerryEventList el = null;
@@ -141,6 +155,11 @@ public class CalendarManager {
 		}
 		return flag;
 	}
+	/**
+	 * @param fecha Fecha de inicio de la cita
+	 * @param descripcion Resumen de la cita
+	 * @param alarma Segundos antes de fecha en que sonara la alarma
+	 */
 	public static boolean actualizarCita(String uid, Date fecha, String descripcion, int alarma) throws Exception{
 		boolean flag = false;
 		BlackBerryEventList el = null;
