@@ -353,6 +353,7 @@ public class Persistence implements Cargado, Guardado {
 			stAtributosProceso.bind(2, Integer.parseInt(id_proceso));
 			stAtributosProceso.bind(3, campo.getValor());
 			stAtributosProceso.execute();
+			campo.setId_campo(Long.toString(d.lastInsertedRowID()));
 			stAtributosProceso.close();
 		} catch (Exception e) {
 			throw e;
@@ -392,7 +393,7 @@ public class Persistence implements Cargado, Guardado {
 			connMgr.prepararBD();
 			d = DatabaseFactory.open(connMgr.getDbLocation());
 			Statement stAcAtributo = d.createStatement("UPDATE atributos SET nombre = ?,"
-							+ " naturaleza = ?,"
+							+ " obligatorio = ?,"
 							+ " longitud_max = ?,"
 							+ " longitud_min = ? WHERE id_atributo = ?");
 			stAcAtributo.prepare();
@@ -419,14 +420,16 @@ public class Persistence implements Cargado, Guardado {
 			try {
 				connMgr.prepararBD();
 				d = DatabaseFactory.open(connMgr.getDbLocation());
-				Statement stAtributos = d.createStatement("INSERT INTO atributos (id_atributo, nombre, naturaleza, longitud_max, longitud_min) VALUES( NULL,?,?,?,?)");
+				Statement stAtributos = d.createStatement("INSERT INTO atributos (id_atributo, nombre, obligatorio, longitud_max, longitud_min) VALUES( NULL,?,?,?,?)");
 				stAtributos.prepare();
 				stAtributos.bind(1, campo.getNombre());
 				stAtributos.bind(2, campo.isObligatorio().toString());
 				stAtributos.bind(3, campo.getLongitudMax());
 				stAtributos.bind(4, campo.getLongitudMin());
 				stAtributos.execute();
+				campo.setId_atributo(Long.toString(d.lastInsertedRowID()));
 				stAtributos.close();
+				
 			} catch (Exception e) {
 				throw e;
 			} finally {
@@ -605,14 +608,19 @@ public class Persistence implements Cargado, Guardado {
 					.createStatement("DELETE FROM procesos WHERE id_proceso = ?");
 			Statement stDelActuaciones = d
 					.createStatement("DELETE FROM actuaciones WHERE id_proceso = ?");
+			Statement stDelCampoPersonalizado = d.createStatement("DELETE FROM atributos_proceso WHERE id_proceso = ?");
 			stDelProceso.prepare();
 			stDelActuaciones.prepare();
+			stDelCampoPersonalizado.prepare();
 			stDelProceso.bind(1, proceso.getId_proceso());
 			stDelActuaciones.bind(1, proceso.getId_proceso());
+			stDelCampoPersonalizado.bind(1, proceso.getId_proceso());
 			stDelProceso.execute();
 			stDelActuaciones.execute();
+			stDelCampoPersonalizado.execute();
 			stDelProceso.close();
 			stDelActuaciones.close();
+			stDelCampoPersonalizado.close();
 		} catch (Exception e) {
 			throw e;
 		} finally {
