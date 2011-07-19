@@ -111,6 +111,10 @@ public class VerProcesoScreen extends FondoNormal {
 	protected void makeMenu(Menu menu, int instance) {
 		Field focus = UiApplication.getUiApplication().getActiveScreen()
 				.getFieldWithFocus();
+		if(focus.equals(_txtCategoria)) {
+			menu.add(menuCambiarCategoria);
+			menu.addSeparator();
+		}
 		if (focus.equals(_ofActuaciones)) {
 			menu.add(menuAddActuacion);
 			menu.addSeparator();
@@ -235,8 +239,19 @@ public class VerProcesoScreen extends FondoNormal {
 	private final MenuItem menuGuardar = new MenuItem("Guardar", 0, 0) {
 
 		public void run() {
-			_guardar = true;
-			UiApplication.getUiApplication().popScreen(getScreen());
+			if (isCambiado()) {
+				Object[] ask = { "Guardar", "Descartar", "Cancelar" };
+				int sel = Dialog.ask("¿Desea guardar los cambios realizados?",
+						ask, 2);
+				if (sel == 0) {
+					_guardar = true;
+					UiApplication.getUiApplication().popScreen(getScreen());
+				} else if (sel == 1) {
+					UiApplication.getUiApplication().popScreen(getScreen());
+				}
+			} else {
+				UiApplication.getUiApplication().popScreen(getScreen());
+			}
 		}
 	};
 
@@ -317,9 +332,9 @@ public class VerProcesoScreen extends FondoNormal {
 			}
 
 			if (f.equals(_txtCategoria)) {
-				ListadoCategorias l = new ListadoCategorias();
-				UiApplication.getUiApplication().pushModalScreen(l.getScreen());
-				_categoria = l.getSelected();
+				VerCategoria v = new VerCategoria(_categoria);
+				UiApplication.getUiApplication().pushModalScreen(v.getScreen());
+				_categoria = v.getCategoria();
 				_txtCategoria.setText(_categoria.getDescripcion());
 				_txtCategoria.setFocus();
 			}
@@ -486,8 +501,8 @@ public class VerProcesoScreen extends FondoNormal {
 	public boolean isGuardado() {
 		return _guardar;
 	}
-
-	public boolean onClose() {
+	
+	private boolean isCambiado() {
 		boolean cambio = false;
 
 		Calendar f1 = _proceso.getFecha();
@@ -559,8 +574,11 @@ public class VerProcesoScreen extends FondoNormal {
 		if (!_proceso.getCampos().equals(this.getCampos())) {
 			cambio = true;
 		}
+		return cambio;
+	}
 
-		if (!cambio) {
+	public boolean onClose() {
+		if (!isCambiado()) {
 			UiApplication.getUiApplication().popScreen(getScreen());
 			return true;
 		} else {
