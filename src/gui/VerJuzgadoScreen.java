@@ -4,10 +4,9 @@ import net.rim.device.api.ui.MenuItem;
 import net.rim.device.api.ui.UiApplication;
 import net.rim.device.api.ui.component.Dialog;
 import net.rim.device.api.ui.component.Menu;
-import net.rim.device.api.ui.container.MainScreen;
 import core.Juzgado;
 
-public class VerJuzgadoScreen extends MainScreen {
+public class VerJuzgadoScreen extends FondoNormal {
 
 	private EditableTextField _txtNombre;
 	private EditableTextField _txtCiudad;
@@ -21,7 +20,6 @@ public class VerJuzgadoScreen extends MainScreen {
 	private boolean _eliminar = false;
 
 	public VerJuzgadoScreen(Juzgado juzgado) {
-		super(MainScreen.VERTICAL_SCROLL | MainScreen.VERTICAL_SCROLLBAR);
 
 		setTitle("Ver juzgado");
 		_juzgado = juzgado;

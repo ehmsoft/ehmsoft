@@ -5,9 +5,6 @@ import java.util.Date;
 import java.util.Enumeration;
 import java.util.Vector;
 
-import persistence.Persistence;
-
-import net.rim.device.api.ui.ContextMenu;
 import net.rim.device.api.ui.Field;
 import net.rim.device.api.ui.MenuItem;
 import net.rim.device.api.ui.UiApplication;
@@ -16,7 +13,6 @@ import net.rim.device.api.ui.component.Dialog;
 import net.rim.device.api.ui.component.Menu;
 import net.rim.device.api.ui.component.NumericChoiceField;
 import net.rim.device.api.ui.component.ObjectChoiceField;
-import net.rim.device.api.ui.container.MainScreen;
 import core.Actuacion;
 import core.CampoPersonalizado;
 import core.Categoria;
@@ -24,7 +20,7 @@ import core.Juzgado;
 import core.Persona;
 import core.Proceso;
 
-public class VerProcesoScreen extends MainScreen {
+public class VerProcesoScreen extends FondoNormal {
 
 	EditableTextField _txtDemandante;
 	EditableTextField _txtDemandado;
@@ -51,7 +47,6 @@ public class VerProcesoScreen extends MainScreen {
 	private boolean _guardar = false;
 
 	public VerProcesoScreen(Proceso proceso) {
-		super(MainScreen.VERTICAL_SCROLL | MainScreen.VERTICAL_SCROLLBAR);
 
 		setTitle("Ver proceso");
 		_proceso = proceso;

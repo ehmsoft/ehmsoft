@@ -16,7 +16,7 @@ import net.rim.device.api.ui.container.HorizontalFieldManager;
 import net.rim.device.api.ui.container.VerticalFieldManager;
 import core.Juzgado;
 
-public class NuevaActuacionScreen extends FondoNuevos {
+public class NuevaActuacionScreen extends FondoNormal {
 
 	private ButtonField _btnJuzgado;
 	private DateField _dfFecha;
@@ -45,21 +45,20 @@ public class NuevaActuacionScreen extends FondoNuevos {
 		fldRightJuzgado.add(_btnJuzgado);
 		fldJuzgado.add(fldLeftJuzgado);
 		fldJuzgado.add(fldRightJuzgado);
-		addElem(fldJuzgado);
+		add(fldJuzgado);
 
 		_dfFecha = new DateField("Fecha: ", System.currentTimeMillis(),
 				DateField.DATE_TIME);
-		addElem(_dfFecha);
+		add(_dfFecha);
 
 		_dfFechaProxima = new DateField("Fecha próxima: ",
 				System.currentTimeMillis(), DateField.DATE_TIME);
-		addElem(_dfFechaProxima);
+		add(_dfFechaProxima);
 
 		_txtDescripcion = new BasicEditField();
 		_txtDescripcion.setLabel("Descripción: ");
-		addElem(_txtDescripcion);
+		add(_txtDescripcion);
 
-		add(_vertical);
 		addMenuItem(menuGuardar);
 	}
 

@@ -5,7 +5,7 @@ import net.rim.device.api.ui.UiApplication;
 import net.rim.device.api.ui.component.BasicEditField;
 import net.rim.device.api.ui.component.Dialog;
 
-public class NuevoJuzgadoScreen extends FondoNuevos {
+public class NuevoJuzgadoScreen extends FondoNormal {
 
 	private BasicEditField _txtNombre;
 	private BasicEditField _txtCiudad;
@@ -36,12 +36,11 @@ public class NuevoJuzgadoScreen extends FondoNuevos {
 		_txtTipo = new BasicEditField(BasicEditField.NO_NEWLINE);
 		_txtTipo.setLabel("Tipo: ");
 
-		_vertical.add(_txtNombre);
-		_vertical.add(_txtCiudad);
-		_vertical.add(_txtDireccion);
-		_vertical.add(_txtTelefono);
-		_vertical.add(_txtTipo);
-		add(_vertical);
+		add(_txtNombre);
+		add(_txtCiudad);
+		add(_txtDireccion);
+		add(_txtTelefono);
+		add(_txtTipo);
 		addMenuItem(menuGuardar);
 	}
 

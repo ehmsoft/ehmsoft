@@ -6,10 +6,9 @@ import net.rim.device.api.ui.UiApplication;
 import net.rim.device.api.ui.component.BasicEditField;
 import net.rim.device.api.ui.component.CheckboxField;
 import net.rim.device.api.ui.component.Dialog;
-import net.rim.device.api.ui.container.MainScreen;
 import core.CampoPersonalizado;
 
-public class VerCampoPersonalizadoScreen extends MainScreen {
+public class VerCampoPersonalizadoScreen extends FondoNormal {
 
 	private EditableTextField _txtNombre;
 	private EditableTextField _txtValor;
@@ -23,7 +22,6 @@ public class VerCampoPersonalizadoScreen extends MainScreen {
 	private boolean _eliminar;
 
 	public VerCampoPersonalizadoScreen(CampoPersonalizado campo) {
-		super(MainScreen.VERTICAL_SCROLL | MainScreen.VERTICAL_SCROLLBAR);
 		_guardar = false;
 
 		_campoPersonalizado = campo;
