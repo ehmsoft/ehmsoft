@@ -5,9 +5,6 @@ import java.util.Date;
 import java.util.Enumeration;
 import java.util.Vector;
 
-import persistence.Persistence;
-
-import net.rim.device.api.ui.ContextMenu;
 import net.rim.device.api.ui.Field;
 import net.rim.device.api.ui.MenuItem;
 import net.rim.device.api.ui.UiApplication;
@@ -16,7 +13,6 @@ import net.rim.device.api.ui.component.Dialog;
 import net.rim.device.api.ui.component.Menu;
 import net.rim.device.api.ui.component.NumericChoiceField;
 import net.rim.device.api.ui.component.ObjectChoiceField;
-import net.rim.device.api.ui.container.MainScreen;
 import core.Actuacion;
 import core.CampoPersonalizado;
 import core.Categoria;
@@ -24,7 +20,7 @@ import core.Juzgado;
 import core.Persona;
 import core.Proceso;
 
-public class VerProcesoScreen extends MainScreen {
+public class VerProcesoScreen extends FondoNormal {
 
 	EditableTextField _txtDemandante;
 	EditableTextField _txtDemandado;
@@ -51,7 +47,6 @@ public class VerProcesoScreen extends MainScreen {
 	private boolean _guardar = false;
 
 	public VerProcesoScreen(Proceso proceso) {
-		super(MainScreen.VERTICAL_SCROLL | MainScreen.VERTICAL_SCROLLBAR);
 
 		setTitle("Ver proceso");
 		_proceso = proceso;
@@ -116,6 +111,10 @@ public class VerProcesoScreen extends MainScreen {
 	protected void makeMenu(Menu menu, int instance) {
 		Field focus = UiApplication.getUiApplication().getActiveScreen()
 				.getFieldWithFocus();
+		if(focus.equals(_txtCategoria)) {
+			menu.add(menuCambiarCategoria);
+			menu.addSeparator();
+		}
 		if (focus.equals(_ofActuaciones)) {
 			menu.add(menuAddActuacion);
 			menu.addSeparator();
@@ -240,8 +239,19 @@ public class VerProcesoScreen extends MainScreen {
 	private final MenuItem menuGuardar = new MenuItem("Guardar", 0, 0) {
 
 		public void run() {
-			_guardar = true;
-			UiApplication.getUiApplication().popScreen(getScreen());
+			if (isCambiado()) {
+				Object[] ask = { "Guardar", "Descartar", "Cancelar" };
+				int sel = Dialog.ask("¿Desea guardar los cambios realizados?",
+						ask, 2);
+				if (sel == 0) {
+					_guardar = true;
+					UiApplication.getUiApplication().popScreen(getScreen());
+				} else if (sel == 1) {
+					UiApplication.getUiApplication().popScreen(getScreen());
+				}
+			} else {
+				UiApplication.getUiApplication().popScreen(getScreen());
+			}
 		}
 	};
 
@@ -322,9 +332,9 @@ public class VerProcesoScreen extends MainScreen {
 			}
 
 			if (f.equals(_txtCategoria)) {
-				ListadoCategorias l = new ListadoCategorias();
-				UiApplication.getUiApplication().pushModalScreen(l.getScreen());
-				_categoria = l.getSelected();
+				VerCategoria v = new VerCategoria(_categoria);
+				UiApplication.getUiApplication().pushModalScreen(v.getScreen());
+				_categoria = v.getCategoria();
 				_txtCategoria.setText(_categoria.getDescripcion());
 				_txtCategoria.setFocus();
 			}
@@ -491,8 +501,8 @@ public class VerProcesoScreen extends MainScreen {
 	public boolean isGuardado() {
 		return _guardar;
 	}
-
-	public boolean onClose() {
+	
+	private boolean isCambiado() {
 		boolean cambio = false;
 
 		Calendar f1 = _proceso.getFecha();
@@ -564,8 +574,11 @@ public class VerProcesoScreen extends MainScreen {
 		if (!_proceso.getCampos().equals(this.getCampos())) {
 			cambio = true;
 		}
+		return cambio;
+	}
 
-		if (!cambio) {
+	public boolean onClose() {
+		if (!isCambiado()) {
 			UiApplication.getUiApplication().popScreen(getScreen());
 			return true;
 		} else {

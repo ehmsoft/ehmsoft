@@ -5,10 +5,9 @@ import net.rim.device.api.ui.UiApplication;
 import net.rim.device.api.ui.component.BasicEditField;
 import net.rim.device.api.ui.component.Dialog;
 import net.rim.device.api.ui.component.Menu;
-import net.rim.device.api.ui.container.MainScreen;
 import core.Persona;
 
-public class VerPersonaScreen extends MainScreen {
+public class VerPersonaScreen extends FondoNormal {
 
 	private EditableTextField _txtNombre;
 	private EditableTextField _txtId;
@@ -23,7 +22,6 @@ public class VerPersonaScreen extends MainScreen {
 	private boolean _eliminar = false;
 
 	public VerPersonaScreen(Persona persona) {
-		super(MainScreen.VERTICAL_SCROLL | MainScreen.VERTICAL_SCROLLBAR);
 
 		_persona = persona;
 

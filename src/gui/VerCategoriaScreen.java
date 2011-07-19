@@ -5,10 +5,9 @@ import net.rim.device.api.ui.UiApplication;
 import net.rim.device.api.ui.component.BasicEditField;
 import net.rim.device.api.ui.component.Dialog;
 import net.rim.device.api.ui.component.Menu;
-import net.rim.device.api.ui.container.MainScreen;
 import core.Categoria;
 
-public class VerCategoriaScreen extends MainScreen {
+public class VerCategoriaScreen extends FondoNormal {
 
 	private EditableTextField _txtDescripcion;
 
@@ -18,7 +17,6 @@ public class VerCategoriaScreen extends MainScreen {
 	private boolean _eliminar;
 
 	public VerCategoriaScreen(Categoria categoria) {
-		super(MainScreen.VERTICAL_SCROLL | MainScreen.VERTICAL_SCROLLBAR);
 
 		_guardar = false;
 

@@ -9,11 +9,10 @@ import net.rim.device.api.ui.UiApplication;
 import net.rim.device.api.ui.component.DateField;
 import net.rim.device.api.ui.component.Dialog;
 import net.rim.device.api.ui.component.Menu;
-import net.rim.device.api.ui.container.MainScreen;
 import core.Actuacion;
 import core.Juzgado;
 
-public class VerActuacionScreen extends MainScreen {
+public class VerActuacionScreen extends FondoNormal {
 
 	private EditableTextField _txtJuzgado;
 	private DateField _dfFecha;
@@ -26,7 +25,6 @@ public class VerActuacionScreen extends MainScreen {
 	private boolean _eliminar = false;
 
 	public VerActuacionScreen(Actuacion actuacion) {
-		super(MainScreen.VERTICAL_SCROLL | MainScreen.VERTICAL_SCROLLBAR);
 
 		_actuacion = actuacion;
 		_juzgado = actuacion.getJuzgado();

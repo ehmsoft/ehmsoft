@@ -5,7 +5,7 @@ import net.rim.device.api.ui.UiApplication;
 import net.rim.device.api.ui.component.BasicEditField;
 import net.rim.device.api.ui.component.Dialog;
 
-public class NuevaPersonaScreen extends FondoNuevos {
+public class NuevaPersonaScreen extends FondoNormal {
 
 	private int _tipo;
 	private BasicEditField _txtNombre;
@@ -45,13 +45,12 @@ public class NuevaPersonaScreen extends FondoNuevos {
 		_txtCorreo.setLabel("Correo: ");
 		// Se agregan los elementos a la pantalla
 
-		_vertical.add(_txtNombre);
-		_vertical.add(_txtCedula);
-		_vertical.add(_txtDireccion);
-		_vertical.add(_txtTelefono);
-		_vertical.add(_txtCorreo);
-		_vertical.add(_txtNotas);
-		add(_vertical);
+		add(_txtNombre);
+		add(_txtCedula);
+		add(_txtDireccion);
+		add(_txtTelefono);
+		add(_txtCorreo);
+		add(_txtNotas);
 		addMenuItem(menuGuardar);
 	}
 

@@ -5,7 +5,7 @@ import net.rim.device.api.ui.UiApplication;
 import net.rim.device.api.ui.component.BasicEditField;
 import net.rim.device.api.ui.component.Dialog;
 
-public class NuevaCategoriaScreen extends FondoNuevos {
+public class NuevaCategoriaScreen extends FondoNormal {
 
 	private BasicEditField _txtDescripcion;
 	private boolean _guardar = false;
@@ -16,8 +16,7 @@ public class NuevaCategoriaScreen extends FondoNuevos {
 		_txtDescripcion = new BasicEditField(BasicEditField.NO_NEWLINE);
 		_txtDescripcion.setLabel("Descripcion: ");
 
-		_vertical.add(_txtDescripcion);
-		add(_vertical);
+		add(_txtDescripcion);
 		addMenuItem(menuGuardar);
 	}
 
