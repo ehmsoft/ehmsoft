@@ -3,6 +3,8 @@ package gui;
 import java.util.Enumeration;
 import java.util.Vector;
 
+import javax.microedition.lcdui.Font;
+
 import net.rim.device.api.ui.Graphics;
 import net.rim.device.api.ui.component.ListField;
 import net.rim.device.api.ui.component.ObjectListField;
@@ -29,9 +31,13 @@ abstract class ListaListas extends ObjectListField {
 
 	public void drawListRow(ListField list, Graphics g, int index, int y, int w) {
 		if (String.class.isInstance(this.get(this, index))) {
-			int posX = getWidth() / 2 - getContentWidth() / 4;
+			net.rim.device.api.ui.Font f = g.getFont();
+			g.setFont(getFont().derive(Font.STYLE_BOLD));
+			int posX = 0;
 			int posY = getRowHeight() / 2 - getFont().getHeight() / 2;
 			g.drawText((String) this.get(this, index), posX, posY);
+			g.setFont(f);
+			
 		} else if (_fuentes == null) {
 			drawListRowDefault(list, g, index, y, w);
 		} else {
@@ -48,8 +54,8 @@ abstract class ListaListas extends ObjectListField {
 			}
 		}
 		g.setColor(_colorLinea);
-		g.drawLine(0, y + getRowHeight() - 1, getWidth(), y + getRowHeight()
-				- 1);
+		//g.drawLine(0, y + getRowHeight() - 1, getWidth(), y + getRowHeight()
+		//		- 1);
 	}
 
 	public void drawListRowDefault(ListField list, Graphics g, int index,
