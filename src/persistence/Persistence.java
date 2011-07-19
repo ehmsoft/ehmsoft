@@ -334,22 +334,19 @@ public class Persistence implements Cargado, Guardado {
 		try {
 			connMgr.prepararBD();
 			d = DatabaseFactory.open(connMgr.getDbLocation());
-			String isObligatorio = campo.isObligatorio() + "";
-			Statement stAtributos = d
-					.createStatement("INSERT INTO atributos VALUES( NULL,?,?,?,?)");
+			Statement stAtributos = d.createStatement("INSERT INTO atributos (id_atributo, nombre, naturaleza, longitud_max, longitud_min) VALUES( NULL,?,?,?,?)");
 			stAtributos.prepare();
 			stAtributos.bind(1, campo.getNombre());
-			stAtributos.bind(2, isObligatorio);
+			stAtributos.bind(2, campo.isObligatorio().toString());
 			stAtributos.bind(3, campo.getLongitudMax());
 			stAtributos.bind(4, campo.getLongitudMin());
 			stAtributos.execute();
 			stAtributos.close();
 			long id_atributo = d.lastInsertedRowID();
-			Statement stAtributosProceso = d
-					.createStatement("INSERT INTO atributos_proceso VALUES( ?,?,?)");
+			Statement stAtributosProceso = d.createStatement("INSERT INTO atributos_proceso (id_atributo_proceso, id_atributo, id_proceso, valor) VALUES( NULL,?,?,?)");
 			stAtributosProceso.prepare();
 			stAtributosProceso.bind(1, id_atributo);
-			stAtributosProceso.bind(2, id_proceso);
+			stAtributosProceso.bind(2, Integer.parseInt(id_proceso));
 			stAtributosProceso.bind(3, campo.getValor());
 			stAtributosProceso.execute();
 			stAtributosProceso.close();
