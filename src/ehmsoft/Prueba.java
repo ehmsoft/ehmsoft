@@ -1,5 +1,7 @@
 package ehmsoft;
 
+import java.util.Calendar;
+
 import gui.ListadoActuaciones;
 import gui.ListadoCategorias;
 import gui.ListadoJuzgados;
@@ -40,11 +42,12 @@ public class Prueba extends MainScreen {
 	ButtonField nuevoDemandado;
 	ButtonField nuevoJuzgado;
 	ButtonField nuevoProceso;
-	ButtonField verActuacion;
+
 	ButtonField verJuzgado;
 	ButtonField verDemandante;
 	ButtonField verDemandado;
 	ButtonField verProceso;
+	ButtonField actualizarActuacion;
 
 	public Prueba() {
 		super(MainScreen.VERTICAL_SCROLL | MainScreen.VERTICAL_SCROLLBAR);
@@ -97,9 +100,7 @@ public class Prueba extends MainScreen {
 		nuevoProceso.setChangeListener(listenerNuevoProceso);
 		add(nuevoProceso);
 
-		verActuacion = new ButtonField("Ver actuación");
-		verActuacion.setChangeListener(listenerVerActuacion);
-		add(verActuacion);
+		
 
 		verJuzgado = new ButtonField("Ver juzgado");
 		verJuzgado.setChangeListener(listenerVerJuzgado);
@@ -116,6 +117,10 @@ public class Prueba extends MainScreen {
 		verProceso = new ButtonField("Ver proceso");
 		verProceso.setChangeListener(listenerVerProceso);
 		add(verProceso);
+		
+		actualizarActuacion = new ButtonField("Actualizar Actuacion");
+		actualizarActuacion.setChangeListener(listenerActualizarActuacion);
+		add(actualizarActuacion);
 	}
 
 	private FieldChangeListener listenerListadoActuaciones = new FieldChangeListener() {
@@ -187,17 +192,26 @@ public class Prueba extends MainScreen {
 	private FieldChangeListener listenerNuevaActuacion = new FieldChangeListener() {
 
 		public void fieldChanged(Field field, int context) {
-			NuevaActuacion nueva = new NuevaActuacion();
-			ListadoProcesos listado = new ListadoProcesos();
-			UiApplication.getUiApplication().pushModalScreen(
-					listado.getScreen());
-			nueva.setProceso(listado.getSelected());
-			UiApplication.getUiApplication().pushModalScreen(nueva.getScreen());
+			Persistence per = null;
+			//NuevaActuacion nueva = new NuevaActuacion();
+			//ListadoProcesos listado = new ListadoProcesos();
+			//UiApplication.getUiApplication().pushModalScreen(
+			//		listado.getScreen());
+			//nueva.setProceso(listado.getSelected());
+			//UiApplication.getUiApplication().pushModalScreen(nueva.getScreen());
+			
+			Juzgado juzgado = new Juzgado("23213","23213213","213213","2132132","3","3");
+
+			Actuacion actuacion = new Actuacion(juzgado,stringToCalendar("1918-03-02"),stringToCalendar("1919-04-04"),"primera actuacion con uid","1","2");
+			
 			try {
-				nueva.guardarActuacion();
+				Persistence persistence = new Persistence();
+				persistence.guardarActuacion(actuacion, "1");
 			} catch (Exception e) {
-				Dialog.alert(e.toString());
-			}
+				// TODO Auto-generated catch block
+				
+			
+		} 
 		}
 	};
 	
@@ -266,29 +280,23 @@ public class Prueba extends MainScreen {
 		}
 	};
 
-	private FieldChangeListener listenerVerActuacion = new FieldChangeListener() {
-
+	private FieldChangeListener listenerActualizarActuacion = new FieldChangeListener() {
+		
 		public void fieldChanged(Field field, int context) {
-			Persistence persistence = null;
+			Juzgado juzgado = new Juzgado("23213","23213213","213213","2132132","3","1");
+
+			Actuacion actuacion = new Actuacion(juzgado,stringToCalendar("1218-03-02"),stringToCalendar("1212-04-04"),"primer cambio en actuacion con uid","91","1");
+			
 			try {
-				persistence = new Persistence();
+				Persistence persistence = new Persistence();
+				persistence.actualizarActuacion(actuacion);
 			} catch (Exception e) {
-				Dialog.alert(e.toString());
-			}
-			Actuacion actuacion = null;
-			try {
-				actuacion = persistence.consultarActuacion("1");
-			} catch (Exception e) {
-				Dialog.alert(e.toString());
-			}
-			VerActuacion ver = new VerActuacion(actuacion);
-			UiApplication.getUiApplication().pushModalScreen(ver.getScreen());
-			try {
-				ver.actualizarActuacion();
-			} catch (Exception e) {
-				Dialog.alert(e.toString());
-			}
+				// TODO Auto-generated catch block
+				
+			
+		} 
 		}
+			
 	};
 
 	private FieldChangeListener listenerVerJuzgado = new FieldChangeListener() {
@@ -373,5 +381,22 @@ public class Prueba extends MainScreen {
 			UiApplication.getUiApplication().pushModalScreen(ver.getScreen());
 			ver.actualizarProceso();
 		}
+	};
+	
+	private Calendar stringToCalendar(String fecha) {
+		Calendar calendar_return = Calendar.getInstance();
+		calendar_return.set(Calendar.YEAR,
+				Integer.parseInt(fecha.substring(0, 4)));
+		calendar_return.set(Calendar.MONTH,
+				Integer.parseInt(fecha.substring(5, 7)) - 1);
+		calendar_return.set(Calendar.DAY_OF_MONTH,
+				Integer.parseInt(fecha.substring(8, 10)));
+		if (fecha.length() > 10) {
+			calendar_return.set(Calendar.HOUR_OF_DAY,
+					Integer.parseInt(fecha.substring(11, 13)));
+			calendar_return.set(Calendar.MINUTE,
+					Integer.parseInt(fecha.substring(14, 16)));
+		}
+		return calendar_return;
 	};
 }

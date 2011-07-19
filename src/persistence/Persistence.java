@@ -250,7 +250,8 @@ public class Persistence implements Cargado, Guardado {
 					.createStatement("UPDATE actuaciones SET id_juzgado = ?,"
 							+ " fecha_creacion = datetime(?),"
 							+ " fecha_proxima = datetime(?),"
-							+ " descripcion = ? WHERE id_actuacion = ?");
+							+ " descripcion = (?),"
+							+ " uid = ? WHERE id_actuacion = ?");
 			stAcActuacion.prepare();
 			stAcActuacion.bind(1, actuacion.getJuzgado().getId_juzgado());
 			stAcActuacion.bind(2, calendarToString(actuacion.getFecha()));
@@ -258,6 +259,7 @@ public class Persistence implements Cargado, Guardado {
 					.bind(3, calendarToString(actuacion.getFechaProxima()));
 			stAcActuacion.bind(4, actuacion.getDescripcion());
 			stAcActuacion.bind(5, actuacion.getId_actuacion());
+			stAcActuacion.bind(6, actuacion.getUid());
 			stAcActuacion.execute();
 			stAcActuacion.close();
 
@@ -277,13 +279,14 @@ public class Persistence implements Cargado, Guardado {
 			connMgr.prepararBD();
 			d = DatabaseFactory.open(connMgr.getDbLocation());
 			Statement stActuacion = d
-					.createStatement("INSERT INTO actuaciones (id_actuacion,id_proceso, id_juzgado, fecha_creacion, fecha_proxima, descripcion) VALUES( NULL,?,?,datetime(?),datetime(?),?)");
+					.createStatement("INSERT INTO actuaciones (id_actuacion,id_proceso, id_juzgado, fecha_creacion, fecha_proxima, descripcion, uid) VALUES( NULL,?,?,datetime(?),datetime(?),?,?)");
 			stActuacion.prepare();
 			stActuacion.bind(1, Integer.parseInt(id_proceso));
 			stActuacion.bind(2, actuacion.getJuzgado().getId_juzgado());
 			stActuacion.bind(3, calendarToString(actuacion.getFecha()));
 			stActuacion.bind(4, calendarToString(actuacion.getFechaProxima()));
 			stActuacion.bind(5, actuacion.getDescripcion());
+			stActuacion.bind(6, actuacion.getUid());
 			stActuacion.execute();
 			stActuacion.close();
 			actuacion.setId_actuacion(Long.toString(d.lastInsertedRowID()));
