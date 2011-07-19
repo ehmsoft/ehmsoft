@@ -18,4 +18,6 @@ public interface Cargado {
 	public Juzgado consultarJuzgado(String id_juzgado) throws Exception;
 	public Categoria consultarCategoria(String id_categoria) throws Exception;
 	public Vector consultarCategorias() throws Exception;
+	public Vector consultarCampos() throws Exception;
+	public CampoPersonalizado consultarCampo(String id_campo)throws Exception;
 }
