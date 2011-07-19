@@ -22,7 +22,6 @@ public class Persistence implements Cargado, Guardado {
 	}
 
 	public void actualizarPersona(Persona persona) throws Exception {
-		// TODO Auto-generated method stub
 		Database d = null;
 		Statement stAcPersona1;
 		try {
@@ -105,7 +104,6 @@ public class Persistence implements Cargado, Guardado {
 	}
 
 	public void borrarPersona(Persona persona) throws Exception {
-		// TODO Auto-generated method stub
 		Database d = null;
 		Statement stDelPersona1;
 		Statement stDelPersona2;
@@ -202,7 +200,6 @@ public class Persistence implements Cargado, Guardado {
 	}
 
 	public void borrarJuzgado(Juzgado juzgado) throws Exception {
-		// TODO Auto-generated method stub
 		Database d = null;
 		try {
 			connMgr.prepararBD();
@@ -240,7 +237,6 @@ public class Persistence implements Cargado, Guardado {
 																			// se
 																			// puede
 																			// cambiar
-		// TODO Auto-generated method stub
 		Database d = null;
 		Statement stAcActuacion;
 		try {
@@ -250,7 +246,8 @@ public class Persistence implements Cargado, Guardado {
 					.createStatement("UPDATE actuaciones SET id_juzgado = ?,"
 							+ " fecha_creacion = datetime(?),"
 							+ " fecha_proxima = datetime(?),"
-							+ " descripcion = ? WHERE id_actuacion = ?");
+							+ " descripcion = (?),"
+							+ " uid = ? WHERE id_actuacion = ?");
 			stAcActuacion.prepare();
 			stAcActuacion.bind(1, actuacion.getJuzgado().getId_juzgado());
 			stAcActuacion.bind(2, calendarToString(actuacion.getFecha()));
@@ -258,6 +255,7 @@ public class Persistence implements Cargado, Guardado {
 					.bind(3, calendarToString(actuacion.getFechaProxima()));
 			stAcActuacion.bind(4, actuacion.getDescripcion());
 			stAcActuacion.bind(5, actuacion.getId_actuacion());
+			stAcActuacion.bind(6, actuacion.getUid());
 			stAcActuacion.execute();
 			stAcActuacion.close();
 
@@ -277,13 +275,14 @@ public class Persistence implements Cargado, Guardado {
 			connMgr.prepararBD();
 			d = DatabaseFactory.open(connMgr.getDbLocation());
 			Statement stActuacion = d
-					.createStatement("INSERT INTO actuaciones (id_actuacion,id_proceso, id_juzgado, fecha_creacion, fecha_proxima, descripcion) VALUES( NULL,?,?,datetime(?),datetime(?),?)");
+					.createStatement("INSERT INTO actuaciones (id_actuacion,id_proceso, id_juzgado, fecha_creacion, fecha_proxima, descripcion, uid) VALUES( NULL,?,?,datetime(?),datetime(?),?,?)");
 			stActuacion.prepare();
 			stActuacion.bind(1, Integer.parseInt(id_proceso));
 			stActuacion.bind(2, actuacion.getJuzgado().getId_juzgado());
 			stActuacion.bind(3, calendarToString(actuacion.getFecha()));
 			stActuacion.bind(4, calendarToString(actuacion.getFechaProxima()));
 			stActuacion.bind(5, actuacion.getDescripcion());
+			stActuacion.bind(6, actuacion.getUid());
 			stActuacion.execute();
 			stActuacion.close();
 			actuacion.setId_actuacion(Long.toString(d.lastInsertedRowID()));
@@ -298,7 +297,6 @@ public class Persistence implements Cargado, Guardado {
 	}
 
 	public void borrarActuacion(Actuacion actuacion) throws Exception {
-		// TODO Auto-generated method stub
 		Database d = null;
 		try {
 			connMgr.prepararBD();
@@ -321,7 +319,25 @@ public class Persistence implements Cargado, Guardado {
 
 	public void actualizarCampoPersonalizado(CampoPersonalizado campo)
 			throws Exception {
-		// TODO Auto-generated method stub
+		Database d = null;
+		try {
+			connMgr.prepararBD();
+			d = DatabaseFactory.open(connMgr.getDbLocation());			
+			Statement stAcAtributoProceso = d.createStatement("UPDATE atributos_proceso SET valor = ? WHERE id_atributo_proceso = ?");
+			stAcAtributoProceso.prepare();
+			stAcAtributoProceso.bind(1, campo.getValor());
+			stAcAtributoProceso.bind(2, campo.getId_campo());
+			stAcAtributoProceso.execute();
+			stAcAtributoProceso.close();
+
+		} catch (Exception e) {
+			throw e;
+		} finally {
+			if (d != null) {
+				d.close();
+			}
+		}
+		
 
 	}
 
@@ -331,24 +347,13 @@ public class Persistence implements Cargado, Guardado {
 		try {
 			connMgr.prepararBD();
 			d = DatabaseFactory.open(connMgr.getDbLocation());
-			String isObligatorio = campo.isObligatorio() + "";
-			Statement stAtributos = d
-					.createStatement("INSERT INTO atributos VALUES( NULL,?,?,?,?)");
-			stAtributos.prepare();
-			stAtributos.bind(1, campo.getNombre());
-			stAtributos.bind(2, isObligatorio);
-			stAtributos.bind(3, campo.getLongitudMax());
-			stAtributos.bind(4, campo.getLongitudMin());
-			stAtributos.execute();
-			stAtributos.close();
-			long id_atributo = d.lastInsertedRowID();
-			Statement stAtributosProceso = d
-					.createStatement("INSERT INTO atributos_proceso VALUES( ?,?,?)");
+			Statement stAtributosProceso = d.createStatement("INSERT INTO atributos_proceso (id_atributo_proceso, id_atributo, id_proceso, valor) VALUES( NULL,?,?,?)");
 			stAtributosProceso.prepare();
-			stAtributosProceso.bind(1, id_atributo);
-			stAtributosProceso.bind(2, id_proceso);
+			stAtributosProceso.bind(1, Integer.parseInt(campo.getId_atributo()));
+			stAtributosProceso.bind(2, Integer.parseInt(id_proceso));
 			stAtributosProceso.bind(3, campo.getValor());
 			stAtributosProceso.execute();
+			campo.setId_campo(Long.toString(d.lastInsertedRowID()));
 			stAtributosProceso.close();
 		} catch (Exception e) {
 			throw e;
@@ -362,10 +367,105 @@ public class Persistence implements Cargado, Guardado {
 
 	public void borrarCampoPersonalizado(CampoPersonalizado campo)
 			throws Exception {
-		// TODO Auto-generated method stub
+		Database d = null;
+		try {
+			connMgr.prepararBD();
+			d = DatabaseFactory.open(connMgr.getDbLocation());
+			Statement stDelCampoPersonalizado = d
+					.createStatement("DELETE FROM atributos_proceso WHERE id_atributo_proceso = ?");
+			stDelCampoPersonalizado.prepare();
+			stDelCampoPersonalizado.bind(1, campo.getId_campo());
+			stDelCampoPersonalizado.execute();
+			stDelCampoPersonalizado.close();
+		} catch (Exception e) {
+			throw e;
+		} finally {
+			if (d != null) {
+				d.close();
+			}
+		}
 
 	}
 
+	public void actualizarAtributo(CampoPersonalizado campo) throws Exception {
+		Database d = null;
+		try {
+			connMgr.prepararBD();
+			d = DatabaseFactory.open(connMgr.getDbLocation());
+			Statement stAcAtributo = d.createStatement("UPDATE atributos SET nombre = ?,"
+							+ " obligatorio = ?,"
+							+ " longitud_max = ?,"
+							+ " longitud_min = ? WHERE id_atributo = ?");
+			stAcAtributo.prepare();
+			stAcAtributo.bind(1, campo.getNombre());
+			stAcAtributo.bind(2, campo.isObligatorio().toString());
+			stAcAtributo.bind(3, campo.getLongitudMax());
+			stAcAtributo.bind(4, campo.getLongitudMin());
+			stAcAtributo.bind(5, campo.getId_campo());
+			stAcAtributo.execute();
+			stAcAtributo.close();
+			
+		} catch (Exception e) {
+			throw e;
+		} finally {
+			if (d != null) {
+				d.close();
+			}
+		}
+		
+	}
+
+	public void guardarAtributo(CampoPersonalizado campo) throws Exception {
+			Database d = null;
+			try {
+				connMgr.prepararBD();
+				d = DatabaseFactory.open(connMgr.getDbLocation());
+				Statement stAtributos = d.createStatement("INSERT INTO atributos (id_atributo, nombre, obligatorio, longitud_max, longitud_min) VALUES( NULL,?,?,?,?)");
+				stAtributos.prepare();
+				stAtributos.bind(1, campo.getNombre());
+				stAtributos.bind(2, campo.isObligatorio().toString());
+				stAtributos.bind(3, campo.getLongitudMax());
+				stAtributos.bind(4, campo.getLongitudMin());
+				stAtributos.execute();
+				campo.setId_atributo(Long.toString(d.lastInsertedRowID()));
+				stAtributos.close();
+				
+			} catch (Exception e) {
+				throw e;
+			} finally {
+				if (d != null) {
+					d.close();
+				}
+			}
+		
+	}
+
+	public void borrarAtributo(CampoPersonalizado campo) throws Exception {
+		// TODO Auto-generated method stub
+		Database d = null;
+		try {
+			connMgr.prepararBD();
+			d = DatabaseFactory.open(connMgr.getDbLocation());
+			Statement stDelAtributo = d.createStatement("DELETE FROM atributos WHERE id_atributo = ?");
+			Statement stDelCampoPersonalizado = d.createStatement("DELETE FROM atributos_proceso WHERE id_atributo = ?");
+			stDelCampoPersonalizado.prepare();
+			stDelAtributo.prepare();
+			stDelCampoPersonalizado.bind(1, campo.getId_atributo());
+			stDelAtributo.bind(1, campo.getId_atributo());
+			stDelCampoPersonalizado.execute();
+			stDelAtributo.execute();
+			stDelCampoPersonalizado.close();
+			stDelAtributo.close();
+		} catch (Exception e) {
+			throw e;
+		} finally {
+			if (d != null) {
+				d.close();
+			}
+		}
+		
+	}	
+	
 	public void actualizarProceso(Proceso proceso) throws Exception {
 		Database d = null;
 		Statement stAcProceso;
@@ -500,7 +600,6 @@ public class Persistence implements Cargado, Guardado {
 	}
 
 	public void borrarProceso(Proceso proceso) throws Exception {
-		// TODO Auto-generated method stub
 		Database d = null;
 		try {
 			connMgr.prepararBD();
@@ -509,14 +608,19 @@ public class Persistence implements Cargado, Guardado {
 					.createStatement("DELETE FROM procesos WHERE id_proceso = ?");
 			Statement stDelActuaciones = d
 					.createStatement("DELETE FROM actuaciones WHERE id_proceso = ?");
+			Statement stDelCampoPersonalizado = d.createStatement("DELETE FROM atributos_proceso WHERE id_proceso = ?");
 			stDelProceso.prepare();
 			stDelActuaciones.prepare();
+			stDelCampoPersonalizado.prepare();
 			stDelProceso.bind(1, proceso.getId_proceso());
 			stDelActuaciones.bind(1, proceso.getId_proceso());
+			stDelCampoPersonalizado.bind(1, proceso.getId_proceso());
 			stDelProceso.execute();
 			stDelActuaciones.execute();
+			stDelCampoPersonalizado.execute();
 			stDelProceso.close();
 			stDelActuaciones.close();
+			stDelCampoPersonalizado.close();
 		} catch (Exception e) {
 			throw e;
 		} finally {

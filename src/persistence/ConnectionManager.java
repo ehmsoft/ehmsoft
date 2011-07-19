@@ -116,7 +116,7 @@ public class ConnectionManager {
 			st = d.createStatement("CREATE TABLE 'atributos'("+
 					"'id_atributo' INTEGER PRIMARY KEY,"+
 					"'nombre' TEXT,"+
-					"'naturaleza' TEXT,"+
+					"'obligatorio' TEXT,"+
 					"'longitud_max' INTEGER,"+
 					"'longitud_min' INTEGER, UNIQUE("+
 					"'nombre',"+

@@ -1,5 +1,7 @@
 package ehmsoft;
 
+import java.util.Calendar;
+
 import gui.ListadoActuaciones;
 import gui.ListadoCategorias;
 import gui.ListadoJuzgados;
@@ -22,56 +24,30 @@ import net.rim.device.api.ui.component.Dialog;
 import net.rim.device.api.ui.container.MainScreen;
 import persistence.Persistence;
 import core.Actuacion;
+import core.CampoPersonalizado;
 import core.Juzgado;
 import core.Persona;
 import core.Proceso;
 
 public class Prueba extends MainScreen {
 
-	ButtonField listadoActuaciones;
-	ButtonField listadoCategorias;
-	ButtonField listadoJuzgados;
-	ButtonField listadoDemandantes;
-	ButtonField listadoDemandados;
-	ButtonField listadoProcesos;
+
 	ButtonField nuevaActuacion;
 	ButtonField nuevaCategoria;
 	ButtonField nuevoDemandante;
 	ButtonField nuevoDemandado;
 	ButtonField nuevoJuzgado;
 	ButtonField nuevoProceso;
-	ButtonField verActuacion;
-	ButtonField verJuzgado;
-	ButtonField verDemandante;
-	ButtonField verDemandado;
-	ButtonField verProceso;
+	ButtonField actualizarActuacion;
+	ButtonField campoPersonalizado;
+	ButtonField actualizarCampo;
+	ButtonField delCampo;
+	ButtonField delAtributo;
 
 	public Prueba() {
 		super(MainScreen.VERTICAL_SCROLL | MainScreen.VERTICAL_SCROLLBAR);
 
-		listadoActuaciones = new ButtonField("Listado de actuaciones");
-		listadoActuaciones.setChangeListener(listenerListadoActuaciones);
-		add(listadoActuaciones);
 		
-		listadoCategorias = new ButtonField("Listado de categorías");
-		listadoCategorias.setChangeListener(listenerListadoCategorias);
-		add(listadoCategorias);
-
-		listadoJuzgados = new ButtonField("Listado de juzgados");
-		listadoJuzgados.setChangeListener(listenerListadoJuzgados);
-		add(listadoJuzgados);
-
-		listadoDemandantes = new ButtonField("Listado de demandantes");
-		listadoDemandantes.setChangeListener(listenerListadoDemandantes);
-		add(listadoDemandantes);
-
-		listadoDemandados = new ButtonField("Listado de demandados");
-		listadoDemandados.setChangeListener(listenerListadoDemandados);
-		add(listadoDemandados);
-
-		listadoProcesos = new ButtonField("Listado de procesos");
-		listadoProcesos.setChangeListener(listenerListadoProcesos);
-		add(listadoProcesos);
 
 		nuevaActuacion = new ButtonField("Nueva actuación");
 		nuevaActuacion.setChangeListener(listenerNuevaActuacion);
@@ -97,107 +73,121 @@ public class Prueba extends MainScreen {
 		nuevoProceso.setChangeListener(listenerNuevoProceso);
 		add(nuevoProceso);
 
-		verActuacion = new ButtonField("Ver actuación");
-		verActuacion.setChangeListener(listenerVerActuacion);
-		add(verActuacion);
-
-		verJuzgado = new ButtonField("Ver juzgado");
-		verJuzgado.setChangeListener(listenerVerJuzgado);
-		add(verJuzgado);
-
-		verDemandante = new ButtonField("Ver demandante");
-		verDemandante.setChangeListener(listenerVerDemandante);
-		add(verDemandante);
-
-		verDemandado = new ButtonField("Ver demandado");
-		verDemandado.setChangeListener(listenerVerDemandado);
-		add(verDemandado);
-
-		verProceso = new ButtonField("Ver proceso");
-		verProceso.setChangeListener(listenerVerProceso);
-		add(verProceso);
+		
+		actualizarActuacion = new ButtonField("Actualizar Actuacion");
+		actualizarActuacion.setChangeListener(listenerActualizarActuacion);
+		add(actualizarActuacion);
+		
+		
+		campoPersonalizado = new ButtonField("Nuevo Campo Personalizado");
+		campoPersonalizado.setChangeListener(listenerNuevoCampo);
+		add(campoPersonalizado);
+		
+		actualizarCampo = new ButtonField("Actualizar Campo");
+		actualizarCampo.setChangeListener(listenerActualizarCampo);
+		add(actualizarCampo);
+		
+		delCampo = new ButtonField("Del Campo");
+		delCampo.setChangeListener(listenerDelCampo);
+		add(delCampo);
+		
+		delAtributo = new ButtonField("Del Atributo");
+		delAtributo.setChangeListener(listenerDelAtributo);
+		add(delAtributo);
+		
 	}
-
-	private FieldChangeListener listenerListadoActuaciones = new FieldChangeListener() {
+	
+	private FieldChangeListener listenerDelCampo = new FieldChangeListener() {
 
 		public void fieldChanged(Field field, int context) {
-			ListadoProcesos listadoP = new ListadoProcesos();
-			Proceso proceso = null;
-			UiApplication.getUiApplication().pushModalScreen(
-					listadoP.getScreen());
-			proceso = listadoP.getSelected();
-			if (proceso != null) {
-				ListadoActuaciones listadoA = new ListadoActuaciones(proceso);
-				UiApplication.getUiApplication().pushModalScreen(
-						listadoA.getScreen());
-				listadoA.getSelected();
-			}
+		CampoPersonalizado campo = new CampoPersonalizado("1","1","medidad","555",new Boolean(false),8,8);
+		try {
+			Persistence persistence = new Persistence();
+			persistence.borrarCampoPersonalizado(campo);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
 		}
 	};
 	
-	private FieldChangeListener listenerListadoCategorias = new FieldChangeListener() {
+	private FieldChangeListener listenerDelAtributo = new FieldChangeListener() {
 
 		public void fieldChanged(Field field, int context) {
-			ListadoCategorias l = new ListadoCategorias();
-			UiApplication.getUiApplication().pushModalScreen(l.getScreen());
-			l.getSelected();
-			}
+		CampoPersonalizado campo = new CampoPersonalizado("1","1","medidad","555",new Boolean(false),8,8);
+		try {
+			Persistence persistence = new Persistence();
+			persistence.borrarAtributo(campo);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		}
 	};
-
-	private FieldChangeListener listenerListadoJuzgados = new FieldChangeListener() {
+	
+	private FieldChangeListener listenerActualizarCampo = new FieldChangeListener() {
 
 		public void fieldChanged(Field field, int context) {
-			ListadoJuzgados listado = new ListadoJuzgados();
-			UiApplication.getUiApplication().pushModalScreen(
-					listado.getScreen());
-			listado.getSelected();
+		CampoPersonalizado campo = new CampoPersonalizado("1","1","medidad","555",new Boolean(false),8,8);
+		try {
+			Persistence persistence = new Persistence();
+			persistence.actualizarAtributo(campo);
+			persistence.actualizarCampoPersonalizado(campo);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 		}
 	};
 
-	private FieldChangeListener listenerListadoDemandantes = new FieldChangeListener() {
+	private FieldChangeListener listenerNuevoCampo = new FieldChangeListener() {
 
 		public void fieldChanged(Field field, int context) {
-			ListadoPersonas listado = new ListadoPersonas(1);
-			UiApplication.getUiApplication().pushModalScreen(
-					listado.getScreen());
-			listado.getSelected();
+		CampoPersonalizado campo = new CampoPersonalizado("1","1","peso","23",new Boolean(true),3,1);
+		CampoPersonalizado campo1 = new CampoPersonalizado("1","1","ancho","60",new Boolean(false),4,4);
+		CampoPersonalizado campo2 = new CampoPersonalizado("1","1","alto","90",new Boolean(true),8,8);
+		try {
+			Persistence persistence = new Persistence();
+			//persistence.guardarAtributo(campo);
+			persistence.guardarCampoPersonalizado(campo, "1");
+			persistence.guardarCampoPersonalizado(campo1, "1");
+			persistence.guardarCampoPersonalizado(campo2, "1");
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 		}
 	};
-
-	private FieldChangeListener listenerListadoDemandados = new FieldChangeListener() {
-
-		public void fieldChanged(Field field, int context) {
-			ListadoPersonas listado = new ListadoPersonas(2);
-			UiApplication.getUiApplication().pushModalScreen(
-					listado.getScreen());
-			listado.getSelected();
-		}
-	};
-
-	private FieldChangeListener listenerListadoProcesos = new FieldChangeListener() {
-
-		public void fieldChanged(Field field, int context) {
-			ListadoProcesos listado = new ListadoProcesos();
-			UiApplication.getUiApplication().pushModalScreen(
-					listado.getScreen());
-			listado.getSelected();
-		}
-	};
+	
+	
 
 	private FieldChangeListener listenerNuevaActuacion = new FieldChangeListener() {
 
 		public void fieldChanged(Field field, int context) {
-			NuevaActuacion nueva = new NuevaActuacion();
-			ListadoProcesos listado = new ListadoProcesos();
-			UiApplication.getUiApplication().pushModalScreen(
-					listado.getScreen());
-			nueva.setProceso(listado.getSelected());
-			UiApplication.getUiApplication().pushModalScreen(nueva.getScreen());
+			
+			//NuevaActuacion nueva = new NuevaActuacion();
+			//ListadoProcesos listado = new ListadoProcesos();
+			//UiApplication.getUiApplication().pushModalScreen(
+			//		listado.getScreen());
+			//nueva.setProceso(listado.getSelected());
+			//UiApplication.getUiApplication().pushModalScreen(nueva.getScreen());
+			
+			Juzgado juzgado = new Juzgado("23213","23213213","213213","2132132","3","3");
+
+			Actuacion actuacion = new Actuacion(juzgado,stringToCalendar("1918-03-02"),stringToCalendar("1919-04-04"),"primera actuacion con uid","1","2");
+			
 			try {
-				nueva.guardarActuacion();
+				Persistence persistence = new Persistence();
+				persistence.guardarActuacion(actuacion, "1");
 			} catch (Exception e) {
-				Dialog.alert(e.toString());
-			}
+				// TODO Auto-generated catch block
+				
+			
+		} 
 		}
 	};
 	
@@ -266,112 +256,41 @@ public class Prueba extends MainScreen {
 		}
 	};
 
-	private FieldChangeListener listenerVerActuacion = new FieldChangeListener() {
-
+	private FieldChangeListener listenerActualizarActuacion = new FieldChangeListener() {
+		
 		public void fieldChanged(Field field, int context) {
-			Persistence persistence = null;
+			Juzgado juzgado = new Juzgado("23213","23213213","213213","2132132","3","1");
+
+			Actuacion actuacion = new Actuacion(juzgado,stringToCalendar("1218-03-02"),stringToCalendar("1212-04-04"),"primer cambio en actuacion con uid","91","1");
+			
 			try {
-				persistence = new Persistence();
+				Persistence persistence = new Persistence();
+				persistence.actualizarActuacion(actuacion);
 			} catch (Exception e) {
-				Dialog.alert(e.toString());
-			}
-			Actuacion actuacion = null;
-			try {
-				actuacion = persistence.consultarActuacion("1");
-			} catch (Exception e) {
-				Dialog.alert(e.toString());
-			}
-			VerActuacion ver = new VerActuacion(actuacion);
-			UiApplication.getUiApplication().pushModalScreen(ver.getScreen());
-			try {
-				ver.actualizarActuacion();
-			} catch (Exception e) {
-				Dialog.alert(e.toString());
-			}
+				// TODO Auto-generated catch block
+				
+			
+		} 
 		}
+			
 	};
 
-	private FieldChangeListener listenerVerJuzgado = new FieldChangeListener() {
-
-		public void fieldChanged(Field field, int context) {
-			Persistence persistence = null;
-			try {
-				persistence = new Persistence();
-			} catch (Exception e) {
-				Dialog.alert(e.toString());
-			}
-			Juzgado juzgado = null;
-			try {
-				juzgado = persistence.consultarJuzgado("1");
-			} catch (Exception e) {
-				Dialog.alert(e.toString());
-			}
-			VerJuzgado ver = new VerJuzgado(juzgado);
-			UiApplication.getUiApplication().pushModalScreen(ver.getScreen());
-			ver.actualizarJuzgado();
+	
+	
+	private Calendar stringToCalendar(String fecha) {
+		Calendar calendar_return = Calendar.getInstance();
+		calendar_return.set(Calendar.YEAR,
+				Integer.parseInt(fecha.substring(0, 4)));
+		calendar_return.set(Calendar.MONTH,
+				Integer.parseInt(fecha.substring(5, 7)) - 1);
+		calendar_return.set(Calendar.DAY_OF_MONTH,
+				Integer.parseInt(fecha.substring(8, 10)));
+		if (fecha.length() > 10) {
+			calendar_return.set(Calendar.HOUR_OF_DAY,
+					Integer.parseInt(fecha.substring(11, 13)));
+			calendar_return.set(Calendar.MINUTE,
+					Integer.parseInt(fecha.substring(14, 16)));
 		}
-	};
-
-	private FieldChangeListener listenerVerDemandante = new FieldChangeListener() {
-
-		public void fieldChanged(Field field, int context) {
-			Persistence persistence = null;
-			try {
-				persistence = new Persistence();
-			} catch (Exception e) {
-				Dialog.alert(e.toString());
-			}
-			Persona persona = null;
-			try {
-				persona = persistence.consultarPersona("1", 1);
-			} catch (Exception e) {
-				Dialog.alert(e.toString());
-			}
-			VerPersona ver = new VerPersona(persona);
-			UiApplication.getUiApplication().pushModalScreen(ver.getScreen());
-			ver.actualizarPersona();
-		}
-	};
-
-	private FieldChangeListener listenerVerDemandado = new FieldChangeListener() {
-
-		public void fieldChanged(Field field, int context) {
-			Persistence persistence = null;
-			try {
-				persistence = new Persistence();
-			} catch (Exception e) {
-				Dialog.alert(e.toString());
-			}
-			Persona persona = null;
-			try {
-				persona = persistence.consultarPersona("1", 2);
-			} catch (Exception e) {
-				Dialog.alert(e.toString());
-			}
-			VerPersona ver = new VerPersona(persona);
-			UiApplication.getUiApplication().pushModalScreen(ver.getScreen());
-			ver.actualizarPersona();
-		}
-	};
-
-	private FieldChangeListener listenerVerProceso = new FieldChangeListener() {
-
-		public void fieldChanged(Field field, int context) {
-			Persistence persistence = null;
-			try {
-				persistence = new Persistence();
-			} catch (Exception e) {
-				Dialog.alert(e.toString());
-			}
-			Proceso proceso = null;
-			try {
-				proceso = persistence.consultarProceso("1");
-			} catch (Exception e) {
-				Dialog.alert(e.toString());
-			}
-			VerProceso ver = new VerProceso(proceso);
-			UiApplication.getUiApplication().pushModalScreen(ver.getScreen());
-			ver.actualizarProceso();
-		}
+		return calendar_return;
 	};
 }
