@@ -87,7 +87,7 @@ public class NuevoProceso {
 				_proceso = new Proceso(_screen.getDemandante(),
 						_screen.getDemandado(), _screen.getFecha(),
 						_screen.getJuzgado(), _screen.getRadicado(),
-						_screen.getRadicadoUnico(), null, _screen.getEstado(),
+						_screen.getRadicadoUnico(), _screen.getActuaciones(), _screen.getEstado(),
 						_screen.getCategoria(), _screen.getTipo(),
 						_screen.getNotas(), campos, _screen.getPrioridad());
 				try {

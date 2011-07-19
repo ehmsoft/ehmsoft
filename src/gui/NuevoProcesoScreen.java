@@ -29,6 +29,7 @@ public class NuevoProcesoScreen extends FondoNormal {
 
 	private BasicEditField _txtEstado;
 	private ObjectChoiceField _chCategoria;
+	private ObjectChoiceField _chActuaciones;
 	private NumericChoiceField _chPrioridad;
 	private DateField _dtFecha;
 	private BasicEditField _txtTipo;
@@ -48,6 +49,7 @@ public class NuevoProcesoScreen extends FondoNormal {
 	private Persona _demandado;
 	private Juzgado _juzgado;
 	private Vector _valoresCamposPersonalizados;
+	private Vector _actuaciones;
 
 	private boolean _guardar = false;
 
@@ -58,6 +60,7 @@ public class NuevoProcesoScreen extends FondoNormal {
 	public NuevoProcesoScreen() {
 		setTitle("Nuevo Proceso");
 		_valoresCamposPersonalizados = new Vector();
+		_actuaciones = new Vector();
 
 		HorizontalFieldManager fldDemandante = new HorizontalFieldManager();
 		VerticalFieldManager fldRightDemandante = new VerticalFieldManager(
@@ -116,6 +119,10 @@ public class NuevoProcesoScreen extends FondoNormal {
 
 		_chCategoria.setChoices(addCategorias());
 		add(_chCategoria);
+		
+		_chActuaciones = new ObjectChoiceField();
+		_chActuaciones.setLabel("Actuaciones:");
+		add(_chActuaciones);
 
 		_chPrioridad = new NumericChoiceField("Prioridad", 1, 10, 1);
 		_chPrioridad.setSelectedIndex(4);
@@ -163,6 +170,18 @@ public class NuevoProcesoScreen extends FondoNormal {
 		return o;
 	}
 	
+	private Object[] addActuaciones() {
+		Enumeration e = _actuaciones.elements();
+		Object[] o = new Object[_actuaciones.size()];
+		int i = 0;
+		
+		while (e.hasMoreElements()) {
+			o[i] = e.nextElement();
+			i ++;
+		}
+		return o;
+	}
+	
 	protected void makeMenu(Menu menu, int instance) {
 		Field f = UiApplication.getUiApplication().getActiveScreen().getFieldWithFocus();
 		if(f.equals(_btnDemandante) || f.equals(_btnDemandado) || f.equals(_btnJuzgado)) {
@@ -173,8 +192,27 @@ public class NuevoProcesoScreen extends FondoNormal {
 			menu.add(menuAddCategoria);
 			menu.addSeparator();
 		}
+		else if(f.equals(_chActuaciones)) {
+			menu.add(menuAddActuacion);
+			menu.addSeparator();
+		}
 		menu.add(menuGuardar);
 	}
+	
+	private final MenuItem menuAddActuacion = new MenuItem("Nueva actuación",
+			0, 0) {
+
+		public void run() {
+			NuevaActuacion n = new NuevaActuacion();
+			UiApplication.getUiApplication().pushModalScreen(n.getScreen());
+			try {
+				_actuaciones.addElement(n.getActuacion(false));
+				_chActuaciones.setChoices(addActuaciones());
+			} catch (Exception e) {
+
+			}
+		}
+	};
 	
 	private final MenuItem menuAddCategoria = new MenuItem("Nueva categoría", 0, 0) {
 
@@ -339,6 +377,10 @@ public class NuevoProcesoScreen extends FondoNormal {
 	 */
 	public Vector getValores() {
 		return _valoresCamposPersonalizados;
+	}
+	
+	public Vector getActuaciones() {
+		return _actuaciones;
 	}
 
 	/**

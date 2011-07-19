@@ -61,6 +61,17 @@ public class NuevaActuacion {
 		return _actuacion;
 	}
 
+	public Actuacion getActuacion(boolean guardado) throws Exception {
+		if (!guardado) {
+			_actuacion = new Actuacion(_screen.getJuzgado(),
+					_screen.getFecha(), _screen.getFechaProxima(),
+					_screen.getDescripcion());
+			return _actuacion;
+		} else {
+			return getActuacion();
+		}
+	}
+
 	/**
 	 * Crea el nuevo objeto Actuacion y la guarda en la base de datos usando la
 	 * informacion capturada desde la pantalla
