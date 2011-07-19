@@ -19,6 +19,9 @@ public interface Guardado {
 	public void actualizarCampoPersonalizado(CampoPersonalizado campo) throws Exception;
 	public void guardarCampoPersonalizado(CampoPersonalizado campo, String id_proceso) throws Exception;
 	public void borrarCampoPersonalizado(CampoPersonalizado campo) throws Exception;
+	public void actualizarAtributo(CampoPersonalizado campo) throws Exception;
+	public void guardarAtributo(CampoPersonalizado campo) throws Exception;
+	public void borrarAtributo(CampoPersonalizado campo) throws Exception;
 	//Procesos
 	public void actualizarProceso(Proceso proceso) throws Exception;
 	public void guardarProceso(Proceso proceso) throws Exception;

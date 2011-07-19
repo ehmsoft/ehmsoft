@@ -40,6 +40,9 @@ public class Prueba extends MainScreen {
 	ButtonField nuevoProceso;
 	ButtonField actualizarActuacion;
 	ButtonField campoPersonalizado;
+	ButtonField actualizarCampo;
+	ButtonField delCampo;
+	ButtonField delAtributo;
 
 	public Prueba() {
 		super(MainScreen.VERTICAL_SCROLL | MainScreen.VERTICAL_SCROLLBAR);
@@ -79,15 +82,79 @@ public class Prueba extends MainScreen {
 		campoPersonalizado = new ButtonField("Nuevo Campo Personalizado");
 		campoPersonalizado.setChangeListener(listenerNuevoCampo);
 		add(campoPersonalizado);
+		
+		actualizarCampo = new ButtonField("Actualizar Campo");
+		actualizarCampo.setChangeListener(listenerActualizarCampo);
+		add(actualizarCampo);
+		
+		delCampo = new ButtonField("Del Campo");
+		delCampo.setChangeListener(listenerDelCampo);
+		add(delCampo);
+		
+		delAtributo = new ButtonField("Del Atributo");
+		delAtributo.setChangeListener(listenerDelAtributo);
+		add(delAtributo);
+		
 	}
+	
+	private FieldChangeListener listenerDelCampo = new FieldChangeListener() {
+
+		public void fieldChanged(Field field, int context) {
+		CampoPersonalizado campo = new CampoPersonalizado("1","1","medidad","555",new Boolean(false),8,8);
+		try {
+			Persistence persistence = new Persistence();
+			persistence.borrarCampoPersonalizado(campo);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		}
+	};
+	
+	private FieldChangeListener listenerDelAtributo = new FieldChangeListener() {
+
+		public void fieldChanged(Field field, int context) {
+		CampoPersonalizado campo = new CampoPersonalizado("1","1","medidad","555",new Boolean(false),8,8);
+		try {
+			Persistence persistence = new Persistence();
+			persistence.borrarAtributo(campo);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		}
+	};
+	
+	private FieldChangeListener listenerActualizarCampo = new FieldChangeListener() {
+
+		public void fieldChanged(Field field, int context) {
+		CampoPersonalizado campo = new CampoPersonalizado("1","1","medidad","555",new Boolean(false),8,8);
+		try {
+			Persistence persistence = new Persistence();
+			persistence.actualizarAtributo(campo);
+			persistence.actualizarCampoPersonalizado(campo);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		}
+	};
 
 	private FieldChangeListener listenerNuevoCampo = new FieldChangeListener() {
 
 		public void fieldChanged(Field field, int context) {
-		CampoPersonalizado campo = new CampoPersonalizado("peso","23",new Boolean(true),3,1);
+		CampoPersonalizado campo = new CampoPersonalizado("1","1","peso","23",new Boolean(true),3,1);
+		CampoPersonalizado campo1 = new CampoPersonalizado("1","1","ancho","60",new Boolean(false),4,4);
+		CampoPersonalizado campo2 = new CampoPersonalizado("1","1","alto","90",new Boolean(true),8,8);
 		try {
 			Persistence persistence = new Persistence();
+			//persistence.guardarAtributo(campo);
 			persistence.guardarCampoPersonalizado(campo, "1");
+			persistence.guardarCampoPersonalizado(campo1, "1");
+			persistence.guardarCampoPersonalizado(campo2, "1");
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
