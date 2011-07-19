@@ -120,7 +120,7 @@ public class ConnectionManager {
 					"'longitud_max' INTEGER,"+
 					"'longitud_min' INTEGER, UNIQUE("+
 					"'nombre',"+
-			"'naturaleza'))");
+			"'obligatorio'))");
 			st.prepare();
 			st.execute();
 			st.close();
