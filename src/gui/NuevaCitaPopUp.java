@@ -15,7 +15,7 @@ import net.rim.device.api.ui.container.GridFieldManager;
 import net.rim.device.api.ui.container.PopupScreen;
 import net.rim.device.api.ui.container.VerticalFieldManager;
 
-public class NuevaCitaScreen extends PopupScreen {
+public class NuevaCitaPopUp extends PopupScreen {
 
 	/**
 	 * 
@@ -35,7 +35,7 @@ public class NuevaCitaScreen extends PopupScreen {
 
 	private boolean _guardar = false;
 
-	public NuevaCitaScreen(String descripcion, Date fecha) {
+	public NuevaCitaPopUp(String descripcion, Date fecha) {
 		super(new VerticalFieldManager());
 
 		_fecha = fecha;

@@ -8,14 +8,14 @@ import core.CalendarManager;
 
 public class NuevaCita {
 	
-	private NuevaCitaScreen _screen;
+	private NuevaCitaPopUp _screen;
 	private String _uid;
 	
 	public NuevaCita(String descripcion, Date fecha) {
-		_screen = new NuevaCitaScreen(descripcion, fecha);
+		_screen = new NuevaCitaPopUp(descripcion, fecha);
 	}
 	
-	public NuevaCitaScreen getScreen() {
+	public NuevaCitaPopUp getScreen() {
 		return _screen;
 	}
 	
