@@ -81,7 +81,7 @@ public class NuevaActuacion {
 			Persistence guardado = null;
 			_actuacion = new Actuacion(_screen.getJuzgado(),
 					_screen.getFecha(), _screen.getFechaProxima(),
-					_screen.getDescripcion());
+					_screen.getDescripcion(), _screen.getUid());
 			try {
 				guardado = new Persistence();
 			} catch (Exception e) {

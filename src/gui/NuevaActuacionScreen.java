@@ -15,6 +15,7 @@ import net.rim.device.api.ui.component.Dialog;
 import net.rim.device.api.ui.component.LabelField;
 import net.rim.device.api.ui.container.HorizontalFieldManager;
 import net.rim.device.api.ui.container.VerticalFieldManager;
+import core.CalendarManager;
 import core.Juzgado;
 
 public class NuevaActuacionScreen extends FondoNormal {
@@ -26,6 +27,7 @@ public class NuevaActuacionScreen extends FondoNormal {
 	private CheckboxField _cbCita;
 
 	private Juzgado _juzgado;
+	private String _uid;
 
 	private boolean _guardar;
 
@@ -70,11 +72,22 @@ public class NuevaActuacionScreen extends FondoNormal {
 	
 	private FieldChangeListener listenerCita = new FieldChangeListener() {
 		public void fieldChanged(Field field, int context) {
-			if(_cbCita.getChecked()) {
-				
-				NuevaCita n = new NuevaCita(getDescripcion(), new Date(_dfFechaProxima.getDate()));
+			if (_cbCita.getChecked()) {
+				NuevaCita n = new NuevaCita(getDescripcion(), new Date(
+						_dfFechaProxima.getDate()));
 				UiApplication.getUiApplication().pushModalScreen(n.getScreen());
 				n.guardarCita();
+				_uid = n.getUid();
+				if (!n.isGuardado()) {
+					_cbCita.setChecked(false);
+				}
+				n = null;
+			} else {
+				try {
+					CalendarManager.borrarCita(_uid);
+				} catch (Exception e) {
+					Dialog.alert(e.toString());
+				}
 			}
 		}
 	};
@@ -162,6 +175,10 @@ public class NuevaActuacionScreen extends FondoNormal {
 			return descripcion;
 		}
 		return descripcion;
+	}
+	
+	public String getUid() {
+		return _uid;
 	}
 
 	public boolean isGuardado() {

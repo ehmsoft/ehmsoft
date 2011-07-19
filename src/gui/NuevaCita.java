@@ -9,6 +9,7 @@ import core.CalendarManager;
 public class NuevaCita {
 	
 	private NuevaCitaScreen _screen;
+	private String _uid;
 	
 	public NuevaCita(String descripcion, Date fecha) {
 		_screen = new NuevaCitaScreen(descripcion, fecha);
@@ -16,6 +17,14 @@ public class NuevaCita {
 	
 	public NuevaCitaScreen getScreen() {
 		return _screen;
+	}
+	
+	public boolean isGuardado() {
+		return _screen.isGuardado();
+	}
+	
+	public String getUid() {
+		return _uid;
 	}
 	
 	public void guardarCita() {
@@ -34,13 +43,13 @@ public class NuevaCita {
 				}
 				
 				try {
-					CalendarManager.agregarCita(_screen.getFecha(), _screen.getDescripcion(), duracion);
+					_uid = CalendarManager.agregarCita(_screen.getFecha(), _screen.getDescripcion(), duracion);
 				} catch (Exception e) {
 					Dialog.alert(e.toString());
 				}
 			} else {
 				try {
-					CalendarManager.agregarCita(_screen.getFecha(), _screen.getDescripcion());
+					_uid = CalendarManager.agregarCita(_screen.getFecha(), _screen.getDescripcion());
 				} catch (Exception e) {
 					Dialog.alert(e.toString());
 				}
