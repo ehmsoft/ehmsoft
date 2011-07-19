@@ -943,7 +943,7 @@ public class Persistence implements Cargado, Guardado {
 			connMgr.prepararBD();
 			d = DatabaseFactory.open(connMgr.getDbLocation());
 			Statement st = d
-					.createStatement("SELECT id_actuacion, id_proceso, id_juzgado, fecha_creacion, fecha_proxima, descripcion FROM actuaciones WHERE id_proceso = ? ORDER BY fecha_creacion, fecha_proxima");
+					.createStatement("SELECT id_actuacion, id_proceso, id_juzgado, fecha_creacion, fecha_proxima, descripcion, uid FROM actuaciones WHERE id_proceso = ? ORDER BY fecha_creacion, fecha_proxima");
 			st.prepare();
 			st.bind(1, proceso.getId_proceso());
 			Cursor cursor = st.getCursor();
@@ -954,11 +954,12 @@ public class Persistence implements Cargado, Guardado {
 				Calendar fecha_creacion = stringToCalendar(row.getString(3));
 				Calendar fecha_proxima = stringToCalendar(row.getString(4));
 				String descripcion = row.getString(5);
+				String uid = row.getString(6);
 				Juzgado juzgado = new Juzgado();
 				juzgado.setId_juzgado(Integer.toString(id_juzgado));
 				Actuacion actuacion = new Actuacion(juzgado, fecha_creacion,
 						fecha_proxima, descripcion,
-						Integer.toString(id_actuacion));
+						Integer.toString(id_actuacion),uid);
 				actuaciones.addElement(actuacion);
 			}
 			st.close();
@@ -986,7 +987,7 @@ public class Persistence implements Cargado, Guardado {
 			connMgr.prepararBD();
 			d = DatabaseFactory.open(connMgr.getDbLocation());
 			Statement st = d
-					.createStatement("SELECT id_actuacion, id_proceso, id_juzgado, fecha_creacion, fecha_proxima, descripcion FROM actuaciones WHERE id_actuacion = ?");
+					.createStatement("SELECT id_actuacion, id_proceso, id_juzgado, fecha_creacion, fecha_proxima, descripcion, uid FROM actuaciones WHERE id_actuacion = ?");
 			st.prepare();
 			st.bind(1, id_actuacion);
 			Cursor cursor = st.getCursor();
@@ -996,10 +997,11 @@ public class Persistence implements Cargado, Guardado {
 				Calendar fecha_creacion = stringToCalendar(row.getString(3));
 				Calendar fecha_proxima = stringToCalendar(row.getString(4));
 				String descripcion = row.getString(5);
+				String uid = row.getString(6);
 				Juzgado juzgado = new Juzgado();
 				juzgado.setId_juzgado(Integer.toString(id_juzgado));
 				actuacion = new Actuacion(juzgado, fecha_creacion,
-						fecha_proxima, descripcion, id_actuacion);
+						fecha_proxima, descripcion, id_actuacion, uid);
 			}
 			st.close();
 			cursor.close();
