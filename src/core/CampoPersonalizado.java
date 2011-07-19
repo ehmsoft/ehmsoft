@@ -1,6 +1,7 @@
 package core;
 
 public class CampoPersonalizado {
+	private String id_campo;
 	private String nombre;
 	private String valor;
 	private Boolean obligatorio;
@@ -9,6 +10,15 @@ public class CampoPersonalizado {
 	//Constructores
 	public CampoPersonalizado(String nombre, String valor, Boolean obligatorio,
 			int longitudMax, int longitudMin) {
+		this.nombre = nombre;
+		this.valor = valor;
+		this.obligatorio = obligatorio;
+		this.longitudMax = longitudMax;
+		this.longitudMin = longitudMin;
+	}
+	public CampoPersonalizado(String id_campo, String nombre, String valor, Boolean obligatorio,
+			int longitudMax, int longitudMin) {
+		this.id_campo = id_campo;
 		this.nombre = nombre;
 		this.valor = valor;
 		this.obligatorio = obligatorio;

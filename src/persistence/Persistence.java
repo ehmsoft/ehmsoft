@@ -325,6 +325,32 @@ public class Persistence implements Cargado, Guardado {
 	public void actualizarCampoPersonalizado(CampoPersonalizado campo)
 			throws Exception {
 		// TODO Auto-generated method stub
+		Database d = null;
+		try {
+			connMgr.prepararBD();
+			d = DatabaseFactory.open(connMgr.getDbLocation());
+			Statement stAcAtributo = d.createStatement("UPDATE atributos SET nombre = ?,"
+							+ " naturaleza = ?,"
+							+ " longitud_max = ?,"
+							+ " longitud_min = ? WHERE id_atributo_proceso = ?");
+			stAcAtributo.prepare();
+			stAcAtributo.bind(1, campo.getNombre());
+			stAcAtributo.bind(2, campo.isObligatorio().toString());
+			stAcAtributo.bind(3, campo.getLongitudMax());
+			stAcAtributo.bind(4, campo.getLongitudMin());
+			stAcAtributo.bind(5, campo.);
+			stAcAtributo.bind(6, actuacion.getUid());
+			stAcAtributo.execute();
+			stAcAtributo.close();
+
+		} catch (Exception e) {
+			throw e;
+		} finally {
+			if (d != null) {
+				d.close();
+			}
+		}
+		
 
 	}
 
