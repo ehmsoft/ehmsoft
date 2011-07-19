@@ -9,6 +9,7 @@ import net.rim.device.api.ui.MenuItem;
 import net.rim.device.api.ui.UiApplication;
 import net.rim.device.api.ui.component.BasicEditField;
 import net.rim.device.api.ui.component.ButtonField;
+import net.rim.device.api.ui.component.CheckboxField;
 import net.rim.device.api.ui.component.DateField;
 import net.rim.device.api.ui.component.Dialog;
 import net.rim.device.api.ui.component.LabelField;
@@ -22,6 +23,7 @@ public class NuevaActuacionScreen extends FondoNormal {
 	private DateField _dfFecha;
 	private DateField _dfFechaProxima;
 	private BasicEditField _txtDescripcion;
+	private CheckboxField _cbCita;
 
 	private Juzgado _juzgado;
 
@@ -58,9 +60,23 @@ public class NuevaActuacionScreen extends FondoNormal {
 		_txtDescripcion = new BasicEditField();
 		_txtDescripcion.setLabel("Descripción: ");
 		add(_txtDescripcion);
+		
+		_cbCita = new CheckboxField("Crear cita", false);
+		_cbCita.setChangeListener(listenerCita);
+		add(_cbCita);
 
 		addMenuItem(menuGuardar);
 	}
+	
+	private FieldChangeListener listenerCita = new FieldChangeListener() {
+		public void fieldChanged(Field field, int context) {
+			if(_cbCita.getChecked()) {
+				
+				NuevaCitaScreen n = new NuevaCitaScreen(getDescripcion(), new Date(_dfFechaProxima.getDate()));
+				UiApplication.getUiApplication().pushModalScreen(n);
+			}
+		}
+	};
 
 	private FieldChangeListener listenerJuzgado = new FieldChangeListener() {
 		public void fieldChanged(Field field, int context) {
