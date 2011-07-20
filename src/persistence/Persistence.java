@@ -398,7 +398,11 @@ public class Persistence implements Cargado, Guardado {
 							+ " longitud_min = ? WHERE id_atributo = ?");
 			stAcAtributo.prepare();
 			stAcAtributo.bind(1, campo.getNombre());
-			stAcAtributo.bind(2, campo.isObligatorio().toString());
+			int obligatorio = 0;
+			if(campo.isObligatorio().booleanValue()){
+				obligatorio = 1;
+			}
+			stAcAtributo.bind(2, obligatorio);
 			stAcAtributo.bind(3, campo.getLongitudMax());
 			stAcAtributo.bind(4, campo.getLongitudMin());
 			stAcAtributo.bind(5, campo.getId_campo());
@@ -423,7 +427,11 @@ public class Persistence implements Cargado, Guardado {
 				Statement stAtributos = d.createStatement("INSERT INTO atributos (id_atributo, nombre, obligatorio, longitud_max, longitud_min) VALUES( NULL,?,?,?,?)");
 				stAtributos.prepare();
 				stAtributos.bind(1, campo.getNombre());
-				stAtributos.bind(2, campo.isObligatorio().toString());
+				int obligatorio = 0;
+				if(campo.isObligatorio().booleanValue()){
+					obligatorio = 1;
+				}
+				stAtributos.bind(2, obligatorio);
 				stAtributos.bind(3, campo.getLongitudMax());
 				stAtributos.bind(4, campo.getLongitudMin());
 				stAtributos.execute();
