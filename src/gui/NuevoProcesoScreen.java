@@ -39,7 +39,6 @@ public class NuevoProcesoScreen extends FondoNormal {
 	private ButtonField _btnDemandante;
 	private ButtonField _btnDemandado;
 	private ButtonField _btnJuzgado;
-	private ButtonField _btnCampoPersonalizado;
 
 	private HorizontalFieldManager _fldCampoPersonalizado;
 	private VerticalFieldManager _fldRightCampoPersonalizado;
@@ -140,10 +139,6 @@ public class NuevoProcesoScreen extends FondoNormal {
 		_fldCampoPersonalizado = new HorizontalFieldManager();
 		_fldRightCampoPersonalizado = new VerticalFieldManager(USE_ALL_WIDTH);
 		_fldLeftCampoPersonalizado = new VerticalFieldManager();
-		_btnCampoPersonalizado = new ButtonField("Nuevo", FIELD_RIGHT);
-		_btnCampoPersonalizado.setChangeListener(listenerBtnCampoPersonalizado);
-		_fldLeftCampoPersonalizado.add(new LabelField("Campo personalizado: "));
-		_fldRightCampoPersonalizado.add(_btnCampoPersonalizado);
 		_fldCampoPersonalizado.add(_fldLeftCampoPersonalizado);
 		_fldCampoPersonalizado.add(_fldRightCampoPersonalizado);
 		add(_fldCampoPersonalizado);
@@ -196,6 +191,8 @@ public class NuevoProcesoScreen extends FondoNormal {
 			menu.add(menuAddActuacion);
 			menu.addSeparator();
 		}
+		menu.add(menuCampo);
+		menu.addSeparator();
 		menu.add(menuGuardar);
 	}
 	
@@ -246,6 +243,22 @@ public class NuevoProcesoScreen extends FondoNormal {
 			}
 		}
 	};
+	
+	private final MenuItem menuCampo = new MenuItem(
+			"Agregar campo personalizado", 0, 0) {
+
+		public void run() {
+			ListadoCampos l = new ListadoCampos(true);
+			UiApplication.getUiApplication().pushModalScreen(l.getScreen());
+			try {
+				addCampoPersonalizado(l.getSelected());
+			} catch (NullPointerException e) {
+			} finally {
+				l = null;
+			}
+		}
+	};
+
 
 	private final MenuItem menuEliminar = new MenuItem("Eliminar", 0, 0) {
 
@@ -316,24 +329,11 @@ public class NuevoProcesoScreen extends FondoNormal {
 		}
 	};
 
-	private FieldChangeListener listenerBtnCampoPersonalizado = new FieldChangeListener() {
-		public void fieldChanged(Field field, int context) {
-			NuevoCampoPersonalizado campo = new NuevoCampoPersonalizado();
-			UiApplication.getUiApplication().pushModalScreen(campo.getScreen());
-			campo.guardarCampo();
-			try {
-				addCampoPersonalizado(campo.getCampo());
-			} catch (NullPointerException e) {
-				Dialog.alert("listenerBtnCampoPersonalizado -> " + e.toString());
-			}
-		}
-	};
-
 	/**
 	 * @param campo
 	 *            Agrega un campo personalizado al Proceso en creacion
 	 */
-	public void addCampoPersonalizado(CampoPersonalizado campo) {
+	public void addCampoPersonalizado(CampoPersonalizado campo) throws NullPointerException{
 		BasicEditField campoP = new BasicEditField();
 		campoP.setLabel(campo.getNombre() + ": ");
 		campoP.setCookie(campo);

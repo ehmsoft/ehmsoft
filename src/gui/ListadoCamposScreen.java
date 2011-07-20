@@ -3,24 +3,24 @@ package gui;
 import net.rim.device.api.ui.UiApplication;
 import net.rim.device.api.ui.container.MainScreen;
 
-public class ListadoCamposPersonalizadosScreen extends MainScreen {
+public class ListadoCamposScreen extends MainScreen {
 
 	private Object _selected;
-	private ListadoCamposPersonalizadosLista _lista;
+	private ListadoCamposLista _lista;
 
-	public ListadoCamposPersonalizadosScreen() {
+	public ListadoCamposScreen() {
 		super(MainScreen.VERTICAL_SCROLL | MainScreen.VERTICAL_SCROLLBAR);
 
 		setTitle("Listado de campos personalizados");
 
-		_lista = new ListadoCamposPersonalizadosLista() {
+		_lista = new ListadoCamposLista() {
 			protected boolean navigationClick(int status, int time) {
 				if (String.class.isInstance(get(_lista, getSelectedIndex()))) {
 					NuevoCampo n = new NuevoCampo();
 					UiApplication.getUiApplication().pushModalScreen(
 							n.getScreen());
 					try {
-						addCampo(n.getCampo());
+						_lista.insert(1, n.getCampo());
 					} catch (Exception e) {
 						return true;
 					}
@@ -33,7 +33,7 @@ public class ListadoCamposPersonalizadosScreen extends MainScreen {
 			}
 		};
 
-		_lista.insert(0, "Nuevo campo personalizado");
+		_lista.insert(0, "crear nuevo campo personalizado");
 		add(_lista);
 	}
 
