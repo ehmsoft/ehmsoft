@@ -17,7 +17,7 @@ public class NuevoCampoScreen extends FondoNormal {
 	private BasicEditField _txtLongMax;
 	private BasicEditField _txtLongMin;
 
-	private boolean _guardar;
+	private boolean _guardar = false;
 
 	public NuevoCampoScreen() {
 
@@ -50,10 +50,13 @@ public class NuevoCampoScreen extends FondoNormal {
 
 		public void run() {
 			// TODO Auto-generated method stub
-			if (getLongMax() >= getLongMin())
+			if (getLongMax() >= getLongMin()) {
+				_guardar = true;
 				UiApplication.getUiApplication().popScreen(getScreen());
-			else
+			}
+			else {
 				Dialog.alert("La longitud mínima no puede ser mayor que la longitud máxima, corrija y guarde nuevamente");
+			}
 		}
 	};
 
