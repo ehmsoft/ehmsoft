@@ -355,7 +355,7 @@ public class VerProcesoScreen extends FondoNormal {
 			}
 			try {
 				if (CampoPersonalizado.class.isInstance(f.getCookie())) {
-					VerCampoPersonalizado verCampo = new VerCampoPersonalizado(
+					VerCampo verCampo = new VerCampo(
 							(CampoPersonalizado) f.getCookie());
 					UiApplication.getUiApplication().pushModalScreen(
 							verCampo.getScreen());
