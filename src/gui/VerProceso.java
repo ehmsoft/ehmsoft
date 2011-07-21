@@ -26,7 +26,7 @@ public class VerProceso {
 		if (_screen.isGuardado()) {
 			try {
 				Vector campos = null;
-				campos = asignarValores(_screen.getValores());
+				campos = asignarValores(_screen.getValoresViejos());
 				Persistence persistence = new Persistence();
 				_proceso = new Proceso(_proceso.getId_proceso(),
 						_screen.getDemandante(), _screen.getDemandado(),

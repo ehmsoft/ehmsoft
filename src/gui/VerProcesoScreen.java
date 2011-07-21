@@ -40,8 +40,7 @@ public class VerProcesoScreen extends FondoNormal {
 	Persona _demandado;
 	Juzgado _juzgado;
 	Categoria _categoria;
-	Vector _camposPersonalizados;
-	Vector _valoresCamposPersonalizados;
+	Vector _valoresCamposViejos;
 	Vector _valoresCamposNuevos;
 	Vector _actuaciones;
 
@@ -327,7 +326,6 @@ public class VerProcesoScreen extends FondoNormal {
 		_demandante = proceso.getDemandante();
 		_demandado = proceso.getDemandado();
 		_juzgado = proceso.getJuzgado();
-		_camposPersonalizados = proceso.getCampos();
 		_actuaciones = proceso.getActuaciones();
 		_categoria = proceso.getCategoria();
 
@@ -377,42 +375,63 @@ public class VerProcesoScreen extends FondoNormal {
 		_nfPrioridad.setEditable(false);
 		add(_nfPrioridad);
 
-		_valoresCamposPersonalizados = new Vector();
+		_valoresCamposViejos = new Vector();
 		_valoresCamposNuevos = new Vector();
 
-		addCampos();
+		addCampos(proceso.getCampos());
 	}
 
-	public void addCampoPersonalizado(CampoPersonalizado campo) throws NullPointerException{
-		EditableTextField campoP = new EditableTextField();
-		campoP.setLabel(campo.getNombre() + ": ");
-		campoP.setCookie(campo);
-		if (campo.getLongitudMax() != 0)
-			campoP.setMaxSize(campo.getLongitudMax());
-		add(campoP);
-		_valoresCamposNuevos.addElement(campoP);
-		campoP.setFocus();
+	public void addCampoPersonalizado(CampoPersonalizado campo)
+			throws NullPointerException {
+		Enumeration e = _valoresCamposViejos.elements();
+		CampoPersonalizado temp;
+		boolean is = false;
+		while (e.hasMoreElements()) {
+			temp = (CampoPersonalizado) (((EditableTextField) e.nextElement())
+					.getCookie());
+			if (temp.getId_atributo().equals(campo.getId_atributo())) {
+				is = true;
+			}
+		}
+		if (!is) {
+			e = _valoresCamposNuevos.elements();
+			while (e.hasMoreElements()) {
+				temp = (CampoPersonalizado) (((EditableTextField) e
+						.nextElement()).getCookie());
+				if (temp.getId_atributo().equals(campo.getId_atributo())) {
+					is = true;
+				}
+			}
+		}
+		if (!is) {
+			EditableTextField campoP = new EditableTextField();
+			campoP.setLabel(campo.getNombre() + ": ");
+			campoP.setCookie(campo);
+			if (campo.getLongitudMax() != 0)
+				campoP.setMaxSize(campo.getLongitudMax());
+			add(campoP);
+			_valoresCamposNuevos.addElement(campoP);
+			campoP.setFocus();
+		} else {
+			Dialog.alert("El campo ya existe en este proceso");
+		}
 	}
 
-	private void addCampos() {
-		Enumeration e = _camposPersonalizados.elements();
+	private void addCampos(Vector campos) {
+		Enumeration e = campos.elements();
 
 		while (e.hasMoreElements()) {
 			CampoPersonalizado c = (CampoPersonalizado) e.nextElement();
 			EditableTextField etf = new EditableTextField(c.getNombre() + ": ",
 					c.getValor());
 			etf.setCookie(c);
-			_valoresCamposPersonalizados.addElement(etf);
+			_valoresCamposViejos.addElement(etf);
 			add(etf);
 		}
 	}
 
 	public Vector getActuaciones() {
 		return _actuaciones;
-	}
-
-	public Vector getCampos() {
-		return _camposPersonalizados;
 	}
 
 	public Categoria getCategoria() {
@@ -465,8 +484,8 @@ public class VerProcesoScreen extends FondoNormal {
 		return _txtTipo.getText();
 	}
 
-	public Vector getValores() {
-		return _valoresCamposPersonalizados;
+	public Vector getValoresViejos() {
+		return _valoresCamposViejos;
 	}
 	
 	public Vector getValoresNuevos() {
@@ -540,9 +559,6 @@ public class VerProcesoScreen extends FondoNormal {
 			cambio = true;
 		}
 		if (_proceso.getPrioridad() != this.getPrioridad()) {
-			cambio = true;
-		}
-		if (!_proceso.getCampos().equals(this.getCampos())) {
 			cambio = true;
 		}
 		return cambio;
