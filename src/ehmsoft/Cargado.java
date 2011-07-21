@@ -20,4 +20,5 @@ public interface Cargado {
 	public Vector consultarCategorias() throws Exception;
 	public Vector consultarCampos() throws Exception;
 	public CampoPersonalizado consultarCampo(String id_campo)throws Exception;
+	public Vector consultarAtributos() throws Exception;
 }
