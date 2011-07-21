@@ -544,6 +544,15 @@ public class Persistence implements Cargado, Guardado {
 			}
 
 		}
+		Vector cp = new Vector();
+		cp = proceso.getCampos();
+		if (cp != null) {
+			Enumeration e = cp.elements();
+			while (e.hasMoreElements()) {
+				actualizarCampoPersonalizado((CampoPersonalizado) e.nextElement());
+			}
+
+		}
 
 	}
 
