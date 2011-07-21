@@ -42,9 +42,8 @@ public class VerProcesoScreen extends FondoNormal {
 	Juzgado _juzgado;
 	Categoria _categoria;
 	Vector _camposPersonalizados;
-	Vector _txtCampos;
-	Vector _actuaciones;
 	Vector _valoresCamposPersonalizados;
+	Vector _actuaciones;
 
 	private boolean _guardar = false;
 
@@ -105,7 +104,7 @@ public class VerProcesoScreen extends FondoNormal {
 		_nfPrioridad.setEditable(false);
 		add(_nfPrioridad);
 
-		_txtCampos = new Vector();
+		_valoresCamposPersonalizados = new Vector();
 
 		addCampos();
 	}
@@ -266,7 +265,7 @@ public class VerProcesoScreen extends FondoNormal {
 			EditableTextField etf = new EditableTextField(c.getNombre() + ": ",
 					c.getValor());
 			etf.setCookie(c);
-			_txtCampos.addElement(etf);
+			_valoresCamposPersonalizados.addElement(etf);
 			add(etf);
 		}
 	}
