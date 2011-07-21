@@ -544,6 +544,15 @@ public class Persistence implements Cargado, Guardado {
 			}
 
 		}
+		Vector cp = new Vector();
+		cp = proceso.getCampos();
+		if (cp != null) {
+			Enumeration e = cp.elements();
+			while (e.hasMoreElements()) {
+				actualizarCampoPersonalizado((CampoPersonalizado) e.nextElement());
+			}
+
+		}
 
 	}
 
@@ -984,6 +993,7 @@ public class Persistence implements Cargado, Guardado {
 			proceso_act.setJuzgado(consultarJuzgado(proceso_act.getJuzgado()
 					.getId_juzgado()));
 			proceso_act.setActuaciones(consultarActuaciones(proceso_act));
+			proceso_act.setCampos(consultarCampos(proceso_act));
 			proceso_act.setCategoria(consultarCategoria(proceso_act
 					.getCategoria().getId_categoria()));
 		}
@@ -1043,6 +1053,7 @@ public class Persistence implements Cargado, Guardado {
 		proceso.setJuzgado(consultarJuzgado(proceso.getJuzgado()
 				.getId_juzgado()));
 		proceso.setActuaciones(consultarActuaciones(proceso));
+		proceso.setCampos(consultarCampos(proceso));
 		proceso.setCategoria(consultarCategoria(proceso.getCategoria()
 				.getId_categoria()));
 		return proceso;
@@ -1258,15 +1269,16 @@ public class Persistence implements Cargado, Guardado {
 	}
 
 
-	public Vector consultarCampos() throws Exception {
+	public Vector consultarCampos(Proceso proceso) throws Exception {
 		Database d = null;
 		Vector campos = new Vector();
 		try {
 			connMgr.prepararBD();
 			d = DatabaseFactory.open(connMgr.getDbLocation());
 			Statement st = d
-					.createStatement("SELECT at.id_atributo_proceso, at.id_atributo, at.valor, a.nombre,a.obligatorio,a.longitud_max, a.longitud_min FROM atributos_proceso at, atributos a WHERE at.id_atributo = a.id_atributo");
+					.createStatement("SELECT at.id_atributo_proceso, at.id_atributo, at.valor, a.nombre,a.obligatorio,a.longitud_max, a.longitud_min FROM atributos_proceso at, atributos a WHERE at.id_atributo = a.id_atributo AND at.id_proceso = ?");
 			st.prepare();
+			st.bind(1, proceso.getId_proceso());
 			Cursor cursor = st.getCursor();
 			while (cursor.next()) {
 				Row row = cursor.getRow();
