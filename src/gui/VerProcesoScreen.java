@@ -8,6 +8,7 @@ import java.util.Vector;
 import net.rim.device.api.ui.Field;
 import net.rim.device.api.ui.MenuItem;
 import net.rim.device.api.ui.UiApplication;
+import net.rim.device.api.ui.component.BasicEditField;
 import net.rim.device.api.ui.component.DateField;
 import net.rim.device.api.ui.component.Dialog;
 import net.rim.device.api.ui.component.Menu;
@@ -43,6 +44,7 @@ public class VerProcesoScreen extends FondoNormal {
 	Vector _camposPersonalizados;
 	Vector _txtCampos;
 	Vector _actuaciones;
+	Vector _valoresCamposPersonalizados;
 
 	private boolean _guardar = false;
 
@@ -115,6 +117,9 @@ public class VerProcesoScreen extends FondoNormal {
 			menu.add(menuCambiarCategoria);
 			menu.addSeparator();
 		}
+		
+		menu.add(menuAddCampo);
+		
 		if (focus.equals(_ofActuaciones)) {
 			menu.add(menuAddActuacion);
 			menu.addSeparator();
@@ -180,6 +185,36 @@ public class VerProcesoScreen extends FondoNormal {
 			}
 		}
 	};
+	
+	private final MenuItem menuAddCampo = new MenuItem(
+			"Agregar campo personalizado", 0, 0) {
+
+		public void run() {
+			ListadoCampos l = new ListadoCampos(true);
+			UiApplication.getUiApplication().pushModalScreen(l.getScreen());
+			try {
+				addCampoPersonalizado(l.getSelected());
+			} catch (NullPointerException e) {
+			} finally {
+				l = null;
+			}
+		}
+	};
+	
+	public Vector getValores() {
+		return _valoresCamposPersonalizados;
+	}
+
+	public void addCampoPersonalizado(CampoPersonalizado campo) throws NullPointerException{
+		BasicEditField campoP = new BasicEditField();
+		campoP.setLabel(campo.getNombre() + ": ");
+		campoP.setCookie(campo);
+		if (campo.getLongitudMax() != 0)
+			campoP.setMaxSize(campo.getLongitudMax());
+		add(campoP);
+		_valoresCamposPersonalizados.addElement(campoP);
+		campoP.setFocus();
+	}
 
 	private final MenuItem menuEliminar = new MenuItem("Eliminar del proceso",
 			0, 0) {
@@ -268,7 +303,7 @@ public class VerProcesoScreen extends FondoNormal {
 				_txtDemandante.setText(_demandante.getNombre());
 				_txtDemandante.setFocus();
 			}
-			if (f.equals(_txtDemandado)) {
+			else if (f.equals(_txtDemandado)) {
 				VerPersona verPersona = new VerPersona(_demandado);
 				UiApplication.getUiApplication().pushModalScreen(
 						verPersona.getScreen());
@@ -278,7 +313,7 @@ public class VerProcesoScreen extends FondoNormal {
 				_txtDemandado.setFocus();
 			}
 
-			if (f.equals(_txtJuzgado)) {
+			else if (f.equals(_txtJuzgado)) {
 				VerJuzgado verJuzgado = new VerJuzgado(_juzgado);
 				UiApplication.getUiApplication().pushModalScreen(
 						verJuzgado.getScreen());
@@ -293,22 +328,22 @@ public class VerProcesoScreen extends FondoNormal {
 				}
 			}
 
-			if (f.equals(_dfFecha)) {
+			else if (f.equals(_dfFecha)) {
 				_dfFecha.setEditable(true);
 				_dfFecha.setFocus();
 			}
 
-			if (f.equals(_txtRadicado)) {
+			else if (f.equals(_txtRadicado)) {
 				_txtRadicado.setEditable();
 				_txtRadicado.setFocus();
 			}
 
-			if (f.equals(_txtRadicadoUnico)) {
+			else if (f.equals(_txtRadicadoUnico)) {
 				_txtRadicadoUnico.setEditable();
 				_txtRadicadoUnico.setFocus();
 			}
 
-			if (f.equals(_ofActuaciones)) {
+			else if (f.equals(_ofActuaciones)) {
 				Actuacion actuacion = (Actuacion) _ofActuaciones
 						.getChoice(_ofActuaciones.getSelectedIndex());
 				VerActuacion verAtuacion = new VerActuacion(actuacion);
@@ -326,12 +361,12 @@ public class VerProcesoScreen extends FondoNormal {
 				}
 			}
 
-			if (f.equals(_txtEstado)) {
+			else if (f.equals(_txtEstado)) {
 				_txtEstado.setEditable();
 				_txtEstado.setFocus();
 			}
 
-			if (f.equals(_txtCategoria)) {
+			else if (f.equals(_txtCategoria)) {
 				VerCategoria v = new VerCategoria(_categoria);
 				UiApplication.getUiApplication().pushModalScreen(v.getScreen());
 				_categoria = v.getCategoria();
@@ -339,23 +374,26 @@ public class VerProcesoScreen extends FondoNormal {
 				_txtCategoria.setFocus();
 			}
 
-			if (f.equals(_txtTipo)) {
+			else if (f.equals(_txtTipo)) {
 				_txtTipo.setEditable();
 				_txtTipo.setFocus();
 			}
 
-			if (f.equals(_txtNotas)) {
+			else if (f.equals(_txtNotas)) {
 				_txtNotas.setEditable();
 				_txtNotas.setFocus();
 			}
 
-			if (f.equals(_nfPrioridad)) {
+			else if (f.equals(_nfPrioridad)) {
 				_nfPrioridad.setEditable(true);
 				_nfPrioridad.setFocus();
 			}
 			try {
 				if (CampoPersonalizado.class.isInstance(f.getCookie())) {
-					VerCampo verCampo = new VerCampo(
+					EditableTextField editable = (EditableTextField)f;
+					editable.setEditable();
+					
+/*					VerCampo verCampo = new VerCampo(
 							(CampoPersonalizado) f.getCookie());
 					UiApplication.getUiApplication().pushModalScreen(
 							verCampo.getScreen());
@@ -364,7 +402,7 @@ public class VerProcesoScreen extends FondoNormal {
 							.getValor());
 					((EditableTextField) f).setLabel(verCampo.getCampo()
 							.getNombre() + ": ");
-					((EditableTextField) f).setCookie(verCampo.getCampo());
+					((EditableTextField) f).setCookie(verCampo.getCampo());*/
 				}
 			} catch (Exception e) {
 				Dialog.alert("Edit Campo -> " + e.toString());

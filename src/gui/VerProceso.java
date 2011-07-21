@@ -1,7 +1,12 @@
 package gui;
 
+import java.util.Enumeration;
+import java.util.Vector;
+
+import net.rim.device.api.ui.component.BasicEditField;
 import net.rim.device.api.ui.component.Dialog;
 import persistence.Persistence;
+import core.CampoPersonalizado;
 import core.Proceso;
 
 public class VerProceso {
@@ -20,6 +25,12 @@ public class VerProceso {
 	public void actualizarProceso() {
 		if (_screen.isGuardado()) {
 			try {
+				Vector campos = null;
+				campos = asignarValores(_screen.getValores());
+				Enumeration e = campos.elements();
+				while(e.hasMoreElements()) {
+					_screen.getCampos().addElement(e.nextElement());
+				}
 				Persistence persistence = new Persistence();
 				_proceso = new Proceso(_proceso.getId_proceso(),
 						_screen.getDemandante(), _screen.getDemandado(),
@@ -38,5 +49,24 @@ public class VerProceso {
 
 	public Proceso getProceso() {
 		return _proceso;
+	}
+	
+	private Vector asignarValores(Vector txtFields) {
+		Enumeration fields = txtFields.elements();
+		Vector campos = new Vector();
+
+		while (fields.hasMoreElements()) {
+			BasicEditField txtField;
+			String valor;
+			CampoPersonalizado campo;
+
+			txtField = (BasicEditField) fields.nextElement();
+			valor = txtField.getText();
+			campo = (CampoPersonalizado) txtField.getCookie();
+
+			campo.setValor(valor);
+			campos.addElement(campo);
+		}
+		return campos;
 	}
 }
