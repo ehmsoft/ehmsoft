@@ -8,7 +8,6 @@ import java.util.Vector;
 import net.rim.device.api.ui.Field;
 import net.rim.device.api.ui.MenuItem;
 import net.rim.device.api.ui.UiApplication;
-import net.rim.device.api.ui.component.BasicEditField;
 import net.rim.device.api.ui.component.DateField;
 import net.rim.device.api.ui.component.Dialog;
 import net.rim.device.api.ui.component.Menu;
@@ -43,129 +42,10 @@ public class VerProcesoScreen extends FondoNormal {
 	Categoria _categoria;
 	Vector _camposPersonalizados;
 	Vector _valoresCamposPersonalizados;
+	Vector _valoresCamposNuevos;
 	Vector _actuaciones;
 
 	private boolean _guardar = false;
-
-	public VerProcesoScreen(Proceso proceso) {
-
-		setTitle("Ver proceso");
-		_proceso = proceso;
-		_demandante = proceso.getDemandante();
-		_demandado = proceso.getDemandado();
-		_juzgado = proceso.getJuzgado();
-		_camposPersonalizados = proceso.getCampos();
-		_actuaciones = proceso.getActuaciones();
-		_categoria = proceso.getCategoria();
-
-		_txtDemandante = new EditableTextField("Demandante: ",
-				_demandante.getNombre());
-		add(_txtDemandante);
-
-		_txtDemandado = new EditableTextField("Demandado: ",
-				_demandado.getNombre());
-		add(_txtDemandado);
-
-		_txtJuzgado = new EditableTextField("Juzgado: ", _juzgado.getNombre());
-		add(_txtJuzgado);
-
-		_dfFecha = new DateField("Fecha: ", _proceso.getFecha().getTime()
-				.getTime(), DateField.DATE_TIME);
-		_dfFecha.setEditable(false);
-		add(_dfFecha);
-
-		_txtRadicado = new EditableTextField("Radicado: ",
-				_proceso.getRadicado());
-		add(_txtRadicado);
-
-		_txtRadicadoUnico = new EditableTextField("Radicado unico: ",
-				_proceso.getRadicadoUnico());
-		add(_txtRadicadoUnico);
-
-		_ofActuaciones = new ObjectChoiceField("Actuaciones: ",
-				transformActuaciones());
-		add(_ofActuaciones);
-
-		_txtEstado = new EditableTextField("Estado: ", _proceso.getEstado());
-		add(_txtEstado);
-
-		_txtCategoria = new EditableTextField("Categoría: ", _proceso
-				.getCategoria().getDescripcion());
-		add(_txtCategoria);
-
-		_txtTipo = new EditableTextField("Tipo: ", _proceso.getTipo());
-		add(_txtTipo);
-
-		_txtNotas = new EditableTextField("Notas: ", _proceso.getNotas());
-		add(_txtNotas);
-
-		_nfPrioridad = new NumericChoiceField("Prioridad: ", 0, 10, 1);
-		_nfPrioridad.setSelectedValue(_proceso.getPrioridad());
-		_nfPrioridad.setEditable(false);
-		add(_nfPrioridad);
-
-		_valoresCamposPersonalizados = new Vector();
-
-		addCampos();
-	}
-
-	protected void makeMenu(Menu menu, int instance) {
-		Field focus = UiApplication.getUiApplication().getActiveScreen()
-				.getFieldWithFocus();
-		if(focus.equals(_txtCategoria)) {
-			menu.add(menuCambiarCategoria);
-			menu.addSeparator();
-		}
-		
-		menu.add(menuAddCampo);
-		
-		if (focus.equals(_ofActuaciones)) {
-			menu.add(menuAddActuacion);
-			menu.addSeparator();
-		}
-		
-		if (focus.equals(_txtDemandante)) {
-			if (_demandante != null) {
-				if (!_demandante.getId_persona().equals("1")) {
-					menu.add(menuEditar);
-				}
-			}
-		}
-
-		else if (focus.equals(_txtDemandado)) {
-			if (_demandado != null) {
-				if (!_demandado.getId_persona().equals("1")) {
-					menu.add(menuEditar);
-				}
-			}
-		}
-
-		else if (focus.equals(_txtDemandado)) {
-			if (_juzgado != null) {
-				if (!_juzgado.getId_juzgado().equals("1")) {
-					menu.add(menuEditar);
-				}
-			}
-		}
-		
-		else {
-			menu.add(menuEditar);
-		}
-
-		menu.add(menuEditarTodo);
-		if (!focus.equals(_ofActuaciones)) {
-			menu.add(menuAddActuacion);
-		}
-		menu.addSeparator();
-		if (focus.equals(_txtDemandante) || focus.equals(_txtDemandado)
-				|| focus.equals(_txtJuzgado)) {
-			menu.add(menuCambiar);
-			menu.add(menuEliminar);
-		} else if (focus.equals(_txtCategoria)) {
-			menu.add(menuCambiarCategoria);
-		}
-		menu.add(menuGuardar);
-	}
 
 	private final MenuItem menuCambiarCategoria = new MenuItem("Cambiar", 0, 0) {
 
@@ -184,7 +64,7 @@ public class VerProcesoScreen extends FondoNormal {
 			}
 		}
 	};
-	
+
 	private final MenuItem menuAddCampo = new MenuItem(
 			"Agregar campo personalizado", 0, 0) {
 
@@ -199,21 +79,6 @@ public class VerProcesoScreen extends FondoNormal {
 			}
 		}
 	};
-	
-	public Vector getValores() {
-		return _valoresCamposPersonalizados;
-	}
-
-	public void addCampoPersonalizado(CampoPersonalizado campo) throws NullPointerException{
-		BasicEditField campoP = new BasicEditField();
-		campoP.setLabel(campo.getNombre() + ": ");
-		campoP.setCookie(campo);
-		if (campo.getLongitudMax() != 0)
-			campoP.setMaxSize(campo.getLongitudMax());
-		add(campoP);
-		_valoresCamposPersonalizados.addElement(campoP);
-		campoP.setFocus();
-	}
 
 	private final MenuItem menuEliminar = new MenuItem("Eliminar del proceso",
 			0, 0) {
@@ -247,33 +112,11 @@ public class VerProcesoScreen extends FondoNormal {
 			}
 		}
 	};
-
-	private Object[] transformActuaciones() {
-		Enumeration e = _actuaciones.elements();
-		Object[] elements = new Object[_actuaciones.size()];
-		for (int i = 0; i < elements.length; i++) {
-			elements[i] = ((Actuacion) e.nextElement());
-		}
-		return elements;
-	}
-
-	private void addCampos() {
-		Enumeration e = _camposPersonalizados.elements();
-
-		while (e.hasMoreElements()) {
-			CampoPersonalizado c = (CampoPersonalizado) e.nextElement();
-			EditableTextField etf = new EditableTextField(c.getNombre() + ": ",
-					c.getValor());
-			etf.setCookie(c);
-			_valoresCamposPersonalizados.addElement(etf);
-			add(etf);
-		}
-	}
-
+	
 	private final MenuItem menuGuardar = new MenuItem("Guardar", 0, 0) {
 
 		public void run() {
-			if (isCambiado()) {
+			//if (isCambiado()) {
 				Object[] ask = { "Guardar", "Descartar", "Cancelar" };
 				int sel = Dialog.ask("¿Desea guardar los cambios realizados?",
 						ask, 2);
@@ -283,12 +126,12 @@ public class VerProcesoScreen extends FondoNormal {
 				} else if (sel == 1) {
 					UiApplication.getUiApplication().popScreen(getScreen());
 				}
-			} else {
-				UiApplication.getUiApplication().popScreen(getScreen());
-			}
+			//} else {
+			//	UiApplication.getUiApplication().popScreen(getScreen());
+			//}
 		}
 	};
-
+	
 	private final MenuItem menuEditar = new MenuItem("Editar", 0, 0) {
 
 		public void run() {
@@ -477,12 +320,115 @@ public class VerProcesoScreen extends FondoNormal {
 		}
 	};
 
-	public Persona getDemandante() {
-		return _demandante;
+	public VerProcesoScreen(Proceso proceso) {
+
+		setTitle("Ver proceso");
+		_proceso = proceso;
+		_demandante = proceso.getDemandante();
+		_demandado = proceso.getDemandado();
+		_juzgado = proceso.getJuzgado();
+		_camposPersonalizados = proceso.getCampos();
+		_actuaciones = proceso.getActuaciones();
+		_categoria = proceso.getCategoria();
+
+		_txtDemandante = new EditableTextField("Demandante: ",
+				_demandante.getNombre());
+		add(_txtDemandante);
+
+		_txtDemandado = new EditableTextField("Demandado: ",
+				_demandado.getNombre());
+		add(_txtDemandado);
+
+		_txtJuzgado = new EditableTextField("Juzgado: ", _juzgado.getNombre());
+		add(_txtJuzgado);
+
+		_dfFecha = new DateField("Fecha: ", _proceso.getFecha().getTime()
+				.getTime(), DateField.DATE_TIME);
+		_dfFecha.setEditable(false);
+		add(_dfFecha);
+
+		_txtRadicado = new EditableTextField("Radicado: ",
+				_proceso.getRadicado());
+		add(_txtRadicado);
+
+		_txtRadicadoUnico = new EditableTextField("Radicado unico: ",
+				_proceso.getRadicadoUnico());
+		add(_txtRadicadoUnico);
+
+		_ofActuaciones = new ObjectChoiceField("Actuaciones: ",
+				transformActuaciones());
+		add(_ofActuaciones);
+
+		_txtEstado = new EditableTextField("Estado: ", _proceso.getEstado());
+		add(_txtEstado);
+
+		_txtCategoria = new EditableTextField("Categoría: ", _proceso
+				.getCategoria().getDescripcion());
+		add(_txtCategoria);
+
+		_txtTipo = new EditableTextField("Tipo: ", _proceso.getTipo());
+		add(_txtTipo);
+
+		_txtNotas = new EditableTextField("Notas: ", _proceso.getNotas());
+		add(_txtNotas);
+
+		_nfPrioridad = new NumericChoiceField("Prioridad: ", 0, 10, 1);
+		_nfPrioridad.setSelectedValue(_proceso.getPrioridad());
+		_nfPrioridad.setEditable(false);
+		add(_nfPrioridad);
+
+		_valoresCamposPersonalizados = new Vector();
+		_valoresCamposNuevos = new Vector();
+
+		addCampos();
+	}
+
+	public void addCampoPersonalizado(CampoPersonalizado campo) throws NullPointerException{
+		EditableTextField campoP = new EditableTextField();
+		campoP.setLabel(campo.getNombre() + ": ");
+		campoP.setCookie(campo);
+		if (campo.getLongitudMax() != 0)
+			campoP.setMaxSize(campo.getLongitudMax());
+		add(campoP);
+		_valoresCamposNuevos.addElement(campoP);
+		campoP.setFocus();
+	}
+
+	private void addCampos() {
+		Enumeration e = _camposPersonalizados.elements();
+
+		while (e.hasMoreElements()) {
+			CampoPersonalizado c = (CampoPersonalizado) e.nextElement();
+			EditableTextField etf = new EditableTextField(c.getNombre() + ": ",
+					c.getValor());
+			etf.setCookie(c);
+			_valoresCamposPersonalizados.addElement(etf);
+			add(etf);
+		}
+	}
+
+	public Vector getActuaciones() {
+		return _actuaciones;
+	}
+
+	public Vector getCampos() {
+		return _camposPersonalizados;
+	}
+
+	public Categoria getCategoria() {
+		return _categoria;
 	}
 
 	public Persona getDemandado() {
 		return _demandado;
+	}
+
+	public Persona getDemandante() {
+		return _demandante;
+	}
+
+	public String getEstado() {
+		return _txtEstado.getText();
 	}
 
 	public Calendar getFecha() {
@@ -493,30 +439,6 @@ public class VerProcesoScreen extends FondoNormal {
 
 	public Juzgado getJuzgado() {
 		return _juzgado;
-	}
-
-	public String getRadicado() {
-		return _txtRadicado.getText();
-	}
-
-	public String getRadicadoUnico() {
-		return _txtRadicadoUnico.getText();
-	}
-
-	public Vector getActuaciones() {
-		return _actuaciones;
-	}
-
-	public String getEstado() {
-		return _txtEstado.getText();
-	}
-
-	public Categoria getCategoria() {
-		return _categoria;
-	}
-
-	public String getTipo() {
-		return _txtTipo.getText();
 	}
 
 	public String getNotas() {
@@ -531,14 +453,26 @@ public class VerProcesoScreen extends FondoNormal {
 		return _proceso;
 	}
 
-	public Vector getCampos() {
-		return _camposPersonalizados;
+	public String getRadicado() {
+		return _txtRadicado.getText();
 	}
 
-	public boolean isGuardado() {
-		return _guardar;
+	public String getRadicadoUnico() {
+		return _txtRadicadoUnico.getText();
+	}
+
+	public String getTipo() {
+		return _txtTipo.getText();
+	}
+
+	public Vector getValores() {
+		return _valoresCamposPersonalizados;
 	}
 	
+	public Vector getValoresNuevos() {
+		return _valoresCamposNuevos;
+	}
+
 	private boolean isCambiado() {
 		boolean cambio = false;
 
@@ -614,6 +548,68 @@ public class VerProcesoScreen extends FondoNormal {
 		return cambio;
 	}
 
+	public boolean isGuardado() {
+		return _guardar;
+	}
+
+	protected void makeMenu(Menu menu, int instance) {
+		Field focus = UiApplication.getUiApplication().getActiveScreen()
+				.getFieldWithFocus();
+		if(focus.equals(_txtCategoria)) {
+			menu.add(menuCambiarCategoria);
+			menu.addSeparator();
+		}
+		
+		menu.add(menuAddCampo);
+		
+		if (focus.equals(_ofActuaciones)) {
+			menu.add(menuAddActuacion);
+			menu.addSeparator();
+		}
+		
+		if (focus.equals(_txtDemandante)) {
+			if (_demandante != null) {
+				if (!_demandante.getId_persona().equals("1")) {
+					menu.add(menuEditar);
+				}
+			}
+		}
+
+		else if (focus.equals(_txtDemandado)) {
+			if (_demandado != null) {
+				if (!_demandado.getId_persona().equals("1")) {
+					menu.add(menuEditar);
+				}
+			}
+		}
+
+		else if (focus.equals(_txtDemandado)) {
+			if (_juzgado != null) {
+				if (!_juzgado.getId_juzgado().equals("1")) {
+					menu.add(menuEditar);
+				}
+			}
+		}
+		
+		else {
+			menu.add(menuEditar);
+		}
+
+		menu.add(menuEditarTodo);
+		if (!focus.equals(_ofActuaciones)) {
+			menu.add(menuAddActuacion);
+		}
+		menu.addSeparator();
+		if (focus.equals(_txtDemandante) || focus.equals(_txtDemandado)
+				|| focus.equals(_txtJuzgado)) {
+			menu.add(menuCambiar);
+			menu.add(menuEliminar);
+		} else if (focus.equals(_txtCategoria)) {
+			menu.add(menuCambiarCategoria);
+		}
+		menu.add(menuGuardar);
+	}
+	
 	public boolean onClose() {
 		if (!isCambiado()) {
 			UiApplication.getUiApplication().popScreen(getScreen());
@@ -632,5 +628,14 @@ public class VerProcesoScreen extends FondoNormal {
 				return false;
 			}
 		}
+	}
+
+	private Object[] transformActuaciones() {
+		Enumeration e = _actuaciones.elements();
+		Object[] elements = new Object[_actuaciones.size()];
+		for (int i = 0; i < elements.length; i++) {
+			elements[i] = ((Actuacion) e.nextElement());
+		}
+		return elements;
 	}
 }
