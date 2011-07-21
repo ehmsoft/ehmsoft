@@ -3,7 +3,6 @@ package gui;
 import java.util.Enumeration;
 import java.util.Vector;
 
-import net.rim.device.api.ui.component.BasicEditField;
 import net.rim.device.api.ui.component.Dialog;
 import persistence.Persistence;
 import core.CampoPersonalizado;
@@ -44,6 +43,18 @@ public class VerProceso {
 				}
 			} catch (Exception e) {
 				Dialog.alert("actualizarProceso -> " + e.toString());
+			}
+		}
+		else if(_screen.isCampoEditado()) {
+			try {
+				Persistence p = new Persistence();
+				Vector campos = asignarValores(_screen.getValoresViejos());
+				Enumeration e = campos.elements();
+				while(e.hasMoreElements()) {
+					p.actualizarAtributo((CampoPersonalizado) e.nextElement());
+				}
+			} catch(Exception e) {
+				Dialog.alert("actualizarProceso, campos -> " + e.toString());
 			}
 		}
 	}
