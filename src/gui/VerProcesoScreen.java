@@ -39,6 +39,7 @@ public class VerProcesoScreen extends FondoNormal {
 	private Persona _demandado;
 	private Juzgado _juzgado;
 	private Categoria _categoria;
+	private Vector _valoresCamposEliminados;
 	private Vector _valoresCamposViejos;
 	private Vector _valoresCamposNuevos;
 	private Vector _actuaciones;
@@ -101,7 +102,8 @@ public class VerProcesoScreen extends FondoNormal {
 		_nfPrioridad.setSelectedValue(_proceso.getPrioridad());
 		_nfPrioridad.setEditable(false);
 		add(_nfPrioridad);
-
+		
+		_valoresCamposEliminados = new Vector();
 		_valoresCamposViejos = new Vector();
 		_valoresCamposNuevos = new Vector();
 
@@ -181,10 +183,6 @@ public class VerProcesoScreen extends FondoNormal {
 		return _nfPrioridad.getSelectedValue();
 	}
 
-	public Proceso getProceso() {
-		return _proceso;
-	}
-
 	public String getRadicado() {
 		return _txtRadicado.getText();
 	}
@@ -204,9 +202,17 @@ public class VerProcesoScreen extends FondoNormal {
 	public Vector getValoresViejos() {
 		return _valoresCamposViejos;
 	}
+	
+	public Vector getValoresEliminados() {
+		return _valoresCamposEliminados;
+	}
 
 	public boolean isCampoCambiado() {
 		return _actCampo;
+	}
+	
+	public boolean isEliminado() {
+		return !_valoresCamposEliminados.isEmpty();
 	}
 
 	public boolean isGuardado() {
@@ -214,7 +220,7 @@ public class VerProcesoScreen extends FondoNormal {
 	}
 
 	public boolean onClose() {
-		if (!isCambiado() && !isCampoCambiado()) {
+		if (!isCambiado() && !isCampoCambiado() && !isEliminado()) {
 			UiApplication.getUiApplication().popScreen(getScreen());
 			return true;
 		} else {
@@ -381,6 +387,9 @@ public class VerProcesoScreen extends FondoNormal {
 		} else if (focus.equals(_txtCategoria)) {
 			menu.add(menuCambiarCategoria);
 			menu.addSeparator();
+		} else if(CampoPersonalizado.class.isInstance(focus.getCookie())) {
+			menu.add(menuEliminarCampo);
+			menu.addSeparator();
 		}
 		menu.add(menuGuardar);
 	}
@@ -450,11 +459,21 @@ public class VerProcesoScreen extends FondoNormal {
 			}
 		}
 	};
+	
+	private final MenuItem menuEliminarCampo = new MenuItem("Eliminar del proceso",	0, 0) {
+		public void run() {
+			EditableTextField focus = (EditableTextField) UiApplication.getUiApplication().getActiveScreen().getFieldWithFocus();
+			_valoresCamposNuevos.removeElement(focus);
+			_valoresCamposViejos.removeElement(focus);
+			_valoresCamposEliminados.addElement(focus.getCookie());
+			delete(focus);
+		}
+	};
 
 	private final MenuItem menuGuardar = new MenuItem("Guardar", 0, 0) {
 
 		public void run() {
-			if (isCambiado() || isCampoCambiado()) {
+			if (isCambiado() || isCampoCambiado() || isEliminado()) {
 				Object[] ask = { "Guardar", "Descartar", "Cancelar" };
 				int sel = Dialog.ask("¿Desea guardar los cambios realizados?",
 						ask, 0);
@@ -572,18 +591,6 @@ public class VerProcesoScreen extends FondoNormal {
 					EditableTextField editable = (EditableTextField) f;
 					editable.setEditable();
 					_actCampo = true;
-
-					/*
-					 * VerCampo verCampo = new VerCampo( (CampoPersonalizado)
-					 * f.getCookie());
-					 * UiApplication.getUiApplication().pushModalScreen(
-					 * verCampo.getScreen());
-					 * verCampo.actualizarCampoPersonalizado();
-					 * ((EditableTextField) f).setText(verCampo.getCampo()
-					 * .getValor()); ((EditableTextField)
-					 * f).setLabel(verCampo.getCampo() .getNombre() + ": ");
-					 * ((EditableTextField) f).setCookie(verCampo.getCampo());
-					 */
 				}
 			} catch (Exception e) {
 				Dialog.alert("Edit Campo -> " + e.toString());

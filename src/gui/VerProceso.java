@@ -54,6 +54,17 @@ public class VerProceso {
 				Dialog.alert("actualizarProceso, campos -> " + e.toString());
 			}
 		}
+		if(_screen.isEliminado()) {
+			try {
+				Persistence p = new Persistence();
+				Enumeration e =_screen.getValoresEliminados().elements();
+				while(e.hasMoreElements()) {
+					p.borrarCampoPersonalizado((CampoPersonalizado) e.nextElement());
+				}
+			} catch(Exception e) {
+				Dialog.alert("actualizarProceso, eliminados -> " + e.toString());
+			}
+		}
 	}
 
 	public Proceso getProceso() {
