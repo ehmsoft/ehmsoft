@@ -3,6 +3,7 @@ package gui;
 import java.util.Enumeration;
 import java.util.Vector;
 
+import net.rim.device.api.ui.Screen;
 import net.rim.device.api.ui.component.Dialog;
 import persistence.Persistence;
 import core.Juzgado;
@@ -12,8 +13,9 @@ public class ListadoJuzgados {
 	private Persistence _persistencia;
 	private Vector _vectorJuzgados;
 	private ListadoJuzgadosScreen _screen;
+	private ListadoJuzgadosPopUp _screenPp;
 
-	public ListadoJuzgados() {
+	public ListadoJuzgados(boolean popup) {
 		try {
 			_persistencia = new Persistence();
 		} catch (Exception e) {
@@ -26,8 +28,17 @@ public class ListadoJuzgados {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		_screen = new ListadoJuzgadosScreen();
+		if(popup) {
+			_screenPp = new ListadoJuzgadosPopUp();
+		}
+		else {
+			_screen = new ListadoJuzgadosScreen();
+		}
 		addJuzgados();
+	}
+	
+	public ListadoJuzgados() {
+		new ListadoJuzgados(false);
 	}
 
 	private void addJuzgados() {
@@ -36,7 +47,11 @@ public class ListadoJuzgados {
 			index = _vectorJuzgados.elements();
 
 			while (index.hasMoreElements())
-				_screen.addJuzgado(index.nextElement());
+				if(_screen != null) {
+					_screen.addJuzgado(index.nextElement());
+				} else {
+					_screenPp.addJuzgado(index.nextElement());
+				}
 		} catch (NullPointerException e) {
 
 		} catch (Exception e) {
@@ -50,10 +65,18 @@ public class ListadoJuzgados {
 	}
 
 	public Juzgado getSelected() {
-		return (Juzgado) _screen.getSelected();
+		if(_screen != null) {
+			return (Juzgado) _screen.getSelected();
+		} else {
+			return (Juzgado) _screenPp.getSelected();
+		}
 	}
 
-	public ListadoJuzgadosScreen getScreen() {
-		return _screen;
+	public Screen getScreen() {
+		if(_screen != null) {
+			return _screen;
+		} else {
+			return _screenPp;
+		}
 	}
 }

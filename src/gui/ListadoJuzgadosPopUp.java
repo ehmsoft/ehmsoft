@@ -8,36 +8,27 @@ import net.rim.device.api.ui.component.SeparatorField;
 import net.rim.device.api.ui.container.PopupScreen;
 import net.rim.device.api.ui.container.VerticalFieldManager;
 
-public class ListadoPersonasPopUp extends PopupScreen {
+public class ListadoJuzgadosPopUp extends PopupScreen {
 
 	private Object _selected;
-	private ListadoPersonasLista _lista;
-	private int _tipo;
+	private ListadoJuzgadosLista _lista;
 
-	public ListadoPersonasPopUp(int tipo) {
+	public ListadoJuzgadosPopUp() {
 		super(new VerticalFieldManager());
-		_tipo = tipo;
 
-		if (tipo == 1) {
-			LabelField labelField = new LabelField("Demandantes",
-					Field.FIELD_HCENTER);
-			add(labelField);
-			add(new SeparatorField());
-		} else if (tipo == 2) {
-			LabelField labelField = new LabelField("Demandados",
-					Field.FIELD_HCENTER);
-			add(labelField);
-			add(new SeparatorField());
-		}
+		LabelField labelField = new LabelField("Juzgados",
+				Field.FIELD_HCENTER);
+		add(labelField);
+		add(new SeparatorField());
 
-		_lista = new ListadoPersonasLista() {
+		_lista = new ListadoJuzgadosLista() {
 			protected boolean navigationClick(int status, int time) {
 				if (String.class.isInstance(get(_lista, getSelectedIndex()))) {
-					NuevaPersona n = new NuevaPersona(_tipo);
+					NuevoJuzgado n = new NuevoJuzgado();
 					UiApplication.getUiApplication().pushModalScreen(
 							n.getScreen());
 					try {
-						_lista.insert(1, n.getPersona());
+						_lista.insert(1, n.getJuzgado());
 						_lista.setSelectedIndex(1);
 					} catch (Exception e) {
 						return true;
@@ -51,16 +42,13 @@ public class ListadoPersonasPopUp extends PopupScreen {
 			}
 		};
 
-		if (tipo == 1)
-			_lista.insert(0, "Crear nuevo demandante");
-		else
-			_lista.insert(0, "Crear nuevo demandado");
+		_lista.insert(0, "Crear nuevo juzgado");
 		add(_lista);
 		addKeyListener(new ListenerKey());
 	}
 
-	public void addPersona(Object persona) {
-		_lista.insert(_lista.getSize(), persona);
+	public void addJuzgado(Object juzgado) {
+		_lista.insert(_lista.getSize(), juzgado);
 	}
 
 	public Object getSelected() {
@@ -97,3 +85,4 @@ public class ListadoPersonasPopUp extends PopupScreen {
 		}
 	 }
 }
+
