@@ -20,7 +20,7 @@ public class ListadoCampos {
 		_vectorCampos = new Vector();
 		try {
 			p = new Persistence();
-			_vectorCampos = p.consultarCampos();
+			_vectorCampos = p.consultarAtributos();
 		} catch(Exception e) {
 			Dialog.alert(e.toString());
 		}

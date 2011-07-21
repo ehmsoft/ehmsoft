@@ -341,6 +341,7 @@ public class NuevoProcesoScreen extends FondoNormal {
 			campoP.setMaxSize(campo.getLongitudMax());
 		add(campoP);
 		_valoresCamposPersonalizados.addElement(campoP);
+		campoP.setFocus();
 	}
 
 	/**
