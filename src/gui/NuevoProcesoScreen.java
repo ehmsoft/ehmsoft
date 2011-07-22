@@ -45,7 +45,7 @@ public class NuevoProcesoScreen extends FondoNormal {
 	private Persona _demandante;
 	private Persona _demandado;
 	private Juzgado _juzgado;
-	private Vector _valoresCamposPersonalizados;
+	private Vector _valoresCamposNuevos;
 	private Vector _actuaciones;
 
 	private boolean _guardar = false;
@@ -56,7 +56,7 @@ public class NuevoProcesoScreen extends FondoNormal {
 	 */
 	public NuevoProcesoScreen() {
 		setTitle("Nuevo Proceso");
-		_valoresCamposPersonalizados = new Vector();
+		_valoresCamposNuevos = new Vector();
 		_actuaciones = new Vector();
 
 		HorizontalFieldManager fldDemandante = new HorizontalFieldManager();
@@ -126,8 +126,9 @@ public class NuevoProcesoScreen extends FondoNormal {
 	
 	private Object[] addCategorias() {
 		Vector v = new Vector();
+		Persistence p;
 		try {
-			Persistence p = new Persistence();
+			p = new Persistence();
 			v = p.consultarCategorias();
 		} catch (Exception e) {
 			Dialog.alert(e.toString());
@@ -142,6 +143,10 @@ public class NuevoProcesoScreen extends FondoNormal {
 			i++;
 		}
 		
+		v = null;
+		p = null;
+		e = null;
+		
 		return o;
 	}
 	
@@ -154,6 +159,9 @@ public class NuevoProcesoScreen extends FondoNormal {
 			o[i] = e.nextElement();
 			i ++;
 		}
+		
+		e = null;
+		
 		return o;
 	}
 	
@@ -198,9 +206,10 @@ public class NuevoProcesoScreen extends FondoNormal {
 					_demandante = l.getSelected(); 
 					_lblDemandante.setText(_demandante.getNombre());					
 				} catch(NullPointerException e) {
-					l = null;
 				} catch(Exception e) {
 					Dialog.alert(e.toString());
+				} finally {
+					l = null;
 				}
 			}
 			else if(f.equals(_lblDemandado)) {
@@ -211,9 +220,10 @@ public class NuevoProcesoScreen extends FondoNormal {
 					_demandado = l.getSelected(); 
 					_lblDemandado.setText(_demandado.getNombre());					
 				} catch(NullPointerException e) {
-					l = null;
 				} catch(Exception e) {
 					Dialog.alert(e.toString());
+				} finally {
+					l = null;
 				}
 			}
 			else if(f.equals(_lblJuzgado)) {
@@ -224,9 +234,10 @@ public class NuevoProcesoScreen extends FondoNormal {
 					_juzgado = l.getSelected(); 
 					_lblJuzgado.setText(_juzgado.getNombre());					
 				} catch(NullPointerException e) {
-					l = null;
 				} catch(Exception e) {
 					Dialog.alert(e.toString());
+				} finally {
+					l = null;
 				}
 			}
 		}
@@ -250,7 +261,8 @@ public class NuevoProcesoScreen extends FondoNormal {
 				_actuaciones.addElement(n.getActuacion(false));
 				_chActuaciones.setChoices(addActuaciones());
 			} catch (Exception e) {
-
+			} finally {
+				n = null;
 			}
 		}
 	};
@@ -265,7 +277,6 @@ public class NuevoProcesoScreen extends FondoNormal {
 				_chCategoria.setChoices(addCategorias());
 				_chCategoria.setSelectedIndex(n.getCategoria());
 			} catch (Exception e) {
-
 			} finally {
 				n = null;
 			}
@@ -282,7 +293,6 @@ public class NuevoProcesoScreen extends FondoNormal {
 				_chCategoria.setChoices(addCategorias());
 				_chCategoria.setSelectedIndex(l.getSelected());
 			} catch (Exception e) {
-
 			} finally {
 				l = null;
 			}
@@ -312,7 +322,7 @@ public class NuevoProcesoScreen extends FondoNormal {
 			ListadoCampos l = new ListadoCampos(true);
 			UiApplication.getUiApplication().pushModalScreen(l.getScreen());
 			try {
-				addCampoPersonalizado(l.getSelected());
+				addCampo(l.getSelected());
 			} catch (NullPointerException e) {
 			} finally {
 				l = null;
@@ -330,7 +340,7 @@ public class NuevoProcesoScreen extends FondoNormal {
 						.getField(1))).getCookie();
 				if (o != null && CampoPersonalizado.class.isInstance(o)) {
 					delete(field);
-					_valoresCamposPersonalizados.removeElement(field);
+					_valoresCamposNuevos.removeElement(field);
 				} else
 					throw new Exception();
 			} catch (Exception e) {
@@ -343,15 +353,32 @@ public class NuevoProcesoScreen extends FondoNormal {
 	 * @param campo
 	 *            Agrega un campo personalizado al Proceso en creacion
 	 */
-	public void addCampoPersonalizado(CampoPersonalizado campo) throws NullPointerException{
-		BasicEditField campoP = new BasicEditField();
-		campoP.setLabel(campo.getNombre() + ": ");
-		campoP.setCookie(campo);
-		if (campo.getLongitudMax() != 0)
-			campoP.setMaxSize(campo.getLongitudMax());
-		add(campoP);
-		_valoresCamposPersonalizados.addElement(campoP);
-		campoP.setFocus();
+	public void addCampo(CampoPersonalizado campo) throws NullPointerException {
+		Enumeration e = _valoresCamposNuevos.elements();
+		CampoPersonalizado temp;
+		boolean is = false;
+		while (e.hasMoreElements()) {
+			temp = (CampoPersonalizado) (((BasicEditField) e.nextElement())
+					.getCookie());
+			if (temp.getId_atributo().equals(campo.getId_atributo())) {
+				is = true;
+			}
+		}		
+
+		if (!is) {
+			BasicEditField campoP = new BasicEditField();
+			campoP.setLabel(campo.getNombre() + ": ");
+			campoP.setCookie(campo);
+			if (campo.getLongitudMax() != 0)
+				campoP.setMaxSize(campo.getLongitudMax());
+			add(campoP);
+			_valoresCamposNuevos.addElement(campoP);
+			campoP.setFocus();
+		} else {
+			Dialog.alert("El campo ya existe en este proceso");
+		}
+		e = null;
+		temp = null;
 	}
 
 	/**
@@ -387,7 +414,7 @@ public class NuevoProcesoScreen extends FondoNormal {
 	 *         coockie en el cual esta almacenado el objeto CampoPersonalizado
 	 */
 	public Vector getValores() {
-		return _valoresCamposPersonalizados;
+		return _valoresCamposNuevos;
 	}
 	
 	public Vector getActuaciones() {
