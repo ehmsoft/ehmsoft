@@ -5,7 +5,7 @@ import net.rim.device.api.ui.component.ListField;
 import net.rim.device.api.ui.component.ObjectListField;
 import core.CampoPersonalizado;
 
-public class ListadoCamposPersonalizadosLista extends ObjectListField {
+public class ListadoCamposLista extends ObjectListField {
 
 	public void drawListRow(ListField list, Graphics g, int index, int y, int w) {
 		if (this.get(this, index).getClass() == "Hola".getClass()) {

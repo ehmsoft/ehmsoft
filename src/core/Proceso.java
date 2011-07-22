@@ -1,6 +1,7 @@
 package core;
 
 import java.util.Calendar;
+import java.util.Enumeration;
 import java.util.Vector;
 
 public class Proceso {
@@ -160,6 +161,124 @@ public class Proceso {
 	}
 	public void setPrioridad(int prioridad) {
 		this.prioridad = prioridad;
+	}
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result
+				+ ((actuaciones == null) ? 0 : actuaciones.hashCode());
+		result = prime * result + ((campos == null) ? 0 : campos.hashCode());
+		result = prime * result
+				+ ((categoria == null) ? 0 : categoria.hashCode());
+		result = prime * result
+				+ ((demandado == null) ? 0 : demandado.hashCode());
+		result = prime * result
+				+ ((demandante == null) ? 0 : demandante.hashCode());
+		result = prime * result + ((estado == null) ? 0 : estado.hashCode());
+		result = prime * result + ((fecha == null) ? 0 : fecha.hashCode());
+		result = prime * result + ((juzgado == null) ? 0 : juzgado.hashCode());
+		result = prime * result + ((notas == null) ? 0 : notas.hashCode());
+		result = prime * result + prioridad;
+		result = prime * result
+				+ ((radicado == null) ? 0 : radicado.hashCode());
+		result = prime * result
+				+ ((radicadoUnico == null) ? 0 : radicadoUnico.hashCode());
+		result = prime * result + ((tipo == null) ? 0 : tipo.hashCode());
+		return result;
+	}
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Proceso other = (Proceso) obj;
+		if (actuaciones == null) {
+			if (other.actuaciones != null)
+				return false;
+		} else{
+			Enumeration e1 = actuaciones.elements();
+			Enumeration e2 = other.actuaciones.elements();
+			while(e1.hasMoreElements()){
+				while(e2.hasMoreElements()){
+					Actuacion a1 = (Actuacion)e1.nextElement();
+					Actuacion a2 = (Actuacion)e2.nextElement();
+					if(!a1.equals(a2)){
+						return false;
+					}
+				}
+			}
+		}
+		if (campos == null) {
+			if (other.campos != null)
+				return false;
+		} else{
+			Enumeration e1 = campos.elements();
+			Enumeration e2 = other.campos.elements();
+			while(e1.hasMoreElements()){
+				while(e2.hasMoreElements()){
+					CampoPersonalizado a1 = (CampoPersonalizado)e1.nextElement();
+					CampoPersonalizado a2 = (CampoPersonalizado)e2.nextElement();
+					if(!a1.equals(a2)){
+						return false;
+					}
+				}
+			}
+		}
+		if (categoria == null) {
+			if (other.categoria != null)
+				return false;
+		} else if (!categoria.equals(other.categoria))
+			return false;
+		if (demandado == null) {
+			if (other.demandado != null)
+				return false;
+		} else if (!demandado.equals(other.demandado))
+			return false;
+		if (demandante == null) {
+			if (other.demandante != null)
+				return false;
+		} else if (!demandante.equals(other.demandante))
+			return false;
+		if (estado == null) {
+			if (other.estado != null)
+				return false;
+		} else if (!estado.equals(other.estado))
+			return false;
+		if (fecha == null) {
+			if (other.fecha != null)
+				return false;
+		} else if (!fecha.equals(other.fecha))
+			return false;
+		if (juzgado == null) {
+			if (other.juzgado != null)
+				return false;
+		} else if (!juzgado.equals(other.juzgado))
+			return false;
+		if (notas == null) {
+			if (other.notas != null)
+				return false;
+		} else if (!notas.equals(other.notas))
+			return false;
+		if (prioridad != other.prioridad)
+			return false;
+		if (radicado == null) {
+			if (other.radicado != null)
+				return false;
+		} else if (!radicado.equals(other.radicado))
+			return false;
+		if (radicadoUnico == null) {
+			if (other.radicadoUnico != null)
+				return false;
+		} else if (!radicadoUnico.equals(other.radicadoUnico))
+			return false;
+		if (tipo == null) {
+			if (other.tipo != null)
+				return false;
+		} else if (!tipo.equals(other.tipo))
+			return false;
+		return true;
 	}
 	
 }

@@ -7,11 +7,9 @@ import java.util.Vector;
 import persistence.Persistence;
 
 import net.rim.device.api.ui.Field;
-import net.rim.device.api.ui.FieldChangeListener;
 import net.rim.device.api.ui.MenuItem;
 import net.rim.device.api.ui.UiApplication;
 import net.rim.device.api.ui.component.BasicEditField;
-import net.rim.device.api.ui.component.ButtonField;
 import net.rim.device.api.ui.component.DateField;
 import net.rim.device.api.ui.component.Dialog;
 import net.rim.device.api.ui.component.LabelField;
@@ -19,7 +17,6 @@ import net.rim.device.api.ui.component.Menu;
 import net.rim.device.api.ui.component.NumericChoiceField;
 import net.rim.device.api.ui.component.ObjectChoiceField;
 import net.rim.device.api.ui.container.HorizontalFieldManager;
-import net.rim.device.api.ui.container.VerticalFieldManager;
 import core.CampoPersonalizado;
 import core.Categoria;
 import core.Juzgado;
@@ -32,23 +29,18 @@ public class NuevoProcesoScreen extends FondoNormal {
 	private ObjectChoiceField _chActuaciones;
 	private NumericChoiceField _chPrioridad;
 	private DateField _dtFecha;
+	private LabelField _lblDemandante;
+	private LabelField _lblDemandado;
+	private LabelField _lblJuzgado;
 	private BasicEditField _txtTipo;
 	private BasicEditField _txtNotas;
 	private BasicEditField _txtRadicado;
 	private BasicEditField _txtRadicadoUnico;
-	private ButtonField _btnDemandante;
-	private ButtonField _btnDemandado;
-	private ButtonField _btnJuzgado;
-	private ButtonField _btnCampoPersonalizado;
-
-	private HorizontalFieldManager _fldCampoPersonalizado;
-	private VerticalFieldManager _fldRightCampoPersonalizado;
-	private VerticalFieldManager _fldLeftCampoPersonalizado;
 
 	private Persona _demandante;
 	private Persona _demandado;
 	private Juzgado _juzgado;
-	private Vector _valoresCamposPersonalizados;
+	private Vector _valoresCamposNuevos;
 	private Vector _actuaciones;
 
 	private boolean _guardar = false;
@@ -59,43 +51,25 @@ public class NuevoProcesoScreen extends FondoNormal {
 	 */
 	public NuevoProcesoScreen() {
 		setTitle("Nuevo Proceso");
-		_valoresCamposPersonalizados = new Vector();
+		_valoresCamposNuevos = new Vector();
 		_actuaciones = new Vector();
 
 		HorizontalFieldManager fldDemandante = new HorizontalFieldManager();
-		VerticalFieldManager fldRightDemandante = new VerticalFieldManager(
-				USE_ALL_WIDTH);
-		VerticalFieldManager fldLeftDemandante = new VerticalFieldManager();
-		_btnDemandante = new ButtonField("Seleccionar", FIELD_RIGHT);
-		_btnDemandante.setChangeListener(listenerBtnDemandante);
-		fldLeftDemandante.add(new LabelField("Demandante: "));
-		fldRightDemandante.add(_btnDemandante);
-		fldDemandante.add(fldLeftDemandante);
-		fldDemandante.add(fldRightDemandante);
+		_lblDemandante = new LabelField("*Ninguno*", LabelField.FOCUSABLE);
+		fldDemandante.add(new LabelField("Demandante: "));
+		fldDemandante.add(_lblDemandante);
 		add(fldDemandante);
-
+		
 		HorizontalFieldManager fldDemandado = new HorizontalFieldManager();
-		VerticalFieldManager fldRightDemandado = new VerticalFieldManager(
-				USE_ALL_WIDTH);
-		VerticalFieldManager fldLeftDemandado = new VerticalFieldManager();
-		_btnDemandado = new ButtonField("Seleccionar", FIELD_RIGHT);
-		_btnDemandado.setChangeListener(listenerBtnDemandado);
-		fldLeftDemandado.add(new LabelField("Demandado: "));
-		fldRightDemandado.add(_btnDemandado);
-		fldDemandado.add(fldLeftDemandado);
-		fldDemandado.add(fldRightDemandado);
+		_lblDemandado = new LabelField("*Ninguno*", LabelField.FOCUSABLE);
+		fldDemandado.add(new LabelField("Demandado: "));
+		fldDemandado.add(_lblDemandado);
 		add(fldDemandado);
-
+		
 		HorizontalFieldManager fldJuzgado = new HorizontalFieldManager();
-		VerticalFieldManager fldRightJuzgado = new VerticalFieldManager(
-				USE_ALL_WIDTH);
-		VerticalFieldManager fldLeftJuzgado = new VerticalFieldManager();
-		_btnJuzgado = new ButtonField("Seleccionar", FIELD_RIGHT);
-		_btnJuzgado.setChangeListener(listenerBtnJuzgado);
-		fldLeftJuzgado.add(new LabelField("Juzgado: "));
-		fldRightJuzgado.add(_btnJuzgado);
-		fldJuzgado.add(fldLeftJuzgado);
-		fldJuzgado.add(fldRightJuzgado);
+		_lblJuzgado = new LabelField("*Ninguno*", LabelField.FOCUSABLE);
+		fldJuzgado.add(new LabelField("Juzgado: "));
+		fldJuzgado.add(_lblJuzgado);
 		add(fldJuzgado);
 
 		_txtRadicado = new BasicEditField(BasicEditField.NO_NEWLINE);
@@ -136,23 +110,13 @@ public class NuevoProcesoScreen extends FondoNormal {
 		_txtNotas = new BasicEditField();
 		_txtNotas.setLabel("Notas: ");
 		add(_txtNotas);
-
-		_fldCampoPersonalizado = new HorizontalFieldManager();
-		_fldRightCampoPersonalizado = new VerticalFieldManager(USE_ALL_WIDTH);
-		_fldLeftCampoPersonalizado = new VerticalFieldManager();
-		_btnCampoPersonalizado = new ButtonField("Nuevo", FIELD_RIGHT);
-		_btnCampoPersonalizado.setChangeListener(listenerBtnCampoPersonalizado);
-		_fldLeftCampoPersonalizado.add(new LabelField("Campo personalizado: "));
-		_fldRightCampoPersonalizado.add(_btnCampoPersonalizado);
-		_fldCampoPersonalizado.add(_fldLeftCampoPersonalizado);
-		_fldCampoPersonalizado.add(_fldRightCampoPersonalizado);
-		add(_fldCampoPersonalizado);
 	}
 	
 	private Object[] addCategorias() {
 		Vector v = new Vector();
+		Persistence p;
 		try {
-			Persistence p = new Persistence();
+			p = new Persistence();
 			v = p.consultarCategorias();
 		} catch (Exception e) {
 			Dialog.alert(e.toString());
@@ -167,6 +131,10 @@ public class NuevoProcesoScreen extends FondoNormal {
 			i++;
 		}
 		
+		v = null;
+		p = null;
+		e = null;
+		
 		return o;
 	}
 	
@@ -179,25 +147,101 @@ public class NuevoProcesoScreen extends FondoNormal {
 			o[i] = e.nextElement();
 			i ++;
 		}
+		
+		e = null;
+		
 		return o;
 	}
 	
 	protected void makeMenu(Menu menu, int instance) {
-		Field f = UiApplication.getUiApplication().getActiveScreen().getFieldWithFocus();
-		if(f.equals(_btnDemandante) || f.equals(_btnDemandado) || f.equals(_btnJuzgado)) {
-			menu.add(menuEliminar);
-			menu.addSeparator();
+		Field f = UiApplication.getUiApplication().getActiveScreen().getLeafFieldWithFocus();
+		if(f.equals(_lblDemandante) || f.equals(_lblDemandado) || f.equals(_lblJuzgado)) {
+			LabelField temp = (LabelField) f;
+			if(temp.getText().equals("*Ninguno*")) {
+				menu.add(menuAgregar);
+				menu.addSeparator();
+			} else {
+				menu.add(menuCambiar);
+				menu.addSeparator();
+			}
 		}
 		else if(f.equals(_chCategoria)) {
 			menu.add(menuAddCategoria);
+			menu.add(menuVerListado);
 			menu.addSeparator();
 		}
 		else if(f.equals(_chActuaciones)) {
 			menu.add(menuAddActuacion);
 			menu.addSeparator();
 		}
+		else if(BasicEditField.class.isInstance(f)) {
+			if(CampoPersonalizado.class.isInstance(f.getCookie())) {
+				menu.add(menuEliminar);
+				menu.addSeparator();
+			}
+		}
+		menu.add(menuCampo);
+		menu.addSeparator();
 		menu.add(menuGuardar);
 	}
+	
+	private final MenuItem menuAgregar = new MenuItem("Agregar",
+			0, 0) {
+
+		public void run() {
+			Field f = UiApplication.getUiApplication().getActiveScreen().getLeafFieldWithFocus();
+			if(f.equals(_lblDemandante)) {
+				ListadoPersonas l = new ListadoPersonas(1, true);
+				l.setTitle("Seleccione un demandante");
+				UiApplication.getUiApplication().pushModalScreen(l.getScreen());
+				try {
+					_demandante = l.getSelected(); 
+					_lblDemandante.setText(_demandante.getNombre());					
+				} catch(NullPointerException e) {
+				} catch(Exception e) {
+					Dialog.alert(e.toString());
+				} finally {
+					l = null;
+				}
+			}
+			else if(f.equals(_lblDemandado)) {
+				ListadoPersonas l = new ListadoPersonas(2, true);
+				l.setTitle("Seleccione un demandado");
+				UiApplication.getUiApplication().pushModalScreen(l.getScreen());
+				try {
+					_demandado = l.getSelected(); 
+					_lblDemandado.setText(_demandado.getNombre());					
+				} catch(NullPointerException e) {
+				} catch(Exception e) {
+					Dialog.alert(e.toString());
+				} finally {
+					l = null;
+				}
+			}
+			else if(f.equals(_lblJuzgado)) {
+				ListadoJuzgados l = new ListadoJuzgados(true);
+				l.setTitle("Seleccione un juzgado");
+				UiApplication.getUiApplication().pushModalScreen(l.getScreen());
+				try {
+					_juzgado = l.getSelected(); 
+					_lblJuzgado.setText(_juzgado.getNombre());					
+				} catch(NullPointerException e) {
+				} catch(Exception e) {
+					Dialog.alert(e.toString());
+				} finally {
+					l = null;
+				}
+			}
+		}
+	};
+	
+	private final MenuItem menuCambiar = new MenuItem("Cambiar",
+			0, 0) {
+
+		public void run() {
+			menuAgregar.run();
+		}
+	};
 	
 	private final MenuItem menuAddActuacion = new MenuItem("Nueva actuación",
 			0, 0) {
@@ -209,7 +253,8 @@ public class NuevoProcesoScreen extends FondoNormal {
 				_actuaciones.addElement(n.getActuacion(false));
 				_chActuaciones.setChoices(addActuaciones());
 			} catch (Exception e) {
-
+			} finally {
+				n = null;
 			}
 		}
 	};
@@ -217,16 +262,31 @@ public class NuevoProcesoScreen extends FondoNormal {
 	private final MenuItem menuAddCategoria = new MenuItem("Nueva categoría", 0, 0) {
 
 		public void run() {
-			NuevaCategoria n = new NuevaCategoria();
+			NuevaCategoria n = new NuevaCategoria(true);
 			UiApplication.getUiApplication().pushModalScreen(n.getScreen());
 			try {
 				n.guardarCategoria();
 				_chCategoria.setChoices(addCategorias());
 				_chCategoria.setSelectedIndex(n.getCategoria());
 			} catch (Exception e) {
-
 			} finally {
 				n = null;
+			}
+		}
+	};
+	
+	private final MenuItem menuVerListado = new MenuItem("Ver listado", 0, 0) {
+
+		public void run() {
+			ListadoCategorias l = new ListadoCategorias(true);
+			l.setTitle("Seleccione una categoría");
+			UiApplication.getUiApplication().pushModalScreen(l.getScreen());
+			try {
+				_chCategoria.setChoices(addCategorias());
+				_chCategoria.setSelectedIndex(l.getSelected());
+			} catch (Exception e) {
+			} finally {
+				l = null;
 			}
 		}
 	};
@@ -246,85 +306,31 @@ public class NuevoProcesoScreen extends FondoNormal {
 			}
 		}
 	};
-
-	private final MenuItem menuEliminar = new MenuItem("Eliminar", 0, 0) {
+	
+	private final MenuItem menuCampo = new MenuItem(
+			"Agregar campo personalizado", 0, 0) {
 
 		public void run() {
-			Field field = getFieldWithFocus();
+			ListadoCampos l = new ListadoCampos(true);
+			UiApplication.getUiApplication().pushModalScreen(l.getScreen());
 			try {
-				Object o = ((BasicEditField) (((VerticalFieldManager) field)
-						.getField(1))).getCookie();
-				if (o != null && CampoPersonalizado.class.isInstance(o)) {
-					delete(field);
-					_valoresCamposPersonalizados.removeElement(field);
-				} else
-					throw new Exception();
-			} catch (Exception e) {
-				Dialog.alert("El elemento no puede ser eliminado");
-			}
-		}
-	};
-
-	private FieldChangeListener listenerBtnDemandante = new FieldChangeListener() {
-		public void fieldChanged(Field field, int context) {
-			ListadoPersonas l = new ListadoPersonas(1);
-			UiApplication.getUiApplication().pushModalScreen(
-					l.getScreen());
-			try {
-				_demandante = l.getSelected();
-				_btnDemandante.setLabel(_demandante.getNombre());
+				addCampo(l.getSelected());
 			} catch (NullPointerException e) {
-				if (_demandante == null)
-					Dialog.alert("Debe seleccionar un demandante");
 			} finally {
 				l = null;
 			}
 		}
 	};
 
-	private FieldChangeListener listenerBtnDemandado = new FieldChangeListener() {
-		public void fieldChanged(Field field, int context) {
-			ListadoPersonas demandados = new ListadoPersonas(2);
-			UiApplication.getUiApplication().pushModalScreen(
-					demandados.getScreen());
-			try {
-				_demandado = demandados.getSelected();
-				_btnDemandado.setLabel(_demandado.getNombre());
-			} catch (NullPointerException e) {
-				if (_demandado == null)
-					Dialog.alert("Debe seleccionar un demandado");
-			} finally {
-				demandados = null;
-			}
-		}
-	};
 
-	private FieldChangeListener listenerBtnJuzgado = new FieldChangeListener() {
-		public void fieldChanged(Field field, int context) {
-			ListadoJuzgados juzgados = new ListadoJuzgados();
-			UiApplication.getUiApplication().pushModalScreen(
-					juzgados.getScreen());
-			try {
-				_juzgado = juzgados.getSelected();
-				_btnJuzgado.setLabel(_juzgado.getNombre());
-			} catch (NullPointerException e) {
-				if (_juzgado == null)
-					Dialog.alert("Debe seleccionar un juzgado");
-			} finally {
-				juzgados = null;
-			}
-		}
-	};
+	private final MenuItem menuEliminar = new MenuItem("Eliminar", 0, 0) {
 
-	private FieldChangeListener listenerBtnCampoPersonalizado = new FieldChangeListener() {
-		public void fieldChanged(Field field, int context) {
-			NuevoCampoPersonalizado campo = new NuevoCampoPersonalizado();
-			UiApplication.getUiApplication().pushModalScreen(campo.getScreen());
-			campo.guardarCampo();
-			try {
-				addCampoPersonalizado(campo.getCampo());
-			} catch (NullPointerException e) {
-				Dialog.alert("listenerBtnCampoPersonalizado -> " + e.toString());
+		public void run() {
+			Field field = UiApplication.getUiApplication().getActiveScreen()
+					.getLeafFieldWithFocus();
+			if (CampoPersonalizado.class.isInstance(field.getCookie())) {
+				delete(field);
+				_valoresCamposNuevos.removeElement(field);
 			}
 		}
 	};
@@ -333,14 +339,32 @@ public class NuevoProcesoScreen extends FondoNormal {
 	 * @param campo
 	 *            Agrega un campo personalizado al Proceso en creacion
 	 */
-	public void addCampoPersonalizado(CampoPersonalizado campo) {
-		BasicEditField campoP = new BasicEditField();
-		campoP.setLabel(campo.getNombre() + ": ");
-		campoP.setCookie(campo);
-		if (campo.getLongitudMax() != 0)
-			campoP.setMaxSize(campo.getLongitudMax());
-		add(campoP);
-		_valoresCamposPersonalizados.addElement(campoP);
+	public void addCampo(CampoPersonalizado campo) throws NullPointerException {
+		Enumeration e = _valoresCamposNuevos.elements();
+		CampoPersonalizado temp;
+		boolean is = false;
+		while (e.hasMoreElements()) {
+			temp = (CampoPersonalizado) (((BasicEditField) e.nextElement())
+					.getCookie());
+			if (temp.getId_atributo().equals(campo.getId_atributo())) {
+				is = true;
+			}
+		}		
+
+		if (!is) {
+			BasicEditField campoP = new BasicEditField();
+			campoP.setLabel(campo.getNombre() + ": ");
+			campoP.setCookie(campo);
+			if (campo.getLongitudMax() != 0)
+				campoP.setMaxSize(campo.getLongitudMax());
+			add(campoP);
+			_valoresCamposNuevos.addElement(campoP);
+			campoP.setFocus();
+		} else {
+			Dialog.alert("El campo ya existe en este proceso");
+		}
+		e = null;
+		temp = null;
 	}
 
 	/**
@@ -348,7 +372,7 @@ public class NuevoProcesoScreen extends FondoNormal {
 	 *            Se asigna una Persona demandante al Proceso en creacion
 	 */
 	public void setDemandante(Persona demandante) {
-		_btnDemandante.setLabel(demandante.getNombre());
+		_lblDemandante.setText(demandante.getNombre());
 		_demandante = demandante;
 	}
 
@@ -357,7 +381,7 @@ public class NuevoProcesoScreen extends FondoNormal {
 	 *            Se asigna una Persona demandado al Proceso en creacion
 	 */
 	public void setDemandado(Persona demandado) {
-		_btnDemandado.setLabel(demandado.getNombre());
+		_lblDemandado.setText(demandado.getNombre());
 		_demandado = demandado;
 	}
 
@@ -366,7 +390,7 @@ public class NuevoProcesoScreen extends FondoNormal {
 	 *            Se asigna un Juzgado al Proceso en creacion
 	 */
 	public void setJuzgado(Juzgado juzgado) {
-		_btnJuzgado.setLabel(juzgado.getNombre());
+		_lblJuzgado.setText(juzgado.getNombre());
 		_juzgado = juzgado;
 	}
 
@@ -376,7 +400,7 @@ public class NuevoProcesoScreen extends FondoNormal {
 	 *         coockie en el cual esta almacenado el objeto CampoPersonalizado
 	 */
 	public Vector getValores() {
-		return _valoresCamposPersonalizados;
+		return _valoresCamposNuevos;
 	}
 	
 	public Vector getActuaciones() {

@@ -21,31 +21,31 @@ import core.Persona;
 import core.Proceso;
 
 public class VerProcesoScreen extends FondoNormal {
-
-	EditableTextField _txtDemandante;
-	EditableTextField _txtDemandado;
-	DateField _dfFecha;
-	EditableTextField _txtJuzgado;
-	EditableTextField _txtRadicado;
-	EditableTextField _txtRadicadoUnico;
-	ObjectChoiceField _ofActuaciones;
-	EditableTextField _txtEstado;
-	EditableTextField _txtCategoria;
-	EditableTextField _txtTipo;
-	EditableTextField _txtNotas;
-	NumericChoiceField _nfPrioridad;
-
-	Proceso _proceso;
-	Persona _demandante;
-	Persona _demandado;
-	Juzgado _juzgado;
-	Categoria _categoria;
-	Vector _camposPersonalizados;
-	Vector _txtCampos;
-	Vector _actuaciones;
-
+	
+	private EditableTextField _txtDemandante;
+	private EditableTextField _txtDemandado;
+	private DateField _dfFecha;
+	private EditableTextField _txtJuzgado;
+	private EditableTextField _txtRadicado;
+	private EditableTextField _txtRadicadoUnico;
+	private ObjectChoiceField _ofActuaciones;
+	private EditableTextField _txtEstado;
+	private EditableTextField _txtCategoria;
+	private EditableTextField _txtTipo;
+	private EditableTextField _txtNotas;
+	private NumericChoiceField _nfPrioridad;
+	private Proceso _proceso;
+	private Persona _demandante;
+	private Persona _demandado;
+	private Juzgado _juzgado;
+	private Categoria _categoria;
+	private Vector _valoresCamposEliminados;
+	private Vector _valoresCamposViejos;
+	private Vector _valoresCamposNuevos;
+	private Vector _actuaciones;
 	private boolean _guardar = false;
-
+	private boolean _actCampo = false;
+	
 	public VerProcesoScreen(Proceso proceso) {
 
 		setTitle("Ver proceso");
@@ -53,9 +53,9 @@ public class VerProcesoScreen extends FondoNormal {
 		_demandante = proceso.getDemandante();
 		_demandado = proceso.getDemandado();
 		_juzgado = proceso.getJuzgado();
-		_camposPersonalizados = proceso.getCampos();
 		_actuaciones = proceso.getActuaciones();
 		_categoria = proceso.getCategoria();
+		proceso.getCampos();
 
 		_txtDemandante = new EditableTextField("Demandante: ",
 				_demandante.getNombre());
@@ -102,24 +102,253 @@ public class VerProcesoScreen extends FondoNormal {
 		_nfPrioridad.setSelectedValue(_proceso.getPrioridad());
 		_nfPrioridad.setEditable(false);
 		add(_nfPrioridad);
+		
+		_valoresCamposEliminados = new Vector();
+		_valoresCamposViejos = new Vector();
+		_valoresCamposNuevos = new Vector();
 
-		_txtCampos = new Vector();
+		addCampos(proceso.getCampos());
+	}
 
-		addCampos();
+	public void addCampo(CampoPersonalizado campo) throws NullPointerException {
+		Enumeration e = _valoresCamposViejos.elements();
+		CampoPersonalizado temp;
+		boolean is = false;
+		while (e.hasMoreElements()) {
+			temp = (CampoPersonalizado) (((EditableTextField) e.nextElement())
+					.getCookie());
+			if (temp.getId_atributo().equals(campo.getId_atributo())) {
+				is = true;
+			}
+		}
+		if (!is) {
+			e = _valoresCamposNuevos.elements();
+			while (e.hasMoreElements()) {
+				temp = (CampoPersonalizado) (((EditableTextField) e
+						.nextElement()).getCookie());
+				if (temp.getId_atributo().equals(campo.getId_atributo())) {
+					is = true;
+				}
+			}
+		}
+		if (!is) {
+			EditableTextField campoP = new EditableTextField();
+			campoP.setLabel(campo.getNombre() + ": ");
+			campoP.setCookie(campo);
+			if (campo.getLongitudMax() != 0)
+				campoP.setMaxSize(campo.getLongitudMax());
+			add(campoP);
+			_valoresCamposNuevos.addElement(campoP);
+			campoP.setFocus();
+		} else {
+			Dialog.alert("El campo ya existe en este proceso");
+		}
+	}
+
+	public Vector getActuaciones() {
+		return _actuaciones;
+	}
+
+	public Categoria getCategoria() {
+		return _categoria;
+	}
+
+	public Persona getDemandado() {
+		return _demandado;
+	}
+
+	public Persona getDemandante() {
+		return _demandante;
+	}
+
+	public String getEstado() {
+		return _txtEstado.getText();
+	}
+
+	public Calendar getFecha() {
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTime(new Date(_dfFecha.getDate()));
+		return calendar;
+	}
+
+	public Juzgado getJuzgado() {
+		return _juzgado;
+	}
+
+	public String getNotas() {
+		return _txtNotas.getText();
+	}
+
+	public int getPrioridad() {
+		return _nfPrioridad.getSelectedValue();
+	}
+
+	public String getRadicado() {
+		return _txtRadicado.getText();
+	}
+
+	public String getRadicadoUnico() {
+		return _txtRadicadoUnico.getText();
+	}
+
+	public String getTipo() {
+		return _txtTipo.getText();
+	}
+
+	public Vector getValoresNuevos() {
+		return _valoresCamposNuevos;
+	}
+
+	public Vector getValoresViejos() {
+		return _valoresCamposViejos;
+	}
+	
+	public Vector getValoresEliminados() {
+		return _valoresCamposEliminados;
+	}
+
+	public boolean isCampoCambiado() {
+		return _actCampo;
+	}
+	
+	public boolean isEliminado() {
+		return !_valoresCamposEliminados.isEmpty();
+	}
+
+	public boolean isGuardado() {
+		return _guardar;
+	}
+
+	public boolean onClose() {
+		if (!isCambiado() && !isCampoCambiado() && !isEliminado()) {
+			UiApplication.getUiApplication().popScreen(getScreen());
+			return true;
+		} else {
+			Object[] ask = { "Guardar", "Descartar", "Cancelar" };
+			int sel = Dialog.ask("Se han detectado cambios", ask, 2);
+			if (sel == 0) {
+				_guardar = true;
+				UiApplication.getUiApplication().popScreen(getScreen());
+				return true;
+			} else if (sel == 1) {
+				UiApplication.getUiApplication().popScreen(getScreen());
+				return true;
+			} else {
+				return false;
+			}
+		}
+	}
+
+	private void addCampos(Vector campos) {
+		Enumeration e = campos.elements();
+
+		while (e.hasMoreElements()) {
+			CampoPersonalizado c = (CampoPersonalizado) e.nextElement();
+			EditableTextField etf = new EditableTextField(c.getNombre() + ": ",
+					c.getValor());
+			etf.setCookie(c);
+			_valoresCamposViejos.addElement(etf);
+			add(etf);
+		}
+	}
+
+	private boolean isCambiado() {
+		boolean cambio = false;
+
+		Calendar f1 = _proceso.getFecha();
+		Calendar f2 = this.getFecha();
+
+		if (_demandante != null) {
+			if (!_proceso.getDemandante().getId_persona()
+					.equals(this.getDemandante().getId_persona())) {
+				cambio = true;
+			}
+		} else if (_demandante == null && _proceso.getDemandante() == null)
+			;
+		else if (_demandante == null) {
+			cambio = true;
+		}
+
+		if (_demandado != null) {
+			if (!_proceso.getDemandado().getId_persona()
+					.equals(this.getDemandado().getId_persona())) {
+				cambio = true;
+			}
+		} else if (_demandado == null && _proceso.getDemandado() == null)
+			;
+		else if (_demandado == null) {
+			cambio = true;
+		}
+
+		if (_juzgado != null) {
+			if (!_proceso.getJuzgado().getId_juzgado()
+					.equals(this.getJuzgado().getId_juzgado())) {
+				cambio = true;
+			}
+		} else if (_juzgado == null && _proceso.getJuzgado() == null)
+			;
+		else if (_juzgado == null) {
+			cambio = true;
+		}
+
+		if ((f1.get(Calendar.YEAR) != f2.get(Calendar.YEAR))
+				|| (f1.get(Calendar.MONTH) != f2.get(Calendar.MONTH))
+				|| (f1.get(Calendar.DAY_OF_MONTH) != f2
+						.get(Calendar.DAY_OF_MONTH))) {
+			cambio = true;
+		}
+		if (!_proceso.getRadicado().equals(this.getRadicado())) {
+			cambio = true;
+		}
+		if (!_proceso.getRadicadoUnico().equals(this.getRadicadoUnico())) {
+			cambio = true;
+		}
+		if (!_proceso.getActuaciones().equals(this.getActuaciones())) {
+			cambio = true;
+		}
+		if (!_proceso.getEstado().equals(this.getEstado())) {
+			cambio = true;
+		}
+		if (!_proceso.getCategoria().equals(this.getCategoria())) {
+			cambio = true;
+		}
+		if (!_proceso.getTipo().equals(this.getTipo())) {
+			cambio = true;
+		}
+		if (!_proceso.getNotas().equals(this.getNotas())) {
+			cambio = true;
+		}
+		if (_proceso.getPrioridad() != this.getPrioridad()) {
+			cambio = true;
+		}
+		if (!_valoresCamposNuevos.isEmpty()) {
+			cambio = true;
+		}
+
+		return cambio;
+	}
+
+	private Object[] transformActuaciones() {
+		Enumeration e = _actuaciones.elements();
+		Object[] elements = new Object[_actuaciones.size()];
+		for (int i = 0; i < elements.length; i++) {
+			elements[i] = (e.nextElement());
+		}
+		return elements;
 	}
 
 	protected void makeMenu(Menu menu, int instance) {
 		Field focus = UiApplication.getUiApplication().getActiveScreen()
 				.getFieldWithFocus();
-		if(focus.equals(_txtCategoria)) {
+		if (focus.equals(_txtCategoria)) {
 			menu.add(menuCambiarCategoria);
 			menu.addSeparator();
 		}
-		if (focus.equals(_ofActuaciones)) {
-			menu.add(menuAddActuacion);
-			menu.addSeparator();
-		}
-		
+
+		menu.add(menuAddCampo);
+		menu.add(menuAddActuacion);
+		menu.addSeparator();
+
 		if (focus.equals(_txtDemandante)) {
 			if (_demandante != null) {
 				if (!_demandante.getId_persona().equals("1")) {
@@ -143,22 +372,24 @@ public class VerProcesoScreen extends FondoNormal {
 				}
 			}
 		}
-		
+
 		else {
 			menu.add(menuEditar);
 		}
-
+		
 		menu.add(menuEditarTodo);
-		if (!focus.equals(_ofActuaciones)) {
-			menu.add(menuAddActuacion);
-		}
 		menu.addSeparator();
 		if (focus.equals(_txtDemandante) || focus.equals(_txtDemandado)
 				|| focus.equals(_txtJuzgado)) {
 			menu.add(menuCambiar);
 			menu.add(menuEliminar);
+			menu.addSeparator();
 		} else if (focus.equals(_txtCategoria)) {
 			menu.add(menuCambiarCategoria);
+			menu.addSeparator();
+		} else if(CampoPersonalizado.class.isInstance(focus.getCookie())) {
+			menu.add(menuEliminarCampo);
+			menu.addSeparator();
 		}
 		menu.add(menuGuardar);
 	}
@@ -175,6 +406,21 @@ public class VerProcesoScreen extends FondoNormal {
 
 			} catch (Exception e) {
 				Dialog.alert(e.toString());
+			} finally {
+				l = null;
+			}
+		}
+	};
+
+	private final MenuItem menuAddCampo = new MenuItem(
+			"Agregar campo personalizado", 0, 0) {
+
+		public void run() {
+			ListadoCampos l = new ListadoCampos(true);
+			UiApplication.getUiApplication().pushModalScreen(l.getScreen());
+			try {
+				addCampo(l.getSelected());
+			} catch (NullPointerException e) {
 			} finally {
 				l = null;
 			}
@@ -213,36 +459,24 @@ public class VerProcesoScreen extends FondoNormal {
 			}
 		}
 	};
-
-	private Object[] transformActuaciones() {
-		Enumeration e = _actuaciones.elements();
-		Object[] elements = new Object[_actuaciones.size()];
-		for (int i = 0; i < elements.length; i++) {
-			elements[i] = ((Actuacion) e.nextElement());
+	
+	private final MenuItem menuEliminarCampo = new MenuItem("Eliminar del proceso",	0, 0) {
+		public void run() {
+			EditableTextField focus = (EditableTextField) UiApplication.getUiApplication().getActiveScreen().getFieldWithFocus();
+			_valoresCamposNuevos.removeElement(focus);
+			_valoresCamposViejos.removeElement(focus);
+			_valoresCamposEliminados.addElement(focus.getCookie());
+			delete(focus);
 		}
-		return elements;
-	}
-
-	private void addCampos() {
-		Enumeration e = _camposPersonalizados.elements();
-
-		while (e.hasMoreElements()) {
-			CampoPersonalizado c = (CampoPersonalizado) e.nextElement();
-			EditableTextField etf = new EditableTextField(c.getNombre() + ": ",
-					c.getValor());
-			etf.setCookie(c);
-			_txtCampos.addElement(etf);
-			add(etf);
-		}
-	}
+	};
 
 	private final MenuItem menuGuardar = new MenuItem("Guardar", 0, 0) {
 
 		public void run() {
-			if (isCambiado()) {
+			if (isCambiado() || isCampoCambiado() || isEliminado()) {
 				Object[] ask = { "Guardar", "Descartar", "Cancelar" };
 				int sel = Dialog.ask("¿Desea guardar los cambios realizados?",
-						ask, 2);
+						ask, 0);
 				if (sel == 0) {
 					_guardar = true;
 					UiApplication.getUiApplication().popScreen(getScreen());
@@ -267,8 +501,7 @@ public class VerProcesoScreen extends FondoNormal {
 				_demandante = verPersona.getPersona();
 				_txtDemandante.setText(_demandante.getNombre());
 				_txtDemandante.setFocus();
-			}
-			if (f.equals(_txtDemandado)) {
+			} else if (f.equals(_txtDemandado)) {
 				VerPersona verPersona = new VerPersona(_demandado);
 				UiApplication.getUiApplication().pushModalScreen(
 						verPersona.getScreen());
@@ -278,7 +511,7 @@ public class VerProcesoScreen extends FondoNormal {
 				_txtDemandado.setFocus();
 			}
 
-			if (f.equals(_txtJuzgado)) {
+			else if (f.equals(_txtJuzgado)) {
 				VerJuzgado verJuzgado = new VerJuzgado(_juzgado);
 				UiApplication.getUiApplication().pushModalScreen(
 						verJuzgado.getScreen());
@@ -293,22 +526,22 @@ public class VerProcesoScreen extends FondoNormal {
 				}
 			}
 
-			if (f.equals(_dfFecha)) {
+			else if (f.equals(_dfFecha)) {
 				_dfFecha.setEditable(true);
 				_dfFecha.setFocus();
 			}
 
-			if (f.equals(_txtRadicado)) {
+			else if (f.equals(_txtRadicado)) {
 				_txtRadicado.setEditable();
 				_txtRadicado.setFocus();
 			}
 
-			if (f.equals(_txtRadicadoUnico)) {
+			else if (f.equals(_txtRadicadoUnico)) {
 				_txtRadicadoUnico.setEditable();
 				_txtRadicadoUnico.setFocus();
 			}
 
-			if (f.equals(_ofActuaciones)) {
+			else if (f.equals(_ofActuaciones)) {
 				Actuacion actuacion = (Actuacion) _ofActuaciones
 						.getChoice(_ofActuaciones.getSelectedIndex());
 				VerActuacion verAtuacion = new VerActuacion(actuacion);
@@ -326,12 +559,12 @@ public class VerProcesoScreen extends FondoNormal {
 				}
 			}
 
-			if (f.equals(_txtEstado)) {
+			else if (f.equals(_txtEstado)) {
 				_txtEstado.setEditable();
 				_txtEstado.setFocus();
 			}
 
-			if (f.equals(_txtCategoria)) {
+			else if (f.equals(_txtCategoria)) {
 				VerCategoria v = new VerCategoria(_categoria);
 				UiApplication.getUiApplication().pushModalScreen(v.getScreen());
 				_categoria = v.getCategoria();
@@ -339,32 +572,25 @@ public class VerProcesoScreen extends FondoNormal {
 				_txtCategoria.setFocus();
 			}
 
-			if (f.equals(_txtTipo)) {
+			else if (f.equals(_txtTipo)) {
 				_txtTipo.setEditable();
 				_txtTipo.setFocus();
 			}
 
-			if (f.equals(_txtNotas)) {
+			else if (f.equals(_txtNotas)) {
 				_txtNotas.setEditable();
 				_txtNotas.setFocus();
 			}
 
-			if (f.equals(_nfPrioridad)) {
+			else if (f.equals(_nfPrioridad)) {
 				_nfPrioridad.setEditable(true);
 				_nfPrioridad.setFocus();
 			}
 			try {
 				if (CampoPersonalizado.class.isInstance(f.getCookie())) {
-					VerCampoPersonalizado verCampo = new VerCampoPersonalizado(
-							(CampoPersonalizado) f.getCookie());
-					UiApplication.getUiApplication().pushModalScreen(
-							verCampo.getScreen());
-					verCampo.actualizarCampoPersonalizado();
-					((EditableTextField) f).setText(verCampo.getCampo()
-							.getValor());
-					((EditableTextField) f).setLabel(verCampo.getCampo()
-							.getNombre() + ": ");
-					((EditableTextField) f).setCookie(verCampo.getCampo());
+					EditableTextField editable = (EditableTextField) f;
+					editable.setEditable();
+					_actCampo = true;
 				}
 			} catch (Exception e) {
 				Dialog.alert("Edit Campo -> " + e.toString());
@@ -439,161 +665,4 @@ public class VerProcesoScreen extends FondoNormal {
 			}
 		}
 	};
-
-	public Persona getDemandante() {
-		return _demandante;
-	}
-
-	public Persona getDemandado() {
-		return _demandado;
-	}
-
-	public Calendar getFecha() {
-		Calendar calendar = Calendar.getInstance();
-		calendar.setTime(new Date(_dfFecha.getDate()));
-		return calendar;
-	}
-
-	public Juzgado getJuzgado() {
-		return _juzgado;
-	}
-
-	public String getRadicado() {
-		return _txtRadicado.getText();
-	}
-
-	public String getRadicadoUnico() {
-		return _txtRadicadoUnico.getText();
-	}
-
-	public Vector getActuaciones() {
-		return _actuaciones;
-	}
-
-	public String getEstado() {
-		return _txtEstado.getText();
-	}
-
-	public Categoria getCategoria() {
-		return _categoria;
-	}
-
-	public String getTipo() {
-		return _txtTipo.getText();
-	}
-
-	public String getNotas() {
-		return _txtNotas.getText();
-	}
-
-	public int getPrioridad() {
-		return _nfPrioridad.getSelectedValue();
-	}
-
-	public Proceso getProceso() {
-		return _proceso;
-	}
-
-	public Vector getCampos() {
-		return _camposPersonalizados;
-	}
-
-	public boolean isGuardado() {
-		return _guardar;
-	}
-	
-	private boolean isCambiado() {
-		boolean cambio = false;
-
-		Calendar f1 = _proceso.getFecha();
-		Calendar f2 = this.getFecha();
-
-		if (_demandante != null) {
-			if (!_proceso.getDemandante().getId_persona()
-					.equals(this.getDemandante().getId_persona())) {
-				cambio = true;
-			}
-		} else if (_demandante == null && _proceso.getDemandante() == null)
-			;
-		else if (_demandante == null) {
-			cambio = true;
-		}
-
-		if (_demandado != null) {
-			if (!_proceso.getDemandado().getId_persona()
-					.equals(this.getDemandado().getId_persona())) {
-				cambio = true;
-			}
-		} else if (_demandado == null && _proceso.getDemandado() == null)
-			;
-		else if (_demandado == null) {
-			cambio = true;
-		}
-
-		if (_juzgado != null) {
-			if (!_proceso.getJuzgado().getId_juzgado()
-					.equals(this.getJuzgado().getId_juzgado())) {
-				cambio = true;
-			}
-		} else if (_juzgado == null && _proceso.getJuzgado() == null)
-			;
-		else if (_juzgado == null) {
-			cambio = true;
-		}
-
-		if ((f1.get(Calendar.YEAR) != f2.get(Calendar.YEAR))
-				|| (f1.get(Calendar.MONTH) != f2.get(Calendar.MONTH))
-				|| (f1.get(Calendar.DAY_OF_MONTH) != f2
-						.get(Calendar.DAY_OF_MONTH))) {
-			cambio = true;
-		}
-		if (!_proceso.getRadicado().equals(this.getRadicado())) {
-			cambio = true;
-		}
-		if (!_proceso.getRadicadoUnico().equals(this.getRadicadoUnico())) {
-			cambio = true;
-		}
-		if (!_proceso.getActuaciones().equals(this.getActuaciones())) {
-			cambio = true;
-		}
-		if (!_proceso.getEstado().equals(this.getEstado())) {
-			cambio = true;
-		}
-		if (!_proceso.getCategoria().equals(this.getCategoria())) {
-			cambio = true;
-		}
-		if (!_proceso.getTipo().equals(this.getTipo())) {
-			cambio = true;
-		}
-		if (!_proceso.getNotas().equals(this.getNotas())) {
-			cambio = true;
-		}
-		if (_proceso.getPrioridad() != this.getPrioridad()) {
-			cambio = true;
-		}
-		if (!_proceso.getCampos().equals(this.getCampos())) {
-			cambio = true;
-		}
-		return cambio;
-	}
-
-	public boolean onClose() {
-		if (!isCambiado()) {
-			UiApplication.getUiApplication().popScreen(getScreen());
-			return true;
-		} else {
-			Object[] ask = { "Guardar", "Descartar", "Cancelar" };
-			int sel = Dialog.ask("Se han detectado cambios", ask, 2);
-			if (sel == 0) {
-				_guardar = true;
-				UiApplication.getUiApplication().popScreen(getScreen());
-				return true;
-			} else if (sel == 1) {
-				UiApplication.getUiApplication().popScreen(getScreen());
-				return true;
-			} else {
-				return false;
-			}
-		}
-	}
 }

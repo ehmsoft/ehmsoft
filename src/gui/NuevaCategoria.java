@@ -1,5 +1,6 @@
 package gui;
 
+import net.rim.device.api.ui.Screen;
 import net.rim.device.api.ui.component.Dialog;
 import persistence.Persistence;
 import core.Categoria;
@@ -8,13 +9,26 @@ public class NuevaCategoria {
 
 	private Categoria _categoria;
 	private NuevaCategoriaScreen _screen;
+	private NuevaCategoriaPopUp _screenPp;
 
+	public NuevaCategoria(boolean popup) {
+		if(popup) {
+			_screenPp = new NuevaCategoriaPopUp();
+		} else {
+			_screen = new NuevaCategoriaScreen();
+		}
+	}
+	
 	public NuevaCategoria() {
-		_screen = new NuevaCategoriaScreen();
+		new NuevaCategoria(false);
 	}
 
-	public NuevaCategoriaScreen getScreen() {
-		return _screen;
+	public Screen getScreen() {
+		if(_screen != null) {
+			return _screen;
+		} else {
+			return _screenPp;
+		}
 	}
 
 	public Categoria getCategoria() throws Exception {
@@ -25,22 +39,40 @@ public class NuevaCategoria {
 	}
 
 	public void guardarCategoria() throws Exception {
-		if (_screen.isGuardado()) {
-			Persistence guardado = null;
-			try {
-				guardado = new Persistence();
-			} catch (Exception e) {
-				Dialog.alert(e.toString());
-			}
-			_categoria = new Categoria(_screen.getDescripcion());
-			try {
-				guardado.guardarCategoria(_categoria);
-			} catch (Exception e) {
-				Dialog.alert(e.toString());
+		if (_screen != null) {
+			if (_screen.isGuardado()) {
+				Persistence guardado = null;
+				try {
+					guardado = new Persistence();
+				} catch (Exception e) {
+					Dialog.alert(e.toString());
+				}
+				_categoria = new Categoria(_screen.getDescripcion());
+				try {
+					guardado.guardarCategoria(_categoria);
+				} catch (Exception e) {
+					Dialog.alert(e.toString());
+				}
+			} else {
+				throw new Exception("No se esta guardando el elemento");
 			}
 		} else {
-			throw new Exception("No se esta guardando el elemento");
+			if (_screenPp.isGuardado()) {
+				Persistence guardado = null;
+				try {
+					guardado = new Persistence();
+				} catch (Exception e) {
+					Dialog.alert(e.toString());
+				}
+				_categoria = new Categoria(_screenPp.getDescripcion());
+				try {
+					guardado.guardarCategoria(_categoria);
+				} catch (Exception e) {
+					Dialog.alert(e.toString());
+				}
+			} else {
+				throw new Exception("No se esta guardando el elemento");
+			}
 		}
 	}
-
 }

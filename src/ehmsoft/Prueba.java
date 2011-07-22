@@ -374,4 +374,9 @@ public class Prueba extends MainScreen {
 			ver.actualizarProceso();
 		}
 	};
+	
+	public boolean onClose() {
+		System.exit(0);
+		return true;
+	}
 }

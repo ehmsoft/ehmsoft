@@ -3,6 +3,7 @@ package gui;
 import java.util.Enumeration;
 import java.util.Vector;
 
+import net.rim.device.api.ui.Screen;
 import net.rim.device.api.ui.component.Dialog;
 import persistence.Persistence;
 import core.Persona;
@@ -12,8 +13,13 @@ public class ListadoPersonas {
 	private Persistence _persistencia;
 	private Vector _vectorPersonas;
 	private ListadoPersonasScreen _screen;
-
-	public ListadoPersonas(int tipo) {
+	private ListadoPersonasPopUp _screenPp;
+	
+	/**
+	 * @param tipo El tipo de persona
+	 * @param popup true si se desea crear una pantalla tipo PopUp
+	 */
+	public ListadoPersonas(int tipo, boolean popup) {
 		try {
 			_persistencia = new Persistence();
 		} catch (Exception e) {
@@ -28,16 +34,34 @@ public class ListadoPersonas {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-		else
+		else {
 			try {
 				_vectorPersonas = _persistencia.consultarDemandados();
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-
-		_screen = new ListadoPersonasScreen(tipo);
+		}
+		
+		if(popup) {
+			_screenPp = new ListadoPersonasPopUp(tipo);
+		}
+		else {
+			_screen = new ListadoPersonasScreen(tipo);
+		}
 		addPersonas();
+	}
+
+	public ListadoPersonas(int tipo) {
+		new ListadoPersonas(tipo, false);
+	}
+	
+	public void setTitle(String title) {
+		if(_screen != null) {
+			_screen.setTitle(title);
+		} else {
+			_screenPp.setTitle(title);
+		}
 	}
 
 	public void setVectorPersonas(Vector personas) {
@@ -50,7 +74,11 @@ public class ListadoPersonas {
 		try {
 			index = _vectorPersonas.elements();
 			while (index.hasMoreElements())
-				_screen.addPersona(index.nextElement());
+				if (_screen != null) {
+					_screen.addPersona(index.nextElement());
+				} else {
+					_screenPp.addPersona(index.nextElement());
+				}
 		} catch (NullPointerException e) {
 
 		} catch (Exception e) {
@@ -59,10 +87,18 @@ public class ListadoPersonas {
 	}
 
 	public Persona getSelected() {
-		return (Persona) _screen.getSelected();
+		if (_screen != null) {
+			return (Persona) _screen.getSelected();
+		} else {
+			return (Persona) _screenPp.getSelected();
+		}
 	}
 
-	public ListadoPersonasScreen getScreen() {
-		return _screen;
+	public Screen getScreen() {
+		if (_screen != null) {
+			return _screen;
+		} else {
+			return _screenPp;
+		}
 	}
 }

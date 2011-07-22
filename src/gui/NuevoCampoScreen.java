@@ -5,10 +5,9 @@ import net.rim.device.api.ui.UiApplication;
 import net.rim.device.api.ui.component.BasicEditField;
 import net.rim.device.api.ui.component.CheckboxField;
 import net.rim.device.api.ui.component.Dialog;
-import net.rim.device.api.ui.container.MainScreen;
 import net.rim.device.api.ui.container.VerticalFieldManager;
 
-public class NuevoCampoPersonalizadoScreen extends MainScreen {
+public class NuevoCampoScreen extends FondoNormal {
 
 	/**
 	 * Crea una nueva ventana para la creación de un nuevo campo personalizado
@@ -18,9 +17,10 @@ public class NuevoCampoPersonalizadoScreen extends MainScreen {
 	private BasicEditField _txtLongMax;
 	private BasicEditField _txtLongMin;
 
-	public NuevoCampoPersonalizadoScreen() {
-		super(MainScreen.VERTICAL_SCROLL | MainScreen.VERTICAL_SCROLLBAR);
-		// TODO Auto-generated constructor stub
+	private boolean _guardar = false;
+
+	public NuevoCampoScreen() {
+
 		setTitle("Nuevo campo personalizado");
 		VerticalFieldManager vertical = new VerticalFieldManager();
 
@@ -50,10 +50,13 @@ public class NuevoCampoPersonalizadoScreen extends MainScreen {
 
 		public void run() {
 			// TODO Auto-generated method stub
-			if (getLongMax() >= getLongMin())
+			if (getLongMax() >= getLongMin()) {
+				_guardar = true;
 				UiApplication.getUiApplication().popScreen(getScreen());
-			else
+			}
+			else {
 				Dialog.alert("La longitud mínima no puede ser mayor que la longitud máxima, corrija y guarde nuevamente");
+			}
 		}
 	};
 
@@ -83,5 +86,33 @@ public class NuevoCampoPersonalizadoScreen extends MainScreen {
 			return 0;
 		}
 		return lon;
+	}
+
+	public boolean isGuardado() {
+		return _guardar;
+	}
+
+	public boolean onClose() {
+		if (_txtNombre.getTextLength() == 0 && _txtLongMax.getTextLength() == 0
+				&& _txtLongMin.getTextLength() == 0) {
+			UiApplication.getUiApplication().popScreen(getScreen());
+			return true;
+		} else {
+			Object[] ask = { "Guardar", "Descartar", "Cancelar" };
+			int sel = Dialog.ask("Se han detectado cambios", ask, 2);
+			if (sel == 0) {
+				_guardar = true;
+				UiApplication.getUiApplication().popScreen(getScreen());
+				return true;
+			}
+			if (sel == 1) {
+				UiApplication.getUiApplication().popScreen(getScreen());
+				return true;
+			}
+			if (sel == 2) {
+				return false;
+			} else
+				return false;
+		}
 	}
 }
