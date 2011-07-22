@@ -10,23 +10,17 @@ import core.Juzgado;
 
 public class ListadoJuzgados {
 
-	private Persistence _persistencia;
 	private Vector _vectorJuzgados;
 	private ListadoJuzgadosScreen _screen;
 	private ListadoJuzgadosPopUp _screenPp;
 
 	public ListadoJuzgados(boolean popup) {
+		Persistence p;
 		try {
-			_persistencia = new Persistence();
+			p = new Persistence();
+			_vectorJuzgados = p.consultarJuzgados();
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		try {
-			_vectorJuzgados = _persistencia.consultarJuzgados();
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			Dialog.alert(e.toString());
 		}
 		if(popup) {
 			_screenPp = new ListadoJuzgadosPopUp();

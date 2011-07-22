@@ -8,19 +8,18 @@ import net.rim.device.api.ui.FieldChangeListener;
 import net.rim.device.api.ui.MenuItem;
 import net.rim.device.api.ui.UiApplication;
 import net.rim.device.api.ui.component.BasicEditField;
-import net.rim.device.api.ui.component.ButtonField;
 import net.rim.device.api.ui.component.CheckboxField;
 import net.rim.device.api.ui.component.DateField;
 import net.rim.device.api.ui.component.Dialog;
 import net.rim.device.api.ui.component.LabelField;
+import net.rim.device.api.ui.component.Menu;
 import net.rim.device.api.ui.container.HorizontalFieldManager;
-import net.rim.device.api.ui.container.VerticalFieldManager;
 import core.CalendarManager;
 import core.Juzgado;
 
 public class NuevaActuacionScreen extends FondoNormal {
 
-	private ButtonField _btnJuzgado;
+	private LabelField _lblJuzgado;
 	private DateField _dfFecha;
 	private DateField _dfFechaProxima;
 	private BasicEditField _txtDescripcion;
@@ -39,16 +38,10 @@ public class NuevaActuacionScreen extends FondoNormal {
 		setTitle("Nueva actuación");
 
 		HorizontalFieldManager fldJuzgado = new HorizontalFieldManager();
-		VerticalFieldManager fldLeftJuzgado = new VerticalFieldManager();
-		VerticalFieldManager fldRightJuzgado = new VerticalFieldManager(
-				USE_ALL_WIDTH);
 
-		_btnJuzgado = new ButtonField("Seleccionar", FIELD_RIGHT);
-		_btnJuzgado.setChangeListener(listenerJuzgado);
-		fldLeftJuzgado.add(new LabelField("Juzgado: "));
-		fldRightJuzgado.add(_btnJuzgado);
-		fldJuzgado.add(fldLeftJuzgado);
-		fldJuzgado.add(fldRightJuzgado);
+		_lblJuzgado = new LabelField("*Ninguno*", LabelField.FOCUSABLE);
+		fldJuzgado.add(new LabelField("Juzgado: "));
+		fldJuzgado.add(_lblJuzgado);
 		add(fldJuzgado);
 
 		_dfFecha = new DateField("Fecha: ", System.currentTimeMillis(),
@@ -70,6 +63,46 @@ public class NuevaActuacionScreen extends FondoNormal {
 		addMenuItem(menuGuardar);
 	}
 	
+	protected void makeMenu(Menu menu, int instance) {
+		Field f = UiApplication.getUiApplication().getActiveScreen().getLeafFieldWithFocus();
+		if(f.equals(_lblJuzgado)) {
+			LabelField temp = (LabelField) f;
+			if(temp.getText().equals("*Ninguno*")) {
+				menu.add(menuAgregar);
+				menu.addSeparator();
+			} else {
+				menu.add(menuCambiar);
+				menu.addSeparator();
+			}
+			addMenuItem(menuGuardar);
+		}
+	}
+	
+	private final MenuItem menuAgregar = new MenuItem("Agregar", 0, 0) {
+
+		public void run() {
+			ListadoJuzgados l = new ListadoJuzgados(true);
+			l.setTitle("Seleccione un juzgado");
+			UiApplication.getUiApplication().pushModalScreen(l.getScreen());
+			try {
+				_juzgado = l.getSelected();
+				setJuzgado(_juzgado);
+			} catch(NullPointerException e) {
+			} catch(Exception e) {
+				Dialog.alert(e.toString());
+			} finally {
+				l = null;
+			}
+		}
+	};
+	
+	private final MenuItem menuCambiar = new MenuItem("Cambiar", 0, 0) {
+
+		public void run() {
+			menuAgregar.run();
+		}
+	};
+	
 	private FieldChangeListener listenerCita = new FieldChangeListener() {
 		public void fieldChanged(Field field, int context) {
 			if (_cbCita.getChecked()) {
@@ -90,15 +123,6 @@ public class NuevaActuacionScreen extends FondoNormal {
 					Dialog.alert(e.toString());
 				}
 			}
-		}
-	};
-
-	private FieldChangeListener listenerJuzgado = new FieldChangeListener() {
-		public void fieldChanged(Field field, int context) {
-			ListadoJuzgados juzgados = new ListadoJuzgados(true);
-			UiApplication.getUiApplication().pushModalScreen(
-					juzgados.getScreen());
-			setJuzgado(juzgados.getSelected());
 		}
 	};
 
@@ -138,7 +162,7 @@ public class NuevaActuacionScreen extends FondoNormal {
 	 *            Se asigna al Objeto un Juzgado
 	 */
 	public void setJuzgado(Juzgado juzgado) {
-		_btnJuzgado.setLabel(juzgado.getNombre());
+		_lblJuzgado.setText(juzgado.getNombre());
 		_juzgado = juzgado;
 	}
 

@@ -17,7 +17,7 @@ public class ListadoJuzgadosPopUp extends PopupScreen {
 	public ListadoJuzgadosPopUp() {
 		super(new VerticalFieldManager());
 
-		LabelField _title = new LabelField("Juzgados",
+		_title = new LabelField("Juzgados",
 				Field.FIELD_HCENTER);
 		add(_title);
 		add(new SeparatorField());
