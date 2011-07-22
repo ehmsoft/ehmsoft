@@ -376,6 +376,7 @@ public class Prueba extends MainScreen {
 	};
 	
 	public boolean onClose() {
+		System.exit(0);
 		return true;
 	}
 }
