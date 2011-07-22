@@ -116,11 +116,11 @@ public class ConnectionManager {
 			st = d.createStatement("CREATE TABLE 'atributos'("+
 					"'id_atributo' INTEGER PRIMARY KEY,"+
 					"'nombre' TEXT,"+
-					"'obligatorio' TEXT,"+
+					"'obligatorio' BOOLEAN,"+
 					"'longitud_max' INTEGER,"+
 					"'longitud_min' INTEGER, UNIQUE("+
 					"'nombre',"+
-			"'naturaleza'))");
+			"'obligatorio'))");
 			st.prepare();
 			st.execute();
 			st.close();

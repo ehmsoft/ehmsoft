@@ -7,26 +7,31 @@ import net.rim.device.api.ui.container.HorizontalFieldManager;
 
 public class EditableTextField extends HorizontalFieldManager {
 
-	LabelField _label;
-	BasicEditField _txtField;
-
-	public EditableTextField(long style) {
-		_txtField = new BasicEditField(style) {
-			protected void paint(Graphics g) {
-				g.setColor(0x00CDC9C9);
-				super.paint(g);
-			}
-		};
-		_txtField.setEditable(false);
+	private LabelField _label;
+	private BasicEditField _txtField;
+	private int _color = 0x00CDC9C9;
+	
+	public EditableTextField() {
+		_txtField = new BasicEditField();
 		_label = new LabelField();
 		this.add(_label);
 		this.add(_txtField);
 	}
 
+	public EditableTextField(long style) {
+		_txtField = new BasicEditField(style) {
+			protected void paint(Graphics g) {
+				g.setColor(_color);
+				super.paint(g);
+			}
+		};
+		new EditableTextField();
+	}
+
 	public EditableTextField(String label, String initialValue) {
 		_txtField = new BasicEditField(null, initialValue) {
 			protected void paint(Graphics g) {
-				g.setColor(0x00CDC9C9);
+				g.setColor(_color);
 				super.paint(g);
 			}
 		};
@@ -39,7 +44,7 @@ public class EditableTextField extends HorizontalFieldManager {
 	public EditableTextField(String label, String initialValue, long style) {
 		_txtField = new BasicEditField(style) {
 			protected void paint(Graphics g) {
-				g.setColor(0x00CDC9C9);
+				g.setColor(_color);
 				super.paint(g);
 			}
 		};
@@ -56,6 +61,24 @@ public class EditableTextField extends HorizontalFieldManager {
 
 	public void setText(String text) {
 		_txtField.setText(text);
+	}
+	
+	public void setEditableColor(int color) {
+		if (_color != color) {
+			_color = color;
+			long style = _txtField.getStyle();
+			String text = _txtField.getText();
+			this.delete(_txtField);
+			_txtField = new BasicEditField(style) {
+				protected void paint(Graphics g) {
+					g.setColor(_color);
+					super.paint(g);
+				}
+			};
+			_txtField.setText(text);
+			_txtField.setEditable(false);
+			this.add(_txtField);
+		}
 	}
 
 	public String getText() {
@@ -74,5 +97,28 @@ public class EditableTextField extends HorizontalFieldManager {
 		_txtField.setText(text);
 		_txtField.setEditable(true);
 		this.add(_txtField);
+	}
+	
+	public void setMaxSize(int maxSize) {
+		_txtField.setMaxSize(maxSize);
+	}
+	
+	public void setEditable(boolean editable) {
+		if(editable) {
+			setEditable();
+		} else {
+			long style = _txtField.getStyle();
+			String text = _txtField.getText();
+			this.delete(_txtField);
+			_txtField = new BasicEditField(style) {
+				protected void paint(Graphics g) {
+					g.setColor(_color);
+					super.paint(g);
+				}
+			};
+			_txtField.setText(text);
+			_txtField.setEditable(false);
+			this.add(_txtField);
+		}
 	}
 }

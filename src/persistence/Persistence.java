@@ -398,7 +398,11 @@ public class Persistence implements Cargado, Guardado {
 							+ " longitud_min = ? WHERE id_atributo = ?");
 			stAcAtributo.prepare();
 			stAcAtributo.bind(1, campo.getNombre());
-			stAcAtributo.bind(2, campo.isObligatorio().toString());
+			int obligatorio = 0;
+			if(campo.isObligatorio().booleanValue()){
+				obligatorio = 1;
+			}
+			stAcAtributo.bind(2, obligatorio);
 			stAcAtributo.bind(3, campo.getLongitudMax());
 			stAcAtributo.bind(4, campo.getLongitudMin());
 			stAcAtributo.bind(5, campo.getId_campo());
@@ -423,7 +427,11 @@ public class Persistence implements Cargado, Guardado {
 				Statement stAtributos = d.createStatement("INSERT INTO atributos (id_atributo, nombre, obligatorio, longitud_max, longitud_min) VALUES( NULL,?,?,?,?)");
 				stAtributos.prepare();
 				stAtributos.bind(1, campo.getNombre());
-				stAtributos.bind(2, campo.isObligatorio().toString());
+				int obligatorio = 0;
+				if(campo.isObligatorio().booleanValue()){
+					obligatorio = 1;
+				}
+				stAtributos.bind(2, obligatorio);
 				stAtributos.bind(3, campo.getLongitudMax());
 				stAtributos.bind(4, campo.getLongitudMin());
 				stAtributos.execute();
@@ -533,6 +541,15 @@ public class Persistence implements Cargado, Guardado {
 						.getId_juzgado()));
 			} else {
 				proceso.setJuzgado(consultarJuzgado("1"));
+			}
+
+		}
+		Vector cp = new Vector();
+		cp = proceso.getCampos();
+		if (cp != null) {
+			Enumeration e = cp.elements();
+			while (e.hasMoreElements()) {
+				actualizarCampoPersonalizado((CampoPersonalizado) e.nextElement());
 			}
 
 		}
@@ -976,6 +993,7 @@ public class Persistence implements Cargado, Guardado {
 			proceso_act.setJuzgado(consultarJuzgado(proceso_act.getJuzgado()
 					.getId_juzgado()));
 			proceso_act.setActuaciones(consultarActuaciones(proceso_act));
+			proceso_act.setCampos(consultarCampos(proceso_act));
 			proceso_act.setCategoria(consultarCategoria(proceso_act
 					.getCategoria().getId_categoria()));
 		}
@@ -1035,6 +1053,7 @@ public class Persistence implements Cargado, Guardado {
 		proceso.setJuzgado(consultarJuzgado(proceso.getJuzgado()
 				.getId_juzgado()));
 		proceso.setActuaciones(consultarActuaciones(proceso));
+		proceso.setCampos(consultarCampos(proceso));
 		proceso.setCategoria(consultarCategoria(proceso.getCategoria()
 				.getId_categoria()));
 		return proceso;
@@ -1249,6 +1268,109 @@ public class Persistence implements Cargado, Guardado {
 		return categorias;
 	}
 
+
+	public Vector consultarCampos(Proceso proceso) throws Exception {
+		Database d = null;
+		Vector campos = new Vector();
+		try {
+			connMgr.prepararBD();
+			d = DatabaseFactory.open(connMgr.getDbLocation());
+			Statement st = d
+					.createStatement("SELECT at.id_atributo_proceso, at.id_atributo, at.valor, a.nombre,a.obligatorio,a.longitud_max, a.longitud_min FROM atributos_proceso at, atributos a WHERE at.id_atributo = a.id_atributo AND at.id_proceso = ?");
+			st.prepare();
+			st.bind(1, proceso.getId_proceso());
+			Cursor cursor = st.getCursor();
+			while (cursor.next()) {
+				Row row = cursor.getRow();
+				int id_atributo_proceso = row.getInteger(0);
+				int id_atributo = row.getInteger(1);
+				String valor = row.getString(2);
+				String nombre = row.getString(3);
+				boolean obligatorio = row.getBoolean(4);
+				int longitud_max = row.getInteger(5);
+				int longitud_min = row.getInteger(6);
+				CampoPersonalizado campo = new CampoPersonalizado(Integer.toString(id_atributo_proceso), Integer.toString(id_atributo), nombre, valor, new Boolean(obligatorio), longitud_max, longitud_min);
+				campos.addElement(campo);
+			}
+			st.close();
+			cursor.close();
+		} catch (Exception e) {
+			throw e;
+		} finally {
+			if (d != null) {
+				d.close();
+			}
+		}
+		return campos;
+	}
+
+	public CampoPersonalizado consultarCampo(String id_campo) throws Exception {
+		Database d = null;
+		CampoPersonalizado campo = null;
+		try {
+			connMgr.prepararBD();
+			d = DatabaseFactory.open(connMgr.getDbLocation());
+			Statement st = d
+					.createStatement("SELECT at.id_atributo_proceso, at.id_atributo, at.valor, a.nombre,a.obligatorio,a.longitud_max, a.longitud_min FROM atributos_proceso at, atributos a WHERE at.id_atributo = a.id_atributo AND at.id_atributo_proceso = ?");
+			st.prepare();
+			st.bind(1, id_campo);
+			Cursor cursor = st.getCursor();
+			if (cursor.next()) {
+				Row row = cursor.getRow();
+				int id_atributo_proceso = row.getInteger(0);
+				int id_atributo = row.getInteger(1);
+				String valor = row.getString(2);
+				String nombre = row.getString(3);
+				boolean obligatorio = row.getBoolean(4);
+				int longitud_max = row.getInteger(5);
+				int longitud_min = row.getInteger(6);
+				campo = new CampoPersonalizado(Integer.toString(id_atributo_proceso), Integer.toString(id_atributo), nombre, valor, new Boolean(obligatorio), longitud_max, longitud_min);
+				
+			}
+			st.close();
+			cursor.close();
+		} catch (Exception e) {
+			throw e;
+		} finally {
+			if (d != null) {
+				d.close();
+			}
+		}
+		return campo;
+	}
+	public Vector consultarAtributos() throws Exception {
+		Database d = null;
+		Vector campos = new Vector();
+		try {
+			connMgr.prepararBD();
+			d = DatabaseFactory.open(connMgr.getDbLocation());
+			Statement st = d
+					.createStatement("SELECT id_atributo, nombre,obligatorio,longitud_max, longitud_min FROM  atributos");
+			st.prepare();
+			Cursor cursor = st.getCursor();
+			while (cursor.next()) {
+				Row row = cursor.getRow();
+				int id_atributo = row.getInteger(0);
+				String nombre = row.getString(1);
+				boolean obligatorio = row.getBoolean(2);
+				int longitud_max = row.getInteger(3);
+				int longitud_min = row.getInteger(4);
+				String id_campo = null;
+				String valor = null;
+				CampoPersonalizado campo = new CampoPersonalizado(id_campo,Integer.toString(id_atributo),nombre,valor,new Boolean(obligatorio),longitud_max,longitud_min);
+				campos.addElement(campo);
+			}
+			st.close();
+			cursor.close();
+		} catch (Exception e) {
+			throw e;
+		} finally {
+			if (d != null) {
+				d.close();
+			}
+		}
+		return campos;
+	}
 	private Calendar stringToCalendar(String fecha) {
 		Calendar calendar_return = Calendar.getInstance();
 		calendar_return.set(Calendar.YEAR,
@@ -1292,7 +1414,5 @@ public class Persistence implements Cargado, Guardado {
 		nuevafecha = fecha.get(Calendar.YEAR) + "-" + mes + "-" + dia + " "
 				+ hora + ":" + minuto;
 		return nuevafecha;
-
 	}
-
 }

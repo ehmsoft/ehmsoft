@@ -4,16 +4,16 @@ import net.rim.device.api.ui.component.Dialog;
 import persistence.Persistence;
 import core.CampoPersonalizado;
 
-public class VerCampoPersonalizado {
-	private VerCampoPersonalizadoScreen _screen;
+public class VerCampo {
+	private VerCampoScreen _screen;
 	private CampoPersonalizado _campo;
 
-	public VerCampoPersonalizado(CampoPersonalizado campo) {
-		_screen = new VerCampoPersonalizadoScreen(campo);
+	public VerCampo(CampoPersonalizado campo) {
+		_screen = new VerCampoScreen(campo);
 		_campo = campo;
 	}
 
-	public VerCampoPersonalizadoScreen getScreen() {
+	public VerCampoScreen getScreen() {
 		return _screen;
 	}
 
