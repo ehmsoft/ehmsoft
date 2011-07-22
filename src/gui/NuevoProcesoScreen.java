@@ -7,11 +7,9 @@ import java.util.Vector;
 import persistence.Persistence;
 
 import net.rim.device.api.ui.Field;
-import net.rim.device.api.ui.FieldChangeListener;
 import net.rim.device.api.ui.MenuItem;
 import net.rim.device.api.ui.UiApplication;
 import net.rim.device.api.ui.component.BasicEditField;
-import net.rim.device.api.ui.component.ButtonField;
 import net.rim.device.api.ui.component.DateField;
 import net.rim.device.api.ui.component.Dialog;
 import net.rim.device.api.ui.component.LabelField;
@@ -32,13 +30,13 @@ public class NuevoProcesoScreen extends FondoNormal {
 	private ObjectChoiceField _chActuaciones;
 	private NumericChoiceField _chPrioridad;
 	private DateField _dtFecha;
+	private LabelField _lblDemandante;
+	private LabelField _lblDemandado;
+	private LabelField _lblJuzgado;
 	private BasicEditField _txtTipo;
 	private BasicEditField _txtNotas;
 	private BasicEditField _txtRadicado;
 	private BasicEditField _txtRadicadoUnico;
-	private ButtonField _btnDemandante;
-	private ButtonField _btnDemandado;
-	private ButtonField _btnJuzgado;
 
 	private HorizontalFieldManager _fldCampoPersonalizado;
 	private VerticalFieldManager _fldRightCampoPersonalizado;
@@ -62,39 +60,21 @@ public class NuevoProcesoScreen extends FondoNormal {
 		_actuaciones = new Vector();
 
 		HorizontalFieldManager fldDemandante = new HorizontalFieldManager();
-		VerticalFieldManager fldRightDemandante = new VerticalFieldManager(
-				USE_ALL_WIDTH);
-		VerticalFieldManager fldLeftDemandante = new VerticalFieldManager();
-		_btnDemandante = new ButtonField("Seleccionar", FIELD_RIGHT);
-		_btnDemandante.setChangeListener(listenerBtnDemandante);
-		fldLeftDemandante.add(new LabelField("Demandante: "));
-		fldRightDemandante.add(_btnDemandante);
-		fldDemandante.add(fldLeftDemandante);
-		fldDemandante.add(fldRightDemandante);
+		_lblDemandante = new LabelField("Ninguno", LabelField.FOCUSABLE);
+		fldDemandante.add(new LabelField("Demandante: "));
+		fldDemandante.add(_lblDemandante);
 		add(fldDemandante);
-
+		
 		HorizontalFieldManager fldDemandado = new HorizontalFieldManager();
-		VerticalFieldManager fldRightDemandado = new VerticalFieldManager(
-				USE_ALL_WIDTH);
-		VerticalFieldManager fldLeftDemandado = new VerticalFieldManager();
-		_btnDemandado = new ButtonField("Seleccionar", FIELD_RIGHT);
-		_btnDemandado.setChangeListener(listenerBtnDemandado);
-		fldLeftDemandado.add(new LabelField("Demandado: "));
-		fldRightDemandado.add(_btnDemandado);
-		fldDemandado.add(fldLeftDemandado);
-		fldDemandado.add(fldRightDemandado);
+		_lblDemandado = new LabelField("Ninguno", LabelField.FOCUSABLE);
+		fldDemandado.add(new LabelField("Demandado: "));
+		fldDemandado.add(_lblDemandado);
 		add(fldDemandado);
-
+		
 		HorizontalFieldManager fldJuzgado = new HorizontalFieldManager();
-		VerticalFieldManager fldRightJuzgado = new VerticalFieldManager(
-				USE_ALL_WIDTH);
-		VerticalFieldManager fldLeftJuzgado = new VerticalFieldManager();
-		_btnJuzgado = new ButtonField("Seleccionar", FIELD_RIGHT);
-		_btnJuzgado.setChangeListener(listenerBtnJuzgado);
-		fldLeftJuzgado.add(new LabelField("Juzgado: "));
-		fldRightJuzgado.add(_btnJuzgado);
-		fldJuzgado.add(fldLeftJuzgado);
-		fldJuzgado.add(fldRightJuzgado);
+		_lblJuzgado = new LabelField("Ninguno", LabelField.FOCUSABLE);
+		fldJuzgado.add(new LabelField("Juzgado: "));
+		fldJuzgado.add(_lblJuzgado);
 		add(fldJuzgado);
 
 		_txtRadicado = new BasicEditField(BasicEditField.NO_NEWLINE);
@@ -178,8 +158,16 @@ public class NuevoProcesoScreen extends FondoNormal {
 	}
 	
 	protected void makeMenu(Menu menu, int instance) {
-		Field f = UiApplication.getUiApplication().getActiveScreen().getFieldWithFocus();
-		if(f.equals(_btnDemandante) || f.equals(_btnDemandado) || f.equals(_btnJuzgado)) {
+		Field f = UiApplication.getUiApplication().getActiveScreen().getLeafFieldWithFocus();
+		if(f.equals(_lblDemandante) || f.equals(_lblDemandado) || f.equals(_lblJuzgado)) {
+			LabelField temp = (LabelField) f;
+			if(temp.getText().equals("Ninguno")) {
+				menu.add(menuAgregar);
+				menu.addSeparator();
+			} else {
+				menu.add(menuCambiar);
+				menu.addSeparator();
+			}
 			menu.add(menuEliminar);
 			menu.addSeparator();
 		}
@@ -195,6 +183,61 @@ public class NuevoProcesoScreen extends FondoNormal {
 		menu.addSeparator();
 		menu.add(menuGuardar);
 	}
+	
+	private final MenuItem menuAgregar = new MenuItem("Agregar",
+			0, 0) {
+
+		public void run() {
+			Field f = UiApplication.getUiApplication().getActiveScreen().getLeafFieldWithFocus();
+			if(f.equals(_lblDemandante)) {
+				ListadoPersonas l = new ListadoPersonas(1, true);
+				l.setTitle("Seleccione un demandante");
+				UiApplication.getUiApplication().pushModalScreen(l.getScreen());
+				try {
+					_demandante = l.getSelected(); 
+					_lblDemandante.setText(_demandante.getNombre());					
+				} catch(NullPointerException e) {
+					l = null;
+				} catch(Exception e) {
+					Dialog.alert(e.toString());
+				}
+			}
+			else if(f.equals(_lblDemandado)) {
+				ListadoPersonas l = new ListadoPersonas(2, true);
+				l.setTitle("Seleccione un demandado");
+				UiApplication.getUiApplication().pushModalScreen(l.getScreen());
+				try {
+					_demandado = l.getSelected(); 
+					_lblDemandado.setText(_demandado.getNombre());					
+				} catch(NullPointerException e) {
+					l = null;
+				} catch(Exception e) {
+					Dialog.alert(e.toString());
+				}
+			}
+			else if(f.equals(_lblJuzgado)) {
+				ListadoJuzgados l = new ListadoJuzgados(true);
+				l.setTitle("Seleccione un juzgado");
+				UiApplication.getUiApplication().pushModalScreen(l.getScreen());
+				try {
+					_juzgado = l.getSelected(); 
+					_lblJuzgado.setText(_juzgado.getNombre());					
+				} catch(NullPointerException e) {
+					l = null;
+				} catch(Exception e) {
+					Dialog.alert(e.toString());
+				}
+			}
+		}
+	};
+	
+	private final MenuItem menuCambiar = new MenuItem("Cambiar",
+			0, 0) {
+
+		public void run() {
+			menuAgregar.run();
+		}
+	};
 	
 	private final MenuItem menuAddActuacion = new MenuItem("Nueva actuación",
 			0, 0) {
@@ -278,57 +321,6 @@ public class NuevoProcesoScreen extends FondoNormal {
 		}
 	};
 
-	private FieldChangeListener listenerBtnDemandante = new FieldChangeListener() {
-		public void fieldChanged(Field field, int context) {
-			ListadoPersonas l = new ListadoPersonas(1);
-			UiApplication.getUiApplication().pushModalScreen(
-					l.getScreen());
-			try {
-				_demandante = l.getSelected();
-				_btnDemandante.setLabel(_demandante.getNombre());
-			} catch (NullPointerException e) {
-				if (_demandante == null)
-					Dialog.alert("Debe seleccionar un demandante");
-			} finally {
-				l = null;
-			}
-		}
-	};
-
-	private FieldChangeListener listenerBtnDemandado = new FieldChangeListener() {
-		public void fieldChanged(Field field, int context) {
-			ListadoPersonas demandados = new ListadoPersonas(2);
-			UiApplication.getUiApplication().pushModalScreen(
-					demandados.getScreen());
-			try {
-				_demandado = demandados.getSelected();
-				_btnDemandado.setLabel(_demandado.getNombre());
-			} catch (NullPointerException e) {
-				if (_demandado == null)
-					Dialog.alert("Debe seleccionar un demandado");
-			} finally {
-				demandados = null;
-			}
-		}
-	};
-
-	private FieldChangeListener listenerBtnJuzgado = new FieldChangeListener() {
-		public void fieldChanged(Field field, int context) {
-			ListadoJuzgados juzgados = new ListadoJuzgados();
-			UiApplication.getUiApplication().pushModalScreen(
-					juzgados.getScreen());
-			try {
-				_juzgado = juzgados.getSelected();
-				_btnJuzgado.setLabel(_juzgado.getNombre());
-			} catch (NullPointerException e) {
-				if (_juzgado == null)
-					Dialog.alert("Debe seleccionar un juzgado");
-			} finally {
-				juzgados = null;
-			}
-		}
-	};
-
 	/**
 	 * @param campo
 	 *            Agrega un campo personalizado al Proceso en creacion
@@ -349,7 +341,7 @@ public class NuevoProcesoScreen extends FondoNormal {
 	 *            Se asigna una Persona demandante al Proceso en creacion
 	 */
 	public void setDemandante(Persona demandante) {
-		_btnDemandante.setLabel(demandante.getNombre());
+		_lblDemandante.setText(demandante.getNombre());
 		_demandante = demandante;
 	}
 
@@ -358,7 +350,7 @@ public class NuevoProcesoScreen extends FondoNormal {
 	 *            Se asigna una Persona demandado al Proceso en creacion
 	 */
 	public void setDemandado(Persona demandado) {
-		_btnDemandado.setLabel(demandado.getNombre());
+		_lblDemandado.setText(demandado.getNombre());
 		_demandado = demandado;
 	}
 
@@ -367,7 +359,7 @@ public class NuevoProcesoScreen extends FondoNormal {
 	 *            Se asigna un Juzgado al Proceso en creacion
 	 */
 	public void setJuzgado(Juzgado juzgado) {
-		_btnJuzgado.setLabel(juzgado.getNombre());
+		_lblJuzgado.setText(juzgado.getNombre());
 		_juzgado = juzgado;
 	}
 
