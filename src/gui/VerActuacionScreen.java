@@ -6,9 +6,13 @@ import java.util.Date;
 import net.rim.device.api.ui.Field;
 import net.rim.device.api.ui.MenuItem;
 import net.rim.device.api.ui.UiApplication;
+import net.rim.device.api.ui.component.BasicEditField;
 import net.rim.device.api.ui.component.DateField;
 import net.rim.device.api.ui.component.Dialog;
+import net.rim.device.api.ui.component.LabelField;
 import net.rim.device.api.ui.component.Menu;
+import net.rim.device.api.ui.component.ObjectChoiceField;
+import net.rim.device.api.ui.component.SeparatorField;
 import core.Actuacion;
 import core.Juzgado;
 
@@ -20,6 +24,12 @@ public class VerActuacionScreen extends FondoNormal {
 	private EditableTextField _txtDescripcion;
 	private Actuacion _actuacion;
 	private Juzgado _juzgado;
+	
+	private EditableTextField _txtDescripcionCita;
+	private DateField _dfFechaCita;
+	private EditableTextField _txtTiempoCita;
+	private ObjectChoiceField _chUnidades;
+	
 
 	private boolean _guardar = false;
 	private boolean _eliminar = false;
@@ -49,6 +59,39 @@ public class VerActuacionScreen extends FondoNormal {
 		add(_dfFecha);
 		add(_dfFechaProxima);
 		add(_txtDescripcion);
+	}
+	
+	public void setCita(String descripcion, Date date, int alarma) {
+		add(new SeparatorField());
+		LabelField title = new LabelField("Cita en calendario", FIELD_HCENTER);
+		add(title);
+		add(new SeparatorField());
+		String unidades = null;
+		
+		if(alarma < 3600) {
+			unidades = "Minutos";
+			alarma = alarma / 60;
+		}
+		else if(alarma < 86400) {
+			unidades = "Horas";
+			alarma = alarma / 3600;
+		}
+		else if(alarma >= 86400) {
+			unidades = "Días";
+			alarma = alarma / 86400;
+		}
+		
+		String[] choices = {"Minutos", "Horas", "Días"};
+		
+		_txtDescripcionCita = new EditableTextField("Descripción: ", descripcion);
+		add(_txtDescripcionCita);
+		_dfFechaCita = new DateField("Fecha: ", date.getTime(), DateField.DATE_TIME);
+		add(_dfFechaCita);
+		_txtTiempoCita = new EditableTextField("Anticipación: ", alarma+"", BasicEditField.FILTER_INTEGER);
+		add(_txtTiempoCita);
+		_chUnidades = new ObjectChoiceField(null, choices);
+		_chUnidades.setSelectedIndex(unidades);
+		add(_chUnidades);
 	}
 	
 	protected void makeMenu(Menu menu, int instance) {

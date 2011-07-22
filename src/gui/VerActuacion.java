@@ -1,10 +1,15 @@
 package gui;
 
 import java.util.Calendar;
+import java.util.Date;
 
+import javax.microedition.pim.PIMItem;
+
+import net.rim.blackberry.api.pdap.BlackBerryEvent;
 import net.rim.device.api.ui.component.Dialog;
 import persistence.Persistence;
 import core.Actuacion;
+import core.CalendarManager;
 
 public class VerActuacion {
 	private VerActuacionScreen _screen;
@@ -13,6 +18,19 @@ public class VerActuacion {
 	public VerActuacion(Actuacion actuacion) {
 		_screen = new VerActuacionScreen(actuacion);
 		_actuacion = actuacion;
+		setCita();
+	}
+	
+	private void setCita() {
+		try {
+			BlackBerryEvent event = CalendarManager.consultarCita(_actuacion.getUid());
+			Date date = new Date(event.getDate(BlackBerryEvent.START, PIMItem.ATTR_NONE));
+			int alarma = event.getInt(BlackBerryEvent.ALARM, PIMItem.ATTR_NONE);
+			String desc = event.getString(BlackBerryEvent.SUMMARY, PIMItem.ATTR_NONE);
+			_screen.setCita(desc ,date, alarma);
+		} catch(Exception e) {
+			Dialog.alert(e.toString());
+		}
 	}
 
 	public VerActuacionScreen getScreen() {
