@@ -81,10 +81,11 @@ public class NuevaActuacionScreen extends FondoNormal {
 				if (!n.isGuardado()) {
 					_cbCita.setChecked(false);
 				}
-				n = null;
 			} else {
 				try {
-					CalendarManager.borrarCita(_uid);
+					if(_uid != null) {
+						CalendarManager.borrarCita(_uid);
+					}
 				} catch (Exception e) {
 					Dialog.alert(e.toString());
 				}
@@ -94,7 +95,7 @@ public class NuevaActuacionScreen extends FondoNormal {
 
 	private FieldChangeListener listenerJuzgado = new FieldChangeListener() {
 		public void fieldChanged(Field field, int context) {
-			ListadoJuzgados juzgados = new ListadoJuzgados();
+			ListadoJuzgados juzgados = new ListadoJuzgados(true);
 			UiApplication.getUiApplication().pushModalScreen(
 					juzgados.getScreen());
 			setJuzgado(juzgados.getSelected());

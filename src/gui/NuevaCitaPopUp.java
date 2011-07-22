@@ -17,10 +17,6 @@ import net.rim.device.api.ui.container.VerticalFieldManager;
 
 public class NuevaCitaPopUp extends PopupScreen {
 
-	/**
-	 * 
-	 */
-
 	private BasicEditField _txtDescripcion;
 	private CheckboxField _cbAlarma;
 	private BasicEditField _txtTiempo;
@@ -61,6 +57,7 @@ public class NuevaCitaPopUp extends PopupScreen {
 
 		_txtTiempo = new BasicEditField("Anticipación: ", null, 3,
 				BasicEditField.FILTER_INTEGER);
+		_txtTiempo.setText("5");
 
 		Object[] choices = { "Minutos", "Horas", "Días" };
 		_nfTiempo = new ObjectChoiceField(null, choices, 0, FIELD_LEFT);
@@ -129,11 +126,7 @@ public class NuevaCitaPopUp extends PopupScreen {
 	}
 
 	public int getDuracion() {
-		if (_txtTiempo.getTextLength() == 0) {
-			return 3600;
-		} else {
-			return Integer.parseInt(_txtTiempo.getText());
-		}
+		return Integer.parseInt(_txtTiempo.getText());
 	}
 
 	public String getIntervalo() {
