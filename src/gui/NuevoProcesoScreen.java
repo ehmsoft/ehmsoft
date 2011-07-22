@@ -173,6 +173,7 @@ public class NuevoProcesoScreen extends FondoNormal {
 		}
 		else if(f.equals(_chCategoria)) {
 			menu.add(menuAddCategoria);
+			menu.add(menuVerListado);
 			menu.addSeparator();
 		}
 		else if(f.equals(_chActuaciones)) {
@@ -257,7 +258,7 @@ public class NuevoProcesoScreen extends FondoNormal {
 	private final MenuItem menuAddCategoria = new MenuItem("Nueva categoría", 0, 0) {
 
 		public void run() {
-			NuevaCategoria n = new NuevaCategoria();
+			NuevaCategoria n = new NuevaCategoria(true);
 			UiApplication.getUiApplication().pushModalScreen(n.getScreen());
 			try {
 				n.guardarCategoria();
@@ -267,6 +268,23 @@ public class NuevoProcesoScreen extends FondoNormal {
 
 			} finally {
 				n = null;
+			}
+		}
+	};
+	
+	private final MenuItem menuVerListado = new MenuItem("Ver listado", 0, 0) {
+
+		public void run() {
+			ListadoCategorias l = new ListadoCategorias(true);
+			l.setTitle("Seleccione una categoría");
+			UiApplication.getUiApplication().pushModalScreen(l.getScreen());
+			try {
+				_chCategoria.setChoices(addCategorias());
+				_chCategoria.setSelectedIndex(l.getSelected());
+			} catch (Exception e) {
+
+			} finally {
+				l = null;
 			}
 		}
 	};
