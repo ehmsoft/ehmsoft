@@ -17,7 +17,6 @@ import net.rim.device.api.ui.component.Menu;
 import net.rim.device.api.ui.component.NumericChoiceField;
 import net.rim.device.api.ui.component.ObjectChoiceField;
 import net.rim.device.api.ui.container.HorizontalFieldManager;
-import net.rim.device.api.ui.container.VerticalFieldManager;
 import core.CampoPersonalizado;
 import core.Categoria;
 import core.Juzgado;
@@ -38,10 +37,6 @@ public class NuevoProcesoScreen extends FondoNormal {
 	private BasicEditField _txtRadicado;
 	private BasicEditField _txtRadicadoUnico;
 
-	private HorizontalFieldManager _fldCampoPersonalizado;
-	private VerticalFieldManager _fldRightCampoPersonalizado;
-	private VerticalFieldManager _fldLeftCampoPersonalizado;
-
 	private Persona _demandante;
 	private Persona _demandado;
 	private Juzgado _juzgado;
@@ -60,19 +55,19 @@ public class NuevoProcesoScreen extends FondoNormal {
 		_actuaciones = new Vector();
 
 		HorizontalFieldManager fldDemandante = new HorizontalFieldManager();
-		_lblDemandante = new LabelField("Ninguno", LabelField.FOCUSABLE);
+		_lblDemandante = new LabelField("*Ninguno*", LabelField.FOCUSABLE);
 		fldDemandante.add(new LabelField("Demandante: "));
 		fldDemandante.add(_lblDemandante);
 		add(fldDemandante);
 		
 		HorizontalFieldManager fldDemandado = new HorizontalFieldManager();
-		_lblDemandado = new LabelField("Ninguno", LabelField.FOCUSABLE);
+		_lblDemandado = new LabelField("*Ninguno*", LabelField.FOCUSABLE);
 		fldDemandado.add(new LabelField("Demandado: "));
 		fldDemandado.add(_lblDemandado);
 		add(fldDemandado);
 		
 		HorizontalFieldManager fldJuzgado = new HorizontalFieldManager();
-		_lblJuzgado = new LabelField("Ninguno", LabelField.FOCUSABLE);
+		_lblJuzgado = new LabelField("*Ninguno*", LabelField.FOCUSABLE);
 		fldJuzgado.add(new LabelField("Juzgado: "));
 		fldJuzgado.add(_lblJuzgado);
 		add(fldJuzgado);
@@ -115,13 +110,6 @@ public class NuevoProcesoScreen extends FondoNormal {
 		_txtNotas = new BasicEditField();
 		_txtNotas.setLabel("Notas: ");
 		add(_txtNotas);
-
-		_fldCampoPersonalizado = new HorizontalFieldManager();
-		_fldRightCampoPersonalizado = new VerticalFieldManager(USE_ALL_WIDTH);
-		_fldLeftCampoPersonalizado = new VerticalFieldManager();
-		_fldCampoPersonalizado.add(_fldLeftCampoPersonalizado);
-		_fldCampoPersonalizado.add(_fldRightCampoPersonalizado);
-		add(_fldCampoPersonalizado);
 	}
 	
 	private Object[] addCategorias() {
@@ -169,15 +157,13 @@ public class NuevoProcesoScreen extends FondoNormal {
 		Field f = UiApplication.getUiApplication().getActiveScreen().getLeafFieldWithFocus();
 		if(f.equals(_lblDemandante) || f.equals(_lblDemandado) || f.equals(_lblJuzgado)) {
 			LabelField temp = (LabelField) f;
-			if(temp.getText().equals("Ninguno")) {
+			if(temp.getText().equals("*Ninguno*")) {
 				menu.add(menuAgregar);
 				menu.addSeparator();
 			} else {
 				menu.add(menuCambiar);
 				menu.addSeparator();
 			}
-			menu.add(menuEliminar);
-			menu.addSeparator();
 		}
 		else if(f.equals(_chCategoria)) {
 			menu.add(menuAddCategoria);
@@ -187,6 +173,12 @@ public class NuevoProcesoScreen extends FondoNormal {
 		else if(f.equals(_chActuaciones)) {
 			menu.add(menuAddActuacion);
 			menu.addSeparator();
+		}
+		else if(BasicEditField.class.isInstance(f)) {
+			if(CampoPersonalizado.class.isInstance(f.getCookie())) {
+				menu.add(menuEliminar);
+				menu.addSeparator();
+			}
 		}
 		menu.add(menuCampo);
 		menu.addSeparator();
@@ -334,17 +326,11 @@ public class NuevoProcesoScreen extends FondoNormal {
 	private final MenuItem menuEliminar = new MenuItem("Eliminar", 0, 0) {
 
 		public void run() {
-			Field field = getFieldWithFocus();
-			try {
-				Object o = ((BasicEditField) (((VerticalFieldManager) field)
-						.getField(1))).getCookie();
-				if (o != null && CampoPersonalizado.class.isInstance(o)) {
-					delete(field);
-					_valoresCamposNuevos.removeElement(field);
-				} else
-					throw new Exception();
-			} catch (Exception e) {
-				Dialog.alert("El elemento no puede ser eliminado");
+			Field field = UiApplication.getUiApplication().getActiveScreen()
+					.getLeafFieldWithFocus();
+			if (CampoPersonalizado.class.isInstance(field.getCookie())) {
+				delete(field);
+				_valoresCamposNuevos.removeElement(field);
 			}
 		}
 	};

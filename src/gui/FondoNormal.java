@@ -32,6 +32,14 @@ public abstract class FondoNormal extends MainScreen {
 		super.add(field);		
 	}
 	
+	public void add(Field field, boolean separator) {
+		if(separator) {
+			add(field);
+		} else {
+			super.add(field);
+		}
+	}
+	
 	public void delete(Field field) {
 		super.delete(field);
 		int index = getFieldWithFocusIndex();
