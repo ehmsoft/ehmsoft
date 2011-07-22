@@ -12,13 +12,14 @@ public class ListadoJuzgadosPopUp extends PopupScreen {
 
 	private Object _selected;
 	private ListadoJuzgadosLista _lista;
-
+	private LabelField _title;
+	
 	public ListadoJuzgadosPopUp() {
 		super(new VerticalFieldManager());
 
-		LabelField labelField = new LabelField("Juzgados",
+		LabelField _title = new LabelField("Juzgados",
 				Field.FIELD_HCENTER);
-		add(labelField);
+		add(_title);
 		add(new SeparatorField());
 
 		_lista = new ListadoJuzgadosLista() {
@@ -53,6 +54,10 @@ public class ListadoJuzgadosPopUp extends PopupScreen {
 
 	public Object getSelected() {
 		return _selected;
+	}
+	
+	public void setTitle(String title) {
+		_title.setText(title);
 	}
 	
 	public class ListenerKey implements KeyListener

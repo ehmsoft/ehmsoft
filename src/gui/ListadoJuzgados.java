@@ -40,6 +40,14 @@ public class ListadoJuzgados {
 	public ListadoJuzgados() {
 		new ListadoJuzgados(false);
 	}
+	
+	public void setTitle(String title) {
+		if(_screen != null) {
+			_screen.setTitle(title);
+		} else {
+			_screenPp.setTitle(title);
+		}
+	}
 
 	private void addJuzgados() {
 		Enumeration index;

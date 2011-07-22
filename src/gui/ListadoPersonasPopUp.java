@@ -13,22 +13,22 @@ public class ListadoPersonasPopUp extends PopupScreen {
 	private Object _selected;
 	private ListadoPersonasLista _lista;
 	private int _tipo;
+	private LabelField _title;
 
 	public ListadoPersonasPopUp(int tipo) {
 		super(new VerticalFieldManager());
 		_tipo = tipo;
 
 		if (tipo == 1) {
-			LabelField labelField = new LabelField("Demandantes",
+			_title = new LabelField("Demandantes",
 					Field.FIELD_HCENTER);
-			add(labelField);
-			add(new SeparatorField());
+
 		} else if (tipo == 2) {
-			LabelField labelField = new LabelField("Demandados",
+			_title = new LabelField("Demandados",
 					Field.FIELD_HCENTER);
-			add(labelField);
-			add(new SeparatorField());
 		}
+		add(_title);
+		add(new SeparatorField());
 
 		_lista = new ListadoPersonasLista() {
 			protected boolean navigationClick(int status, int time) {
@@ -65,6 +65,10 @@ public class ListadoPersonasPopUp extends PopupScreen {
 
 	public Object getSelected() {
 		return _selected;
+	}
+	
+	public void setTitle(String title) {
+		_title.setText(title);
 	}
 	
 	public class ListenerKey implements KeyListener

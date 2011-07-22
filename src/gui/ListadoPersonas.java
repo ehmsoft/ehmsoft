@@ -55,6 +55,14 @@ public class ListadoPersonas {
 	public ListadoPersonas(int tipo) {
 		new ListadoPersonas(tipo, false);
 	}
+	
+	public void setTitle(String title) {
+		if(_screen != null) {
+			_screen.setTitle(title);
+		} else {
+			_screenPp.setTitle(title);
+		}
+	}
 
 	public void setVectorPersonas(Vector personas) {
 		_vectorPersonas = personas;
