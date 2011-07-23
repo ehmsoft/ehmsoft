@@ -13,6 +13,8 @@ import net.rim.device.api.ui.component.LabelField;
 import net.rim.device.api.ui.component.Menu;
 import net.rim.device.api.ui.component.ObjectChoiceField;
 import net.rim.device.api.ui.component.SeparatorField;
+import net.rim.device.api.ui.container.GridFieldManager;
+import net.rim.device.api.ui.container.HorizontalFieldManager;
 import core.Actuacion;
 import core.Juzgado;
 
@@ -87,11 +89,17 @@ public class VerActuacionScreen extends FondoNormal {
 		add(_txtDescripcionCita);
 		_dfFechaCita = new DateField("Fecha: ", date.getTime(), DateField.DATE_TIME);
 		add(_dfFechaCita);
-		_txtTiempoCita = new EditableTextField("Anticipación: ", alarma+"", BasicEditField.FILTER_INTEGER);
-		add(_txtTiempoCita);
-		_chUnidades = new ObjectChoiceField(null, choices);
+		
+		GridFieldManager g = new GridFieldManager(1, 2, 8);
+		g.setColumnProperty(0, GridFieldManager.FIXED_SIZE, 200);
+		g.setColumnProperty(1, GridFieldManager.PREFERRED_SIZE, 20);
+
+		_txtTiempoCita = new EditableTextField("Anticipación: ", alarma+"", BasicEditField.FILTER_INTEGER | BasicEditField.HIGHLIGHT_FOCUS);
+		g.add(_txtTiempoCita);
+		_chUnidades = new ObjectChoiceField(null, choices, 0, FIELD_LEFT);
 		_chUnidades.setSelectedIndex(unidades);
-		add(_chUnidades);
+		g.add(_chUnidades);
+		add(g);
 	}
 	
 	protected void makeMenu(Menu menu, int instance) {

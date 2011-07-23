@@ -20,7 +20,7 @@ public class NuevaCategoria {
 	}
 	
 	public NuevaCategoria() {
-		new NuevaCategoria(false);
+		this(false);
 	}
 
 	public Screen getScreen() {

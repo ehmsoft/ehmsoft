@@ -74,8 +74,8 @@ public class NuevaActuacionScreen extends FondoNormal {
 				menu.add(menuCambiar);
 				menu.addSeparator();
 			}
-			addMenuItem(menuGuardar);
 		}
+		menu.add(menuGuardar);
 	}
 	
 	private final MenuItem menuAgregar = new MenuItem("Agregar", 0, 0) {

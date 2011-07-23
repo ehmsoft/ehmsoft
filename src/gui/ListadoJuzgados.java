@@ -32,7 +32,7 @@ public class ListadoJuzgados {
 	}
 	
 	public ListadoJuzgados() {
-		new ListadoJuzgados(false);
+		this(false);
 	}
 	
 	public void setTitle(String title) {

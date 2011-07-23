@@ -33,7 +33,7 @@ public class ListadoCampos {
 	}
 
 	public ListadoCampos() {
-		new ListadoCampos(false);
+		this(false);
 	}
 
 	public void setVectorCampos(Vector campos) {

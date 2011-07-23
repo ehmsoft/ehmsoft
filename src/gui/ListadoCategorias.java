@@ -32,7 +32,7 @@ public class ListadoCategorias {
 	}
 	
 	public ListadoCategorias() {
-		new ListadoCategorias(false);
+		this(false);
 	}
 
 	public void setVectorCategorias(Vector categorias) {

@@ -53,7 +53,7 @@ public class ListadoPersonas {
 	}
 
 	public ListadoPersonas(int tipo) {
-		new ListadoPersonas(tipo, false);
+		this(tipo, false);
 	}
 	
 	public void setTitle(String title) {
