@@ -6,15 +6,11 @@ import java.util.Date;
 import net.rim.device.api.ui.Field;
 import net.rim.device.api.ui.MenuItem;
 import net.rim.device.api.ui.UiApplication;
-import net.rim.device.api.ui.component.BasicEditField;
 import net.rim.device.api.ui.component.DateField;
 import net.rim.device.api.ui.component.Dialog;
 import net.rim.device.api.ui.component.LabelField;
 import net.rim.device.api.ui.component.Menu;
-import net.rim.device.api.ui.component.ObjectChoiceField;
 import net.rim.device.api.ui.component.SeparatorField;
-import net.rim.device.api.ui.container.GridFieldManager;
-import net.rim.device.api.ui.container.HorizontalFieldManager;
 import core.Actuacion;
 import core.Juzgado;
 
@@ -27,18 +23,23 @@ public class VerActuacionScreen extends FondoNormal {
 	private Actuacion _actuacion;
 	private Juzgado _juzgado;
 	
-	private EditableTextField _txtDescripcionCita;
-	private DateField _dfFechaCita;
-	private EditableTextField _txtTiempoCita;
-	private ObjectChoiceField _chUnidades;
+	private SeparatorField _sfCitaSuperior;
+	private LabelField _lblHasCita;
+	private SeparatorField _sfCitaInferior;
 	
 
 	private boolean _guardar = false;
 	private boolean _eliminar = false;
+	private String _uid;
 
 	public VerActuacionScreen(Actuacion actuacion) {
+		
+		_sfCitaInferior = new SeparatorField();
+		_sfCitaSuperior = new SeparatorField();
+		_lblHasCita = new LabelField("Esta actuación tiene una cita en el calendario");		
 
 		_actuacion = actuacion;
+		_uid = _actuacion.getUid();
 		_juzgado = actuacion.getJuzgado();
 
 		setTitle("Ver actuación");
@@ -63,43 +64,20 @@ public class VerActuacionScreen extends FondoNormal {
 		add(_txtDescripcion);
 	}
 	
-	public void setCita(String descripcion, Date date, int alarma) {
-		add(new SeparatorField());
-		LabelField title = new LabelField("Cita en calendario", FIELD_HCENTER);
-		add(title);
-		add(new SeparatorField());
-		String unidades = null;
-		
-		if(alarma < 3600) {
-			unidades = "Minutos";
-			alarma = alarma / 60;
+	public void setCita() {
+		setCita(true);
+	}
+	
+	public void setCita(boolean cita) {
+		if(cita) {
+			add(_sfCitaSuperior, false);
+			add(_lblHasCita);
+			add(_sfCitaInferior);
+		} else {
+			delete(_sfCitaInferior);
+			delete(_lblHasCita);
+			delete(_sfCitaSuperior);
 		}
-		else if(alarma < 86400) {
-			unidades = "Horas";
-			alarma = alarma / 3600;
-		}
-		else if(alarma >= 86400) {
-			unidades = "Días";
-			alarma = alarma / 86400;
-		}
-		
-		String[] choices = {"Minutos", "Horas", "Días"};
-		
-		_txtDescripcionCita = new EditableTextField("Descripción: ", descripcion);
-		add(_txtDescripcionCita);
-		_dfFechaCita = new DateField("Fecha: ", date.getTime(), DateField.DATE_TIME);
-		add(_dfFechaCita);
-		
-		GridFieldManager g = new GridFieldManager(1, 2, 8);
-		g.setColumnProperty(0, GridFieldManager.FIXED_SIZE, 200);
-		g.setColumnProperty(1, GridFieldManager.PREFERRED_SIZE, 20);
-
-		_txtTiempoCita = new EditableTextField("Anticipación: ", alarma+"", BasicEditField.FILTER_INTEGER | BasicEditField.HIGHLIGHT_FOCUS);
-		g.add(_txtTiempoCita);
-		_chUnidades = new ObjectChoiceField(null, choices, 0, FIELD_LEFT);
-		_chUnidades.setSelectedIndex(unidades);
-		g.add(_chUnidades);
-		add(g);
 	}
 	
 	protected void makeMenu(Menu menu, int instance) {
@@ -109,6 +87,13 @@ public class VerActuacionScreen extends FondoNormal {
 			menu.add(menuCambiar);
 			menu.addSeparator();
 		}
+		if(_actuacion.getUid() != null) {
+			menu.add(menuVerCita);
+			menu.addSeparator();
+		} else {
+			menu.add(menuAddCita);
+			menu.addSeparator();
+		}
 		menu.add(menuEditar);
 		menu.add(menuEditarTodo);
 		menu.addSeparator();
@@ -116,6 +101,25 @@ public class VerActuacionScreen extends FondoNormal {
 		menu.add(menuGuardar);
 	}
 
+	private final MenuItem menuVerCita = new MenuItem("Ver cita", 0, 0) {
+
+		public void run() {
+			VerCita v = new VerCita(_actuacion.getUid());
+			UiApplication.getUiApplication().pushModalScreen(v.getScreen());
+			v.guardarCita();
+		}
+	};
+	
+	private final MenuItem menuAddCita = new MenuItem("Agregar cita", 0, 0) {
+
+		public void run() {
+			NuevaCita n = new NuevaCita(getDescripcion(), getFechaProxima().getTime());
+			UiApplication.getUiApplication().pushModalScreen(n.getScreen());
+			_uid = n.getUid();
+			setCita();
+		}
+	};
+	
 	private final MenuItem menuGuardar = new MenuItem("Guardar", 0, 0) {
 
 		public void run() {
@@ -211,9 +215,9 @@ public class VerActuacionScreen extends FondoNormal {
 	public String getDescripcion() {
 		return _txtDescripcion.getText();
 	}
-
-	public Actuacion getActuacion() {
-		return _actuacion;
+	
+	public String getUid() {
+		return _uid;
 	}
 
 	public boolean isGuardado() {
@@ -223,31 +227,40 @@ public class VerActuacionScreen extends FondoNormal {
 	public boolean isEliminado() {
 		return _eliminar;
 	}
-
-	public boolean onClose() {
+	
+	public boolean isCambiado() {
 		boolean cambio = false;
+
 		Calendar f1 = _actuacion.getFecha();
-		Calendar f2 = this.getFecha();
+		Calendar f2 = getFecha();
 
 		Calendar fP1 = _actuacion.getFechaProxima();
-		Calendar fP2 = this.getFechaProxima();
+		Calendar fP2 = getFechaProxima();
 
 		if (!_actuacion.getJuzgado().getId_juzgado()
-				.equals(this.getJuzgado().getId_juzgado()))
+				.equals(getJuzgado().getId_juzgado()))
 			cambio = true;
-		if ((f1.get(Calendar.YEAR) != f2.get(Calendar.YEAR))
+		else if ((f1.get(Calendar.YEAR) != f2.get(Calendar.YEAR))
 				|| (f1.get(Calendar.MONTH) != f2.get(Calendar.MONTH))
 				|| (f1.get(Calendar.DAY_OF_MONTH) != f2
 						.get(Calendar.DAY_OF_MONTH)))
 			cambio = true;
-		if ((fP1.get(Calendar.YEAR) != fP2.get(Calendar.YEAR))
+		else if ((fP1.get(Calendar.YEAR) != fP2.get(Calendar.YEAR))
 				|| (fP1.get(Calendar.MONTH) != fP2.get(Calendar.MONTH))
 				|| (fP1.get(Calendar.DAY_OF_MONTH) != fP2
 						.get(Calendar.DAY_OF_MONTH)))
 			cambio = true;
-		if (!_actuacion.getDescripcion().equals(this.getDescripcion()))
+		else if (!_actuacion.getDescripcion().equals(
+				getDescripcion()))
 			cambio = true;
-		if (!cambio) {
+		else if(!_actuacion.getUid().equals(_uid)) {
+			cambio = true;
+		}
+		return cambio;
+	}
+
+	public boolean onClose() {
+		if (!isCambiado()) {
 			UiApplication.getUiApplication().popScreen(getScreen());
 			return true;
 		} else {
