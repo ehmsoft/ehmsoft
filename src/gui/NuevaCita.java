@@ -24,6 +24,9 @@ public class NuevaCita {
 	}
 	
 	public String getUid() {
+		if(_uid == null) {
+			guardarCita();
+		}
 		return _uid;
 	}
 	
