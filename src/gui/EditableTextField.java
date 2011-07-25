@@ -9,7 +9,7 @@ public class EditableTextField extends HorizontalFieldManager {
 
 	private LabelField _label;
 	private BasicEditField _txtField;
-	private int _color = 0x00CDC9C9;
+	private int _color = 0x00757575;
 	
 	public EditableTextField() {
 		_txtField = new BasicEditField();
