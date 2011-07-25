@@ -253,7 +253,10 @@ public class VerActuacionScreen extends FondoNormal {
 		else if (!_actuacion.getDescripcion().equals(
 				getDescripcion()))
 			cambio = true;
-		else if(!_actuacion.getUid().equals(_uid)) {
+		else if(_actuacion.getUid() == null && _uid != null) {
+			cambio = true;
+		}
+		else if(_actuacion.getUid() != null && _uid == null) {
 			cambio = true;
 		}
 		return cambio;
