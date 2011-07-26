@@ -254,8 +254,9 @@ public class Persistence implements Cargado, Guardado {
 			stAcActuacion
 					.bind(3, calendarToString(actuacion.getFechaProxima()));
 			stAcActuacion.bind(4, actuacion.getDescripcion());
-			stAcActuacion.bind(5, actuacion.getId_actuacion());
-			stAcActuacion.bind(6, actuacion.getUid());
+			stAcActuacion.bind(5, actuacion.getUid());
+			stAcActuacion.bind(6, actuacion.getId_actuacion());
+			
 			stAcActuacion.execute();
 			stAcActuacion.close();
 
