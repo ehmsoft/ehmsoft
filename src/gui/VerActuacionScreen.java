@@ -106,7 +106,7 @@ public class VerActuacionScreen extends FondoNormal {
 	private final MenuItem menuVerCita = new MenuItem("Ver cita", 0, 0) {
 
 		public void run() {
-			VerCita v = new VerCita(_actuacion.getUid());
+			VerCita v = new VerCita(_uid);
 			UiApplication.getUiApplication().pushModalScreen(v.getScreen());
 			v.guardarCita();
 		}
@@ -285,10 +285,7 @@ public class VerActuacionScreen extends FondoNormal {
 		else if (!_actuacion.getDescripcion().equals(
 				getDescripcion()))
 			cambio = true;
-		else if(_actuacion.getUid() == null && _uid != null) {
-			cambio = true;
-		}
-		else if(_actuacion.getUid() != null && _uid == null) {
+		else if(_actuacion.getUid() != _uid) {
 			cambio = true;
 		}
 		return cambio;
