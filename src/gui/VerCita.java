@@ -12,19 +12,19 @@ public class VerCita {
 	private String _uid;
 	private VerCitaPopUp _screenPp;
 
-	public VerCita(String uid) {
+	public VerCita(String uid) throws Exception {
 		_uid = uid;
-		try {
-			BlackBerryEvent event = CalendarManager.consultarCita(_uid);
-			Date date = new Date(event.getDate(BlackBerryEvent.START,
-					PIMItem.ATTR_NONE));
-			int alarma = event.getInt(BlackBerryEvent.ALARM, PIMItem.ATTR_NONE);
-			String desc = event.getString(BlackBerryEvent.SUMMARY,
-					PIMItem.ATTR_NONE);
-			_screenPp = new VerCitaPopUp(desc, date, alarma);
-		} catch (Exception e) {
-			Dialog.alert(e.toString());
+		int alarma = 0;
+
+		BlackBerryEvent event = CalendarManager.consultarCita(_uid);
+		Date date = new Date(event.getDate(BlackBerryEvent.START,
+				PIMItem.ATTR_NONE));
+		String desc = event.getString(BlackBerryEvent.SUMMARY,
+				PIMItem.ATTR_NONE);
+		if (event.countValues(BlackBerryEvent.ALARM) > 0) {
+			alarma = event.getInt(BlackBerryEvent.ALARM, PIMItem.ATTR_NONE);
 		}
+		_screenPp = new VerCitaPopUp(desc, date, alarma);
 	}
 
 	public VerCitaPopUp getScreen() {

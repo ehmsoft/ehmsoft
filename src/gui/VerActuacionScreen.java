@@ -103,12 +103,16 @@ public class VerActuacionScreen extends FondoNormal {
 	private final MenuItem menuVerCita = new MenuItem("Ver cita", 0, 0) {
 
 		public void run() {
-			VerCita v = new VerCita(_uid);
-			UiApplication.getUiApplication().pushModalScreen(v.getScreen());
-			v.guardarCita();
+			try {
+				VerCita v = new VerCita(_uid);
+				UiApplication.getUiApplication().pushModalScreen(v.getScreen());
+				v.guardarCita();
+			} catch (Exception e) {
+				Dialog.alert(e.toString());
+			}
 		}
 	};
-	
+
 	private final MenuItem menuAddCita = new MenuItem("Agregar cita", 0, 0) {
 
 		public void run() {

@@ -52,8 +52,10 @@ public class VerCitaPopUp extends PopupScreen {
 		_g.setColumnProperty(1, GridFieldManager.PREFERRED_SIZE, 20);
 
 		_txtDescripcion = new BasicEditField("Descripción: ", descripcion);
+		add(_txtDescripcion);
 
 		_dfFecha = new DateField("Fecha: ", date.getTime(), DateField.DATE_TIME);
+		add(_dfFecha);
 
 		Object[] choices = { "Minutos", "Horas", "Días" };
 		_nfTiempo = new ObjectChoiceField(null, choices, 0, FIELD_LEFT);
@@ -82,32 +84,24 @@ public class VerCitaPopUp extends PopupScreen {
 
 		_cbAlarma = new CheckboxField("Alarma", false);
 		_cbAlarma.setChangeListener(listenerTiempo);
+		add(_cbAlarma);
+		
+		_s = new SeparatorField();
+		add(_s);
 		
 		_btnAceptar = new ButtonField("Aceptar", ButtonField.CONSUME_CLICK
 				| Field.FIELD_HCENTER);
 		_btnAceptar.setMinimalWidth(100);
 		_btnAceptar.setChangeListener(listenerAceptar);
+		add(_btnAceptar);
 		
 		_btnCancelar = new ButtonField("Cancelar", ButtonField.CONSUME_CLICK
 				| Field.FIELD_HCENTER);
 		_btnCancelar.setChangeListener(listenerCancelar);
-		
-		_s = new SeparatorField();
-		
-		add(_txtDescripcion);
-		add(_dfFecha);		
-		
-		add(_cbAlarma);
-
-		add(_s);
-		
-		add(_btnAceptar);
 		add(_btnCancelar);
-
+	
 		if (alarma > 0) {
 			_cbAlarma.setChecked(true);
-		} else {
-			_cbAlarma.setChecked(false);
 		}
 	}
 
@@ -174,7 +168,6 @@ public class VerCitaPopUp extends PopupScreen {
 		f1.setTime(_date);
 		Calendar f2 = Calendar.getInstance();
 		f2.setTime(getFecha());
-		int duracion = getDuracion();
 
 		if ((f1.get(Calendar.YEAR) != f2.get(Calendar.YEAR))
 				|| (f1.get(Calendar.MONTH) != f2.get(Calendar.MONTH))
@@ -185,7 +178,9 @@ public class VerCitaPopUp extends PopupScreen {
 			cambio = true;
 		} else if (!_descripcion.equals(getDescripcion())) {
 			cambio = true;
-		} else if (_alarma != duracion) {
+		} else if (_alarma == 0 && _cbAlarma.getChecked()) {
+			cambio = true;
+		} else if (_alarma != 0 && _alarma != getDuracion()) {
 			cambio = true;
 		}
 		return cambio;
