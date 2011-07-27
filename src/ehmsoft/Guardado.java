@@ -30,4 +30,8 @@ public interface Guardado {
 	public void actualizarCategoria(Categoria categoria) throws Exception;
 	public void guardarCategoria(Categoria categoria) throws Exception;
 	public void borrarCategoria(Categoria categoria) throws Exception;
+	//Plantillas
+	public void actualizarPlantilla(Plantilla plantilla) throws Exception;
+	public void guardarPlantilla(Plantilla plantilla) throws Exception;
+	public void borrarPlantilla(Plantilla plantilla) throws Exception;
 }
