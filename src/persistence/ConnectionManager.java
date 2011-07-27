@@ -167,17 +167,35 @@ public class ConnectionManager {
 			st.execute();
 			st.close();
 			//Crear tabla Plantillas
-			st = d.createStatement("CREATE TABLE 'plantillas'("+
-					"'id_plantilla' INTEGER PRIMARY KEY,"+
-			"'nombre' TEXT)");
+			st = d.createStatement("CREATE TABLE 'plantillas'"+
+					"('id_plantilla' INTEGER PRIMARY KEY,"+
+					"'id_demandante' INTEGER,"+
+					"'id_demandado' INTEGER,"+
+					"'radicado' TEXT,"+
+					"'radicado_unico' TEXT,"+
+					"'estado' TEXT,"+
+					"'tipo' TEXT,"+
+					"'notas' TEXT,"+
+					"'prioridad' TEXT,"+
+					"'id_juzgado' INTEGER,"+
+					"'id_categoria' INTEGER,FOREIGN KEY(id_demandante) REFERENCES demandantes(id_demandante),FOREIGN KEY(id_demandado) REFERENCES demandados(id_demandado),FOREIGN KEY(id_juzgado) REFERENCES juzgados(id_juzgado),FOREIGN KEY(id_categoria) REFERENCES categorias(id_categoria), UNIQUE("+
+					"'id_demandante',"+
+					"'id_demandado',"+
+					"'radicado',"+
+					"'radicado_unico',"+
+			"'id_juzgado'))");
 			st.prepare();
 			st.execute();
 			st.close();
-			//Crear Tabla Valores por plantilla
-			st = d.createStatement("CREATE TABLE 'valores_plantilla'("+
-					"'id_plantilla' INTEGER PRIMARY KEY,"+
+			//Crear tabla Atributos por plantilla
+			st = d.createStatement("CREATE TABLE 'atributos_plantilla'("+
+					"'id_atributo_plantilla' INTEGER PRIMARY KEY,"+
 					"'id_atributo' INTEGER,"+
-			"'valor' TEXT,FOREIGN KEY(id_plantilla) REFERENCES plantillas(id_plantilla),FOREIGN KEY(id_atributo) REFERENCES atributos(id_atributo))");
+					"'id_plantilla' INTEGER,"+
+					"'valor' TEXT,FOREIGN KEY(id_atributo) REFERENCES atributos(id_atributo),FOREIGN KEY(id_plantilla) REFERENCES plantillas(id_plantilla),UNIQUE("+
+					"'id_atributo',"+
+					"'id_plantilla',"+
+			"'valor'))");
 			st.prepare();
 			st.execute();
 			st.close();
