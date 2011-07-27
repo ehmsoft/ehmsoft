@@ -23,4 +23,6 @@ public interface Cargado {
 	public Vector consultarAtributos() throws Exception;
 	public Vector consultarPlantillas() throws Exception;
 	public Plantilla consultarPlantilla(String id_plantilla) throws Exception;
+	public Vector consultarCamposPlantilla(Plantilla plantilla) throws Exception;
+	public CampoPersonalizado consultarCampoPlantilla(String id_campo)throws Exception;
 }

@@ -34,4 +34,8 @@ public interface Guardado {
 	public void actualizarPlantilla(Plantilla plantilla) throws Exception;
 	public void guardarPlantilla(Plantilla plantilla) throws Exception;
 	public void borrarPlantilla(Plantilla plantilla) throws Exception;
+	//Campos Personalizados de las plantillas
+	public void actualizarCampoPlantilla(CampoPersonalizado campo) throws Exception;
+	public void guardarCampoPlantilla(CampoPersonalizado campo, String id_proceso) throws Exception;
+	public void borrarCampoPlantilla(CampoPersonalizado campo) throws Exception;
 }
