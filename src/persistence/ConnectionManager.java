@@ -169,6 +169,7 @@ public class ConnectionManager {
 			//Crear tabla Plantillas
 			st = d.createStatement("CREATE TABLE 'plantillas'"+
 					"('id_plantilla' INTEGER PRIMARY KEY,"+
+					"'nombre' TEXT,"+
 					"'id_demandante' INTEGER,"+
 					"'id_demandado' INTEGER,"+
 					"'radicado' TEXT,"+
