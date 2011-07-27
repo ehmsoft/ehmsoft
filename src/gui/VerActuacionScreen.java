@@ -11,6 +11,7 @@ import net.rim.device.api.ui.component.Dialog;
 import net.rim.device.api.ui.component.LabelField;
 import net.rim.device.api.ui.component.Menu;
 import net.rim.device.api.ui.component.SeparatorField;
+import net.rim.device.api.ui.container.VerticalFieldManager;
 import core.Actuacion;
 import core.CalendarManager;
 import core.Juzgado;
@@ -23,10 +24,7 @@ public class VerActuacionScreen extends FondoNormal {
 	private EditableTextField _txtDescripcion;
 	private Actuacion _actuacion;
 	private Juzgado _juzgado;
-	
-	private SeparatorField _sfCitaSuperior;
-	private LabelField _lblHasCita;
-	private SeparatorField _sfCitaInferior;
+	private VerticalFieldManager _vfCita;
 	
 
 	private boolean _guardar = false;
@@ -35,9 +33,12 @@ public class VerActuacionScreen extends FondoNormal {
 
 	public VerActuacionScreen(Actuacion actuacion) {
 		
-		_sfCitaInferior = new SeparatorField();
-		_sfCitaSuperior = new SeparatorField();
-		_lblHasCita = new LabelField("Esta actuación tiene una cita en el calendario");		
+		_vfCita = new VerticalFieldManager();
+		_vfCita.add(new SeparatorField());
+		_vfCita.add(new SeparatorField());
+		_vfCita.add(new LabelField("Esta actación tiene una cita en el calendario", LabelField.FIELD_HCENTER));
+		_vfCita.add(new SeparatorField());
+		_vfCita.add(new SeparatorField());
 
 		_actuacion = actuacion;
 		_uid = _actuacion.getUid();
@@ -71,13 +72,9 @@ public class VerActuacionScreen extends FondoNormal {
 	
 	public void setCita(boolean cita) {
 		if(cita) {
-			add(_sfCitaSuperior, false);
-			add(_lblHasCita);
-			add(_sfCitaInferior);
+			add(_vfCita, false);
 		} else {
-			delete(_sfCitaInferior);
-			delete(_lblHasCita);
-			delete(_sfCitaSuperior);
+			delete(_vfCita);
 		}
 	}
 	
