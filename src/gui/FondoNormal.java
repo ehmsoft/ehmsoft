@@ -44,7 +44,9 @@ public abstract class FondoNormal extends MainScreen {
 		super.delete(field);
 		int index = getFieldWithFocusIndex();
 		if(index > 0) {
-			super.delete(getField(index - 1));
+			if(SeparatorField.class.isInstance(getField(index - 1))) {
+				super.delete(getField(index - 1));
+			}
 		}
 	}
 }

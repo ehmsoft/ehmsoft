@@ -12,6 +12,7 @@ import net.rim.device.api.ui.component.LabelField;
 import net.rim.device.api.ui.component.Menu;
 import net.rim.device.api.ui.component.SeparatorField;
 import core.Actuacion;
+import core.CalendarManager;
 import core.Juzgado;
 
 public class VerActuacionScreen extends FondoNormal {
@@ -87,8 +88,9 @@ public class VerActuacionScreen extends FondoNormal {
 			menu.add(menuCambiar);
 			menu.addSeparator();
 		}
-		if(_actuacion.getUid() != null) {
+		if(_uid != null) {
 			menu.add(menuVerCita);
+			menu.add(menuEliminarCita);
 			menu.addSeparator();
 		} else {
 			menu.add(menuAddCita);
@@ -97,7 +99,7 @@ public class VerActuacionScreen extends FondoNormal {
 		menu.add(menuEditar);
 		menu.add(menuEditarTodo);
 		menu.addSeparator();
-		menu.add(menuEliminar);
+		menu.add(menuEliminarActuacion);
 		menu.add(menuGuardar);
 	}
 
@@ -117,6 +119,25 @@ public class VerActuacionScreen extends FondoNormal {
 			UiApplication.getUiApplication().pushModalScreen(n.getScreen());
 			_uid = n.getUid();
 			setCita();
+		}
+	};
+	
+	private final MenuItem menuEliminarCita = new MenuItem("Eliminar cita", 0,
+			0) {
+
+		public void run() {
+			Object[] ask = { "Aceptar", "Cancelar" };
+			int sel = Dialog.ask("¿Desea eliminar la cita del calendario?",
+					ask, 1);
+			if (sel == 0) {
+				try {
+					CalendarManager.borrarCita(_uid);
+					_uid = null;
+					setCita(false);
+				} catch(Exception e) {
+					Dialog.alert(e.toString());
+				}
+			}
 		}
 	};
 	
@@ -184,12 +205,23 @@ public class VerActuacionScreen extends FondoNormal {
 		}
 	};
 
-	private final MenuItem menuEliminar = new MenuItem("Eliminar", 0, 0) {
+	private final MenuItem menuEliminarActuacion = new MenuItem("Eliminar actuación", 0, 0) {
 
 		public void run() {
 			Object[] ask = { "Si", "No" };
 			int sel = Dialog.ask("¿Desea eliminar la actuación?", ask, 1);
 			if (sel == 0) {
+				if(_actuacion.getUid() != null) {
+					sel = Dialog.ask("¿Desea eliminar la cita del calendario?", ask, 1);
+					if(sel == 0) {
+						try {
+						CalendarManager.borrarCita(_uid);
+						_uid = null;
+						} catch(Exception e) {
+							Dialog.alert(e.toString());
+						}
+					}
+				}
 				_eliminar = true;
 				UiApplication.getUiApplication().popScreen(getScreen());
 			}
