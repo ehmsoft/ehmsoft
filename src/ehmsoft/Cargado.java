@@ -14,6 +14,7 @@ public interface Cargado {
 	public Proceso consultarProceso(String id_proceso) throws Exception;
 	public Vector consultarActuaciones(Proceso proceso) throws Exception;
 	public Actuacion consultarActuacion(String id_actuacion) throws Exception;
+	public Vector consultarActuacionesCriticas(int cantidad) throws Exception;
 	public Vector consultarJuzgados() throws Exception;
 	public Juzgado consultarJuzgado(String id_juzgado) throws Exception;
 	public Categoria consultarCategoria(String id_categoria) throws Exception;

@@ -1361,7 +1361,49 @@ try {
 				.getId_juzgado()));
 		return actuacion;
 	}
-
+	public Vector consultarActuacionesCriticas(int cantidad) throws Exception {
+		Database d = null;
+		Vector actuaciones = new Vector();
+		try {
+			connMgr.prepararBD();
+			d = DatabaseFactory.open(connMgr.getDbLocation());
+			Statement st = d
+					.createStatement("SELECT id_actuacion, id_proceso, id_juzgado, fecha_creacion, fecha_proxima, descripcion, uid FROM actuaciones WHERE fecha_proxima >= date() ORDER BY fecha_proxima LIMIT ?");
+			st.prepare();
+			st.bind(1, cantidad);
+			Cursor cursor = st.getCursor();
+			while (cursor.next()) {
+				Row row = cursor.getRow();
+				int id_actuacion = row.getInteger(0);
+				int id_juzgado = row.getInteger(2);
+				Calendar fecha_creacion = stringToCalendar(row.getString(3));
+				Calendar fecha_proxima = stringToCalendar(row.getString(4));
+				String descripcion = row.getString(5);
+				String uid = row.getString(6);
+				Juzgado juzgado = new Juzgado();
+				juzgado.setId_juzgado(Integer.toString(id_juzgado));
+				Actuacion actuacion = new Actuacion(juzgado, fecha_creacion,
+						fecha_proxima, descripcion,
+						Integer.toString(id_actuacion),uid);
+				actuaciones.addElement(actuacion);
+			}
+			st.close();
+			cursor.close();
+		} catch (Exception e) {
+			throw e;
+		} finally {
+			if (d != null) {
+				d.close();
+			}
+		}
+		Enumeration e = actuaciones.elements();
+		while (e.hasMoreElements()) {
+			Actuacion actuacion_act = (Actuacion) e.nextElement();
+			actuacion_act.setJuzgado(consultarJuzgado(actuacion_act
+					.getJuzgado().getId_juzgado()));
+		}
+		return actuaciones;
+	}
 	// Devuelve la lista de todos los juzgados
 	public Vector consultarJuzgados() throws Exception {
 		Database d = null;
