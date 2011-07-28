@@ -728,7 +728,228 @@ public class Persistence implements Cargado, Guardado {
 		}
 
 	}
+	public void actualizarPlantilla(Plantilla plantilla) throws Exception {
+		Database d = null;
+		Statement stAcPlantilla;
+		try {
+			connMgr.prepararBD();
+			d = DatabaseFactory.open(connMgr.getDbLocation());
+			stAcPlantilla = d
+					.createStatement("UPDATE plantillas SET id_demandante = ?,"
+							+ " id_demandado = ?,"
+							+ " radicado = ?," + " radicado_unico = ?,"
+							+ " estado = ?," + " tipo = ?," + " notas = ?,"
+							+ " prioridad = ?," + " id_juzgado = ?,"
+							+ " nombre = ?,"
+							+ " id_categoria = ? WHERE id_plantilla = ?");
+			stAcPlantilla.prepare();
+			if (plantilla.getDemandante() == null) {
+				stAcPlantilla.bind(1, "1");
+			} else {
+				stAcPlantilla.bind(1, plantilla.getDemandante().getId_persona());
+			}
+			if (plantilla.getDemandado() == null) {
+				stAcPlantilla.bind(2, "1");
+			} else {
+				stAcPlantilla.bind(2, plantilla.getDemandado().getId_persona());
+			}
 
+			stAcPlantilla.bind(3, plantilla.getRadicado());
+			stAcPlantilla.bind(4, plantilla.getRadicadoUnico());
+			stAcPlantilla.bind(5, plantilla.getEstado());
+			stAcPlantilla.bind(6, plantilla.getTipo());
+			stAcPlantilla.bind(7, plantilla.getNotas());
+			stAcPlantilla.bind(8, plantilla.getPrioridad());
+			if (plantilla.getJuzgado() == null) {
+				stAcPlantilla.bind(9, "1");
+			} else {
+				stAcPlantilla.bind(9, plantilla.getJuzgado().getId_juzgado());
+			}
+
+			stAcPlantilla.bind(10, plantilla.getNombre());
+			stAcPlantilla.bind(11, plantilla.getCategoria().getId_categoria());
+			stAcPlantilla.bind(12, plantilla.getId_plantilla());
+			stAcPlantilla.execute();
+			stAcPlantilla.close();
+
+		} catch (Exception e) {
+			throw e;
+		} finally {
+			if (d != null) {
+				d.close();
+			}
+			if (plantilla.getDemandante() != null) {
+				plantilla.setDemandante(consultarPersona(plantilla.getDemandante()
+						.getId_persona(), 1));
+			} else {
+				plantilla.setDemandante(consultarPersona("1", 1));
+			}
+			if (plantilla.getDemandado() != null) {
+				plantilla.setDemandado(consultarPersona(plantilla.getDemandado()
+						.getId_persona(), 2));
+			} else {
+				plantilla.setDemandado(consultarPersona("1", 2));
+			}
+			if (plantilla.getJuzgado() != null) {
+				plantilla.setJuzgado(consultarJuzgado(plantilla.getJuzgado()
+						.getId_juzgado()));
+			} else {
+				plantilla.setJuzgado(consultarJuzgado("1"));
+			}
+
+		}
+		Vector cp = new Vector();
+		cp = plantilla.getCampos();
+		if (cp != null) {
+			Enumeration e = cp.elements();
+			while (e.hasMoreElements()) {
+				actualizarCampoPlantilla((CampoPersonalizado) e.nextElement());
+			}
+
+		}
+
+	}
+
+	public void guardarPlantilla(Plantilla plantilla) throws Exception {
+		Database d = null;
+		long IDplantilla = -1;
+		try {
+			connMgr.prepararBD();
+			d = DatabaseFactory.open(connMgr.getDbLocation());
+			Statement stPlantilla = d
+					.createStatement("INSERT INTO plantillas (id_plantilla,id_demandante,id_demandado,radicado,radicado_unico,estado,tipo,notas,prioridad,id_juzgado,id_categoria,nombre) VALUES(NULL,?,?,?,?,?,?,?,?,?,?,?)");
+			stPlantilla.prepare();
+			stPlantilla.bind(1, plantilla.getDemandante().getId_persona()); 
+			stPlantilla.bind(2, plantilla.getDemandado().getId_persona());
+			stPlantilla.bind(3, plantilla.getRadicado());
+			stPlantilla.bind(4, plantilla.getRadicadoUnico());
+			stPlantilla.bind(5, plantilla.getEstado());
+			stPlantilla.bind(6, plantilla.getTipo());
+			stPlantilla.bind(7, plantilla.getNotas());
+			stPlantilla.bind(8, plantilla.getPrioridad());
+			stPlantilla.bind(9, plantilla.getJuzgado().getId_juzgado());
+			stPlantilla.bind(10, plantilla.getCategoria().getId_categoria());
+			stPlantilla.bind(11, plantilla.getNombre());
+			stPlantilla.execute();
+			IDplantilla = d.lastInsertedRowID();
+			stPlantilla.close();
+			plantilla.setId_plantilla(Long.toString(d.lastInsertedRowID()));
+		} catch (Exception e) {
+			throw e;
+		} finally {
+			if (d != null) {
+				d.close();
+			}
+		}
+
+		String id_plantilla = Long.toString(IDplantilla);
+		Vector cp = new Vector();
+		cp = plantilla.getCampos();
+		if (cp != null) {
+			Enumeration e = cp.elements();
+			while (e.hasMoreElements()) {
+				guardarCampoPlantilla((CampoPersonalizado) e.nextElement(),
+						id_plantilla);
+			}
+
+		}
+
+	}
+
+	public void borrarPlantilla(Plantilla plantilla) throws Exception {
+		Database d = null;
+		try {
+			connMgr.prepararBD();
+			d = DatabaseFactory.open(connMgr.getDbLocation());
+			Statement stDelPlantilla = d
+					.createStatement("DELETE FROM plantillas WHERE id_plantilla = ?");
+			Statement stDelCampoPersonalizado = d.createStatement("DELETE FROM atributos_plantilla WHERE id_plantilla = ?");
+			stDelPlantilla.prepare();
+			stDelCampoPersonalizado.prepare();
+			stDelPlantilla.bind(1, plantilla.getId_plantilla());
+			stDelCampoPersonalizado.bind(1, plantilla.getId_plantilla());
+			stDelPlantilla.execute();
+			stDelCampoPersonalizado.execute();
+			stDelPlantilla.close();
+			stDelCampoPersonalizado.close();
+		} catch (Exception e) {
+			throw e;
+		} finally {
+			if (d != null) {
+				d.close();
+			}
+		}
+
+	}
+	public void actualizarCampoPlantilla(CampoPersonalizado campo)
+	throws Exception {
+Database d = null;
+try {
+	connMgr.prepararBD();
+	d = DatabaseFactory.open(connMgr.getDbLocation());			
+	Statement stAcAtributoProceso = d.createStatement("UPDATE atributos_plantilla SET valor = ? WHERE id_atributo_plantilla = ?");
+	stAcAtributoProceso.prepare();
+	stAcAtributoProceso.bind(1, campo.getValor());
+	stAcAtributoProceso.bind(2, campo.getId_campo());
+	stAcAtributoProceso.execute();
+	stAcAtributoProceso.close();
+
+} catch (Exception e) {
+	throw e;
+} finally {
+	if (d != null) {
+		d.close();
+	}
+}
+
+
+}
+
+public void guardarCampoPlantilla(CampoPersonalizado campo,
+	String id_plantilla) throws Exception {
+Database d = null;
+try {
+	connMgr.prepararBD();
+	d = DatabaseFactory.open(connMgr.getDbLocation());
+	Statement stAtributosProceso = d.createStatement("INSERT INTO atributos_plantilla (id_atributo_plantilla, id_atributo, id_plantilla, valor) VALUES( NULL,?,?,?)");
+	stAtributosProceso.prepare();
+	stAtributosProceso.bind(1, Integer.parseInt(campo.getId_atributo()));
+	stAtributosProceso.bind(2, Integer.parseInt(id_plantilla));
+	stAtributosProceso.bind(3, campo.getValor());
+	stAtributosProceso.execute();
+	campo.setId_campo(Long.toString(d.lastInsertedRowID()));
+	stAtributosProceso.close();
+} catch (Exception e) {
+	throw e;
+} finally {
+	if (d != null) {
+		d.close();
+	}
+}
+
+}
+
+public void borrarCampoPlantilla(CampoPersonalizado campo)
+	throws Exception {
+Database d = null;
+try {
+	connMgr.prepararBD();
+	d = DatabaseFactory.open(connMgr.getDbLocation());
+	Statement stDelCampoPersonalizado = d
+			.createStatement("DELETE FROM atributos_plantilla WHERE id_atributo_plantilla = ?");
+	stDelCampoPersonalizado.prepare();
+	stDelCampoPersonalizado.bind(1, campo.getId_campo());
+	stDelCampoPersonalizado.execute();
+	stDelCampoPersonalizado.close();
+} catch (Exception e) {
+	throw e;
+} finally {
+	if (d != null) {
+		d.close();
+	}
+}
+
+}
 	public Vector consultarDemandantes() throws Exception {// Devuelve una
 															// vector iterable
 															// de todos los
@@ -1371,6 +1592,190 @@ public class Persistence implements Cargado, Guardado {
 			}
 		}
 		return campos;
+	}
+	public Vector consultarPlantillas() throws Exception {
+		Database d = null;
+		Vector plantillas = new Vector();
+		try {
+			connMgr.prepararBD();
+			d = DatabaseFactory.open(connMgr.getDbLocation());
+			Statement st = d
+					.createStatement("SELECT p.id_plantilla, p.id_demandante, p.id_demandado, p.radicado, p.radicado_unico, p.estado, p.tipo, p.notas, p.prioridad, p.id_juzgado, p.id_categoria, p.nombre FROM plantillas p");
+			st.prepare();
+			Cursor cursor = st.getCursor();
+			while (cursor.next()) {
+				Row row = cursor.getRow();
+				int id_plantilla = row.getInteger(0);
+				int id_demandante = row.getInteger(1);
+				int id_demandado = row.getInteger(2);
+				String radicado = row.getString(3);
+				String radicado_unico = row.getString(4);
+				String estado = row.getString(5);
+				String tipo = row.getString(6);
+				String notas = row.getString(7);
+				String prioridad = row.getString(8);
+				int id_juzgado = row.getInteger(9);
+				int id_categoria = row.getInteger(10);
+				String nombre = row.getString(11);
+				Persona demandante = new Persona(1);
+				Persona demandado = new Persona(2);
+				Juzgado juzgado = new Juzgado();
+				Categoria categoria = new Categoria();
+				demandante.setId_persona(Integer.toString(id_demandante));
+				demandado.setId_persona(Integer.toString(id_demandado));
+				juzgado.setId_juzgado(Integer.toString(id_juzgado));
+				categoria.setId_categoria(Integer.toString(id_categoria));
+				Plantilla plantilla = new Plantilla(nombre,Integer.toString(id_plantilla),demandante, demandado,juzgado,radicado,radicado_unico,estado,categoria,tipo,notas,new Vector(),Integer.parseInt(prioridad));
+				plantillas.addElement(plantilla);
+			}
+			st.close();
+			cursor.close();
+		} catch (Exception e) {
+			throw e;
+		} finally {
+			if (d != null) {
+				d.close();
+			}
+		}
+		Enumeration e = plantillas.elements();
+		while (e.hasMoreElements()) {
+			Plantilla plantilla_act = (Plantilla) e.nextElement();
+			plantilla_act.setDemandante(consultarPersona(plantilla_act
+					.getDemandante().getId_persona(), 1));
+			plantilla_act.setDemandado(consultarPersona(plantilla_act
+					.getDemandado().getId_persona(), 2));
+			plantilla_act.setJuzgado(consultarJuzgado(plantilla_act.getJuzgado()
+					.getId_juzgado()));
+			plantilla_act.setCampos(consultarCamposPlantilla(plantilla_act));
+			plantilla_act.setCategoria(consultarCategoria(plantilla_act
+					.getCategoria().getId_categoria()));
+		}
+		return plantillas;
+	}
+
+	public Plantilla consultarPlantilla(String id_plantilla) throws Exception {
+		Database d = null;
+		Plantilla plantilla = null;
+		try {
+			connMgr.prepararBD();
+			d = DatabaseFactory.open(connMgr.getDbLocation());
+			Statement st = d
+					.createStatement("SELECT p.id_plantilla, p.id_demandante, p.id_demandado, p.radicado, p.radicado_unico, p.estado, p.tipo, p.notas, p.prioridad, p.id_juzgado, p.id_categoria, p.nombre FROM plantillas p WHERE p.id_plantilla = ?");
+			st.prepare();
+			st.bind(1, id_plantilla);
+			Cursor cursor = st.getCursor();
+			if (cursor.next()) {
+				Row row = cursor.getRow();
+				int id_demandante = row.getInteger(1);
+				int id_demandado = row.getInteger(2);
+				String radicado = row.getString(3);
+				String radicado_unico = row.getString(4);
+				String estado = row.getString(5);
+				String tipo = row.getString(6);
+				String notas = row.getString(7);
+				String prioridad = row.getString(8);
+				int id_juzgado = row.getInteger(9);
+				int id_categoria = row.getInteger(10);
+				String nombre = row.getString(11);
+				Persona demandante = new Persona(1);
+				Persona demandado = new Persona(2);
+				Juzgado juzgado = new Juzgado();
+				Categoria categoria = new Categoria();
+				demandante.setId_persona(Integer.toString(id_demandante));
+				demandado.setId_persona(Integer.toString(id_demandado));
+				juzgado.setId_juzgado(Integer.toString(id_juzgado));
+				categoria.setId_categoria(Integer.toString(id_categoria));
+				plantilla = new Plantilla(nombre,id_plantilla,demandante, demandado,juzgado,radicado,radicado_unico,estado,categoria,tipo,notas,new Vector(),Integer.parseInt(prioridad));
+
+			}
+			st.close();
+			cursor.close();
+		} catch (Exception e) {
+			throw e;
+		} finally {
+			if (d != null) {
+				d.close();
+			}
+		}
+		plantilla.setDemandante(consultarPersona(plantilla.getDemandante()
+				.getId_persona(), 1));
+		plantilla.setDemandado(consultarPersona(plantilla.getDemandado()
+				.getId_persona(), 2));
+		plantilla.setJuzgado(consultarJuzgado(plantilla.getJuzgado()
+				.getId_juzgado()));
+		plantilla.setCampos(consultarCamposPlantilla(plantilla));
+		plantilla.setCategoria(consultarCategoria(plantilla.getCategoria()
+				.getId_categoria()));
+		return plantilla;
+	}
+	public Vector consultarCamposPlantilla(Plantilla plantilla) throws Exception {
+		Database d = null;
+		Vector campos = new Vector();
+		try {
+			connMgr.prepararBD();
+			d = DatabaseFactory.open(connMgr.getDbLocation());
+			Statement st = d
+					.createStatement("SELECT at.id_atributo_plantilla, at.id_atributo, at.valor, a.nombre,a.obligatorio,a.longitud_max, a.longitud_min FROM atributos_plantilla at, atributos a WHERE at.id_atributo = a.id_atributo AND at.id_plantilla = ?");
+			st.prepare();
+			st.bind(1, plantilla.getId_plantilla());
+			Cursor cursor = st.getCursor();
+			while (cursor.next()) {
+				Row row = cursor.getRow();
+				int id_atributo_plantilla = row.getInteger(0);
+				int id_atributo = row.getInteger(1);
+				String valor = row.getString(2);
+				String nombre = row.getString(3);
+				boolean obligatorio = row.getBoolean(4);
+				int longitud_max = row.getInteger(5);
+				int longitud_min = row.getInteger(6);
+				CampoPersonalizado campo = new CampoPersonalizado(Integer.toString(id_atributo_plantilla), Integer.toString(id_atributo), nombre, valor, new Boolean(obligatorio), longitud_max, longitud_min);
+				campos.addElement(campo);
+			}
+			st.close();
+			cursor.close();
+		} catch (Exception e) {
+			throw e;
+		} finally {
+			if (d != null) {
+				d.close();
+			}
+		}
+		return campos;
+	}
+
+	public CampoPersonalizado consultarCampoPlantilla(String id_campo) throws Exception {
+		Database d = null;
+		CampoPersonalizado campo = null;
+		try {
+			connMgr.prepararBD();
+			d = DatabaseFactory.open(connMgr.getDbLocation());
+			Statement st = d
+					.createStatement("SELECT at.id_atributo_plantilla, at.id_atributo, at.valor, a.nombre,a.obligatorio,a.longitud_max, a.longitud_min FROM atributos_plantilla at, atributos a WHERE at.id_atributo = a.id_atributo AND at.id_atributo_plantilla = ?");
+			st.prepare();
+			st.bind(1, id_campo);
+			Cursor cursor = st.getCursor();
+			if (cursor.next()) {
+				Row row = cursor.getRow();
+				int id_atributo_plantilla = row.getInteger(0);
+				int id_atributo = row.getInteger(1);
+				String valor = row.getString(2);
+				String nombre = row.getString(3);
+				boolean obligatorio = row.getBoolean(4);
+				int longitud_max = row.getInteger(5);
+				int longitud_min = row.getInteger(6);
+				campo = new CampoPersonalizado(Integer.toString(id_atributo_plantilla), Integer.toString(id_atributo), nombre, valor, new Boolean(obligatorio), longitud_max, longitud_min);
+				
+			}
+			st.close();
+			cursor.close();
+		} catch (Exception e) {
+			throw e;
+		} finally {
+			if (d != null) {
+				d.close();
+			}
+		}
+		return campo;
 	}
 	private Calendar stringToCalendar(String fecha) {
 		Calendar calendar_return = Calendar.getInstance();
