@@ -16,6 +16,31 @@ import ehmsoft.Guardado;
 
 public class Persistence implements Cargado, Guardado {
 	private ConnectionManager connMgr;
+	public static final int LISTADO_ACTUACIONES = 0;
+	public static final int LISTADO_CAMPOS = 0;
+	public static final int LISTADO_CATEGORIAS = 0;
+	public static final int LISTADO_JUZGADOS = 0;
+	public static final int LISTADO_PERSONAS = 0;
+	public static final int LISTADO_PROCESOS = 0;
+	public static final int LISTA_LISTAS = 0;
+	public static final int NUEVA_ACTUACION = 0;
+	public static final int NUEVA_CATEGORIA = 0;
+	public static final int NUEVA_CITA = 0;
+	public static final int NUEVA_PERSONA = 0;
+	public static final int NUEVO_CAMPO = 0;
+	public static final int NUEVO_JUZGADO = 0;
+	public static final int NUEVO_PROCESO = 0;
+	public static final int VER_ACTUACION = 0;
+	public static final int VER_CAMPO = 0;
+	public static final int VER_CATEGORIA = 0;
+	public static final int VER_CITA = 0;
+	public static final int VER_JUZGADO = 0;
+	public static final int VER_PERSONA = 0;
+	public static final int VER_PROCESO = 0;
+	
+	
+	
+	
 
 	public Persistence() throws Exception {
 		connMgr = new ConnectionManager();
@@ -974,6 +999,53 @@ try {
 }
 
 }
+
+public void actualizarPreferencia(int id_preferencia, long valor)
+throws Exception {
+	Database d = null;
+	try {
+		connMgr.prepararBD();
+		d = DatabaseFactory.open(connMgr.getDbLocation());
+		Statement stPreferencias = d
+				.createStatement("UPDATE preferencias SET valor = ? WHERE id_preferencia = ?");
+		stPreferencias.prepare();
+		stPreferencias.bind(1, valor);
+		stPreferencias.bind(2, id_preferencia);
+		stPreferencias.execute();
+		stPreferencias.close();
+		
+	} catch (Exception e) {
+		throw e;
+	} finally {
+		if (d != null) {
+			d.close();
+		}
+	}
+
+}
+
+public void borrarPreferencia(int id_preferencia) throws Exception {
+// TODO Auto-generated method stub
+	Database d = null;
+	try {
+		connMgr.prepararBD();
+		d = DatabaseFactory.open(connMgr.getDbLocation());
+		Statement stPreferencias = d
+				.createStatement("UPDATE preferencias SET valor = 0 WHERE id_preferencia = ?");
+		stPreferencias.prepare();
+		stPreferencias.bind(1, id_preferencia);
+		stPreferencias.execute();
+		stPreferencias.close();
+		
+	} catch (Exception e) {
+		throw e;
+	} finally {
+		if (d != null) {
+			d.close();
+		}
+	}
+
+}
 	public Vector consultarDemandantes() throws Exception {// Devuelve una
 															// vector iterable
 															// de todos los
@@ -1843,6 +1915,33 @@ try {
 		}
 		return campo;
 	}
+	public long consultarPreferencia(int id_preferencia) throws Exception {
+		long valor = 0;
+		Database d = null;
+		try {
+			connMgr.prepararBD();
+			d = DatabaseFactory.open(connMgr.getDbLocation());
+			Statement st = d
+					.createStatement("SELECT valor FROM preferencias WHERE id_preferencia = ? ");
+			st.prepare();
+			st.bind(1, id_preferencia);
+			Cursor cursor = st.getCursor();
+			if (cursor.next()) {
+				Row row = cursor.getRow();
+				valor = row.getLong(0);
+				
+			}
+			st.close();
+			cursor.close();
+		} catch (Exception e) {
+			throw e;
+		} finally {
+			if (d != null) {
+				d.close();
+			}
+		}
+		return valor;	
+	}
 	private Calendar stringToCalendar(String fecha) {
 		Calendar calendar_return = Calendar.getInstance();
 		calendar_return.set(Calendar.YEAR,
@@ -1887,4 +1986,6 @@ try {
 				+ hora + ":" + minuto;
 		return nuevafecha;
 	}
+
+	
 }
