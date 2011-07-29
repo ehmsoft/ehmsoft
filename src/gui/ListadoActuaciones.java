@@ -25,6 +25,14 @@ public class ListadoActuaciones {
 		_screen = new ListadoActuacionesScreen(proceso);
 		addActuaciones();
 	}
+	
+	public ListadoActuaciones(int style[]) {
+		
+	}
+	
+	public ListadoActuaciones() {
+		_screen = new ListadoActuacionesScreen();
+	}
 
 	public void setVectorActuaciones(Vector actuaciones) {
 		_vectorActuaciones = actuaciones;
