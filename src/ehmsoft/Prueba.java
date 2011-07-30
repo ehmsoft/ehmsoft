@@ -4,6 +4,8 @@ import gui.ListadoActuaciones;
 import gui.ListadoCategorias;
 import gui.ListadoJuzgados;
 import gui.ListadoPersonas;
+import gui.ListadoPersonasLista;
+import gui.ListadoPersonasScreen;
 import gui.ListadoProcesos;
 import gui.NuevaActuacion;
 import gui.NuevaCategoria;
@@ -157,7 +159,7 @@ public class Prueba extends MainScreen {
 	private FieldChangeListener listenerListadoDemandantes = new FieldChangeListener() {
 
 		public void fieldChanged(Field field, int context) {
-			ListadoPersonas listado = new ListadoPersonas(1);
+			ListadoPersonas listado = new ListadoPersonas(1,ListadoPersonasLista.SHOW_NOMBRE | ListadoPersonasLista.SHOW_TELEFONO | ListadoPersonasLista.SHOW_ID);
 			UiApplication.getUiApplication().pushModalScreen(
 					listado.getScreen());
 			listado.getSelected();

@@ -12,47 +12,42 @@ import core.Proceso;
 
 public class ListadoActuacionesScreen extends MainScreen {
 
-	public static final int ON_CLICK_VER = 4;
-	public static final int ON_CLICK_SELECT = 5;
+	public static final int ON_CLICK_VER = 16;
+	public static final int ON_CLICK_SELECT = 32;
 
 	private Object _selected;
 	private ListadoActuacionesLista _lista;
 	private Proceso _proceso;
-	private boolean _onClickVer;
+	private long _style;
 
 	public ListadoActuacionesScreen(Proceso proceso) {
 		super(MainScreen.VERTICAL_SCROLL | MainScreen.VERTICAL_SCROLLBAR);
+		_style = ON_CLICK_SELECT;
 		_proceso = proceso;
-		setTitle("Nueva actuación");
 		_lista = new ListadoActuacionesLista();
 		_lista.insert(0, "Nueva actuación");
 		add(_lista);
 	}
 
-	public ListadoActuacionesScreen(Proceso proceso, int[] style) {
+	public ListadoActuacionesScreen(Proceso proceso, long style) {
 		super(MainScreen.VERTICAL_SCROLL | MainScreen.VERTICAL_SCROLLBAR);
+		_style = style;
 		_proceso = proceso;
 		_lista = new ListadoActuacionesLista(style);
 		_lista.insert(0, "Nueva actuación");
 		add(_lista);
 	}
 
-	public ListadoActuacionesScreen(int[] style) {
+	public ListadoActuacionesScreen(long style) {
 		super(MainScreen.VERTICAL_SCROLL | MainScreen.VERTICAL_SCROLLBAR);
-		for (int i = 0; i < style.length; i++) {
-			int s = style[i];
-			if (s == ON_CLICK_VER) {
-				_onClickVer = true;
-			} else if (s == ON_CLICK_SELECT) {
-				_onClickVer = false;
-			}
-		}
+		_style = style;
 		_lista = new ListadoActuacionesLista(style);
 		add(_lista);
 	}
 
 	public ListadoActuacionesScreen() {
 		super(MainScreen.VERTICAL_SCROLL | MainScreen.VERTICAL_SCROLLBAR);
+		_style = ON_CLICK_SELECT;
 		_lista = new ListadoActuacionesLista();
 		add(_lista);
 	}
@@ -78,8 +73,8 @@ public class ListadoActuacionesScreen extends MainScreen {
 	}
 
 	private void onClick() {
-		if (_onClickVer) {
-			onClickView();
+		if ((_style & ON_CLICK_VER) == ON_CLICK_VER) {
+			onClickVer();
 		} else {
 			onClickSelect();
 		}
@@ -90,7 +85,7 @@ public class ListadoActuacionesScreen extends MainScreen {
 		UiApplication.getUiApplication().popScreen(getScreen());
 	}
 
-	private void onClickView() {
+	private void onClickVer() {
 		menuVer.run();
 	}
 

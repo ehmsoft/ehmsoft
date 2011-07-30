@@ -56,6 +56,63 @@ public class ListadoPersonas {
 		this(tipo, false);
 	}
 	
+	public ListadoPersonas(int tipo, long style) {
+		try {
+			_persistencia = new Persistence();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		if (tipo == 1)
+			try {
+				_vectorPersonas = _persistencia.consultarDemandantes();
+			} catch (Exception e) {
+			}
+		else {
+			try {
+				_vectorPersonas = _persistencia.consultarDemandados();
+			} catch (Exception e) {
+			}
+		}
+		
+		_screen = new ListadoPersonasScreen(tipo,style);
+		addPersonas();
+	}
+	
+	public ListadoPersonas(int tipo, boolean popup, long style) {
+		try {
+			_persistencia = new Persistence();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		if (tipo == 1)
+			try {
+				_vectorPersonas = _persistencia.consultarDemandantes();
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		else {
+			try {
+				_vectorPersonas = _persistencia.consultarDemandados();
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		
+		if(popup) {
+			_screenPp = new ListadoPersonasPopUp(tipo);
+		}
+		else {
+			_screen = new ListadoPersonasScreen(tipo,style);
+		}
+		addPersonas();
+	}
+	
 	public void setTitle(String title) {
 		if(_screen != null) {
 			_screen.setTitle(title);

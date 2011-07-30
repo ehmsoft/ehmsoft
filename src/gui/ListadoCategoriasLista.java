@@ -7,7 +7,7 @@ import core.Categoria;
 public class ListadoCategoriasLista extends ListaListas {
 
 	public ListadoCategoriasLista() {
-		super();
+		super(0);
 	}
 
 	public void drawListRowDefault(ListField list, Graphics g, int index,

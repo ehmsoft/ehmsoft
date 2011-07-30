@@ -7,59 +7,59 @@ import core.Actuacion;
 
 public class ListadoActuacionesLista extends ListaListas {
 	
-	public static final int SHOW_DESCRIPCION = 0;
-	public static final int SHOW_JUZGADO = 1;
-	public static final int SHOW_FECHA = 2;
-	public static final int SHOW_FECHA_PROXIMA = 3;
+	public static final int SHOW_DESCRIPCION = 1;
+	public static final int SHOW_JUZGADO = 2;
+	public static final int SHOW_FECHA = 4;
+	public static final int SHOW_FECHA_PROXIMA = 8;
 	
-	private int[] _style;
+	private long _style;
 	
 	public ListadoActuacionesLista() {
 		super(1);
-		_style = new int[1];
-		_style[0] = SHOW_DESCRIPCION;
+		_style = SHOW_DESCRIPCION;
 	}
 
-	public ListadoActuacionesLista(int[] style) {
+	public ListadoActuacionesLista(long style) {
 		super(getAncho(style));
 		_style = style;
 	}
 	
-	private static int getAncho(int[] a) {
+	private static int getAncho(long a) {
 		int ancho = 0;
-		for (int i = 0; i < a.length; i++) {
-			int s = a[i];
-			if (s == SHOW_DESCRIPCION) {
-				ancho += 1;
-			} else if (s == SHOW_JUZGADO) {
-				ancho += 1;
-			} else if (s == SHOW_FECHA) {
-				ancho += 1;
-			} else if (s == SHOW_FECHA_PROXIMA) {
-				ancho += 1;
-			}
+
+		if ((a & SHOW_DESCRIPCION) == SHOW_DESCRIPCION) {
+			ancho += 1;
+		}
+		if ((a & SHOW_JUZGADO) == SHOW_JUZGADO) {
+			ancho += 1;
+		}
+		if ((a & SHOW_FECHA) == SHOW_FECHA) {
+			ancho += 1;
+		}
+		if ((a & SHOW_FECHA_PROXIMA) == SHOW_FECHA_PROXIMA) {
+			ancho += 1;
 		}
 		return ancho;
 	}
 	
 	protected void drawObject(Object object, Graphics g, int y, int w) {
 		Actuacion a = (Actuacion) object;
-		for(int i = 0; i < _style.length; i++) {
-			String text = new String();
-			int s = _style[i];
-			if(s == SHOW_DESCRIPCION) {
+
+		String text = "Ninguno";
+		while (y <= this.getRowHeight()) {
+			if ((_style & SHOW_DESCRIPCION) == SHOW_DESCRIPCION) {
 				text = a.getDescripcion();
 			}
-			else if(s == SHOW_JUZGADO) {
+			if ((_style & SHOW_JUZGADO) == SHOW_JUZGADO) {
 				text = a.getJuzgado().getNombre();
 			}
-			else if(s == SHOW_FECHA) {
+			if ((_style & SHOW_FECHA) == SHOW_FECHA) {
 				text = calendarToString(a.getFecha());
 			}
-			else if(s == SHOW_FECHA_PROXIMA) {
+			if ((_style & SHOW_FECHA_PROXIMA) == SHOW_FECHA_PROXIMA) {
 				text = calendarToString(a.getFechaProxima());
 			}
-			if(i == 0) {
+			if (getAncho(_style) == 1) {
 				g.drawText(text, 0, y);
 			} else {
 				g.drawText(text, 20, y);

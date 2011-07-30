@@ -10,45 +10,80 @@ import net.rim.device.api.ui.container.MainScreen;
 import core.Persona;
 
 public class ListadoPersonasScreen extends MainScreen {
+	
+	public static final int ON_CLICK_VER = 64;
+	public static final int ON_CLICK_SELECT = 128;
+	public static final int NO_NUEVO = 256;
 
 	private Object _selected;
 	private ListadoPersonasLista _lista;
 	private int _tipo;
+	private long _style;
 
 	public ListadoPersonasScreen(int tipo) {
 		super(MainScreen.VERTICAL_SCROLL | MainScreen.VERTICAL_SCROLLBAR);
 
 		_tipo = tipo;
-		if (tipo == 1)
-			setTitle("Listado de demandantes");
-		else
-			setTitle("Listado de demandados");
-
-		_lista = new ListadoPersonasLista() {
-			protected boolean navigationClick(int status, int time) {
-				if (String.class.isInstance(get(_lista, getSelectedIndex()))) {
-					NuevaPersona n = new NuevaPersona(_tipo);
-					UiApplication.getUiApplication().pushModalScreen(
-							n.getScreen());
-					try {
-						addPersona(n.getPersona());
-					} catch (Exception e) {
-						return true;
-					}
-					return true;
-				} else {
-					_selected = get(_lista, getSelectedIndex());
-					UiApplication.getUiApplication().popScreen(getScreen());
-					return true;
-				}
-			}
-		};
+		_lista = new ListadoPersonasLista();
 
 		if (tipo == 1)
 			_lista.insert(0, "Nuevo demandante");
 		else
 			_lista.insert(0, "Nuevo demandado");
 		add(_lista);
+	}
+	
+	public ListadoPersonasScreen(int tipo, long style) {
+		super(MainScreen.VERTICAL_SCROLL | MainScreen.VERTICAL_SCROLLBAR);
+		
+		_tipo = tipo;
+		_lista = new ListadoPersonasLista(style);
+		
+		if((_style & NO_NUEVO) != NO_NUEVO) {
+			if (tipo == 1)
+				_lista.insert(0, "Nuevo demandante");
+			else
+				_lista.insert(0, "Nuevo demandado");
+		}
+		add(_lista);
+	}
+	
+	protected boolean navigationClick(int status, int time) {
+		if (String.class.isInstance(_lista.get(_lista,
+				_lista.getSelectedIndex()))) {
+			onNew();
+			return true;
+		} else {
+			onClick();
+			return true;
+		}
+	}
+	
+	private void onNew() {
+		NuevaPersona n = new NuevaPersona(_tipo);
+		UiApplication.getUiApplication().pushModalScreen(n.getScreen());
+		try {
+			if((_style & NO_NUEVO) == NO_NUEVO) {
+				_lista.insert(0, n.getPersona());
+				_lista.setSelectedIndex(0);
+			} else {
+				_lista.insert(1, n.getPersona());
+				_lista.setSelectedIndex(0);
+			}
+		} catch(Exception e) {
+			
+		} finally {
+			n = null;
+		}
+	}
+	
+	private void onClick() {
+		if((_style & ON_CLICK_VER) == ON_CLICK_VER) {
+			menuVer.run();
+		} else {
+			_selected = _lista.get(_lista, _lista.getSelectedIndex());
+			UiApplication.getUiApplication().popScreen(getScreen());
+		}
 	}
 	
 	protected void makeMenu(Menu menu, int instance) {
