@@ -116,7 +116,10 @@ public class Prueba extends MainScreen {
 		verProceso = new ButtonField("Ver proceso");
 		verProceso.setChangeListener(listenerVerProceso);
 		add(verProceso);
+		
+
 	}
+	
 
 	private FieldChangeListener listenerListadoActuaciones = new FieldChangeListener() {
 

@@ -251,9 +251,10 @@ public class ConnectionManager {
 		//insertar preferencias de pantallas	
 			int[] pantallas = {Persistence.VER_PROCESO,Persistence.VER_PERSONA,Persistence.VER_JUZGADO,Persistence.VER_CITA,Persistence.VER_CATEGORIA,Persistence.VER_CAMPO,Persistence.VER_ACTUACION,Persistence.NUEVO_PROCESO,Persistence.NUEVO_JUZGADO,Persistence.NUEVO_CAMPO,Persistence.NUEVA_PERSONA,Persistence.NUEVA_CITA,Persistence.NUEVA_CATEGORIA,Persistence.NUEVA_ACTUACION,Persistence.LISTADO_PROCESOS,Persistence.LISTADO_PERSONAS,Persistence.LISTADO_JUZGADOS,Persistence.LISTADO_CATEGORIAS,Persistence.LISTADO_CAMPOS,Persistence.LISTADO_ACTUACIONES,Persistence.LISTA_LISTAS};
 			for(int i = 0; i < pantallas.length; i++){
-				st = d.createStatement("INSERT INTO 'preferencias' (id_preferencia,valor) VALUES(NULL,?)");
-				st.bind(1, pantallas[i]);
+				st = d.createStatement("INSERT INTO 'preferencias' (id_preferencia,valor) VALUES(?,?)");
 				st.prepare();
+				st.bind(1, (i+1));
+				st.bind(2, pantallas[i]);
 				st.execute();
 				st.close();
 				
