@@ -76,7 +76,7 @@ public class ListadoPersonas {
 			}
 		}
 		
-		_screen = new ListadoPersonasScreen(tipo,style);
+		_screen = new ListadoPersonasScreen(tipo, style);
 		addPersonas();
 	}
 	
