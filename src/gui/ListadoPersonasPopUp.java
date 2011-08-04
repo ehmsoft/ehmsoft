@@ -2,7 +2,6 @@ package gui;
 
 import core.Persona;
 import net.rim.device.api.system.KeyListener;
-import net.rim.device.api.ui.Field;
 import net.rim.device.api.ui.UiApplication;
 import net.rim.device.api.ui.component.LabelField;
 import net.rim.device.api.ui.component.SeparatorField;
@@ -10,14 +9,12 @@ import net.rim.device.api.ui.container.PopupScreen;
 import net.rim.device.api.ui.container.VerticalFieldManager;
 
 public class ListadoPersonasPopUp extends PopupScreen {
-	
-	public ListadoPersonasPopUp(int tipo) {
-		super(new VerticalFieldManager());
-	}
-/*
-	public static final int ON_CLICK_VER = 64;
-	public static final int ON_CLICK_SELECT = 128;
-	public static final int NO_NUEVO = 256;
+
+
+	public static final int ON_CLICK_VER = 1;
+	public static final int ON_CLICK_SELECT = 2;
+	public static final int NO_NUEVO = 4;
+	public static final int SEARCH = 8;
 
 	private Object _selected;
 	private ListadoPersonasLista _lista;
@@ -26,30 +23,12 @@ public class ListadoPersonasPopUp extends PopupScreen {
 	private long _style;
 
 	public ListadoPersonasPopUp(int tipo) {
-		super(new VerticalFieldManager());
-		_tipo = tipo;
-
-		if (tipo == 1) {
-			_title = new LabelField("Demandantes", Field.FIELD_HCENTER);
-
-		} else if (tipo == 2) {
-			_title = new LabelField("Demandados", Field.FIELD_HCENTER);
-		}
-		add(_title);
-		add(new SeparatorField());
-
-		_lista = new ListadoPersonasLista();
-
-		if (tipo == 1)
-			_lista.insert(0, "Crear nuevo demandante");
-		else
-			_lista.insert(0, "Crear nuevo demandado");
-		add(_lista);
-		addKeyListener(new ListenerKey());
+		this(tipo, 0);
 	}
 
 	public ListadoPersonasPopUp(int tipo, long style) {
 		super(new VerticalFieldManager());
+		_title = new LabelField("Personas", FIELD_HCENTER);
 		_style = style;
 		_lista = new ListadoPersonasLista();
 
@@ -59,13 +38,15 @@ public class ListadoPersonasPopUp extends PopupScreen {
 			else
 				_lista.insert(0, "Crear nuevo demandado");
 		}
+		if((_style & SEARCH) == SEARCH) {
+			add(_lista.getKeywordField());
+		}
 		add(_lista);
 		addKeyListener(new ListenerKey());
 	}
 
 	protected boolean navigationClick(int status, int time) {
-		if (String.class.isInstance(_lista.getElementAt(_lista
-				.getSelectedIndex()))) {
+		if (String.class.isInstance(_lista.getSelectedElement())) {
 			onNew();
 			return true;
 		} else {
@@ -94,23 +75,25 @@ public class ListadoPersonasPopUp extends PopupScreen {
 
 	private void onClick() {
 		if ((_style & ON_CLICK_VER) == ON_CLICK_VER) {
-			int index = _lista.getSelectedIndex();
-			VerPersona verPersona = new VerPersona(
-					(Persona) _lista.getElementAt(index));
+			Persona old = (Persona) _lista.getSelectedElement();
+			VerPersona verPersona = new VerPersona(old);
 			UiApplication.getUiApplication().pushModalScreen(
 					verPersona.getScreen());
 			verPersona.actualizarPersona();
-			_lista.delete(index);
-			_lista.insert(index, verPersona.getPersona());
-			_lista.setSelectedIndex(index);
+			Persona nw = verPersona.getPersona();
+			_lista.update(old, nw);
+			if(_lista.getKeywordField().getTextLength() != 0) {
+				_lista.setText(nw.getNombre());
+			}
+			old = null;
 		} else {
-			_selected = _lista.getElementAt(_lista.getSelectedIndex());
+			_selected = _lista.getSelectedElement();
 			UiApplication.getUiApplication().popScreen(getScreen());
 		}
 	}
 
 	public void addPersona(Object persona) {
-		_lista.insert(_lista.getSize(), persona);
+		_lista.insert(persona);
 	}
 
 	public Object getSelected() {
@@ -119,6 +102,8 @@ public class ListadoPersonasPopUp extends PopupScreen {
 
 	public void setTitle(String title) {
 		_title.setText(title);
+		add(_title);
+		add(new SeparatorField());
 	}
 
 	public class ListenerKey implements KeyListener {
@@ -148,5 +133,5 @@ public class ListadoPersonasPopUp extends PopupScreen {
 		public boolean keyUp(int keycode, int time) {
 			return false;
 		}
-	}*/
+	}
 }

@@ -20,36 +20,7 @@ public class ListadoPersonas {
 	 * @param popup true si se desea crear una pantalla tipo PopUp
 	 */
 	public ListadoPersonas(int tipo, boolean popup) {
-		try {
-			_persistencia = new Persistence();
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
-		if (tipo == 1)
-			try {
-				_vectorPersonas = _persistencia.consultarDemandantes();
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		else {
-			try {
-				_vectorPersonas = _persistencia.consultarDemandados();
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
-		
-		if(popup) {
-			_screenPp = new ListadoPersonasPopUp(tipo);
-		}
-		else {
-			_screen = new ListadoPersonasScreen(tipo);
-		}
-		addPersonas();
+		this(tipo, popup, 0);
 	}
 
 	public ListadoPersonas(int tipo) {
@@ -57,53 +28,22 @@ public class ListadoPersonas {
 	}
 	
 	public ListadoPersonas(int tipo, long style) {
-		try {
-			_persistencia = new Persistence();
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
-		if (tipo == 1)
-			try {
-				_vectorPersonas = _persistencia.consultarDemandantes();
-			} catch (Exception e) {
-			}
-		else {
-			try {
-				_vectorPersonas = _persistencia.consultarDemandados();
-			} catch (Exception e) {
-			}
-		}
-		
-		_screen = new ListadoPersonasScreen(tipo, style);
-		addPersonas();
+		this(tipo, false, style);
 	}
 	
 	public ListadoPersonas(int tipo, boolean popup, long style) {
 		try {
 			_persistencia = new Persistence();
+
+			if (tipo == 1)
+				_vectorPersonas = _persistencia.consultarDemandantes();
+			else {
+				_vectorPersonas = _persistencia.consultarDemandados();
+			}
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			Dialog.alert(e.toString());
 		}
 
-		if (tipo == 1)
-			try {
-				_vectorPersonas = _persistencia.consultarDemandantes();
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		else {
-			try {
-				_vectorPersonas = _persistencia.consultarDemandados();
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
-		
 		if(popup) {
 			_screenPp = new ListadoPersonasPopUp(tipo);
 		}
@@ -117,7 +57,7 @@ public class ListadoPersonas {
 		if(_screen != null) {
 			_screen.setTitle(title);
 		} else {
-			//_screenPp.setTitle(title);
+			_screenPp.setTitle(title);
 		}
 	}
 
@@ -134,7 +74,7 @@ public class ListadoPersonas {
 				if (_screen != null) {
 					_screen.addPersona(index.nextElement());
 				} else {
-					//_screenPp.addPersona(index.nextElement());
+					_screenPp.addPersona(index.nextElement());
 				}
 		} catch (NullPointerException e) {
 
@@ -147,8 +87,7 @@ public class ListadoPersonas {
 		if (_screen != null) {
 			return (Persona) _screen.getSelected();
 		} else {
-			//return (Persona) _screenPp.getSelected();
-			return null;
+			return (Persona) _screenPp.getSelected();
 		}
 	}
 

@@ -58,9 +58,13 @@ public class ListadoPersonasScreen extends MainScreen {
 		NuevaPersona n = new NuevaPersona(_tipo);
 		UiApplication.getUiApplication().pushModalScreen(n.getScreen());
 		try {
-			Persona p = n.getPersona();
-			_sortedList.insert(1, p);
-			_sortedList.setSelectedIndex(1);
+			if((_style & NO_NUEVO) == NO_NUEVO) {
+				_sortedList.insert(1, n.getPersona());
+				_sortedList.setSelectedIndex(0);
+			} else {
+				_sortedList.insert(1, n.getPersona());
+				_sortedList.setSelectedIndex(1);
+			}
 		} catch (Exception e) {
 
 		} finally {
@@ -97,6 +101,7 @@ public class ListadoPersonasScreen extends MainScreen {
 			if (_sortedList.getKeywordField().getTextLength() != 0) {
 				_sortedList.setText(nw.getNombre());
 			}
+			old = null;
 		}
 	};
 
