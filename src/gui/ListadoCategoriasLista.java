@@ -1,28 +1,22 @@
 package gui;
 
-import net.rim.device.api.ui.Graphics;
-import net.rim.device.api.ui.component.ListField;
 import core.Categoria;
+import net.rim.device.api.ui.component.KeywordProvider;
 
-public class ListadoCategoriasLista extends ListaListas {
+public class ListadoCategoriasLista extends ListaListas implements KeywordProvider {
 
 	public ListadoCategoriasLista() {
-		super(0);
+		super();
+		setSourceList(this);
 	}
 
-	public void drawListRowDefault(ListField list, Graphics g, int index,
-			int y, int w) {
-		Categoria objeto = (Categoria) this.get(this, index);
-		String descripcion = objeto.getDescripcion();
-
-		g.drawText(descripcion, 0, y);
-	}
-
-	public String getParam(Object objeto, String parametro) {
-		String ret = "Error";
-		if (parametro == "descripcion") {
-			ret = ((Categoria) objeto).getDescripcion();
+	public String[] getKeywords(Object element) {
+		if (String.class.isInstance(element)) {
+			return null;
+		} else {
+			String[] s = new String[1];
+			s[0] = ((Categoria) element).getDescripcion();
+			return s;
 		}
-		return ret;
 	}
 }
