@@ -1,16 +1,11 @@
 package gui;
 
-import java.util.Vector;
-
 import persistence.Persistence;
 
-import net.rim.device.api.ui.Graphics;
 import net.rim.device.api.ui.MenuItem;
 import net.rim.device.api.ui.UiApplication;
 import net.rim.device.api.ui.component.Dialog;
 import net.rim.device.api.ui.component.KeywordFilterField;
-import net.rim.device.api.ui.component.ListField;
-import net.rim.device.api.ui.component.ListFieldCallback;
 import net.rim.device.api.ui.component.Menu;
 import net.rim.device.api.ui.container.MainScreen;
 import core.Persona;
@@ -24,7 +19,7 @@ public class ListadoPersonasScreen extends MainScreen {
 
 	private Object _selected;
 	private KeywordFilterField _lista;
-	private ListadoPersonasLista _unsortedList;
+	private ListadoPersonasLista _sortedList;
 	private int _tipo;
 	private long _style;
 
@@ -37,14 +32,16 @@ public class ListadoPersonasScreen extends MainScreen {
 		_style = style;
 		_tipo = tipo;
 		_lista = new KeywordFilterField();
-		_unsortedList = new ListadoPersonasLista();
-		_lista.setSourceList(_unsortedList, _unsortedList);
+		//_lista.setKeyword("Buscar: ");
+		_lista.setLabel("Buscar: ");
+		_sortedList = new ListadoPersonasLista();
+		_lista.setSourceList(_sortedList, _sortedList);
 		
 		if((_style & NO_NUEVO) != NO_NUEVO) {
 			if (tipo == 1)
-				_unsortedList.insert(0, "Nuevo demandante");
+				_sortedList.insert(0,"Nuevo demandante");
 			else
-				_unsortedList.insert(0, "Nuevo demandado");
+				_sortedList.insert(0,"Nuevo demandado");
 		}
 		if((_style & SEARCH) == SEARCH) {
 			add(_lista.getKeywordField());
@@ -53,7 +50,7 @@ public class ListadoPersonasScreen extends MainScreen {
 	}
 	
 	protected boolean navigationClick(int status, int time) {
-		if (String.class.isInstance(_lista.getElementAt(_lista.getSelectedIndex()))) {
+		if (String.class.isInstance(_lista.getSelectedElement())) {
 			onNew();
 			return true;
 		} else {
@@ -66,13 +63,11 @@ public class ListadoPersonasScreen extends MainScreen {
 		NuevaPersona n = new NuevaPersona(_tipo);
 		UiApplication.getUiApplication().pushModalScreen(n.getScreen());
 		try {
-			if((_style & NO_NUEVO) == NO_NUEVO) {
-				_unsortedList.insert(0, n.getPersona());
-				_lista.setSelectedIndex(0);
-			} else {
-				_unsortedList.insert(1, n.getPersona());
-				_lista.setSelectedIndex(0);
-			}
+			Persona p = n.getPersona();
+			_sortedList.insert(1,p);
+			_lista.updateList();
+			_lista.invalidate();
+			_lista.setSelectedIndex(1);
 		} catch(Exception e) {
 			
 		} finally {
@@ -99,14 +94,25 @@ public class ListadoPersonasScreen extends MainScreen {
 	private final MenuItem menuVer = new MenuItem("Ver", 0, 0) {
 
 		public void run() {
-			int index = _lista.getSelectedIndex();
-			VerPersona verPersona = new VerPersona((Persona) _lista.getElementAt(index));
+			Persona old = (Persona) _lista.getSelectedElement();
+			VerPersona verPersona = new VerPersona(old);
 			UiApplication.getUiApplication().pushModalScreen(
 					verPersona.getScreen());
 			verPersona.actualizarPersona();
-			_unsortedList.update(verPersona.getPersona(), verPersona.getPersona());
+			Persona nw = verPersona.getPersona();
+			//_sortedList.delete(old);
+			//_sortedList.insert(index ,nw);
+			_sortedList.update(old, nw);
 			_lista.updateList();
-			_lista.setSelectedIndex(index);
+			if(_lista.getKeywordField().getTextLength() != 0) {
+				_lista.getKeywordField().setText(nw.getNombre());
+				_lista.updateList();
+				_lista.invalidate();
+			}
+			//int index = _sortedList.getIndex(p);
+			//_lista.setSelectedIndex(index);
+			//_lista.setSelectedIndex(index);
+			//_lista.invalidate();
 		}
 	};
 
@@ -127,21 +133,24 @@ public class ListadoPersonasScreen extends MainScreen {
 				} catch (Exception e) {
 					Dialog.alert(e.toString());
 				}
-				int index = _lista.getSelectedIndex();
 				try {
-					persistence.borrarPersona((Persona) _lista.getElementAt(index));
+					persistence.borrarPersona((Persona)_lista.getSelectedElement());
 				} catch (Exception e) {
 					Dialog.alert(e.toString());
 				}
-
-				_lista.delete(index);
+				
+				int index = _sortedList.getIndex(_lista.getSelectedElement());
+				_sortedList.delete(index);
+				_lista.updateList();
+				_lista.setSelectedIndex(index);
 			}
 		}
 	};
 
 	public void addPersona(Object persona) {
-		_unsortedList.insert(_unsortedList.getSize(), persona);
+		_sortedList.insert(_sortedList.getSize(), persona);
 		_lista.updateList();
+		_lista.invalidate();
 	}
 
 	public Object getSelected() {

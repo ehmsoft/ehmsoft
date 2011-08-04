@@ -4,15 +4,18 @@ import core.Persona;
 import net.rim.device.api.collection.util.UnsortedReadableList;
 import net.rim.device.api.ui.component.KeywordProvider;
 
-
 public class ListadoPersonasLista extends UnsortedReadableList implements KeywordProvider{
-	
+
 	public void insert(int index, Object element) {
 		insertAt(index, element);
 	}
 	
 	public void delete(int index) {
 		doRemove(getAt(index));
+	}
+	
+	public void delete(Object element) {
+		doRemove(element);
 	}
 	
 	public void update(Object old, Object nw) {
@@ -35,4 +38,3 @@ public class ListadoPersonasLista extends UnsortedReadableList implements Keywor
 		}
 	}
 }
-
