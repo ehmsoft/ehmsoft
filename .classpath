@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry kind="src" path="src"/>
+	<classpathentry excluding="gui/ListadoActuacionesScreen.java|gui/ListadoCategoriasPopUp.java|gui/ListadoCategoriasScreen.java|gui/ListadoActuaciones.java|gui/ListadoCategorias.java|gui/VerProcesoScreen.java|gui/ListadoProcesosScreen.java|gui/NuevoProcesoScreen.java|gui/VerProceso.java|gui/ListadoActuacionesLista.java|gui/ListadoCampos.java|gui/ListadoCamposLista.java|gui/ListadoCamposPopUp.java|gui/ListadoCamposScreen.java|gui/ListadoCategoriasLista.java|gui/ListadoJuzgados.java|gui/ListadoJuzgadosLista.java|gui/ListadoJuzgadosPopUp.java|gui/ListadoJuzgadosScreen.java|gui/ListadoProcesos.java|gui/ListadoProcesosLista.java|gui/NuevaActuacion.java|gui/NuevaActuacionScreen.java|gui/NuevaCategoria.java|gui/NuevaCategoriaPopUp.java|gui/NuevaCategoriaScreen.java|gui/NuevaCita.java|gui/NuevaCitaPopUp.java|gui/NuevoCampo.java|gui/NuevoCampoScreen.java|gui/NuevoJuzgado.java|gui/NuevoJuzgadoScreen.java|gui/NuevoProceso.java|gui/Pruebafiltros.java|gui/PruebListas.java|gui/VerActuacion.java|gui/VerActuacionScreen.java|gui/VerCampo.java|gui/VerCampoScreen.java|gui/VerCategoria.java|gui/VerCategoriaScreen.java|gui/VerCita.java|gui/VerCitaPopUp.java|gui/VerJuzgado.java|gui/VerJuzgadoScreen.java" kind="src" path="src"/>
 	<classpathentry kind="src" path="res"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/net.rim.ejde.BlackBerryVMInstallType/BlackBerry JRE 5.0.0"/>
 	<classpathentry kind="output" path="bin"/>

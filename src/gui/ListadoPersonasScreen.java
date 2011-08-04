@@ -1,56 +1,59 @@
 package gui;
 
+import java.util.Vector;
+
 import persistence.Persistence;
 
+import net.rim.device.api.ui.Graphics;
 import net.rim.device.api.ui.MenuItem;
 import net.rim.device.api.ui.UiApplication;
 import net.rim.device.api.ui.component.Dialog;
+import net.rim.device.api.ui.component.KeywordFilterField;
+import net.rim.device.api.ui.component.ListField;
+import net.rim.device.api.ui.component.ListFieldCallback;
 import net.rim.device.api.ui.component.Menu;
 import net.rim.device.api.ui.container.MainScreen;
 import core.Persona;
 
 public class ListadoPersonasScreen extends MainScreen {
 	
-	public static final int ON_CLICK_VER = 64;
-	public static final int ON_CLICK_SELECT = 128;
-	public static final int NO_NUEVO = 256;
+	public static final int ON_CLICK_VER = 1;
+	public static final int ON_CLICK_SELECT = 2;
+	public static final int NO_NUEVO = 4;
+	public static final int SEARCH = 8;
 
 	private Object _selected;
-	private ListadoPersonasLista _lista;
+	private KeywordFilterField _lista;
+	private ListadoPersonasLista _unsortedList;
 	private int _tipo;
 	private long _style;
 
 	public ListadoPersonasScreen(int tipo) {
-		super(MainScreen.VERTICAL_SCROLL | MainScreen.VERTICAL_SCROLLBAR);
-
-		_tipo = tipo;
-		_lista = new ListadoPersonasLista();
-
-		if (tipo == 1)
-			_lista.insert(0, "Nuevo demandante");
-		else
-			_lista.insert(0, "Nuevo demandado");
-		add(_lista);
+		this(tipo,0);
 	}
 	
 	public ListadoPersonasScreen(int tipo, long style) {
 		super(MainScreen.VERTICAL_SCROLL | MainScreen.VERTICAL_SCROLLBAR);
-		
+		_style = style;
 		_tipo = tipo;
-		_lista = new ListadoPersonasLista(style);
+		_lista = new KeywordFilterField();
+		_unsortedList = new ListadoPersonasLista();
+		_lista.setSourceList(_unsortedList, _unsortedList);
 		
 		if((_style & NO_NUEVO) != NO_NUEVO) {
 			if (tipo == 1)
-				_lista.insert(0, "Nuevo demandante");
+				_unsortedList.insert(0, "Nuevo demandante");
 			else
-				_lista.insert(0, "Nuevo demandado");
+				_unsortedList.insert(0, "Nuevo demandado");
+		}
+		if((_style & SEARCH) == SEARCH) {
+			add(_lista.getKeywordField());
 		}
 		add(_lista);
 	}
 	
 	protected boolean navigationClick(int status, int time) {
-		if (String.class.isInstance(_lista.get(_lista,
-				_lista.getSelectedIndex()))) {
+		if (String.class.isInstance(_lista.getElementAt(_lista.getSelectedIndex()))) {
 			onNew();
 			return true;
 		} else {
@@ -64,10 +67,10 @@ public class ListadoPersonasScreen extends MainScreen {
 		UiApplication.getUiApplication().pushModalScreen(n.getScreen());
 		try {
 			if((_style & NO_NUEVO) == NO_NUEVO) {
-				_lista.insert(0, n.getPersona());
+				_unsortedList.insert(0, n.getPersona());
 				_lista.setSelectedIndex(0);
 			} else {
-				_lista.insert(1, n.getPersona());
+				_unsortedList.insert(1, n.getPersona());
 				_lista.setSelectedIndex(0);
 			}
 		} catch(Exception e) {
@@ -81,14 +84,13 @@ public class ListadoPersonasScreen extends MainScreen {
 		if((_style & ON_CLICK_VER) == ON_CLICK_VER) {
 			menuVer.run();
 		} else {
-			_selected = _lista.get(_lista, _lista.getSelectedIndex());
+			_selected = _lista.getElementAt(_lista.getSelectedIndex());
 			UiApplication.getUiApplication().popScreen(getScreen());
 		}
 	}
 	
 	protected void makeMenu(Menu menu, int instance) {
-		if (!String.class.isInstance(_lista.get(_lista,
-				_lista.getSelectedIndex()))) {
+		if (!String.class.isInstance(_lista.getElementAt(_lista.getSelectedIndex()))) {
 			menu.add(menuVer);
 			menu.add(menuDelete);
 		}
@@ -98,13 +100,12 @@ public class ListadoPersonasScreen extends MainScreen {
 
 		public void run() {
 			int index = _lista.getSelectedIndex();
-			VerPersona verPersona = new VerPersona((Persona) _lista.get(_lista,
-					index));
+			VerPersona verPersona = new VerPersona((Persona) _lista.getElementAt(index));
 			UiApplication.getUiApplication().pushModalScreen(
 					verPersona.getScreen());
 			verPersona.actualizarPersona();
-			_lista.delete(index);
-			_lista.insert(index, verPersona.getPersona());
+			_unsortedList.update(verPersona.getPersona(), verPersona.getPersona());
+			_lista.updateList();
 			_lista.setSelectedIndex(index);
 		}
 	};
@@ -128,8 +129,7 @@ public class ListadoPersonasScreen extends MainScreen {
 				}
 				int index = _lista.getSelectedIndex();
 				try {
-					persistence.borrarPersona((Persona) _lista.get(_lista,
-							index));
+					persistence.borrarPersona((Persona) _lista.getElementAt(index));
 				} catch (Exception e) {
 					Dialog.alert(e.toString());
 				}
@@ -140,7 +140,8 @@ public class ListadoPersonasScreen extends MainScreen {
 	};
 
 	public void addPersona(Object persona) {
-		_lista.insert(_lista.getSize(), persona);
+		_unsortedList.insert(_unsortedList.getSize(), persona);
+		_lista.updateList();
 	}
 
 	public Object getSelected() {

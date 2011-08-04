@@ -117,7 +117,7 @@ public class ListadoPersonas {
 		if(_screen != null) {
 			_screen.setTitle(title);
 		} else {
-			_screenPp.setTitle(title);
+			//_screenPp.setTitle(title);
 		}
 	}
 
@@ -134,7 +134,7 @@ public class ListadoPersonas {
 				if (_screen != null) {
 					_screen.addPersona(index.nextElement());
 				} else {
-					_screenPp.addPersona(index.nextElement());
+					//_screenPp.addPersona(index.nextElement());
 				}
 		} catch (NullPointerException e) {
 
@@ -147,7 +147,8 @@ public class ListadoPersonas {
 		if (_screen != null) {
 			return (Persona) _screen.getSelected();
 		} else {
-			return (Persona) _screenPp.getSelected();
+			//return (Persona) _screenPp.getSelected();
+			return null;
 		}
 	}
 
