@@ -5,52 +5,47 @@ import persistence.Persistence;
 import net.rim.device.api.ui.MenuItem;
 import net.rim.device.api.ui.UiApplication;
 import net.rim.device.api.ui.component.Dialog;
-import net.rim.device.api.ui.component.KeywordFilterField;
 import net.rim.device.api.ui.component.Menu;
 import net.rim.device.api.ui.container.MainScreen;
 import core.Persona;
 
 public class ListadoPersonasScreen extends MainScreen {
-	
+
 	public static final int ON_CLICK_VER = 1;
 	public static final int ON_CLICK_SELECT = 2;
 	public static final int NO_NUEVO = 4;
 	public static final int SEARCH = 8;
 
 	private Object _selected;
-	private KeywordFilterField _lista;
 	private ListadoPersonasLista _sortedList;
 	private int _tipo;
 	private long _style;
 
 	public ListadoPersonasScreen(int tipo) {
-		this(tipo,0);
+		this(tipo, 0);
 	}
-	
+
 	public ListadoPersonasScreen(int tipo, long style) {
 		super(MainScreen.VERTICAL_SCROLL | MainScreen.VERTICAL_SCROLLBAR);
 		_style = style;
 		_tipo = tipo;
-		_lista = new KeywordFilterField();
-		//_lista.setKeyword("Buscar: ");
-		_lista.setLabel("Buscar: ");
 		_sortedList = new ListadoPersonasLista();
-		_lista.setSourceList(_sortedList, _sortedList);
-		
-		if((_style & NO_NUEVO) != NO_NUEVO) {
+		_sortedList.setLabel("Buscar: ");
+
+		if ((_style & NO_NUEVO) != NO_NUEVO) {
 			if (tipo == 1)
-				_sortedList.insert(0,"Nuevo demandante");
+				_sortedList.insert(0, "Nuevo demandante");
 			else
-				_sortedList.insert(0,"Nuevo demandado");
+				_sortedList.insert(0, "Nuevo demandado");
 		}
-		if((_style & SEARCH) == SEARCH) {
-			add(_lista.getKeywordField());
+		if ((_style & SEARCH) == SEARCH) {
+			add(_sortedList.getKeywordField());
 		}
-		add(_lista);
+		add(_sortedList);
 	}
-	
+
 	protected boolean navigationClick(int status, int time) {
-		if (String.class.isInstance(_lista.getSelectedElement())) {
+		if (String.class.isInstance(_sortedList.getSelectedElement())) {
 			onNew();
 			return true;
 		} else {
@@ -58,34 +53,32 @@ public class ListadoPersonasScreen extends MainScreen {
 			return true;
 		}
 	}
-	
+
 	private void onNew() {
 		NuevaPersona n = new NuevaPersona(_tipo);
 		UiApplication.getUiApplication().pushModalScreen(n.getScreen());
 		try {
 			Persona p = n.getPersona();
-			_sortedList.insert(1,p);
-			_lista.updateList();
-			_lista.invalidate();
-			_lista.setSelectedIndex(1);
-		} catch(Exception e) {
-			
+			_sortedList.insert(1, p);
+			_sortedList.setSelectedIndex(1);
+		} catch (Exception e) {
+
 		} finally {
 			n = null;
 		}
 	}
-	
+
 	private void onClick() {
-		if((_style & ON_CLICK_VER) == ON_CLICK_VER) {
+		if ((_style & ON_CLICK_VER) == ON_CLICK_VER) {
 			menuVer.run();
 		} else {
-			_selected = _lista.getElementAt(_lista.getSelectedIndex());
+			_selected = _sortedList.getSelectedElement();
 			UiApplication.getUiApplication().popScreen(getScreen());
 		}
 	}
-	
+
 	protected void makeMenu(Menu menu, int instance) {
-		if (!String.class.isInstance(_lista.getElementAt(_lista.getSelectedIndex()))) {
+		if (!String.class.isInstance(_sortedList.getSelectedElement())) {
 			menu.add(menuVer);
 			menu.add(menuDelete);
 		}
@@ -94,25 +87,16 @@ public class ListadoPersonasScreen extends MainScreen {
 	private final MenuItem menuVer = new MenuItem("Ver", 0, 0) {
 
 		public void run() {
-			Persona old = (Persona) _lista.getSelectedElement();
+			Persona old = (Persona) _sortedList.getSelectedElement();
 			VerPersona verPersona = new VerPersona(old);
 			UiApplication.getUiApplication().pushModalScreen(
 					verPersona.getScreen());
 			verPersona.actualizarPersona();
 			Persona nw = verPersona.getPersona();
-			//_sortedList.delete(old);
-			//_sortedList.insert(index ,nw);
 			_sortedList.update(old, nw);
-			_lista.updateList();
-			if(_lista.getKeywordField().getTextLength() != 0) {
-				_lista.getKeywordField().setText(nw.getNombre());
-				_lista.updateList();
-				_lista.invalidate();
+			if (_sortedList.getKeywordField().getTextLength() != 0) {
+				_sortedList.setText(nw.getNombre());
 			}
-			//int index = _sortedList.getIndex(p);
-			//_lista.setSelectedIndex(index);
-			//_lista.setSelectedIndex(index);
-			//_lista.invalidate();
 		}
 	};
 
@@ -134,23 +118,22 @@ public class ListadoPersonasScreen extends MainScreen {
 					Dialog.alert(e.toString());
 				}
 				try {
-					persistence.borrarPersona((Persona)_lista.getSelectedElement());
+					persistence.borrarPersona((Persona) _sortedList
+							.getSelectedElement());
 				} catch (Exception e) {
 					Dialog.alert(e.toString());
 				}
-				
-				int index = _sortedList.getIndex(_lista.getSelectedElement());
-				_sortedList.delete(index);
-				_lista.updateList();
-				_lista.setSelectedIndex(index);
+
+				int index = _sortedList.getIndex(_sortedList
+						.getSelectedElement());
+				_sortedList.remove(index);
+				_sortedList.setSelectedIndex(index);
 			}
 		}
 	};
 
 	public void addPersona(Object persona) {
-		_sortedList.insert(_sortedList.getSize(), persona);
-		_lista.updateList();
-		_lista.invalidate();
+		_sortedList.insert(persona);
 	}
 
 	public Object getSelected() {

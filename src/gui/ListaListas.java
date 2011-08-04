@@ -1,48 +1,75 @@
 package gui;
 
-import net.rim.device.api.ui.Font;
-import net.rim.device.api.ui.Graphics;
+import net.rim.device.api.collection.util.UnsortedReadableList;
 import net.rim.device.api.ui.component.KeywordFilterField;
-import net.rim.device.api.ui.component.ListField;
-import net.rim.device.api.ui.component.ListFieldCallback;
+import net.rim.device.api.ui.component.KeywordProvider;
 
-class ListaListas extends KeywordFilterField implements ListFieldCallback {
-	
+abstract class ListaListas extends KeywordFilterField {
+	Unsorted _u;
 
-	public ListaListas(int ancho) {
+	public ListaListas() {
 		super();
-		setRowHeight(getFont().getHeight() * ancho);
-		this.setCallback(this);
+		_u = new Unsorted();
 	}
 
-	public void drawListRow(ListField list, Graphics g, int index, int y, int w) {
-		if (this.get(list, index) != null) {
-			if (String.class.isInstance(this.get(list, index))) {
-				Font f = g.getFont();
-				g.setFont(getFont().derive(Font.BOLD));
-				int posY = getRowHeight() / 2 - getFont().getHeight() / 2;
-				g.drawText((String) this.get(list, index), 0, posY);
-				g.setFont(f);
-			} else {
-				Object objeto = this.get(list, index);
-				drawObject(objeto, g, y, w);
-			}
-		}
-	}
-	
-	protected void drawObject(Object object, Graphics g, int y, int w) {
-		g.drawText("Sobrecargar método", 0, 0);
-	}
-	
-	public Object get(ListField listField, int index) {
-		return getElementAt(index);
+	public void setSourceList(KeywordProvider helper) {
+		setSourceList(_u, helper);
 	}
 
-	public int getPreferredWidth(ListField listField) {
-		return listField.getPreferredWidth();
+	public void insert(int index, Object element) {
+		_u.insert(index, element);
+		updateList();
 	}
 
-	public int indexOfList(ListField listField, String prefix, int start) {
-		return ((KeywordFilterField)listField).indexOfList(prefix, start);
+	public void insert(Object element) {
+		_u.insert(element);
+		updateList();
+	}
+
+	public void update(Object old, Object nw) {
+		_u.update(old, nw);
+		updateList();
+	}
+
+	public void setText(String text) {
+		getKeywordField().setText(text);
+		updateList();
+		invalidate();
+	}
+
+	public int getIndex(Object element) {
+		return _u.getIndex(element);
+	}
+
+	public void remove(int index) {
+		_u.delete(index);
+		updateList();
+	}
+
+	public void remove(Object element) {
+		_u.delete(element);
+		updateList();
+	}
+}
+
+class Unsorted extends UnsortedReadableList {
+	public void insert(int index, Object element) {
+		insertAt(index, element);
+	}
+
+	public void insert(Object element) {
+		doAdd(element);
+	}
+
+	public void delete(int index) {
+		doRemove(getAt(index));
+	}
+
+	public void delete(Object element) {
+		doRemove(element);
+	}
+
+	public void update(Object old, Object nw) {
+		doUpdate(old, nw);
 	}
 }
