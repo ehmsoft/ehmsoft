@@ -276,12 +276,18 @@ public class VerActuacionScreen extends FondoNormal {
 		else if ((f1.get(Calendar.YEAR) != f2.get(Calendar.YEAR))
 				|| (f1.get(Calendar.MONTH) != f2.get(Calendar.MONTH))
 				|| (f1.get(Calendar.DAY_OF_MONTH) != f2
-						.get(Calendar.DAY_OF_MONTH)))
+						.get(Calendar.DAY_OF_MONTH))
+				|| (f1.get(Calendar.HOUR_OF_DAY) != f2
+						.get(Calendar.HOUR_OF_DAY))
+				|| (f1.get(Calendar.MINUTE) != f2.get(Calendar.MINUTE)))
 			cambio = true;
 		else if ((fP1.get(Calendar.YEAR) != fP2.get(Calendar.YEAR))
 				|| (fP1.get(Calendar.MONTH) != fP2.get(Calendar.MONTH))
 				|| (fP1.get(Calendar.DAY_OF_MONTH) != fP2
-						.get(Calendar.DAY_OF_MONTH)))
+						.get(Calendar.DAY_OF_MONTH))
+				|| (fP1.get(Calendar.HOUR_OF_DAY) != fP2
+						.get(Calendar.HOUR_OF_DAY))
+				|| (fP1.get(Calendar.MINUTE) != fP2.get(Calendar.MINUTE)))
 			cambio = true;
 		else if (!_actuacion.getDescripcion().equals(
 				getDescripcion()))
