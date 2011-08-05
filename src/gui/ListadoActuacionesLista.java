@@ -2,88 +2,87 @@ package gui;
 
 import java.util.Calendar;
 
+import net.rim.device.api.collection.ReadableList;
+import net.rim.device.api.ui.Color;
+import net.rim.device.api.ui.Font;
 import net.rim.device.api.ui.Graphics;
+import net.rim.device.api.ui.component.KeywordProvider;
+import net.rim.device.api.ui.component.ListField;
+import net.rim.device.api.ui.component.ListFieldCallback;
 import core.Actuacion;
 
-public class ListadoActuacionesLista extends ListaListas {
-	
-	public static final int SHOW_DESCRIPCION = 1;
-	public static final int SHOW_JUZGADO = 2;
-	public static final int SHOW_FECHA = 4;
-	public static final int SHOW_FECHA_PROXIMA = 8;
-	
-	private long _style;
+public class ListadoActuacionesLista extends ListaListas implements KeywordProvider, ListFieldCallback{
 	
 	public ListadoActuacionesLista() {
-		super(1);
-		_style = SHOW_DESCRIPCION;
+		super();
+		setRowHeight(getFont().getHeight() * 2);
+		setSourceList(this);
+		setCallback(this);
 	}
 
-	public ListadoActuacionesLista(long style) {
-		super(getAncho(style));
-		_style = style;
-	}
-	
-	private static int getAncho(long a) {
-		int ancho = 0;
-
-		if ((a & SHOW_DESCRIPCION) == SHOW_DESCRIPCION) {
-			ancho += 1;
+	public void drawListRow(ListField listField, Graphics graphics, int index,
+			int y, int width) {
+		ReadableList r = ((ListaListas) listField).getResultList();
+		if (String.class.isInstance(r.getAt(index))) {
+			graphics.setFont(graphics.getFont().derive(Font.BOLD));
+			int color = graphics.getColor();
+			graphics.setColor(Color.LIGHTGRAY);
+			graphics.drawLine(5, listField.getRowHeight() + y - 1,
+					listField.getWidth() - 5, listField.getRowHeight() + y - 1);
+			graphics.setColor(color);
+			graphics.drawText(r.getAt(index).toString(), 0, y);
+		} else {
+			graphics.drawText(r.getAt(index).toString(), 0, y);
+			graphics.drawText(calendarToString(((Actuacion)r.getAt(index)).getFechaProxima()), 30, y + getFont().getHeight());
 		}
-		if ((a & SHOW_JUZGADO) == SHOW_JUZGADO) {
-			ancho += 1;
-		}
-		if ((a & SHOW_FECHA) == SHOW_FECHA) {
-			ancho += 1;
-		}
-		if ((a & SHOW_FECHA_PROXIMA) == SHOW_FECHA_PROXIMA) {
-			ancho += 1;
-		}
-		return ancho;
+		
 	}
 	
-	protected void drawObject(Object object, Graphics g, int y, int w) {
-		Actuacion a = (Actuacion) object;
-
-		String text = "Ninguno";
-		while (y <= this.getRowHeight()) {
-			if ((_style & SHOW_DESCRIPCION) == SHOW_DESCRIPCION) {
-				text = a.getDescripcion();
-			}
-			if ((_style & SHOW_JUZGADO) == SHOW_JUZGADO) {
-				text = a.getJuzgado().getNombre();
-			}
-			if ((_style & SHOW_FECHA) == SHOW_FECHA) {
-				text = calendarToString(a.getFecha());
-			}
-			if ((_style & SHOW_FECHA_PROXIMA) == SHOW_FECHA_PROXIMA) {
-				text = calendarToString(a.getFechaProxima());
-			}
-			if (getAncho(_style) == 1) {
-				g.drawText(text, 0, y);
-			} else {
-				g.drawText(text, 20, y);
-			}
-			y += getFont().getHeight();
+	public String[] getKeywords(Object element) {
+		if (String.class.isInstance(element)) {
+			return null;
+		} else {
+			String[] s = new String[5];
+			s[0] = ((Actuacion)element).getDescripcion();
+			s[1] = ((Actuacion)element).getFechaProxima().get(Calendar.DAY_OF_MONTH) + "";
+			s[2] = ((Actuacion)element).getFechaProxima().get(Calendar.MONTH) + "";
+			s[3] = ((Actuacion)element).getFechaProxima().get(Calendar.YEAR) + "";
+			s[4] = ((Actuacion)element).getFechaProxima().get(Calendar.HOUR) + "";
+			return s;
 		}
+	}
+
+	public Object get(ListField listField, int index) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public int getPreferredWidth(ListField listField) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	public int indexOfList(ListField listField, String prefix, int start) {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 	
 	private String calendarToString(Calendar calendar) {
 		String string = "";
-		string.concat(calendar.get(Calendar.DAY_OF_MONTH)+"");
-		string.concat("/");
-		string.concat(calendar.get(Calendar.MONTH)+"");
-		string.concat("/");
-		string.concat(calendar.get(Calendar.YEAR)+"");
-		string.concat(" a las ");
-		string.concat(calendar.get(Calendar.HOUR)+"");
-		string.concat(":");
-		string.concat(calendar.get(Calendar.MINUTE)+"");
-		string.concat(" ");
-		if(calendar.get(Calendar.AM_PM) == Calendar.AM) {
-			string.concat("AM");
+		string = string + calendar.get(Calendar.DAY_OF_MONTH);
+		string = string + "/";
+		string = string + calendar.get(Calendar.MONTH);
+		string = string + "/";
+		string = string + calendar.get(Calendar.YEAR);
+		string = string + " a las ";
+		string = string + calendar.get(Calendar.HOUR);
+		string = string + ":";
+		string = string + calendar.get(Calendar.MINUTE);
+		string = string + " ";
+		if (calendar.get(Calendar.AM_PM) == Calendar.AM) {
+			string = string + ("AM");
 		} else {
-			string.concat("PM");
+			string = string + ("PM");
 		}
 		return string;
 	}

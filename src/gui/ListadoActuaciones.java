@@ -13,25 +13,33 @@ public class ListadoActuaciones {
 	private Persistence _persistencia;
 	private Vector _vectorActuaciones;
 	private ListadoActuacionesScreen _screen;
-
-	public ListadoActuaciones(Proceso proceso) {
-		try {
-			_persistencia = new Persistence();
-			_vectorActuaciones = _persistencia.consultarActuaciones(proceso);
-		} catch (Exception e) {
-			e.printStackTrace();
+	
+	public ListadoActuaciones(Proceso proceso, long style, Vector actuaciones) {
+		if (proceso != null) {
+			try {
+				_persistencia = new Persistence();
+				_vectorActuaciones = _persistencia
+						.consultarActuaciones(proceso);
+			} catch (Exception e) {
+				Dialog.alert(e.toString());
+			}
+		} else {
+			_vectorActuaciones = actuaciones;
 		}
-
-		_screen = new ListadoActuacionesScreen(proceso);
+		_screen = new ListadoActuacionesScreen(proceso, style);
 		addActuaciones();
 	}
-	
-	public ListadoActuaciones(int style[]) {
-		
+
+	public ListadoActuaciones(Proceso proceso) {
+		this(proceso, 0, null);
 	}
 	
-	public ListadoActuaciones() {
-		_screen = new ListadoActuacionesScreen();
+	public ListadoActuaciones(Vector vector, long style) {
+		this(null, style, vector);
+	}
+	
+	public ListadoActuaciones(Vector vector) {
+		this(null, 0, vector);
 	}
 
 	public void setVectorActuaciones(Vector actuaciones) {

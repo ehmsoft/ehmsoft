@@ -12,49 +12,45 @@ import core.Proceso;
 
 public class ListadoActuacionesScreen extends MainScreen {
 
-	public static final int ON_CLICK_VER = 16;
-	public static final int ON_CLICK_SELECT = 32;
+	public static final int ON_CLICK_VER = 1;
+	public static final int ON_CLICK_SELECT = 2;
+	public static final int NO_NUEVO = 4;
+	public static final int SEARCH = 8;
 
 	private Object _selected;
 	private ListadoActuacionesLista _lista;
 	private Proceso _proceso;
 	private long _style;
 
-	public ListadoActuacionesScreen(Proceso proceso) {
-		super(MainScreen.VERTICAL_SCROLL | MainScreen.VERTICAL_SCROLLBAR);
-		_style = ON_CLICK_SELECT;
-		_proceso = proceso;
-		_lista = new ListadoActuacionesLista();
-		_lista.insert(0, "Nueva actuación");
-		add(_lista);
-	}
-
 	public ListadoActuacionesScreen(Proceso proceso, long style) {
 		super(MainScreen.VERTICAL_SCROLL | MainScreen.VERTICAL_SCROLLBAR);
 		_style = style;
 		_proceso = proceso;
-		_lista = new ListadoActuacionesLista(style);
-		_lista.insert(0, "Nueva actuación");
+		_lista = new ListadoActuacionesLista();
+
+		if ((_style & NO_NUEVO) != NO_NUEVO && _proceso != null) {
+			_lista.insert(0, "Nueva actuación");
+		}
+		if ((_style & SEARCH) == SEARCH) {
+			add(_lista.getKeywordField());
+		}
 		add(_lista);
 	}
 
 	public ListadoActuacionesScreen(long style) {
-		super(MainScreen.VERTICAL_SCROLL | MainScreen.VERTICAL_SCROLLBAR);
-		_style = style;
-		_lista = new ListadoActuacionesLista(style);
-		add(_lista);
+		this(null, style);
+	}
+	
+	public ListadoActuacionesScreen(Proceso proceso) {
+		this(proceso, 0);
 	}
 
 	public ListadoActuacionesScreen() {
-		super(MainScreen.VERTICAL_SCROLL | MainScreen.VERTICAL_SCROLLBAR);
-		_style = ON_CLICK_SELECT;
-		_lista = new ListadoActuacionesLista();
-		add(_lista);
+		this(null, 0);
 	}
 
 	protected boolean navigationClick(int status, int time) {
-		if (String.class.isInstance(_lista.get(_lista,
-				_lista.getSelectedIndex()))) {
+		if (String.class.isInstance(_lista.getSelectedElement())) {
 			onNew();
 			return true;
 		} else {
@@ -81,7 +77,7 @@ public class ListadoActuacionesScreen extends MainScreen {
 	}
 
 	private void onClickSelect() {
-		_selected = _lista.get(_lista, _lista.getSelectedIndex());
+		_selected = _lista.getSelectedElement();
 		UiApplication.getUiApplication().popScreen(getScreen());
 	}
 
@@ -100,18 +96,15 @@ public class ListadoActuacionesScreen extends MainScreen {
 	private final MenuItem menuVer = new MenuItem("Ver", 0, 0) {
 
 		public void run() {
-			int index = _lista.getSelectedIndex();
-			VerActuacion verActuacion = new VerActuacion(
-					(Actuacion) _lista.get(_lista, index));
-			UiApplication.getUiApplication().pushModalScreen(
-					verActuacion.getScreen());
+			Actuacion old = (Actuacion) _lista.getSelectedElement();
+			VerActuacion v = new VerActuacion(old);
+			UiApplication.getUiApplication().pushModalScreen(v.getScreen());
 			try {
-				verActuacion.actualizarActuacion();
-				_lista.delete(index);
-				_lista.insert(index, verActuacion.getActuacion());
-				_lista.setSelectedIndex(index);
+				v.actualizarActuacion();
+				Actuacion nw = v.getActuacion();
+				_lista.update(old, nw);
 			} catch (Exception e) {
-				_lista.delete(index);
+				_lista.remove(old);
 			}
 		}
 	};
@@ -125,23 +118,20 @@ public class ListadoActuacionesScreen extends MainScreen {
 				Persistence persistence = null;
 				try {
 					persistence = new Persistence();
+					persistence.borrarActuacion((Actuacion) _lista
+							.getSelectedElement());
 				} catch (Exception e) {
 					Dialog.alert(e.toString());
 				}
-				int index = _lista.getSelectedIndex();
-				try {
-					persistence.borrarActuacion((Actuacion) _lista.get(_lista,
-							index));
-				} catch (Exception e) {
-					Dialog.alert(e.toString());
-				}
-				_lista.delete(index);
+				int index = _lista.getIndex(_lista.getSelectedElement());
+				_lista.remove(index);
+				_lista.setSelectedIndex(index);
 			}
 		}
 	};
 
 	public void addActuacion(Object actuacion) {
-		_lista.insert(_lista.getSize(), actuacion);
+		_lista.insert(actuacion);
 	}
 
 	public Object getSelected() {
