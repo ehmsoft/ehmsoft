@@ -1,6 +1,7 @@
 package persistence;
 
 import java.util.Enumeration;
+
 import javax.microedition.io.file.FileSystemRegistry;
 import java.lang.Exception;
 import net.rim.device.api.database.*;
@@ -203,7 +204,7 @@ public class ConnectionManager {
 			//Crear Tabla Preferencias
 			st = d.createStatement("CREATE TABLE 'preferencias'("+
 					"'id_preferencia' INTEGER PRIMARY KEY,"+
-			"'valor' TEXT)");
+			"'valor' INTEGER)");
 			st.prepare();
 			st.execute();
 			st.close();
@@ -243,10 +244,23 @@ public class ConnectionManager {
             st.execute();
             st.close();
           //Insertar la versión de la base de datos Llave 999
-			st = d.createStatement("INSERT INTO 'preferencias' VALUES(999,"+"'0.2')");
+			st = d.createStatement("INSERT INTO 'preferencias' VALUES(999,2)");
 			st.prepare();
 			st.execute();
 			st.close();
+		//insertar preferencias de pantallas	
+			int[] pantallas = {Persistence.VER_PROCESO,Persistence.VER_PERSONA,Persistence.VER_JUZGADO,Persistence.VER_CITA,Persistence.VER_CATEGORIA,Persistence.VER_CAMPO,Persistence.VER_ACTUACION,Persistence.NUEVO_PROCESO,Persistence.NUEVO_JUZGADO,Persistence.NUEVO_CAMPO,Persistence.NUEVA_PERSONA,Persistence.NUEVA_CITA,Persistence.NUEVA_CATEGORIA,Persistence.NUEVA_ACTUACION,Persistence.LISTADO_PROCESOS,Persistence.LISTADO_PERSONAS,Persistence.LISTADO_JUZGADOS,Persistence.LISTADO_CATEGORIAS,Persistence.LISTADO_CAMPOS,Persistence.LISTADO_ACTUACIONES,Persistence.LISTA_LISTAS};
+			for(int i = 0; i < pantallas.length; i++){
+				st = d.createStatement("INSERT INTO 'preferencias' (id_preferencia,valor) VALUES(?,?)");
+				st.prepare();
+				st.bind(1, (i+1));
+				st.bind(2, pantallas[i]);
+				st.execute();
+				st.close();
+				
+			}
+			
+			
 		}catch(Exception e){
 			throw e;
 		}finally{

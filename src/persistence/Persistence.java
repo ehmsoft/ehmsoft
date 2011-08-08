@@ -16,6 +16,31 @@ import ehmsoft.Guardado;
 
 public class Persistence implements Cargado, Guardado {
 	private ConnectionManager connMgr;
+	public static final int LISTADO_ACTUACIONES = 0;
+	public static final int LISTADO_CAMPOS = 0;
+	public static final int LISTADO_CATEGORIAS = 0;
+	public static final int LISTADO_JUZGADOS = 0;
+	public static final int LISTADO_PERSONAS = 0;
+	public static final int LISTADO_PROCESOS = 0;
+	public static final int LISTA_LISTAS = 0;
+	public static final int NUEVA_ACTUACION = 0;
+	public static final int NUEVA_CATEGORIA = 0;
+	public static final int NUEVA_CITA = 0;
+	public static final int NUEVA_PERSONA = 0;
+	public static final int NUEVO_CAMPO = 0;
+	public static final int NUEVO_JUZGADO = 0;
+	public static final int NUEVO_PROCESO = 0;
+	public static final int VER_ACTUACION = 0;
+	public static final int VER_CAMPO = 0;
+	public static final int VER_CATEGORIA = 0;
+	public static final int VER_CITA = 0;
+	public static final int VER_JUZGADO = 0;
+	public static final int VER_PERSONA = 0;
+	public static final int VER_PROCESO = 0;
+	
+	
+	
+	
 
 	public Persistence() throws Exception {
 		connMgr = new ConnectionManager();
@@ -107,6 +132,7 @@ public class Persistence implements Cargado, Guardado {
 		Database d = null;
 		Statement stDelPersona1;
 		Statement stDelPersona2;
+		Statement stDelPersona3;
 		try {
 			connMgr.prepararBD();
 			d = DatabaseFactory.open(connMgr.getDbLocation());
@@ -115,24 +141,34 @@ public class Persistence implements Cargado, Guardado {
 						.createStatement("DELETE FROM demandantes WHERE id_demandante = ? ");
 				stDelPersona2 = d
 						.createStatement("UPDATE procesos SET id_demandante = 1 WHERE id_demandante = ?");
+				stDelPersona3 = d
+				.createStatement("UPDATE pantillas SET id_demandante = 1 WHERE id_demandante = ?");
 
+				
 			} else if (persona.getTipo() == 2) {
 				stDelPersona1 = d
 						.createStatement("DELETE FROM demandados WHERE id_demandado = ? ");
 				stDelPersona2 = d
 						.createStatement("UPDATE procesos SET id_demandado = 1 WHERE id_demandado = ?");
+				stDelPersona3 = d
+				.createStatement("UPDATE plantillas SET id_demandado = 1 WHERE id_demandado = ?");
+	
 			} else {
 				throw new Exception("Tipo persona invalido");
 			}
 
 			stDelPersona1.prepare();
 			stDelPersona2.prepare();
+			stDelPersona3.prepare();
 			stDelPersona1.bind(1, persona.getId_persona());
 			stDelPersona2.bind(1, persona.getId_persona());
+			stDelPersona3.bind(1, persona.getId_persona());
 			stDelPersona1.execute();
 			stDelPersona2.execute();
+			stDelPersona3.execute();
 			stDelPersona1.close();
 			stDelPersona2.close();
+			stDelPersona3.close();
 
 		} catch (Exception e) {
 			throw e;
@@ -210,18 +246,25 @@ public class Persistence implements Cargado, Guardado {
 					.createStatement("UPDATE procesos SET id_juzgado = 1 WHERE id_juzgado = ?");
 			Statement stDelJuzgado3 = d
 					.createStatement("UPDATE actuaciones SET id_juzgado = 1 WHERE id_juzgado = ?");
+			Statement stDelJuzgado4 = d
+			.createStatement("UPDATE plantillas SET id_juzgado = 1 WHERE id_juzgado = ?");
+	
 			stDelJuzgado1.prepare();
 			stDelJuzgado2.prepare();
 			stDelJuzgado3.prepare();
+			stDelJuzgado4.prepare();
 			stDelJuzgado1.bind(1, juzgado.getId_juzgado());
 			stDelJuzgado2.bind(1, juzgado.getId_juzgado());
 			stDelJuzgado3.bind(1, juzgado.getId_juzgado());
+			stDelJuzgado4.bind(1, juzgado.getId_juzgado());
 			stDelJuzgado1.execute();
 			stDelJuzgado2.execute();
 			stDelJuzgado3.execute();
+			stDelJuzgado4.execute();
 			stDelJuzgado1.close();
 			stDelJuzgado2.close();
 			stDelJuzgado3.close();
+			stDelJuzgado4.close();
 		} catch (Exception e) {
 			throw e;
 		} finally {
@@ -450,7 +493,6 @@ public class Persistence implements Cargado, Guardado {
 	}
 
 	public void borrarAtributo(CampoPersonalizado campo) throws Exception {
-		// TODO Auto-generated method stub
 		Database d = null;
 		try {
 			connMgr.prepararBD();
@@ -708,14 +750,21 @@ public class Persistence implements Cargado, Guardado {
 						.createStatement("DELETE FROM categorias WHERE id_categoria = ?");
 				Statement stDelCategoria2 = d
 						.createStatement("UPDATE procesos SET id_categoria = 1 WHERE id_categoria = ?");
+				Statement stDelCategoria3 = d
+					.createStatement("UPDATE plantillas SET id_categoria = 1 WHERE id_categoria = ?");
+		
 				stDelCategoria1.prepare();
 				stDelCategoria2.prepare();
+				stDelCategoria3.prepare();
 				stDelCategoria1.bind(1, categoria.getId_categoria());
 				stDelCategoria2.bind(1, categoria.getId_categoria());
+				stDelCategoria3.bind(1, categoria.getId_categoria());
 				stDelCategoria1.execute();
 				stDelCategoria2.execute();
+				stDelCategoria3.execute();
 				stDelCategoria1.close();
 				stDelCategoria2.close();
+				stDelCategoria3.close();
 			} catch (Exception e) {
 				throw e;
 			} finally {
@@ -948,6 +997,53 @@ try {
 		d.close();
 	}
 }
+
+}
+
+public void actualizarPreferencia(int id_preferencia, long valor)
+throws Exception {
+	Database d = null;
+	try {
+		connMgr.prepararBD();
+		d = DatabaseFactory.open(connMgr.getDbLocation());
+		Statement stPreferencias = d
+				.createStatement("UPDATE preferencias SET valor = ? WHERE id_preferencia = ?");
+		stPreferencias.prepare();
+		stPreferencias.bind(1, valor);
+		stPreferencias.bind(2, id_preferencia);
+		stPreferencias.execute();
+		stPreferencias.close();
+		
+	} catch (Exception e) {
+		throw e;
+	} finally {
+		if (d != null) {
+			d.close();
+		}
+	}
+
+}
+
+public void borrarPreferencia(int id_preferencia) throws Exception {
+// TODO Auto-generated method stub
+	Database d = null;
+	try {
+		connMgr.prepararBD();
+		d = DatabaseFactory.open(connMgr.getDbLocation());
+		Statement stPreferencias = d
+				.createStatement("UPDATE preferencias SET valor = 0 WHERE id_preferencia = ?");
+		stPreferencias.prepare();
+		stPreferencias.bind(1, id_preferencia);
+		stPreferencias.execute();
+		stPreferencias.close();
+		
+	} catch (Exception e) {
+		throw e;
+	} finally {
+		if (d != null) {
+			d.close();
+		}
+	}
 
 }
 	public Vector consultarDemandantes() throws Exception {// Devuelve una
@@ -1819,6 +1915,33 @@ try {
 		}
 		return campo;
 	}
+	public long consultarPreferencia(int id_preferencia) throws Exception {
+		long valor = 0;
+		Database d = null;
+		try {
+			connMgr.prepararBD();
+			d = DatabaseFactory.open(connMgr.getDbLocation());
+			Statement st = d
+					.createStatement("SELECT valor FROM preferencias WHERE id_preferencia = ? ");
+			st.prepare();
+			st.bind(1, id_preferencia);
+			Cursor cursor = st.getCursor();
+			if (cursor.next()) {
+				Row row = cursor.getRow();
+				valor = row.getLong(0);
+				
+			}
+			st.close();
+			cursor.close();
+		} catch (Exception e) {
+			throw e;
+		} finally {
+			if (d != null) {
+				d.close();
+			}
+		}
+		return valor;	
+	}
 	private Calendar stringToCalendar(String fecha) {
 		Calendar calendar_return = Calendar.getInstance();
 		calendar_return.set(Calendar.YEAR,
@@ -1863,4 +1986,6 @@ try {
 				+ hora + ":" + minuto;
 		return nuevafecha;
 	}
+
+	
 }
