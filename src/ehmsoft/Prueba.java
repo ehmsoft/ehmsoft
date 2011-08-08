@@ -159,7 +159,7 @@ public class Prueba extends MainScreen {
 	private FieldChangeListener listenerListadoDemandantes = new FieldChangeListener() {
 
 		public void fieldChanged(Field field, int context) {
-			ListadoPersonas listado = new ListadoPersonas(1,ListadoPersonasLista.SHOW_NOMBRE | ListadoPersonasLista.SHOW_TELEFONO | ListadoPersonasLista.SHOW_ID);
+			ListadoPersonas listado = new ListadoPersonas(1);
 			UiApplication.getUiApplication().pushModalScreen(
 					listado.getScreen());
 			listado.getSelected();

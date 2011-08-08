@@ -67,7 +67,7 @@ public class ListadoActuacionesLista extends ListaListas implements KeywordProvi
 		return 0;
 	}
 	
-	private String calendarToString(Calendar calendar) {
+	protected String calendarToString(Calendar calendar) {
 		String string = "";
 		string = string + calendar.get(Calendar.DAY_OF_MONTH);
 		string = string + "/";

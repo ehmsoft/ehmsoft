@@ -1,5 +1,7 @@
 package gui;
 
+import java.util.Vector;
+
 import net.rim.device.api.collection.ReadableList;
 import net.rim.device.api.collection.util.UnsortedReadableList;
 import net.rim.device.api.ui.Color;
@@ -11,12 +13,16 @@ import net.rim.device.api.ui.component.ListField;
 import net.rim.device.api.ui.component.ListFieldCallback;
 
 abstract class ListaListas extends KeywordFilterField {
-	Unsorted _u;
+	private Unsorted _u;
 
 	public ListaListas() {
 		super();
 		setCallback(new Callback());
 		_u = new Unsorted();
+	}
+	
+	public void loadFrom(Vector vector) {
+		_u.loadFrom(vector.elements());
 	}
 
 	public void setSourceList(KeywordProvider helper) {

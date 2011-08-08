@@ -13,7 +13,7 @@ public class CustomButtonField extends Field {
 		super(style);
 		_onPicture = on;
 		_offPicture = off;
-		_currentPicture = _offPicture;
+		_currentPicture = _onPicture;
 		if(arr) {
 			_arrow = true;
 		}
@@ -39,7 +39,7 @@ public class CustomButtonField extends Field {
 		if(_big) {
 			return 200;
 		} else if(_arrow) {
-			return 16;
+			return 32;
 		} else {
 			return 50;
 		}
@@ -49,14 +49,14 @@ public class CustomButtonField extends Field {
 		if(_big) {
 			return 200;
 		} else if(_arrow) {
-			return 16;
+			return 32;
 		} else {
 			return 118;
 		}
 	}
 	
 	protected void onFocus(int direction) {
-		_currentPicture = _onPicture;
+		_currentPicture = _offPicture;
 		if(_arrow) {
 			this.fieldChangeNotify(150);
 		}
@@ -64,7 +64,7 @@ public class CustomButtonField extends Field {
 	}
 	
 	protected void onUnfocus() {
-		_currentPicture = _offPicture;
+		_currentPicture = _onPicture;
 		invalidate();
 	}
 	
