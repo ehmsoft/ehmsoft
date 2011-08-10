@@ -33,7 +33,7 @@ public class ListadoActuacionesLista extends ListaListas implements KeywordProvi
 			graphics.drawText(r.getAt(index).toString(), 0, y);
 		} else {
 			graphics.drawText(r.getAt(index).toString(), 0, y);
-			graphics.drawText(calendarToString(((Actuacion)r.getAt(index)).getFechaProxima()), 30, y + getFont().getHeight());
+			graphics.drawText(calendarToString(((Actuacion)r.getAt(index)).getFechaProxima()), 15, y + getFont().getHeight());
 		}
 		
 	}
@@ -67,14 +67,27 @@ public class ListadoActuacionesLista extends ListaListas implements KeywordProvi
 		return 0;
 	}
 	
-	protected String calendarToString(Calendar calendar) {
+	static public String calendarToString(Calendar calendar) {
 		String string = "";
+		if(calendar.get(Calendar.DAY_OF_MONTH) < 10) {
+			string = string + "0";
+		}
 		string = string + calendar.get(Calendar.DAY_OF_MONTH);
 		string = string + "/";
-		string = string + calendar.get(Calendar.MONTH);
+		if((calendar.get(Calendar.MONTH) + 1) < 10) {
+			string = string + "0";
+		}
+		string = string + (calendar.get(Calendar.MONTH) + 1);
 		string = string + "/";
 		string = string + calendar.get(Calendar.YEAR);
-		string = string + " a las ";
+		if(calendar.get(Calendar.HOUR) == 1) {
+			string = string + " a la ";
+		} else {
+			string = string + " a las ";
+		}
+		if(calendar.get(Calendar.HOUR) < 10) {
+			string = string + "0";
+		}
 		string = string + calendar.get(Calendar.HOUR);
 		string = string + ":";
 		string = string + calendar.get(Calendar.MINUTE);

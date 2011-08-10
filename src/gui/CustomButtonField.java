@@ -39,7 +39,7 @@ public class CustomButtonField extends Field {
 		if(_big) {
 			return 200;
 		} else if(_arrow) {
-			return 32;
+			return 16;
 		} else {
 			return 50;
 		}
