@@ -34,7 +34,7 @@ public class NuevaPersonaScreen extends FondoNormal {
 		_txtNombre = new BasicEditField(BasicEditField.NO_NEWLINE);
 		_txtNombre.setLabel("Nombre: ");
 		_txtCedula = new BasicEditField(BasicEditField.NO_NEWLINE);
-		_txtCedula.setLabel("Id: ");
+		_txtCedula.setLabel("Cédula: ");
 		_txtDireccion = new BasicEditField(BasicEditField.NO_NEWLINE);
 		_txtDireccion.setLabel("Dirección: ");
 		_txtNotas = new BasicEditField();
