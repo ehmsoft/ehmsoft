@@ -45,14 +45,14 @@ public abstract class CustomManager extends Manager{
 		}
 	};
 
-	void rightUpdate() {
+	protected void rightUpdate() {
 	}
 	
 	protected void setTitle(String title) {
 		((LabelField)_title.getField(0)).setText(title);
 	}
 	
-	protected void setLista(ListaListas lista) {
+	protected void setLista(ListaListas lista, int rows) {
 		_lista = lista;
 		Font t = _lista.getFont();
 		int s = t.getStyle();
@@ -64,7 +64,9 @@ public abstract class CustomManager extends Manager{
 				r));
 
 		_lista.setFont(t);
-		_lista.setRowHeight(_lista.getFont().getHeight() * 2);
+		_lista.setRowHeight(_lista.getFont().getHeight() * rows);
+		_lista.setFocusListener(listenerLista);
+		_lista.setSelectedIndex(0);
 		_manager = new ListadoManager(_lista);
 		_manager.setBorder(border);
 	}

@@ -30,7 +30,7 @@ public class ActuacionesManager extends CustomManager {
 		} catch (Exception e) {
 			Dialog.alert(e.toString());
 		}
-		setLista(_lista);
+		setLista(_lista,2);
 
 		HorizontalFieldManager juzgado = new HorizontalFieldManager();
 		HorizontalFieldManager fecha = new HorizontalFieldManager();
@@ -70,14 +70,12 @@ public class ActuacionesManager extends CustomManager {
 		_vertical.add(new SeparatorField());
 		_vertical.add(fechaP);
 
-		_lista.setFocusListener(listenerLista);
-		_lista.setSelectedIndex(0);
 		add(_manager);
 		add(_title);
 		add(_vertical);
 	}
 
-	void rightUpdate() {
+	protected void rightUpdate() {
 		try {
 			Actuacion a = (Actuacion) _lista.getSelectedElement();
 			if (a == null) {
