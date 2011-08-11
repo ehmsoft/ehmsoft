@@ -33,7 +33,7 @@ public class ListadoActuacionesLista extends ListaListas implements KeywordProvi
 			graphics.drawText(r.getAt(index).toString(), 0, y);
 		} else {
 			graphics.drawText(r.getAt(index).toString(), 0, y);
-			graphics.drawText(calendarToString(((Actuacion)r.getAt(index)).getFechaProxima()), 15, y + getFont().getHeight());
+			graphics.drawText(calendarToString(((Actuacion)r.getAt(index)).getFechaProxima(), false), 15, y + getFont().getHeight());
 		}
 		
 	}
@@ -67,25 +67,29 @@ public class ListadoActuacionesLista extends ListaListas implements KeywordProvi
 		return 0;
 	}
 	
-	static public String calendarToString(Calendar calendar) {
+	static public String calendarToString(Calendar calendar, boolean alas) {
 		String string = "";
-		if(calendar.get(Calendar.DAY_OF_MONTH) < 10) {
+		if (calendar.get(Calendar.DAY_OF_MONTH) < 10) {
 			string = string + "0";
 		}
 		string = string + calendar.get(Calendar.DAY_OF_MONTH);
 		string = string + "/";
-		if((calendar.get(Calendar.MONTH) + 1) < 10) {
+		if ((calendar.get(Calendar.MONTH) + 1) < 10) {
 			string = string + "0";
 		}
 		string = string + (calendar.get(Calendar.MONTH) + 1);
 		string = string + "/";
 		string = string + calendar.get(Calendar.YEAR);
-		if(calendar.get(Calendar.HOUR) == 1) {
-			string = string + " a la ";
+		if (alas) {
+			if (calendar.get(Calendar.HOUR) == 1) {
+				string = string + " a la ";
+			} else {
+				string = string + " a las ";
+			}
 		} else {
-			string = string + " a las ";
+			string = string + " - ";
 		}
-		if(calendar.get(Calendar.HOUR) < 10) {
+		if (calendar.get(Calendar.HOUR) < 10) {
 			string = string + "0";
 		}
 		string = string + calendar.get(Calendar.HOUR);
