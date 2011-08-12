@@ -29,6 +29,7 @@ public class ListadoPersonasPopUp extends PopupScreen {
 	public ListadoPersonasPopUp(int tipo, long style) {
 		super(new VerticalFieldManager());
 		_title = new LabelField("Personas", FIELD_HCENTER);
+		_tipo = tipo;
 		_style = style;
 		_lista = new ListadoPersonasLista();
 
