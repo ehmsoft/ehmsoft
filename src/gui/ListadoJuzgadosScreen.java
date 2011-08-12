@@ -17,20 +17,17 @@ public class ListadoJuzgadosScreen extends MainScreen {
 
 	private Object _selected;
 	private ListadoJuzgadosLista _lista;
-	long _style;
+	private long _style;
 
 	public ListadoJuzgadosScreen(long style) {
 		super(MainScreen.VERTICAL_SCROLL | MainScreen.VERTICAL_SCROLLBAR);
 		_style = style;
-		setTitle("Listado de juzgados");
-
 		_lista = new ListadoJuzgadosLista();
-		_lista.setLabel("Buscar: ");
-		
+
 		if ((_style & NO_NUEVO) != NO_NUEVO) {
-			_lista.insert(0, "Nuevo juzgado");
+			_lista.insert(0, "Crear nuevo juzgado");
 		}
-		if ((_style & SEARCH) == SEARCH) {
+		if((_style & SEARCH) == SEARCH) {
 			add(_lista.getKeywordField());
 		}
 		add(_lista);
@@ -125,7 +122,7 @@ public class ListadoJuzgadosScreen extends MainScreen {
 	};
 
 	public void addJuzgado(Object juzgado) {
-		_lista.insert(_lista.getSize(), juzgado);
+		_lista.insert(juzgado);
 	}
 
 	public Object getSelected() {
