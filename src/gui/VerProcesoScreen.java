@@ -6,13 +6,16 @@ import java.util.Enumeration;
 import java.util.Vector;
 
 import net.rim.device.api.ui.Field;
+import net.rim.device.api.ui.Graphics;
 import net.rim.device.api.ui.MenuItem;
 import net.rim.device.api.ui.UiApplication;
 import net.rim.device.api.ui.component.DateField;
 import net.rim.device.api.ui.component.Dialog;
+import net.rim.device.api.ui.component.LabelField;
 import net.rim.device.api.ui.component.Menu;
 import net.rim.device.api.ui.component.NumericChoiceField;
 import net.rim.device.api.ui.component.ObjectChoiceField;
+import net.rim.device.api.ui.container.HorizontalFieldManager;
 import core.Actuacion;
 import core.CampoPersonalizado;
 import core.Categoria;
@@ -22,10 +25,10 @@ import core.Proceso;
 
 public class VerProcesoScreen extends FondoNormal {
 	
-	private EditableTextField _txtDemandante;
-	private EditableTextField _txtDemandado;
+	private LabelField _lblDemandante;
+	private LabelField _lblDemandado;
 	private DateField _dfFecha;
-	private EditableTextField _txtJuzgado;
+	private LabelField _lblJuzgado;
 	private EditableTextField _txtRadicado;
 	private EditableTextField _txtRadicadoUnico;
 	private ObjectChoiceField _ofActuaciones;
@@ -56,17 +59,39 @@ public class VerProcesoScreen extends FondoNormal {
 		_actuaciones = proceso.getActuaciones();
 		_categoria = proceso.getCategoria();
 		proceso.getCampos();
+		
+		HorizontalFieldManager demandante = new HorizontalFieldManager();
+		_lblDemandante = new LabelField(_demandante.getNombre(), Field.FOCUSABLE){
+			protected void paint(Graphics g) {
+				g.setColor(0x00757575);
+				super.paint(g);
+			}
+		};
+		demandante.add(new LabelField("Demandante: "));
+		demandante.add(_lblDemandante);
+		add(demandante);
+		
+		HorizontalFieldManager demandado = new HorizontalFieldManager();
+		_lblDemandado = new LabelField(_demandado.getNombre(), Field.FOCUSABLE){
+			protected void paint(Graphics g) {
+				g.setColor(0x00757575);
+				super.paint(g);
+			}
+		};
+		demandado.add(new LabelField("Demandado: "));
+		demandado.add(_lblDemandado);
+		add(demandado);
 
-		_txtDemandante = new EditableTextField("Demandante: ",
-				_demandante.getNombre());
-		add(_txtDemandante);
-
-		_txtDemandado = new EditableTextField("Demandado: ",
-				_demandado.getNombre());
-		add(_txtDemandado);
-
-		_txtJuzgado = new EditableTextField("Juzgado: ", _juzgado.getNombre());
-		add(_txtJuzgado);
+		HorizontalFieldManager juzgado = new HorizontalFieldManager();
+		_lblJuzgado = new LabelField(_juzgado.getNombre(), Field.FOCUSABLE){
+			protected void paint(Graphics g) {
+				g.setColor(0x00757575);
+				super.paint(g);
+			}
+		};
+		juzgado.add(new LabelField("Juzgado: "));
+		juzgado.add(_lblJuzgado);
+		add(juzgado);
 
 		_dfFecha = new DateField("Fecha: ", _proceso.getFecha().getTime()
 				.getTime(), DateField.DATE_TIME);
@@ -339,7 +364,7 @@ public class VerProcesoScreen extends FondoNormal {
 
 	protected void makeMenu(Menu menu, int instance) {
 		Field focus = UiApplication.getUiApplication().getActiveScreen()
-				.getFieldWithFocus();
+				.getLeafFieldWithFocus();
 		if (focus.equals(_txtCategoria)) {
 			menu.add(menuCambiarCategoria);
 			menu.addSeparator();
@@ -349,7 +374,7 @@ public class VerProcesoScreen extends FondoNormal {
 		menu.add(menuAddActuacion);
 		menu.addSeparator();
 
-		if (focus.equals(_txtDemandante)) {
+		if (focus.equals(_lblDemandante)) {
 			if (_demandante != null) {
 				if (!_demandante.getId_persona().equals("1")) {
 					menu.add(menuEditar);
@@ -357,7 +382,7 @@ public class VerProcesoScreen extends FondoNormal {
 			}
 		}
 
-		else if (focus.equals(_txtDemandado)) {
+		else if (focus.equals(_lblDemandado)) {
 			if (_demandado != null) {
 				if (!_demandado.getId_persona().equals("1")) {
 					menu.add(menuEditar);
@@ -365,7 +390,7 @@ public class VerProcesoScreen extends FondoNormal {
 			}
 		}
 
-		else if (focus.equals(_txtDemandado)) {
+		else if (focus.equals(_lblDemandado)) {
 			if (_juzgado != null) {
 				if (!_juzgado.getId_juzgado().equals("1")) {
 					menu.add(menuEditar);
@@ -379,8 +404,8 @@ public class VerProcesoScreen extends FondoNormal {
 		
 		menu.add(menuEditarTodo);
 		menu.addSeparator();
-		if (focus.equals(_txtDemandante) || focus.equals(_txtDemandado)
-				|| focus.equals(_txtJuzgado)) {
+		if (focus.equals(_lblDemandante) || focus.equals(_lblDemandado)
+				|| focus.equals(_lblJuzgado)) {
 			menu.add(menuCambiar);
 			menu.add(menuEliminar);
 			menu.addSeparator();
@@ -435,26 +460,26 @@ public class VerProcesoScreen extends FondoNormal {
 
 			Field f = UiApplication.getUiApplication().getActiveScreen()
 					.getFieldWithFocus();
-			if (f.equals(_txtDemandante)) {
+			if (f.equals(_lblDemandante)) {
 				int sel = Dialog.ask("Se eliminará el demandante del proceso",
 						ask, 1);
 				if (sel == 0) {
 					_demandante = null;
-					_txtDemandante.setText("vacio");
+					_lblDemandante.setText("vacio");
 				}
-			} else if (f.equals(_txtDemandado)) {
+			} else if (f.equals(_lblDemandado)) {
 				int sel = Dialog.ask("Se eliminará el demandado del proceso",
 						ask, 1);
 				if (sel == 0) {
 					_demandado = null;
-					_txtDemandado.setText("vacio");
+					_lblDemandado.setText("vacio");
 				}
-			} else if (f.equals(_txtJuzgado)) {
+			} else if (f.equals(_lblJuzgado)) {
 				int sel = Dialog.ask("Se eliminará el juzgado del proceso",
 						ask, 1);
 				if (sel == 0) {
 					_juzgado = null;
-					_txtJuzgado.setText("vacio");
+					_lblJuzgado.setText("vacio");
 				}
 			}
 		}
@@ -493,36 +518,36 @@ public class VerProcesoScreen extends FondoNormal {
 
 		public void run() {
 			Field f = getFieldWithFocus();
-			if (f.equals(_txtDemandante)) {
+			if (f.equals(_lblDemandante)) {
 				VerPersona verPersona = new VerPersona(_demandante);
 				UiApplication.getUiApplication().pushModalScreen(
 						verPersona.getScreen());
 				verPersona.actualizarPersona();
 				_demandante = verPersona.getPersona();
-				_txtDemandante.setText(_demandante.getNombre());
-				_txtDemandante.setFocus();
-			} else if (f.equals(_txtDemandado)) {
+				_lblDemandante.setText(_demandante.getNombre());
+				_lblDemandante.setFocus();
+			} else if (f.equals(_lblDemandado)) {
 				VerPersona verPersona = new VerPersona(_demandado);
 				UiApplication.getUiApplication().pushModalScreen(
 						verPersona.getScreen());
 				verPersona.actualizarPersona();
 				_demandado = verPersona.getPersona();
-				_txtDemandado.setText(_demandado.getNombre());
-				_txtDemandado.setFocus();
+				_lblDemandado.setText(_demandado.getNombre());
+				_lblDemandado.setFocus();
 			}
 
-			else if (f.equals(_txtJuzgado)) {
+			else if (f.equals(_lblJuzgado)) {
 				VerJuzgado verJuzgado = new VerJuzgado(_juzgado);
 				UiApplication.getUiApplication().pushModalScreen(
 						verJuzgado.getScreen());
 				try {
 					verJuzgado.actualizarJuzgado();
 					_juzgado = verJuzgado.getJuzgado();
-					_txtJuzgado.setText(_juzgado.getNombre());
+					_lblJuzgado.setText(_juzgado.getNombre());
 				} catch (NullPointerException e) {
 					_juzgado = null;
-					_txtJuzgado.setText("vacio");
-					_txtJuzgado.setFocus();
+					_lblJuzgado.setText("vacio");
+					_lblJuzgado.setFocus();
 				}
 			}
 
@@ -615,36 +640,36 @@ public class VerProcesoScreen extends FondoNormal {
 	private final MenuItem menuCambiar = new MenuItem("Cambiar", 0, 0) {
 
 		public void run() {
-			Field f = getFieldWithFocus();
-			if (f.equals(_txtDemandante)) {
+			Field f = getLeafFieldWithFocus();
+			if (f.equals(_lblDemandante)) {
 				ListadoPersonas l = new ListadoPersonas(1);
 				UiApplication.getUiApplication().pushModalScreen(l.getScreen());
 				try {
 					_demandante = l.getSelected();
-					_txtDemandante.setText(_demandante.getNombre());
-					_txtDemandante.setFocus();
+					_lblDemandante.setText(_demandante.getNombre());
+					_lblDemandante.setFocus();
 				} catch (NullPointerException e) {
 				}
 			}
 
-			if (f.equals(_txtDemandado)) {
+			if (f.equals(_lblDemandado)) {
 				ListadoPersonas l = new ListadoPersonas(2);
 				UiApplication.getUiApplication().pushModalScreen(l.getScreen());
 				try {
 					_demandado = l.getSelected();
-					_txtDemandado.setText(_demandado.getNombre());
-					_txtDemandado.setFocus();
+					_lblDemandado.setText(_demandado.getNombre());
+					_lblDemandado.setFocus();
 				} catch (NullPointerException e) {
 				}
 			}
 
-			if (f.equals(_txtJuzgado)) {
+			if (f.equals(_lblJuzgado)) {
 				ListadoJuzgados l = new ListadoJuzgados();
 				UiApplication.getUiApplication().pushModalScreen(l.getScreen());
 				try {
 					_juzgado = l.getSelected();
-					_txtJuzgado.setText(_juzgado.getNombre());
-					_txtJuzgado.setFocus();
+					_lblJuzgado.setText(_juzgado.getNombre());
+					_lblJuzgado.setFocus();
 				} catch (NullPointerException e) {
 				}
 			}
