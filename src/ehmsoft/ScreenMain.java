@@ -1,18 +1,25 @@
 package ehmsoft;
 
-import persistence.Persistence;
 import gui.ActuacionesManager;
-import gui.CustomButtonField;
 import gui.CustomFieldManager;
 import gui.ListaCircular;
-import gui.ListadoActuacionesLista;
+import gui.ListadoCampos;
+import gui.ListadoCategorias;
+import gui.ListadoJuzgados;
+import gui.ListadoPersonas;
+import gui.ListadoPersonasScreen;
+import gui.ListadoProcesos;
 import gui.PersonasManager;
-import net.rim.device.api.system.Bitmap;
-import net.rim.device.api.system.Display;
-import net.rim.device.api.ui.component.BitmapField;
-import net.rim.device.api.ui.component.Dialog;
-import net.rim.device.api.ui.container.HorizontalFieldManager;
+import net.rim.device.api.system.KeyListener;
+import net.rim.device.api.ui.MenuItem;
+import net.rim.device.api.ui.UiApplication;
+import net.rim.device.api.ui.component.LabelField;
+import net.rim.device.api.ui.component.Menu;
+import net.rim.device.api.ui.component.ObjectListField;
+import net.rim.device.api.ui.component.SeparatorField;
 import net.rim.device.api.ui.container.MainScreen;
+import net.rim.device.api.ui.container.PopupScreen;
+import net.rim.device.api.ui.container.VerticalFieldManager;
 
 /**
  * A class extending the MainScreen class, which provides default standard
@@ -22,9 +29,7 @@ public class ScreenMain extends MainScreen {
 	/**
 	 * Creates a new screenMain object
 	 */
-	CustomFieldManager _middle;
-	HorizontalFieldManager _bottom;
-	
+	CustomFieldManager _middle;	
 	
 	public ScreenMain() {
 		super(MainScreen.VERTICAL_SCROLL | MainScreen.VERTICAL_SCROLLBAR);
@@ -39,20 +44,99 @@ public class ScreenMain extends MainScreen {
 		
 		_middle = new CustomFieldManager(l);
 		add(_middle);
-		
-		_bottom = new HorizontalFieldManager();
-		Bitmap bm = new Bitmap((int)(Display.getHeight() * 0.133333333), (int)(Display.getHeight() * 0.133333333));
-		bm = Bitmap.getBitmapResource("big.png");
-		_bottom.add(new BitmapField(bm));
-		_bottom.add(new BitmapField(bm));
-		_bottom.add(new BitmapField(bm));
-		_bottom.add(new BitmapField(bm));
-		_bottom.add(new BitmapField(bm));
-		_bottom.add(new BitmapField(bm));
-		_bottom.add(new BitmapField(bm));
-		_bottom.add(new BitmapField(bm));
-		_bottom.add(new BitmapField(bm));
-		_bottom.add(new BitmapField(bm));
-		add(_bottom);
 	}
+
+	protected void makeMenu(Menu menu, int instance) {
+		menu.add(menuListas);
+	}
+	
+	private final MenuItem menuListas = new MenuItem("Listado",0, 0) {
+		
+		public void run() {
+			UiApplication.getUiApplication().pushModalScreen(new Listados());
+		}
+	};
+}
+
+class Listados extends PopupScreen {
+	
+	private ObjectListField _lista;
+	
+	public Listados() {
+		super(new VerticalFieldManager());
+		add(new LabelField("Seleccione un listado", FIELD_HCENTER));
+		add(new SeparatorField());
+		
+		_lista = new ObjectListField();
+		
+		Object[] o = {"Demandantes", "Demandados", "Juzgados","Campos personalizados", 
+				"Categorías", "Procesos"};
+		
+		_lista.set(o);
+		add(_lista);
+		addKeyListener(new ListenerKey());
+	}
+	
+	
+	
+	protected boolean navigationClick(int arg0, int arg1) {
+		String s = (String)_lista.get(_lista,_lista.getSelectedIndex());
+		if(s.equals("Demandantes")) {
+			UiApplication.getUiApplication().popScreen(getScreen());
+			ListadoPersonas l = new ListadoPersonas(1, ListadoPersonasScreen.ON_CLICK_VER | ListadoPersonasScreen.SEARCH);
+			UiApplication.getUiApplication().pushModalScreen(l.getScreen());
+		} else if (s.equals("Demandados")) {
+			UiApplication.getUiApplication().popScreen(getScreen());
+			ListadoPersonas l = new ListadoPersonas(2, ListadoPersonasScreen.ON_CLICK_VER);
+			UiApplication.getUiApplication().pushModalScreen(l.getScreen());
+		} else if (s.equals("Juzgados")) {
+			UiApplication.getUiApplication().popScreen(getScreen());
+			ListadoJuzgados l = new ListadoJuzgados();
+			UiApplication.getUiApplication().pushModalScreen(l.getScreen());
+		} else if (s.equals("Campos personalizados")) {
+			UiApplication.getUiApplication().popScreen(getScreen());
+			ListadoCampos l = new ListadoCampos();
+			UiApplication.getUiApplication().pushModalScreen(l.getScreen());
+		} else if (s.equals("Categorias")) {
+			UiApplication.getUiApplication().popScreen(getScreen());
+			ListadoCategorias l = new ListadoCategorias();
+			UiApplication.getUiApplication().pushModalScreen(l.getScreen());
+		} else if (s.equals("Procesos")) {
+			UiApplication.getUiApplication().popScreen(getScreen());
+			ListadoProcesos l = new ListadoProcesos();
+			UiApplication.getUiApplication().pushModalScreen(l.getScreen());
+		}
+		return super.navigationClick(arg0, arg1);
+	}
+
+
+
+	public class ListenerKey implements KeyListener
+	 {    
+	     public boolean keyChar( char key, int status, int time ) 
+	     {
+	         return false;
+	     }
+	     
+		public boolean keyDown(int keycode, int time) {
+			if (keycode == 1769472) {
+				UiApplication.getUiApplication().popScreen(getScreen());
+				return true;
+			} else {
+				return false;
+			}
+		}
+
+		public boolean keyRepeat(int keycode, int time) {
+			return false;
+		}
+
+		public boolean keyStatus(int keycode, int time) {
+			return false;
+		}
+
+		public boolean keyUp(int keycode, int time) {
+			return false;
+		}
+	 }
 }
