@@ -15,9 +15,8 @@ public class ListadoCampos {
 	private ListadoCamposScreen _screen;
 	private ListadoCamposPopUp _screenPp;
 
-	public ListadoCampos(boolean popup) {
+	public ListadoCampos(boolean popup, long style) {
 		Persistence p;
-		_vectorCampos = new Vector();
 		try {
 			p = new Persistence();
 			_vectorCampos = p.consultarAtributos();
@@ -25,15 +24,19 @@ public class ListadoCampos {
 			Dialog.alert(e.toString());
 		}
 		if (popup) {
-			_screenPp = new ListadoCamposPopUp();
+			_screenPp = new ListadoCamposPopUp(style);
 		} else {
-			_screen = new ListadoCamposScreen();
+			_screen = new ListadoCamposScreen(style);
 		}
 		addCampos();
 	}
 
 	public ListadoCampos() {
-		this(false);
+		this(false, 0);
+	}
+	
+	public ListadoCampos(boolean popup) {
+		this(popup, 0);
 	}
 
 	public void setVectorCampos(Vector campos) {

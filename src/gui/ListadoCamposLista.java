@@ -1,20 +1,23 @@
 package gui;
 
-import net.rim.device.api.ui.Graphics;
-import net.rim.device.api.ui.component.ListField;
-import net.rim.device.api.ui.component.ObjectListField;
 import core.CampoPersonalizado;
+import net.rim.device.api.ui.component.KeywordProvider;
 
-public class ListadoCamposLista extends ObjectListField {
+public class ListadoCamposLista extends ListaListas implements
+		KeywordProvider {
 
-	public void drawListRow(ListField list, Graphics g, int index, int y, int w) {
-		if (this.get(this, index).getClass() == "Hola".getClass()) {
-			g.drawText((String) this.get(this, index), 0, y);
+	public ListadoCamposLista() {
+		super();
+		setSourceList(this);
+	}
+
+	public String[] getKeywords(Object element) {
+		if (String.class.isInstance(element)) {
+			return null;
 		} else {
-			CampoPersonalizado objeto = (CampoPersonalizado) this.get(this,
-					index);
-			String nombre = objeto.getNombre();
-			g.drawText(nombre, 0, y);
+			String[] s = new String[1];
+			s[0] = ((CampoPersonalizado) element).getNombre();
+			return s;
 		}
 	}
 }
