@@ -1,19 +1,26 @@
 package gui;
 
-import net.rim.device.api.ui.Graphics;
-import net.rim.device.api.ui.component.ListField;
-import net.rim.device.api.ui.component.ObjectListField;
 import core.Juzgado;
+import net.rim.device.api.ui.component.KeywordProvider;
 
-public class ListadoJuzgadosLista extends ObjectListField {
+public class ListadoJuzgadosLista extends ListaListas implements
+		KeywordProvider {
 
-	public void drawListRow(ListField list, Graphics g, int index, int y, int w) {
-		if (this.get(this, index).getClass() == "Hola".getClass()) {
-			g.drawText((String) this.get(this, index), 0, y);
+	public ListadoJuzgadosLista() {
+		super();
+		setSourceList(this);
+	}
+
+	public String[] getKeywords(Object element) {
+		if (String.class.isInstance(element)) {
+			return null;
 		} else {
-			Juzgado objeto = (Juzgado) this.get(this, index);
-			String nombre = objeto.getNombre();
-			g.drawText(nombre, 0, y);
+			String[] s = new String[4];
+			s[0] = ((Juzgado) element).getNombre();
+			s[1] = ((Juzgado) element).getTelefono();
+			s[2] = ((Juzgado) element).getCiudad();
+			s[3] = ((Juzgado) element).getTipo();
+			return s;
 		}
 	}
 }

@@ -79,8 +79,10 @@ public class ListadoCategoriasScreen extends MainScreen {
 	
 	protected void makeMenu(Menu menu, int instance) {
 		if (!String.class.isInstance(_lista.getSelectedElement())) {
-			menu.add(menuVer);
-			menu.add(menuDelete);
+			if(!((Categoria)_lista.getSelectedElement()).getId_categoria().equals("1")) {
+				menu.add(menuVer);
+				menu.add(menuDelete);
+			}
 		}
 	}
 
