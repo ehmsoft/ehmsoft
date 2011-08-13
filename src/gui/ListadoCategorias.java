@@ -15,7 +15,7 @@ public class ListadoCategorias {
 	private ListadoCategoriasScreen _screen;
 	private ListadoCategoriasPopUp _screenPp;
 
-	public ListadoCategorias(boolean popup) {
+	public ListadoCategorias(boolean popup, long style) {
 		try {
 			_persistencia = new Persistence();
 			_vectorCategorias = _persistencia.consultarCategorias();
@@ -24,15 +24,23 @@ public class ListadoCategorias {
 		}
 		
 		if(popup) {
-			_screenPp = new ListadoCategoriasPopUp();
+			_screenPp = new ListadoCategoriasPopUp(style);
 		} else {
-			_screen = new ListadoCategoriasScreen();
+			_screen = new ListadoCategoriasScreen(style);
 		}
 		addCategorias();
 	}
 	
 	public ListadoCategorias() {
-		this(false);
+		this(false,0);
+	}
+	
+	public ListadoCategorias(long style) {
+		this(false, style);
+	}
+	
+	public ListadoCategorias(boolean popup) {
+		this(popup, 0);
 	}
 
 	public void setVectorCategorias(Vector categorias) {
