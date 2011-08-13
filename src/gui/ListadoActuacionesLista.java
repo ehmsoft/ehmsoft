@@ -32,8 +32,9 @@ public class ListadoActuacionesLista extends ListaListas implements KeywordProvi
 			graphics.setColor(color);
 			graphics.drawText(r.getAt(index).toString(), 0, y);
 		} else {
-			graphics.drawText(r.getAt(index).toString(), 0, y);
-			graphics.drawText(calendarToString(((Actuacion)r.getAt(index)).getFechaProxima(), false), 15, y + getFont().getHeight());
+			Actuacion objeto = (Actuacion) r.getAt(index);
+			graphics.drawText(objeto.toString(), 0, y);
+			graphics.drawText(calendarToString(objeto.getFechaProxima(), false), 30, y + getFont().getHeight());
 		}
 		
 	}

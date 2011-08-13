@@ -103,17 +103,14 @@ class Callback implements ListFieldCallback {
 	}
 
 	public Object get(ListField listField, int index) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	public int getPreferredWidth(ListField listField) {
-		// TODO Auto-generated method stub
 		return 0;
 	}
 
 	public int indexOfList(ListField listField, String prefix, int start) {
-		// TODO Auto-generated method stub
 		return 0;
 	}
 	
