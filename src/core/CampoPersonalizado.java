@@ -84,8 +84,9 @@ public class CampoPersonalizado {
 	public void setLongitudMin(int longitudMin) {
 		this.longitudMin = longitudMin;
 	}
-	
-
+	public String toString() {
+		return getNombre();
+	}
 	
 	
 }
