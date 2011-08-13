@@ -81,7 +81,7 @@ public class ListadoProcesosScreen extends MainScreen {
 				Object choice = _banner.getChoice(_banner
 						.getSelectedIndex());
 				if (String.class.isInstance(choice)) {
-					_lista.setKeyword("");
+					_lista.setText("");
 					_lista.updateList();
 					_lista.setFocus();
 				} else {
