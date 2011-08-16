@@ -9,50 +9,35 @@ public class EditableTextField extends HorizontalFieldManager {
 
 	private LabelField _label;
 	private BasicEditField _txtField;
+	private LabelField _lblField;
 	private int _color = 0x00757575;
+	private boolean _editable = false;
 	
 	public EditableTextField() {
-		_txtField = new BasicEditField();
+		this(0);
+	}
+	
+	public EditableTextField(long style) {
+		_txtField = new BasicEditField(style);
+		_lblField = new LabelField("",LabelField.FOCUSABLE) {
+			protected void paint(Graphics g) {
+				g.setColor(_color);
+				super.paint(g);
+			}
+		};
 		_label = new LabelField();
 		this.add(_label);
-		this.add(_txtField);
-	}
-
-	public EditableTextField(long style) {
-		_txtField = new BasicEditField(style) {
-			protected void paint(Graphics g) {
-				g.setColor(_color);
-				super.paint(g);
-			}
-		};
-		new EditableTextField();
-	}
-
-	public EditableTextField(String label, String initialValue) {
-		_txtField = new BasicEditField(null, initialValue) {
-			protected void paint(Graphics g) {
-				g.setColor(_color);
-				super.paint(g);
-			}
-		};
-		_txtField.setEditable(false);
-		_label = new LabelField(label);
-		this.add(_label);
-		this.add(_txtField);
+		this.add(_lblField);
 	}
 
 	public EditableTextField(String label, String initialValue, long style) {
-		_txtField = new BasicEditField(style) {
-			protected void paint(Graphics g) {
-				g.setColor(_color);
-				super.paint(g);
-			}
-		};
-		_txtField.setText(initialValue);
-		_txtField.setEditable(false);
-		_label = new LabelField(label);
-		this.add(_label);
-		this.add(_txtField);
+		this(style);
+		_label.setText(label);
+		_lblField.setText(initialValue);
+	}
+	
+	public EditableTextField(String label, String initialValue) {
+		this(label, initialValue, 0);
 	}
 
 	public void setLabel(String label) {
@@ -60,7 +45,11 @@ public class EditableTextField extends HorizontalFieldManager {
 	}
 
 	public void setText(String text) {
-		_txtField.setText(text);
+		if(_editable) {
+			_txtField.setText(text);
+		} else {
+			_lblField.setText(text);
+		}
 	}
 	
 	public void setEditableColor(int color) {
@@ -82,21 +71,25 @@ public class EditableTextField extends HorizontalFieldManager {
 	}
 
 	public String getText() {
-		return _txtField.getText();
+		if (_editable) {
+			return _txtField.getText();
+		} else {
+			return _lblField.getText();
+		}
 	}
 
 	public int getTextLength() {
-		return _txtField.getTextLength();
+		if (_editable) {
+			return _txtField.getTextLength();
+		} else {
+			return _lblField.getText().length();
+		}
 	}
 
 	public void setEditable() {
-		long style = _txtField.getStyle();
-		String text = _txtField.getText();
-		this.delete(_txtField);
-		_txtField = new BasicEditField(style);
-		_txtField.setText(text);
-		_txtField.setEditable(true);
-		this.add(_txtField);
+		_txtField.setText(_lblField.getText());
+		this.replace(_lblField, _txtField);
+		_editable = true;
 	}
 	
 	public void setMaxSize(int maxSize) {
@@ -107,18 +100,9 @@ public class EditableTextField extends HorizontalFieldManager {
 		if(editable) {
 			setEditable();
 		} else {
-			long style = _txtField.getStyle();
-			String text = _txtField.getText();
-			this.delete(_txtField);
-			_txtField = new BasicEditField(style) {
-				protected void paint(Graphics g) {
-					g.setColor(_color);
-					super.paint(g);
-				}
-			};
-			_txtField.setText(text);
-			_txtField.setEditable(false);
-			this.add(_txtField);
+			_lblField.setText(_txtField.getText());
+			this.replace(_txtField, _lblField);
+			_editable = false;
 		}
 	}
 }
