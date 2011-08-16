@@ -155,10 +155,11 @@ public class VerActuacionScreen extends FondoNormal {
 		public void run() {
 			Field f = getFieldWithFocus();
 			if (f.equals(_txtJuzgado)) {
-				VerJuzgado verJuzgado = new VerJuzgado(_juzgado);
+				VerJuzgado v = new VerJuzgado(_juzgado);
 				UiApplication.getUiApplication().pushModalScreen(
-						verJuzgado.getScreen());
-				_juzgado = verJuzgado.getJuzgado();
+						v.getScreen());
+				v.actualizarJuzgado();
+				_juzgado = v.getJuzgado();
 				_txtJuzgado.setText(_juzgado.getNombre());
 				_txtJuzgado.setFocus();
 			}
