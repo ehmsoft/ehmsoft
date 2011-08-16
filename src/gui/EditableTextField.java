@@ -33,7 +33,11 @@ public class EditableTextField extends HorizontalFieldManager {
 	public EditableTextField(String label, String initialValue, long style) {
 		this(style);
 		_label.setText(label);
-		_lblField.setText(initialValue);
+		if(initialValue.equals("") || initialValue == null) {
+			_editable = true;
+			this.replace(_lblField, _txtField);
+		}
+		setText(initialValue);
 	}
 	
 	public EditableTextField(String label, String initialValue) {
