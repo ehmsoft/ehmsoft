@@ -407,8 +407,22 @@ public class VerProcesoScreen extends FondoNormal {
 		menu.addSeparator();
 		if (focus.equals(_lblDemandante) || focus.equals(_lblDemandado)
 				|| focus.equals(_lblJuzgado)) {
-			menu.add(menuCambiar);
-			menu.add(menuEliminar);
+			if(focus.equals(_lblDemandante) && _lblDemandante.getText().equals("vacio")) {
+				menuCambiar.setText("Agregar");
+				menu.add(menuCambiar);
+				menuCambiar.setText("Cambiar");
+			} else if(focus.equals(_lblDemandado) && _lblDemandado.getText().equals("vacio")) {
+				menuCambiar.setText("Agregar");
+				menu.add(menuCambiar);
+				menuCambiar.setText("Cambiar");
+			} else if(focus.equals(_lblJuzgado) && _lblJuzgado.getText().equals("vacio")) {
+				menuCambiar.setText("Agregar");
+				menu.add(menuCambiar);
+				menuCambiar.setText("Cambiar");
+			} else {
+				menu.add(menuCambiar);
+				menu.add(menuEliminar);
+			}
 			menu.addSeparator();
 		} else if (focus.equals(_txtCategoria)) {
 			menu.add(menuCambiarCategoria);
@@ -499,19 +513,8 @@ public class VerProcesoScreen extends FondoNormal {
 	private final MenuItem menuGuardar = new MenuItem("Guardar", 0, 0) {
 
 		public void run() {
-			if (isCambiado() || isCampoCambiado() || isEliminado()) {
-				Object[] ask = { "Guardar", "Descartar", "Cancelar" };
-				int sel = Dialog.ask("¿Desea guardar los cambios realizados?",
-						ask, 0);
-				if (sel == 0) {
-					_guardar = true;
-					UiApplication.getUiApplication().popScreen(getScreen());
-				} else if (sel == 1) {
-					UiApplication.getUiApplication().popScreen(getScreen());
-				}
-			} else {
-				UiApplication.getUiApplication().popScreen(getScreen());
-			}
+			_guardar = true;
+			UiApplication.getUiApplication().popScreen(getScreen());
 		}
 	};
 
@@ -644,35 +647,41 @@ public class VerProcesoScreen extends FondoNormal {
 		public void run() {
 			Field f = getLeafFieldWithFocus();
 			if (f.equals(_lblDemandante)) {
-				ListadoPersonas l = new ListadoPersonas(1,true);
+				ListadoPersonas l = new ListadoPersonas(1, true);
 				UiApplication.getUiApplication().pushModalScreen(l.getScreen());
-				try {
-					_demandante = l.getSelected();
+				Persona temp = _demandante;
+				_demandante = l.getSelected();
+				if (_demandante != null) {
 					_lblDemandante.setText(_demandante.getNombre());
 					_lblDemandante.setFocus();
-				} catch (NullPointerException e) {
+				} else {
+					_demandante = temp;
 				}
 			}
 
 			if (f.equals(_lblDemandado)) {
-				ListadoPersonas l = new ListadoPersonas(2,true);
+				ListadoPersonas l = new ListadoPersonas(2, true);
 				UiApplication.getUiApplication().pushModalScreen(l.getScreen());
-				try {
-					_demandado = l.getSelected();
+				Persona temp = _demandado;
+				_demandado = l.getSelected();
+				if (_demandado != null) {
 					_lblDemandado.setText(_demandado.getNombre());
 					_lblDemandado.setFocus();
-				} catch (NullPointerException e) {
+				} else {
+					_demandado = temp;
 				}
 			}
 
 			if (f.equals(_lblJuzgado)) {
 				ListadoJuzgados l = new ListadoJuzgados(true);
 				UiApplication.getUiApplication().pushModalScreen(l.getScreen());
-				try {
-					_juzgado = l.getSelected();
+				Juzgado temp = _juzgado;
+				_juzgado = l.getSelected();
+				if (_juzgado != null) {
 					_lblJuzgado.setText(_juzgado.getNombre());
 					_lblJuzgado.setFocus();
-				} catch (NullPointerException e) {
+				} else {
+					_juzgado = temp;
 				}
 			}
 		}
