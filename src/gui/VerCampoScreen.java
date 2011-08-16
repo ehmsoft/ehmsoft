@@ -30,28 +30,30 @@ public class VerCampoScreen extends FondoNormal {
 
 		_txtNombre = new EditableTextField("Nombre: ",
 				_campoPersonalizado.getNombre());
-
-		_txtValor = new EditableTextField("Valor: ",
-				_campoPersonalizado.getValor());
+		add(_txtNombre);
+		
+		if(_campoPersonalizado.getValor() != null) {
+			_txtValor = new EditableTextField("Valor: ",
+					_campoPersonalizado.getValor());
+			add(_txtValor);
+		}
 
 		_cfObligatorio = new CheckboxField(" Obligatorio", _campoPersonalizado
 				.isObligatorio().booleanValue());
 		_cfObligatorio.setEditable(false);
+		add(_cfObligatorio);
 
 		_txtLongMax = new EditableTextField(BasicEditField.FILTER_INTEGER);
 		_txtLongMax.setLabel("Longitud máxima");
 		_txtLongMax.setText(_campoPersonalizado.getLongitudMax() + "");
+		add(_txtLongMax);
 
 		_txtLongMin = new EditableTextField(BasicEditField.FILTER_INTEGER);
 		_txtLongMin.setLabel("Longitud minima");
 		_txtLongMin.setText(_campoPersonalizado.getLongitudMin() + "");
-
-		add(_txtNombre);
-		add(_txtValor);
-		add(_cfObligatorio);
-		add(_txtLongMax);
 		add(_txtLongMin);
-		addMenuItem(menuGuardar);
+
+ 		addMenuItem(menuGuardar);
 		addMenuItem(menuEditar);
 		addMenuItem(menuEditarTodo);
 		addMenuItem(menuEliminar);
@@ -87,7 +89,7 @@ public class VerCampoScreen extends FondoNormal {
 				_txtLongMin.setFocus();
 			}
 			if (f.equals(_txtLongMin)) {
-				_txtLongMax.setEditable();
+				_txtLongMin.setEditable();
 				_txtLongMin.setFocus();
 			}
 		}
@@ -120,7 +122,11 @@ public class VerCampoScreen extends FondoNormal {
 	}
 
 	public String getValor() {
-		return _txtValor.getText();
+		if(_txtValor != null) {
+			return _txtValor.getText();
+		} else {
+			return null;
+		}
 	}
 
 	public Boolean isObligatorio() {
@@ -151,13 +157,15 @@ public class VerCampoScreen extends FondoNormal {
 		boolean cambio = false;
 		if (!_campoPersonalizado.getNombre().equals(this.getNombre()))
 			cambio = true;
-		if (!_campoPersonalizado.getValor().equals(this.getValor()))
+		else if(_campoPersonalizado.getValor() != null) {
+			if (!_campoPersonalizado.getValor().equals(this.getValor()))
+				cambio = true;
+		}
+		else if (!_campoPersonalizado.isObligatorio().equals(this.isObligatorio()))
 			cambio = true;
-		if (!_campoPersonalizado.isObligatorio().equals(this.isObligatorio()))
+		else if (_campoPersonalizado.getLongitudMax() != this.getLongitudMax())
 			cambio = true;
-		if (_campoPersonalizado.getLongitudMax() != this.getLongitudMax())
-			cambio = true;
-		if (_campoPersonalizado.getLongitudMin() != this.getLongitudMin())
+		else if (_campoPersonalizado.getLongitudMin() != this.getLongitudMin())
 			cambio = true;
 		if (!cambio) {
 			UiApplication.getUiApplication().popScreen(getScreen());

@@ -22,24 +22,28 @@ public class VerCampo {
 			try {
 				Persistence persistence = new Persistence();
 				boolean cambio = false;
-				CampoPersonalizado campo = _screen.getCampoPersonalizado();
-
-				if (!campo.getNombre().equals(_screen.getNombre()))
+				
+				if (!_campo.getNombre().equals(_screen.getNombre()))
 					cambio = true;
-				if (!campo.getValor().equals(_screen.getValor()))
+				else if(_campo.getValor() != null) {
+					if (!_campo.getValor().equals(_screen.getValor()))
+						cambio = true;
+				}
+				else if (!_campo.isObligatorio().equals(_screen.isObligatorio()))
 					cambio = true;
-				if (!campo.isObligatorio().equals(_screen.isObligatorio()))
+				else if (_campo.getLongitudMax() != _screen.getLongitudMax())
 					cambio = true;
-				if (campo.getLongitudMax() != _screen.getLongitudMax())
-					cambio = true;
-				if (campo.getLongitudMin() != _screen.getLongitudMin())
+				else if (_campo.getLongitudMin() != _screen.getLongitudMin())
 					cambio = true;
 
 				if (cambio)
-					_campo = new CampoPersonalizado(_screen.getNombre(),
+					_campo = new CampoPersonalizado(_campo.getId_campo(),_campo.getId_atributo(),_screen.getNombre(),
 							_screen.getValor(), _screen.isObligatorio(),
 							_screen.getLongitudMax(), _screen.getLongitudMin());
-				persistence.actualizarCampoPersonalizado(_campo);
+				persistence.actualizarAtributo(_campo);
+				if(_campo.getValor() != null) {
+					persistence.actualizarCampoPersonalizado(_campo);
+				}
 			} catch (Exception e) {
 				Dialog.alert("actualizarCampoPersonalizado -> " + e.toString());
 			}
