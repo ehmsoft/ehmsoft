@@ -369,9 +369,9 @@ public class VerProcesoScreen extends FondoNormal {
 			menu.add(menuCambiarCategoria);
 			menu.addSeparator();
 		}
-
-		menu.add(menuAddCampo);
+		
 		menu.add(menuAddActuacion);
+		menu.add(menuAddCampo);
 		menu.addSeparator();
 
 		if (focus.equals(_lblDemandante)) {
