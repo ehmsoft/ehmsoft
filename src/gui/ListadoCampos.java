@@ -35,6 +35,10 @@ public class ListadoCampos {
 		this(false, 0);
 	}
 	
+	public ListadoCampos(long style) {
+		this(false, style);
+	}
+	
 	public ListadoCampos(boolean popup) {
 		this(popup, 0);
 	}
