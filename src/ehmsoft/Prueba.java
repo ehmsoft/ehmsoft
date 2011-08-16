@@ -1,6 +1,8 @@
 package ehmsoft;
 
 import gui.ListadoActuaciones;
+import gui.ListadoCampos;
+import gui.ListadoCamposScreen;
 import gui.ListadoCategorias;
 import gui.ListadoCategoriasScreen;
 import gui.ListadoJuzgados;
@@ -34,6 +36,7 @@ public class Prueba extends MainScreen {
 
 	ButtonField listadoActuaciones;
 	ButtonField listadoCategorias;
+	ButtonField listadoCampos;
 	ButtonField listadoJuzgados;
 	ButtonField listadoDemandantes;
 	ButtonField listadoDemandados;
@@ -60,6 +63,10 @@ public class Prueba extends MainScreen {
 		listadoCategorias = new ButtonField("Listado de categorías");
 		listadoCategorias.setChangeListener(listenerListadoCategorias);
 		add(listadoCategorias);
+		
+		listadoCampos = new ButtonField("Listado de campos");
+		listadoCampos.setChangeListener(listenerListadoCampos);
+		add(listadoCampos);
 
 		listadoJuzgados = new ButtonField("Listado de juzgados");
 		listadoJuzgados.setChangeListener(listenerListadoJuzgados);
@@ -146,6 +153,15 @@ public class Prueba extends MainScreen {
 
 		public void fieldChanged(Field field, int context) {
 			ListadoCategorias l = new ListadoCategorias(ListadoCategoriasScreen.SEARCH);
+			UiApplication.getUiApplication().pushModalScreen(l.getScreen());
+			l.getSelected();
+			}
+	};
+	
+	private FieldChangeListener listenerListadoCampos = new FieldChangeListener() {
+
+		public void fieldChanged(Field field, int context) {
+			ListadoCampos l = new ListadoCampos(ListadoCamposScreen.SEARCH | ListadoCamposScreen.ON_CLICK_VER);
 			UiApplication.getUiApplication().pushModalScreen(l.getScreen());
 			l.getSelected();
 			}
