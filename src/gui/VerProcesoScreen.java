@@ -460,7 +460,7 @@ public class VerProcesoScreen extends FondoNormal {
 			Object[] ask = { "Confirmar", "Cancelar" };
 
 			Field f = UiApplication.getUiApplication().getActiveScreen()
-					.getFieldWithFocus();
+					.getLeafFieldWithFocus();
 			if (f.equals(_lblDemandante)) {
 				int sel = Dialog.ask("Se eliminará el demandante del proceso",
 						ask, 1);
