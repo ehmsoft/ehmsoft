@@ -449,7 +449,7 @@ public class Persistence implements Cargado, Guardado {
 			stAcAtributo.bind(2, obligatorio);
 			stAcAtributo.bind(3, campo.getLongitudMax());
 			stAcAtributo.bind(4, campo.getLongitudMin());
-			stAcAtributo.bind(5, campo.getId_campo());
+			stAcAtributo.bind(5, campo.getId_atributo());
 			stAcAtributo.execute();
 			stAcAtributo.close();
 			
