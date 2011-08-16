@@ -49,13 +49,16 @@ public class NuevoCampoScreen extends FondoNormal {
 	private final MenuItem menuGuardar = new MenuItem("Guardar", 0, 0) {
 
 		public void run() {
-			// TODO Auto-generated method stub
+			if(_txtNombre.getTextLength() != 0) { 
 			if (getLongMax() >= getLongMin()) {
 				_guardar = true;
 				UiApplication.getUiApplication().popScreen(getScreen());
 			}
 			else {
 				Dialog.alert("La longitud mínima no puede ser mayor que la longitud máxima, corrija y guarde nuevamente");
+			}
+			} else {
+				Dialog.alert("El campo Nombre es obligatorio");
 			}
 		}
 	};
