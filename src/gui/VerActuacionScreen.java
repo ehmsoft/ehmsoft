@@ -3,14 +3,17 @@ package gui;
 import java.util.Calendar;
 import java.util.Date;
 
+import net.rim.device.api.system.Bitmap;
 import net.rim.device.api.ui.Field;
 import net.rim.device.api.ui.MenuItem;
 import net.rim.device.api.ui.UiApplication;
+import net.rim.device.api.ui.component.BitmapField;
 import net.rim.device.api.ui.component.DateField;
 import net.rim.device.api.ui.component.Dialog;
 import net.rim.device.api.ui.component.LabelField;
 import net.rim.device.api.ui.component.Menu;
 import net.rim.device.api.ui.component.SeparatorField;
+import net.rim.device.api.ui.container.HorizontalFieldManager;
 import net.rim.device.api.ui.container.VerticalFieldManager;
 import core.Actuacion;
 import core.CalendarManager;
@@ -23,28 +26,37 @@ public class VerActuacionScreen extends FondoNormal {
 	private DateField _dfFechaProxima;
 	private EditableTextField _txtDescripcion;
 	private Actuacion _actuacion;
-	private Juzgado _juzgado;
-	private VerticalFieldManager _vfCita;
-	
+	private Juzgado _juzgado;	
 
 	private boolean _guardar = false;
 	private boolean _eliminar = false;
 	private String _uid;
+	private BitmapField _cita;
+	private BitmapField _alarm;
+	private Bitmap _bell = Bitmap.getBitmapResource("bell.png");
+	private Bitmap _clock = Bitmap.getBitmapResource("clock.png");
 
-	public VerActuacionScreen(Actuacion actuacion) {
+	public VerActuacionScreen(Actuacion actuacion) {		
+		HorizontalFieldManager h = new HorizontalFieldManager();
+		VerticalFieldManager r = new VerticalFieldManager(Field.USE_ALL_WIDTH);
+		VerticalFieldManager l = new VerticalFieldManager();
+		HorizontalFieldManager r1 = new HorizontalFieldManager(Field.FIELD_RIGHT);
+		_cita = new BitmapField(null);
+		_alarm = new BitmapField(null);
 		
-		_vfCita = new VerticalFieldManager();
-		_vfCita.add(new SeparatorField());
-		_vfCita.add(new SeparatorField());
-		_vfCita.add(new LabelField("Esta actación tiene una cita en el calendario", LabelField.FIELD_HCENTER));
-		_vfCita.add(new SeparatorField());
-		_vfCita.add(new SeparatorField());
+		r1.add(_cita);
+		r1.add(_alarm);
+		
+		l.add(new LabelField("Actuacion"));
+		r.add(r1);		
+
+		h.add(l);
+		h.add(r);
+		setTitle(h);		
 
 		_actuacion = actuacion;
 		_uid = _actuacion.getUid();
 		_juzgado = actuacion.getJuzgado();
-
-		setTitle("Ver actuación");
 
 		_txtJuzgado = new EditableTextField("Juzgado: ", _actuacion
 				.getJuzgado().getNombre());
@@ -66,15 +78,16 @@ public class VerActuacionScreen extends FondoNormal {
 		add(_txtDescripcion);
 	}
 	
-	public void setCita() {
-		setCita(true);
-	}
-	
-	public void setCita(boolean cita) {
+	public void setCita(boolean cita, boolean alarm) {
 		if(cita) {
-			add(_vfCita, false);
+			_cita.setBitmap(_clock);
 		} else {
-			delete(_vfCita);
+			_cita.setBitmap(null);
+		}
+		if(alarm) {
+			_alarm.setBitmap(_bell);
+		} else {
+			_alarm.setBitmap(null);
 		}
 	}
 	
@@ -119,7 +132,12 @@ public class VerActuacionScreen extends FondoNormal {
 			NuevaCita n = new NuevaCita(getDescripcion(), getFechaProxima().getTime());
 			UiApplication.getUiApplication().pushModalScreen(n.getScreen());
 			_uid = n.getUid();
-			setCita();
+			if(_uid != null) {
+				setCita(true, false);
+				if(n.isAlarma()) {
+					setCita(true, true);
+				}
+			}
 		}
 	};
 	
@@ -134,7 +152,7 @@ public class VerActuacionScreen extends FondoNormal {
 				try {
 					CalendarManager.borrarCita(_uid);
 					_uid = null;
-					setCita(false);
+					setCita(false, false);
 				} catch(Exception e) {
 					Dialog.alert(e.toString());
 				}

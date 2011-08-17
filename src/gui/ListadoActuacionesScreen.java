@@ -14,6 +14,7 @@ import net.rim.device.api.ui.component.LabelField;
 import net.rim.device.api.ui.component.Menu;
 import net.rim.device.api.ui.container.HorizontalFieldManager;
 import net.rim.device.api.ui.container.MainScreen;
+import net.rim.device.api.ui.container.VerticalFieldManager;
 import core.Actuacion;
 import core.CalendarManager;
 import core.Proceso;
@@ -31,16 +32,26 @@ public class ListadoActuacionesScreen extends MainScreen {
 	private long _style;
 	private BitmapField _cita;
 	private BitmapField _alarm;
+	private Bitmap _bell = Bitmap.getBitmapResource("bell.png");
+	private Bitmap _clock = Bitmap.getBitmapResource("clock.png");
 
 	public ListadoActuacionesScreen(Proceso proceso, long style) {
 		super(MainScreen.VERTICAL_SCROLL | MainScreen.VERTICAL_SCROLLBAR);
 		HorizontalFieldManager h = new HorizontalFieldManager();
-		_cita = new BitmapField(null, FIELD_RIGHT);
-		_alarm = new BitmapField(null, FIELD_RIGHT);
+		VerticalFieldManager r = new VerticalFieldManager(Field.USE_ALL_WIDTH);
+		VerticalFieldManager l = new VerticalFieldManager();
+		HorizontalFieldManager r1 = new HorizontalFieldManager(Field.FIELD_RIGHT);
+		_cita = new BitmapField(null);
+		_alarm = new BitmapField(null);
 		
-		h.add(new LabelField("Actuaciones"));
-		h.add(_cita);
-		h.add(_alarm);
+		r1.add(_cita);
+		r1.add(_alarm);
+		
+		l.add(new LabelField("Actuaciones"));
+		r.add(r1);		
+
+		h.add(l);
+		h.add(r);
 		setTitle(h);
 		
 		_style = style;
@@ -91,11 +102,9 @@ public class ListadoActuacionesScreen extends MainScreen {
 						BlackBerryEvent e = CalendarManager.consultarCita(a
 								.getUid());
 						if (e != null) {
-							Bitmap b = Bitmap.getBitmapResource("clock.png");
-							_cita.setBitmap(b);
+							_cita.setBitmap(_clock);
 							if (e.countValues(BlackBerryEvent.ALARM) > 0) {
-								b = Bitmap.getBitmapResource("bell.png");
-								_alarm.setBitmap(b);
+								_alarm.setBitmap(_bell);
 							}
 						}
 					}
@@ -150,6 +159,7 @@ public class ListadoActuacionesScreen extends MainScreen {
 				v.actualizarActuacion();
 				Actuacion nw = v.getActuacion();
 				_lista.update(old, nw);
+				_lista.getFocusListener().focusChanged(null, 0);
 			} catch (Exception e) {
 				_lista.remove(old);
 			}

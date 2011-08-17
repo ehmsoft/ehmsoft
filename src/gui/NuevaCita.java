@@ -23,6 +23,10 @@ public class NuevaCita {
 		return _screen.isGuardado();
 	}
 	
+	public boolean isAlarma() {
+		return _screen.isAlarma();
+	}
+	
 	public String getUid() {
 		if(_uid == null) {
 			guardarCita();

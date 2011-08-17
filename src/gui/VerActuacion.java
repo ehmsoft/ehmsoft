@@ -21,7 +21,10 @@ public class VerActuacion {
 					borrarCitaActuacion();
 					_screen = new VerActuacionScreen(_actuacion);
 				} else {
-					_screen.setCita();
+					_screen.setCita(true, false);
+					if (e.countValues(BlackBerryEvent.ALARM) > 0) {
+						_screen.setCita(true, true);
+					}
 				}
 			} catch (Exception e) {
 				borrarCitaActuacion();

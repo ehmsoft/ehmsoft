@@ -21,7 +21,10 @@ public class ActuacionesManager extends CustomManager {
 	private LabelField _fecha;
 	private LabelField _fechaProxima;
 	private LabelField _descripcion;
-	private HorizontalFieldManager _alarma;
+	private BitmapField _cita;
+	private BitmapField _alarma;
+	private Bitmap _bell = Bitmap.getBitmapResource("bell.png");
+	private Bitmap _clock = Bitmap.getBitmapResource("clock.png");
 
 	public ActuacionesManager(int cant) {
 		super();
@@ -42,7 +45,7 @@ public class ActuacionesManager extends CustomManager {
 		VerticalFieldManager fechas = new VerticalFieldManager();
 		HorizontalFieldManager fechaP = new HorizontalFieldManager();
 		HorizontalFieldManager descripcion = new HorizontalFieldManager();
-		_alarma = new HorizontalFieldManager();
+		HorizontalFieldManager alarma = new HorizontalFieldManager();
 
 		descripcion.add(new LabelField("Descripción: "));
 		descripcion.getField(0).setFont(_bold);
@@ -54,6 +57,10 @@ public class ActuacionesManager extends CustomManager {
 		fechas.setFont(_bold);
 		fechas.add(new LabelField("próxima: "));
 		fechaP.add(fechas);
+		_cita = new BitmapField(null);
+		_alarma = new BitmapField(null);
+		alarma.add(_cita);
+		alarma.add(_alarma);
 
 		_juzgado = new LabelField("", LabelField.RIGHT
 				| LabelField.USE_ALL_WIDTH);
@@ -76,7 +83,7 @@ public class ActuacionesManager extends CustomManager {
 		_vertical.add(new SeparatorField());
 		_vertical.add(fechaP);
 		_vertical.add(new SeparatorField());
-		_vertical.add(_alarma);
+		_vertical.add(alarma);
 
 		add(_manager);
 		add(_title);
@@ -99,13 +106,12 @@ public class ActuacionesManager extends CustomManager {
 					a.getFechaProxima(), true);
 			fecha = fecha.substring(0, 10) + "\n" + fecha.substring(11);
 			_fechaProxima.setText(fecha);
-			_alarma.deleteAll();
+			_cita.setBitmap(null);
+			_alarma.setBitmap(null);
 			if(hasCita(a)) {
-				Bitmap b = Bitmap.getBitmapResource("clock.png");
-				_alarma.add(new BitmapField(b));
+				_cita.setBitmap(_clock);
 				if(hasAlarma(a)) {
-					b = Bitmap.getBitmapResource("bell.png");
-					_alarma.add(new BitmapField(b));
+					_alarma.setBitmap(_bell);
 				}
 			}
 			_vertical.invalidate();
