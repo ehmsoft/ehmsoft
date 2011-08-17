@@ -2,12 +2,20 @@ package gui;
 
 import persistence.Persistence;
 
+import net.rim.device.api.ui.Field;
+import net.rim.device.api.ui.FieldChangeListener;
 import net.rim.device.api.ui.MenuItem;
 import net.rim.device.api.ui.UiApplication;
+import net.rim.device.api.ui.component.BasicEditField;
+import net.rim.device.api.ui.component.ButtonField;
 import net.rim.device.api.ui.component.Dialog;
 import net.rim.device.api.ui.component.Menu;
+import net.rim.device.api.ui.component.SeparatorField;
 import net.rim.device.api.ui.container.MainScreen;
+import net.rim.device.api.ui.container.PopupScreen;
+import net.rim.device.api.ui.container.VerticalFieldManager;
 import core.Persona;
+import core.PhoneManager;
 
 public class ListadoPersonasScreen extends MainScreen {
 
@@ -85,8 +93,79 @@ public class ListadoPersonasScreen extends MainScreen {
 		if (!String.class.isInstance(_lista.getSelectedElement())) {
 			menu.add(menuVer);
 			menu.add(menuDelete);
+			menu.add(menuLlamar);
+			menu.add(menuEditarLlamar);
 		}
 	}
+	
+	private final MenuItem menuEditarLlamar = new MenuItem("Editar y llamar", 0, 0) {
+		
+		public void run() {
+			Persona p = (Persona)_lista.getSelectedElement();
+			EditarLlamar screen = new EditarLlamar(p.getTelefono());
+			UiApplication.getUiApplication().pushModalScreen(screen);
+			if(screen.getNumber() != null) {
+				PhoneManager.call(screen.getNumber());
+			}
+		}
+	};
+	
+	class EditarLlamar extends PopupScreen {
+		
+		private BasicEditField _txtNumero;
+		
+		public EditarLlamar(String numero) {
+			super(new VerticalFieldManager());
+			if(numero != null) {
+				_txtNumero = new BasicEditField(null, numero);
+			} else {
+				_txtNumero = new BasicEditField(null, "");
+			}
+			
+			final ButtonField aceptar = new ButtonField("Llamar", FIELD_HCENTER);
+			final ButtonField cancelar = new ButtonField("Cancelar", FIELD_HCENTER);
+						
+			FieldChangeListener listener = new FieldChangeListener() {
+				
+				public void fieldChanged(Field field, int context) {
+					if(field.equals(aceptar)) {
+						UiApplication.getUiApplication().popScreen(getScreen());
+					} else if(field.equals(cancelar)) {
+						_txtNumero.setText("");
+						UiApplication.getUiApplication().popScreen(getScreen());
+					}
+				}
+			};
+			
+			aceptar.setChangeListener(listener);
+			cancelar.setChangeListener(listener);
+			
+			add(_txtNumero);
+			add(new SeparatorField());
+			add(aceptar);
+			add(cancelar);
+		}
+		
+		public String getNumber() {
+			if(_txtNumero.getTextLength() == 0) {
+				return null;
+			} else {
+				return _txtNumero.getText();
+			}
+		}
+	}
+	
+	private final MenuItem menuLlamar = new MenuItem("Llamar", 0, 0) {
+		
+		public void run() {
+			Persona p = (Persona)_lista.getSelectedElement();
+			if(p.getTelefono().length() != 0) {
+				PhoneManager.call(p.getTelefono());
+			} else {
+				Dialog.alert("No tiene número telefónico");
+			}
+		}
+	};
 
 	private final MenuItem menuVer = new MenuItem("Ver", 0, 0) {
 
