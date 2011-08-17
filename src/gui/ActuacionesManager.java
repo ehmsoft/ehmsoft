@@ -3,8 +3,12 @@ package gui;
 import java.util.Vector;
 
 import core.Actuacion;
+import core.CalendarManager;
 
 import persistence.Persistence;
+import net.rim.blackberry.api.pdap.BlackBerryEvent;
+import net.rim.device.api.system.Bitmap;
+import net.rim.device.api.ui.component.BitmapField;
 import net.rim.device.api.ui.component.Dialog;
 import net.rim.device.api.ui.component.LabelField;
 import net.rim.device.api.ui.component.SeparatorField;
@@ -17,6 +21,7 @@ public class ActuacionesManager extends CustomManager {
 	private LabelField _fecha;
 	private LabelField _fechaProxima;
 	private LabelField _descripcion;
+	private HorizontalFieldManager _alarma;
 
 	public ActuacionesManager(int cant) {
 		super();
@@ -31,12 +36,13 @@ public class ActuacionesManager extends CustomManager {
 			Dialog.alert(e.toString());
 		}
 		setLista(_lista,2);
-
+		
 		HorizontalFieldManager juzgado = new HorizontalFieldManager();
 		HorizontalFieldManager fecha = new HorizontalFieldManager();
 		VerticalFieldManager fechas = new VerticalFieldManager();
 		HorizontalFieldManager fechaP = new HorizontalFieldManager();
 		HorizontalFieldManager descripcion = new HorizontalFieldManager();
+		_alarma = new HorizontalFieldManager();
 
 		descripcion.add(new LabelField("Descripción: "));
 		descripcion.getField(0).setFont(_bold);
@@ -69,6 +75,8 @@ public class ActuacionesManager extends CustomManager {
 		_vertical.add(fecha);
 		_vertical.add(new SeparatorField());
 		_vertical.add(fechaP);
+		_vertical.add(new SeparatorField());
+		_vertical.add(_alarma);
 
 		add(_manager);
 		add(_title);
@@ -91,8 +99,43 @@ public class ActuacionesManager extends CustomManager {
 					a.getFechaProxima(), true);
 			fecha = fecha.substring(0, 10) + "\n" + fecha.substring(11);
 			_fechaProxima.setText(fecha);
+			_alarma.deleteAll();
+			if(hasCita(a)) {
+				Bitmap b = Bitmap.getBitmapResource("clock.png");
+				_alarma.add(new BitmapField(b));
+				if(hasAlarma(a)) {
+					b = Bitmap.getBitmapResource("bell.png");
+					_alarma.add(new BitmapField(b));
+				}
+			}
 			_vertical.invalidate();
 		} catch (NullPointerException e) {
+		}
+	}
+	
+	private boolean hasCita(Actuacion a) {
+		try {
+			BlackBerryEvent e = CalendarManager.consultarCita(a.getUid());
+			if (e != null) {
+				return true;
+			} else {
+				return false;
+			}
+		} catch (Exception e) {
+			return false;
+		}
+	}
+	
+	private boolean hasAlarma(Actuacion a) {
+		try {
+			BlackBerryEvent e = CalendarManager.consultarCita(a.getUid());
+			if (e.countValues(BlackBerryEvent.ALARM) > 0) {
+				return true;
+			} else {
+				return false;
+			}
+		} catch(Exception e) {
+			return false;
 		}
 	}
 }
