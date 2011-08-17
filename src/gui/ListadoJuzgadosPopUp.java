@@ -2,6 +2,7 @@ package gui;
 
 import core.Juzgado;
 import net.rim.device.api.system.KeyListener;
+import net.rim.device.api.ui.Manager;
 import net.rim.device.api.ui.UiApplication;
 import net.rim.device.api.ui.component.LabelField;
 import net.rim.device.api.ui.component.SeparatorField;
@@ -26,7 +27,7 @@ public class ListadoJuzgadosPopUp extends PopupScreen {
 	}
 
 	public ListadoJuzgadosPopUp(long style) {
-		super(new VerticalFieldManager());
+		super(new VerticalFieldManager(Manager.VERTICAL_SCROLL | Manager.VERTICAL_SCROLLBAR));
 		_title = new LabelField("Juzgados", FIELD_HCENTER);
 		add(_title);
 		add(new SeparatorField());

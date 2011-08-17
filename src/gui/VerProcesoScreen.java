@@ -407,19 +407,17 @@ public class VerProcesoScreen extends FondoNormal {
 		menu.addSeparator();
 		if (focus.equals(_lblDemandante) || focus.equals(_lblDemandado)
 				|| focus.equals(_lblJuzgado)) {
-			if(focus.equals(_lblDemandante) && _lblDemandante.getText().equals("vacio")) {
+			if(focus.equals(_lblDemandante) && _demandante == null) {
 				menuCambiar.setText("Agregar");
 				menu.add(menuCambiar);
-				menuCambiar.setText("Cambiar");
-			} else if(focus.equals(_lblDemandado) && _lblDemandado.getText().equals("vacio")) {
+			} else if(focus.equals(_lblDemandado) && _demandado == null) {
 				menuCambiar.setText("Agregar");
 				menu.add(menuCambiar);
-				menuCambiar.setText("Cambiar");
-			} else if(focus.equals(_lblJuzgado) && _lblJuzgado.getText().equals("vacio")) {
+			} else if(focus.equals(_lblJuzgado) && _juzgado == null) {
 				menuCambiar.setText("Agregar");
 				menu.add(menuCambiar);
-				menuCambiar.setText("Cambiar");
 			} else {
+				menuCambiar.setText("Cambiar");
 				menu.add(menuCambiar);
 				menu.add(menuEliminar);
 			}

@@ -2,6 +2,7 @@ package gui;
 
 import core.Persona;
 import net.rim.device.api.system.KeyListener;
+import net.rim.device.api.ui.Manager;
 import net.rim.device.api.ui.UiApplication;
 import net.rim.device.api.ui.component.LabelField;
 import net.rim.device.api.ui.component.SeparatorField;
@@ -27,8 +28,10 @@ public class ListadoPersonasPopUp extends PopupScreen {
 	}
 
 	public ListadoPersonasPopUp(int tipo, long style) {
-		super(new VerticalFieldManager());
+		super(new VerticalFieldManager(Manager.VERTICAL_SCROLL | Manager.VERTICAL_SCROLLBAR));
 		_title = new LabelField("Personas", FIELD_HCENTER);
+		add(_title);
+		add(new SeparatorField());
 		_tipo = tipo;
 		_style = style;
 		_lista = new ListadoPersonasLista();
@@ -103,8 +106,6 @@ public class ListadoPersonasPopUp extends PopupScreen {
 
 	public void setTitle(String title) {
 		_title.setText(title);
-		add(_title);
-		add(new SeparatorField());
 	}
 
 	public class ListenerKey implements KeyListener {

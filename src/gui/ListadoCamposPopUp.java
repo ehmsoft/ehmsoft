@@ -2,6 +2,7 @@ package gui;
 
 import core.CampoPersonalizado;
 import net.rim.device.api.system.KeyListener;
+import net.rim.device.api.ui.Manager;
 import net.rim.device.api.ui.UiApplication;
 import net.rim.device.api.ui.component.LabelField;
 import net.rim.device.api.ui.component.SeparatorField;
@@ -21,7 +22,7 @@ public class ListadoCamposPopUp extends PopupScreen {
 	long _style;
 
 	public ListadoCamposPopUp(long style) {
-		super(new VerticalFieldManager());
+		super(new VerticalFieldManager(Manager.VERTICAL_SCROLL | Manager.VERTICAL_SCROLLBAR));
 
 			_title = new LabelField("Campos personalizados",
 					LabelField.FIELD_HCENTER);

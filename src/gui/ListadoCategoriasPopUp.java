@@ -3,8 +3,10 @@ package gui;
 import core.Categoria;
 import net.rim.device.api.system.KeyListener;
 import net.rim.device.api.ui.Field;
+import net.rim.device.api.ui.Manager;
 import net.rim.device.api.ui.UiApplication;
 import net.rim.device.api.ui.component.LabelField;
+import net.rim.device.api.ui.component.SeparatorField;
 import net.rim.device.api.ui.container.PopupScreen;
 import net.rim.device.api.ui.container.VerticalFieldManager;
 
@@ -21,9 +23,11 @@ public class ListadoCategoriasPopUp extends PopupScreen {
 	private long _style;
 	
 	public ListadoCategoriasPopUp(long style) {
-		super(new VerticalFieldManager());
+		super(new VerticalFieldManager(Manager.VERTICAL_SCROLL | Manager.VERTICAL_SCROLLBAR));
 		_title = new LabelField("Categorias",
 				Field.FIELD_HCENTER);
+		add(_title);
+		add(new SeparatorField());
 		
 		_lista = new ListadoCategoriasLista();
 		if ((_style & NO_NUEVO) != NO_NUEVO) {
