@@ -2,6 +2,9 @@ package gui;
 
 import persistence.Persistence;
 
+import net.rim.device.api.system.Characters;
+import net.rim.device.api.system.KeyListener;
+import net.rim.device.api.system.KeypadListener;
 import net.rim.device.api.ui.Field;
 import net.rim.device.api.ui.FieldChangeListener;
 import net.rim.device.api.ui.MenuItem;
@@ -49,7 +52,19 @@ public class ListadoPersonasScreen extends MainScreen {
 		if ((_style & SEARCH) == SEARCH) {
 			add(_lista.getKeywordField());
 		}
+		
+		ListenerKey k = new ListenerKey() {
+			public boolean keyDown(int keycode, int time) {
+				if (keycode == 1114112) {
+					menuLlamar.run();
+					return true;
+				} else {
+					return false;
+				}
+			}
+		};
 		add(_lista);
+		addKeyListener(k);
 	}
 
 	protected boolean navigationClick(int status, int time) {
@@ -117,33 +132,29 @@ public class ListadoPersonasScreen extends MainScreen {
 		public EditarLlamar(String numero) {
 			super(new VerticalFieldManager());
 			if(numero != null) {
-				_txtNumero = new BasicEditField(null, numero);
+				_txtNumero = new BasicEditField(BasicEditField.NO_NEWLINE);
+				_txtNumero.setText(numero);
 			} else {
-				_txtNumero = new BasicEditField(null, "");
+				_txtNumero = new BasicEditField(BasicEditField.NO_NEWLINE);
+				_txtNumero.setText("");
 			}
 			
-			final ButtonField aceptar = new ButtonField("Llamar", FIELD_HCENTER);
-			final ButtonField cancelar = new ButtonField("Cancelar", FIELD_HCENTER);
-						
-			FieldChangeListener listener = new FieldChangeListener() {
-				
-				public void fieldChanged(Field field, int context) {
-					if(field.equals(aceptar)) {
-						UiApplication.getUiApplication().popScreen(getScreen());
-					} else if(field.equals(cancelar)) {
+			add(_txtNumero);
+			ListenerKey k = new ListenerKey() {
+				public boolean keyDown(int keycode, int time) {
+					if (keycode == 1769472) {
 						_txtNumero.setText("");
 						UiApplication.getUiApplication().popScreen(getScreen());
+						return true;
+					} else if (keycode == 1114112) {
+						UiApplication.getUiApplication().popScreen(getScreen());
+						return true;
+					} else {
+						return false;
 					}
 				}
 			};
-			
-			aceptar.setChangeListener(listener);
-			cancelar.setChangeListener(listener);
-			
-			add(_txtNumero);
-			add(new SeparatorField());
-			add(aceptar);
-			add(cancelar);
+			addKeyListener(k);
 		}
 		
 		public String getNumber() {
@@ -152,6 +163,11 @@ public class ListadoPersonasScreen extends MainScreen {
 			} else {
 				return _txtNumero.getText();
 			}
+		}
+		
+		protected boolean navigationClick(int status, int time) {
+			UiApplication.getUiApplication().popScreen(getScreen());
+			return true;
 		}
 	}
 	
@@ -223,5 +239,29 @@ public class ListadoPersonasScreen extends MainScreen {
 	public boolean onClose() {
 		UiApplication.getUiApplication().popScreen(getScreen());
 		return true;
+	}
+	
+	public class ListenerKey implements KeyListener {
+		// Implement methods in the KeyListener interface for handling keyboard
+		// events:
+		public boolean keyChar(char key, int status, int time) {
+			return false;
+		}
+
+		public boolean keyDown(int keycode, int time) {
+			return false;
+		}
+
+		public boolean keyRepeat(int keycode, int time) {
+			return false;
+		}
+
+		public boolean keyStatus(int keycode, int time) {
+			return false;
+		}
+
+		public boolean keyUp(int keycode, int time) {
+			return false;
+		}
 	}
 }
