@@ -142,7 +142,7 @@ public class Persistence implements Cargado, Guardado {
 				stDelPersona2 = d
 						.createStatement("UPDATE procesos SET id_demandante = 1 WHERE id_demandante = ?");
 				stDelPersona3 = d
-				.createStatement("UPDATE pantillas SET id_demandante = 1 WHERE id_demandante = ?");
+				.createStatement("UPDATE plantillas SET id_demandante = 1 WHERE id_demandante = ?");
 
 				
 			} else if (persona.getTipo() == 2) {
