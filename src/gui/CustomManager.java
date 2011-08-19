@@ -4,7 +4,6 @@ import net.rim.device.api.system.Display;
 import net.rim.device.api.ui.Field;
 import net.rim.device.api.ui.FocusChangeListener;
 import net.rim.device.api.ui.Font;
-import net.rim.device.api.ui.Graphics;
 import net.rim.device.api.ui.Manager;
 import net.rim.device.api.ui.XYEdges;
 import net.rim.device.api.ui.component.LabelField;
@@ -97,7 +96,7 @@ class ListadoManager extends Manager {
 	ListaListas _lista;
 
 	public ListadoManager(ListaListas l) {
-		super(Manager.VERTICAL_SCROLL);
+		super(Manager.VERTICAL_SCROLL | Manager.VERTICAL_SCROLLBAR);
 		_lista = l;
 		add(_lista);
 		_lista.setSelectedIndex(0);
@@ -108,14 +107,9 @@ class ListadoManager extends Manager {
 		int w = (int) (Display.getWidth() * 0.0333333333333);
 		int h = (int) (Display.getHeight() * 0.133333333);
 
-		layoutChild(_lista, width + p, Display.getHeight() - h - (w * 2) - p);
+		layoutChild(_lista, width + p, Display.getHeight() - h - (w * 2) - (2 * p));
 		setPositionChild(_lista, 0, 0);
 		setExtent((Display.getWidth() - (w * 2)) / 2 - (p * 3),
-				Display.getHeight() - h - (w * 2) - 2 * p);
-	}
-
-	protected void paint(Graphics g) {
-		g.setDrawingStyle(Graphics.DRAWSTYLE_AAPOLYGONS, true);
-		super.paint(g);
+				Display.getHeight() - h - (w * 2) - (2 * p));
 	}
 }
