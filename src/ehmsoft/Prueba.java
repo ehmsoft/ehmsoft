@@ -241,12 +241,7 @@ public class Prueba extends MainScreen {
 
 		public void fieldChanged(Field field, int context) {
 			NuevaPersona nuevo = new NuevaPersona(1);
-			UiApplication.getUiApplication().pushModalScreen(nuevo.getScreen());
-			try {
-				nuevo.guardarPersona();
-			} catch (Exception e) {
-				Dialog.alert(e.toString());
-			}
+			UiApplication.getUiApplication().pushScreen(nuevo.getScreen());
 		}
 	};
 
@@ -254,12 +249,7 @@ public class Prueba extends MainScreen {
 
 		public void fieldChanged(Field field, int context) {
 			NuevaPersona nuevo = new NuevaPersona(2);
-			UiApplication.getUiApplication().pushModalScreen(nuevo.getScreen());
-			try {
-				nuevo.guardarPersona();
-			} catch (Exception e) {
-				Dialog.alert(e.toString());
-			}
+			UiApplication.getUiApplication().pushScreen(nuevo.getScreen());
 		}
 	};
 
