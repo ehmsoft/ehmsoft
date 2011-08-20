@@ -267,12 +267,7 @@ public class Prueba extends MainScreen {
 
 		public void fieldChanged(Field field, int context) {
 			NuevoJuzgado nuevo = new NuevoJuzgado();
-			UiApplication.getUiApplication().pushModalScreen(nuevo.getScreen());
-			try {
-				nuevo.guardarJuzgado();
-			} catch (Exception e) {
-				Dialog.alert(e.toString());
-			}
+			UiApplication.getUiApplication().pushScreen(nuevo.getScreen());
 		}
 	};
 
