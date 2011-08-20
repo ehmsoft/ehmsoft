@@ -2,18 +2,12 @@ package gui;
 
 import persistence.Persistence;
 
-import net.rim.device.api.system.Characters;
 import net.rim.device.api.system.KeyListener;
-import net.rim.device.api.system.KeypadListener;
-import net.rim.device.api.ui.Field;
-import net.rim.device.api.ui.FieldChangeListener;
 import net.rim.device.api.ui.MenuItem;
 import net.rim.device.api.ui.UiApplication;
 import net.rim.device.api.ui.component.BasicEditField;
-import net.rim.device.api.ui.component.ButtonField;
 import net.rim.device.api.ui.component.Dialog;
 import net.rim.device.api.ui.component.Menu;
-import net.rim.device.api.ui.component.SeparatorField;
 import net.rim.device.api.ui.container.MainScreen;
 import net.rim.device.api.ui.container.PopupScreen;
 import net.rim.device.api.ui.container.VerticalFieldManager;
@@ -80,19 +74,17 @@ public class ListadoPersonasScreen extends MainScreen {
 	private void onNew() {
 		NuevaPersona n = new NuevaPersona(_tipo);
 		UiApplication.getUiApplication().pushModalScreen(n.getScreen());
-		try {
-			if((_style & NO_NUEVO) == NO_NUEVO) {
-				_lista.insert(0, n.getPersona());
+		Persona persona = n.getPersona();
+		if (persona != null) {
+			if ((_style & NO_NUEVO) == NO_NUEVO) {
+				_lista.insert(0, persona);
 				_lista.setSelectedIndex(0);
 			} else {
-				_lista.insert(1, n.getPersona());
+				_lista.insert(1, persona);
 				_lista.setSelectedIndex(1);
 			}
-		} catch (Exception e) {
-
-		} finally {
-			n = null;
 		}
+		n = null;
 	}
 
 	private void onClick() {
