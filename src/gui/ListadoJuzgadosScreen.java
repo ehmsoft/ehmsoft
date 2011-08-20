@@ -50,19 +50,17 @@ public class ListadoJuzgadosScreen extends MainScreen {
 	private void onNew() {
 		NuevoJuzgado n = new NuevoJuzgado();
 		UiApplication.getUiApplication().pushModalScreen(n.getScreen());
-		try {
-			if((_style & NO_NUEVO) == NO_NUEVO) {
+		Juzgado juzgado = n.getJuzgado();
+		if (juzgado != null) {
+			if ((_style & NO_NUEVO) == NO_NUEVO) {
 				_lista.insert(0, n.getJuzgado());
 				_lista.setSelectedIndex(0);
 			} else {
 				_lista.insert(1, n.getJuzgado());
 				_lista.setSelectedIndex(1);
 			}
-		} catch (Exception e) {
-
-		} finally {
-			n = null;
 		}
+		n = null;
 	}
 
 	private void onClick() {
