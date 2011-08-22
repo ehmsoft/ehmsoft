@@ -3,7 +3,6 @@ package gui;
 import net.rim.device.api.system.KeyListener;
 import net.rim.device.api.ui.Field;
 import net.rim.device.api.ui.FieldChangeListener;
-import net.rim.device.api.ui.UiApplication;
 import net.rim.device.api.ui.component.BasicEditField;
 import net.rim.device.api.ui.component.ButtonField;
 import net.rim.device.api.ui.component.Dialog;
@@ -15,7 +14,9 @@ import net.rim.device.api.ui.container.VerticalFieldManager;
 public class NuevaCategoriaPopUp extends PopupScreen {
 	
 	private BasicEditField _txtDescripcion;
-	private boolean _guardar = false;
+	
+	public final int GUARDAR = 1;
+	public final int CERRAR = 2;
 
 	public NuevaCategoriaPopUp() {
 		super(new VerticalFieldManager());
@@ -37,25 +38,23 @@ public class NuevaCategoriaPopUp extends PopupScreen {
 		addKeyListener(new ListenerKey());
 	}
 	
+	public void alert(String string) {
+		Dialog.alert(string);
+	}
+	
+	public int ask(Object[] options, String string, int index) {
+		return Dialog.ask(string, options, index);
+	}
+	
 	private FieldChangeListener listenetAceptar = new FieldChangeListener() {
 		
 		public void fieldChanged(Field field, int context) {
-			if (_txtDescripcion.getTextLength() == 0) {
-				Dialog.inform("Todos los campos están vacíos, no se guardará");
-				UiApplication.getUiApplication().popScreen(getScreen());
-			} else {
-				_guardar = true;
-				UiApplication.getUiApplication().popScreen(getScreen());
-			}
+			fieldChangeNotify(GUARDAR);
 		}
 	};
 	
 	public String getDescripcion() {
 		return _txtDescripcion.getText();
-	}
-
-	public boolean isGuardado() {
-		return _guardar;
 	}
 	
 	public class ListenerKey implements KeyListener
@@ -67,27 +66,11 @@ public class NuevaCategoriaPopUp extends PopupScreen {
 	     
 		public boolean keyDown(int keycode, int time) {
 			if (keycode == 1769472) {
-				if (_txtDescripcion.getTextLength() != 0) {
-					Object[] ask = { "Guardar", "Descartar", "Cancelar" };
-					int sel = Dialog.ask("Se han detectado cambios", ask, 2);
-					if (sel == 0) {
-						_guardar = true;
-						UiApplication.getUiApplication().popScreen(getScreen());
-						return true;
-					} else if (sel == 1) {
-						UiApplication.getUiApplication().popScreen(getScreen());
-						return true;
-					} else if (sel == 2) {
-						return true;
-					}
-				} else {
-					UiApplication.getUiApplication().popScreen(getScreen());
-					return true;
-				}
+				fieldChangeNotify(CERRAR);
+				return true;
 			} else {
 				return false;
 			}
-			return true;
 		}
 
 		public boolean keyRepeat(int keycode, int time) {
