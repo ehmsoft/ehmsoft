@@ -26,7 +26,7 @@ public class VerActuacionScreen extends FondoNormal {
 	private DateField _dfFechaProxima;
 	private EditableTextField _txtDescripcion;
 	private Actuacion _actuacion;
-	private Juzgado _juzgado;	
+	private Juzgado _juzgado;
 
 	private boolean _guardar = false;
 	private boolean _eliminar = false;
@@ -36,23 +36,24 @@ public class VerActuacionScreen extends FondoNormal {
 	private Bitmap _bell = Bitmap.getBitmapResource("bell.png");
 	private Bitmap _clock = Bitmap.getBitmapResource("clock.png");
 
-	public VerActuacionScreen(Actuacion actuacion) {		
+	public VerActuacionScreen(Actuacion actuacion) {
 		HorizontalFieldManager h = new HorizontalFieldManager();
 		VerticalFieldManager r = new VerticalFieldManager(Field.USE_ALL_WIDTH);
 		VerticalFieldManager l = new VerticalFieldManager();
-		HorizontalFieldManager r1 = new HorizontalFieldManager(Field.FIELD_RIGHT);
+		HorizontalFieldManager r1 = new HorizontalFieldManager(
+				Field.FIELD_RIGHT);
 		_cita = new BitmapField(null);
 		_alarm = new BitmapField(null);
-		
+
 		r1.add(_cita);
 		r1.add(_alarm);
-		
+
 		l.add(new LabelField("Actuacion"));
-		r.add(r1);		
+		r.add(r1);
 
 		h.add(l);
 		h.add(r);
-		setTitle(h);		
+		setTitle(h);
 
 		_actuacion = actuacion;
 		_uid = _actuacion.getUid();
@@ -77,28 +78,28 @@ public class VerActuacionScreen extends FondoNormal {
 		add(_dfFechaProxima);
 		add(_txtDescripcion);
 	}
-	
+
 	public void setCita(boolean cita, boolean alarm) {
-		if(cita) {
+		if (cita) {
 			_cita.setBitmap(_clock);
 		} else {
 			_cita.setBitmap(null);
 		}
-		if(alarm) {
+		if (alarm) {
 			_alarm.setBitmap(_bell);
 		} else {
 			_alarm.setBitmap(null);
 		}
 	}
-	
+
 	protected void makeMenu(Menu menu, int instance) {
 		Field focus = UiApplication.getUiApplication().getActiveScreen()
-		.getFieldWithFocus();
-		if(focus.equals(_txtJuzgado)) {
+				.getFieldWithFocus();
+		if (focus.equals(_txtJuzgado)) {
 			menu.add(menuCambiar);
 			menu.addSeparator();
 		}
-		if(_uid != null) {
+		if (_uid != null) {
 			menu.add(menuVerCita);
 			menu.add(menuEliminarCita);
 			menu.addSeparator();
@@ -129,18 +130,19 @@ public class VerActuacionScreen extends FondoNormal {
 	private final MenuItem menuAddCita = new MenuItem("Agregar cita", 0, 0) {
 
 		public void run() {
-			NuevaCita n = new NuevaCita(getDescripcion(), getFechaProxima().getTime());
+			NuevaCita n = new NuevaCita(getDescripcion(), getFechaProxima()
+					.getTime());
 			UiApplication.getUiApplication().pushModalScreen(n.getScreen());
 			_uid = n.getUid();
-			if(_uid != null) {
+			if (_uid != null) {
 				setCita(true, false);
-				if(n.isAlarma()) {
+				if (n.hasAlarma()) {
 					setCita(true, true);
 				}
 			}
 		}
 	};
-	
+
 	private final MenuItem menuEliminarCita = new MenuItem("Eliminar cita", 0,
 			0) {
 
@@ -153,13 +155,13 @@ public class VerActuacionScreen extends FondoNormal {
 					CalendarManager.borrarCita(_uid);
 					_uid = null;
 					setCita(false, false);
-				} catch(Exception e) {
+				} catch (Exception e) {
 					Dialog.alert(e.toString());
 				}
 			}
 		}
 	};
-	
+
 	private final MenuItem menuGuardar = new MenuItem("Guardar", 0, 0) {
 
 		public void run() {
@@ -174,8 +176,7 @@ public class VerActuacionScreen extends FondoNormal {
 			Field f = getFieldWithFocus();
 			if (f.equals(_txtJuzgado)) {
 				VerJuzgado v = new VerJuzgado(_juzgado);
-				UiApplication.getUiApplication().pushModalScreen(
-						v.getScreen());
+				UiApplication.getUiApplication().pushModalScreen(v.getScreen());
 				v.actualizarJuzgado();
 				_juzgado = v.getJuzgado();
 				_txtJuzgado.setText(_juzgado.getNombre());
@@ -225,19 +226,21 @@ public class VerActuacionScreen extends FondoNormal {
 		}
 	};
 
-	private final MenuItem menuEliminarActuacion = new MenuItem("Eliminar actuación", 0, 0) {
+	private final MenuItem menuEliminarActuacion = new MenuItem(
+			"Eliminar actuación", 0, 0) {
 
 		public void run() {
 			Object[] ask = { "Si", "No" };
 			int sel = Dialog.ask("¿Desea eliminar la actuación?", ask, 1);
 			if (sel == 0) {
-				if(_actuacion.getUid() != null) {
-					sel = Dialog.ask("¿Desea eliminar la cita del calendario?", ask, 1);
-					if(sel == 0) {
+				if (_actuacion.getUid() != null) {
+					sel = Dialog.ask("¿Desea eliminar la cita del calendario?",
+							ask, 1);
+					if (sel == 0) {
 						try {
-						CalendarManager.borrarCita(_uid);
-						_uid = null;
-						} catch(Exception e) {
+							CalendarManager.borrarCita(_uid);
+							_uid = null;
+						} catch (Exception e) {
 							Dialog.alert(e.toString());
 						}
 					}
@@ -267,7 +270,7 @@ public class VerActuacionScreen extends FondoNormal {
 	public String getDescripcion() {
 		return _txtDescripcion.getText();
 	}
-	
+
 	public String getUid() {
 		return _uid;
 	}
@@ -279,7 +282,7 @@ public class VerActuacionScreen extends FondoNormal {
 	public boolean isEliminado() {
 		return _eliminar;
 	}
-	
+
 	public boolean isCambiado() {
 		boolean cambio = false;
 
@@ -308,10 +311,9 @@ public class VerActuacionScreen extends FondoNormal {
 						.get(Calendar.HOUR_OF_DAY))
 				|| (fP1.get(Calendar.MINUTE) != fP2.get(Calendar.MINUTE)))
 			cambio = true;
-		else if (!_actuacion.getDescripcion().equals(
-				getDescripcion()))
+		else if (!_actuacion.getDescripcion().equals(getDescripcion()))
 			cambio = true;
-		else if(_actuacion.getUid() != _uid) {
+		else if (_actuacion.getUid() != _uid) {
 			cambio = true;
 		}
 		return cambio;

@@ -55,19 +55,20 @@ public class NuevaActuacionScreen extends FondoNormal {
 		_txtDescripcion = new BasicEditField();
 		_txtDescripcion.setLabel("Descripción: ");
 		add(_txtDescripcion);
-		
+
 		_cbCita = new CheckboxField("Crear cita", false);
 		_cbCita.setChangeListener(listenerCita);
 		add(_cbCita);
 
 		addMenuItem(menuGuardar);
 	}
-	
+
 	protected void makeMenu(Menu menu, int instance) {
-		Field f = UiApplication.getUiApplication().getActiveScreen().getLeafFieldWithFocus();
-		if(f.equals(_lblJuzgado)) {
+		Field f = UiApplication.getUiApplication().getActiveScreen()
+				.getLeafFieldWithFocus();
+		if (f.equals(_lblJuzgado)) {
 			LabelField temp = (LabelField) f;
-			if(temp.getText().equals("*Ninguno*")) {
+			if (temp.getText().equals("*Ninguno*")) {
 				menu.add(menuAgregar);
 				menu.addSeparator();
 			} else {
@@ -77,7 +78,7 @@ public class NuevaActuacionScreen extends FondoNormal {
 		}
 		menu.add(menuGuardar);
 	}
-	
+
 	private final MenuItem menuAgregar = new MenuItem("Agregar", 0, 0) {
 
 		public void run() {
@@ -87,22 +88,22 @@ public class NuevaActuacionScreen extends FondoNormal {
 			try {
 				_juzgado = l.getSelected();
 				setJuzgado(_juzgado);
-			} catch(NullPointerException e) {
-			} catch(Exception e) {
+			} catch (NullPointerException e) {
+			} catch (Exception e) {
 				Dialog.alert(e.toString());
 			} finally {
 				l = null;
 			}
 		}
 	};
-	
+
 	private final MenuItem menuCambiar = new MenuItem("Cambiar", 0, 0) {
 
 		public void run() {
 			menuAgregar.run();
 		}
 	};
-	
+
 	private FieldChangeListener listenerCita = new FieldChangeListener() {
 		public void fieldChanged(Field field, int context) {
 			if (_cbCita.getChecked()) {
@@ -111,12 +112,12 @@ public class NuevaActuacionScreen extends FondoNormal {
 				UiApplication.getUiApplication().pushModalScreen(n.getScreen());
 				n.guardarCita();
 				_uid = n.getUid();
-				if (!n.isGuardado()) {
+				if (_uid == null) {
 					_cbCita.setChecked(false);
 				}
 			} else {
 				try {
-					if(_uid != null) {
+					if (_uid != null) {
 						CalendarManager.borrarCita(_uid);
 					}
 				} catch (Exception e) {
@@ -201,7 +202,7 @@ public class NuevaActuacionScreen extends FondoNormal {
 		}
 		return descripcion;
 	}
-	
+
 	public String getUid() {
 		return _uid;
 	}
