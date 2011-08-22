@@ -53,18 +53,15 @@ public class ListadoCategoriasScreen extends MainScreen {
 	private void onNew() {
 		NuevaCategoria n = new NuevaCategoria();
 		UiApplication.getUiApplication().pushModalScreen(n.getScreen());
-		try {
+		Categoria c = n.getCategoria();
+		if(c != null) {
 			if((_style & NO_NUEVO) == NO_NUEVO) {
-				_lista.insert(0, n.getCategoria());
+				_lista.insert(0, c);
 				_lista.setSelectedIndex(0);
 			} else {
-				_lista.insert(1, n.getCategoria());
+				_lista.insert(1, c);
 				_lista.setSelectedIndex(1);
 			}
-		} catch (Exception e) {
-
-		} finally {
-			n = null;
 		}
 	}
 
