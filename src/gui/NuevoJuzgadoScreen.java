@@ -1,6 +1,5 @@
 package gui;
 
-import net.rim.device.api.ui.FieldChangeListener;
 import net.rim.device.api.ui.MenuItem;
 import net.rim.device.api.ui.component.BasicEditField;
 import net.rim.device.api.ui.component.Dialog;
@@ -12,14 +11,16 @@ public class NuevoJuzgadoScreen extends FondoNormal {
 	private BasicEditField _txtDireccion;
 	private BasicEditField _txtTelefono;
 	private BasicEditField _txtTipo;
+	
+	public final int GUARDAR = 1;
+	public final int CERRAR = 2;
 
 	/**
 	 * Crea un NuevoJuzgadoScreen que es la pantalla para capturar los datos
 	 * para crear un nuevo Juzgado
 	 */
-	public NuevoJuzgadoScreen(FieldChangeListener listener) {
+	public NuevoJuzgadoScreen() {
 		setTitle("Nuevo juzgado");
-		setChangeListener(listener);
 
 		_txtNombre = new BasicEditField(BasicEditField.NO_NEWLINE);
 		_txtNombre.setLabel("Nombre: ");
@@ -47,7 +48,7 @@ public class NuevoJuzgadoScreen extends FondoNormal {
 	private final MenuItem menuGuardar = new MenuItem("Guardar", 0, 0) {
 
 		public void run() {
-			fieldChangeNotify(NuevoJuzgado.GUARDAR);
+			fieldChangeNotify(GUARDAR);
 		}
 	};
 
@@ -99,7 +100,7 @@ public class NuevoJuzgadoScreen extends FondoNormal {
 	 */
 
 	public boolean onClose() {
-		fieldChangeNotify(NuevoJuzgado.CERRAR);
+		fieldChangeNotify(CERRAR);
 		return false;
 	}
 }

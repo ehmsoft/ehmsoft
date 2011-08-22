@@ -1,6 +1,5 @@
 package gui;
 
-import net.rim.device.api.ui.FieldChangeListener;
 import net.rim.device.api.ui.MenuItem;
 import net.rim.device.api.ui.component.BasicEditField;
 import net.rim.device.api.ui.component.Dialog;
@@ -13,10 +12,12 @@ public class NuevaPersonaScreen extends FondoNormal {
 	private BasicEditField _txtTelefono;
 	private BasicEditField _txtCorreo;
 	private BasicEditField _txtNotas;
+	
+	public final int GUARDAR = 1;
+	public final int CERRAR = 2;
 
-	public NuevaPersonaScreen(FieldChangeListener listener) {
+	public NuevaPersonaScreen() {
 		super();
-		setChangeListener(listener);
 
 		// Se inicializan con el estilo
 		_txtNombre = new BasicEditField(BasicEditField.NO_NEWLINE);
@@ -45,10 +46,10 @@ public class NuevaPersonaScreen extends FondoNormal {
 	private final MenuItem menuGuardar = new MenuItem("Guardar", 0, 0) {
 
 		public void run() {
-			fieldChangeNotify(NuevaPersona.GUARDAR);
+			fieldChangeNotify(GUARDAR);
 		}
 	};
-	
+
 	public void showAlert(String alert) {
 		Dialog.alert(alert);
 	}
@@ -110,7 +111,7 @@ public class NuevaPersonaScreen extends FondoNormal {
 	 */
 
 	public boolean onClose() {
-		fieldChangeNotify(NuevaPersona.CERRAR);
+		fieldChangeNotify(CERRAR);
 		return false;
 	}
 }

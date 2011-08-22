@@ -10,19 +10,17 @@ public class NuevoJuzgado {
 	private Juzgado _juzgado;
 	private NuevoJuzgadoScreen _screen;
 
-	public static final int GUARDAR = 1;
-	public static final int CERRAR = 2;
-
 	public NuevoJuzgado() {
-		_screen = new NuevoJuzgadoScreen(listener);
+		_screen = new NuevoJuzgadoScreen();
+		_screen.setChangeListener(listener);
 	}
 
 	FieldChangeListener listener = new FieldChangeListener() {
 
 		public void fieldChanged(Field field, int context) {
-			if (context == GUARDAR) {
+			if (context == _screen.GUARDAR) {
 				guardarJuzgado();
-			} else if (context == CERRAR) {
+			} else if (context == _screen.CERRAR) {
 				cerrarPantalla();
 			}
 		}
@@ -71,7 +69,7 @@ public class NuevoJuzgado {
 			new Persistence().guardarJuzgado(_juzgado);
 			UiApplication.getUiApplication().popScreen(_screen);
 		} catch (NullPointerException e) {
-			_screen.showAlert("Tarjeta SD no presente, la aplicación se cerrará, verifique e iniciela nuevamente");
+			_screen.showAlert("Tarjeta SD no presente, la aplicación se cerrará, verifique e inicie nuevamente");
 			System.exit(0);
 		} catch (Exception e) {
 			_screen.showAlert(e.toString());

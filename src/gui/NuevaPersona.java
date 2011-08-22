@@ -10,9 +10,6 @@ public class NuevaPersona {
 	private Persona _persona;
 	private NuevaPersonaScreen _screen;
 	private int _tipo;
-	
-	public static final int GUARDAR = 1;
-	public static final int CERRAR = 2;
 
 	/**
 	 * @param tipo
@@ -21,20 +18,21 @@ public class NuevaPersona {
 	 */
 	public NuevaPersona(int tipo) {
 		_tipo = tipo;
-		_screen = new NuevaPersonaScreen(listener);
-		if(tipo == 1) {
+		_screen = new NuevaPersonaScreen();
+		_screen.setChangeListener(listener);
+		if (tipo == 1) {
 			_screen.setTitle("Nuevo demandante");
 		} else {
 			_screen.setTitle("Nuevo demandado");
 		}
 	}
-	
+
 	FieldChangeListener listener = new FieldChangeListener() {
 
 		public void fieldChanged(Field field, int context) {
-			if (context == GUARDAR) {
+			if (context == _screen.GUARDAR) {
 				guardarPersona();
-			} else if (context == CERRAR) {
+			} else if (context == _screen.CERRAR) {
 				cerrarPantalla();
 			}
 		}
@@ -76,12 +74,14 @@ public class NuevaPersona {
 	}
 
 	private void guardar() {
-		_persona = new Persona(_tipo , _screen.getCedula(), _screen.getNombre(), _screen.getTelefono(), _screen.getDireccion(), _screen.getCorreo(), _screen.getNotas());
+		_persona = new Persona(_tipo, _screen.getCedula(), _screen.getNombre(),
+				_screen.getTelefono(), _screen.getDireccion(),
+				_screen.getCorreo(), _screen.getNotas());
 		try {
 			new Persistence().guardarPersona(_persona);
 			UiApplication.getUiApplication().popScreen(_screen);
 		} catch (NullPointerException e) {
-			_screen.showAlert("Tarjeta SD no presente, la aplicación se cerrará, verifique e iniciela nuevamente");
+			_screen.showAlert("Tarjeta SD no presente, la aplicación se cerrará, verifique e inicie nuevamente");
 			System.exit(0);
 		} catch (Exception e) {
 			_screen.showAlert(e.toString());
