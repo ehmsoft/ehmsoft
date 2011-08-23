@@ -208,6 +208,13 @@ public class ConnectionManager {
 			st.prepare();
 			st.execute();
 			st.close();
+			//Crear Tabla Log
+			st = d.createStatement("CREATE TABLE 'log'("+
+					"'fecha' DATE,"+
+			"'descripcion' TEXT)");
+			st.prepare();
+			st.execute();
+			st.close();
 			//Insertar la categoria por defecto
 			st = d.createStatement("INSERT INTO 'categorias' VALUES(1,"+"'Ninguna')");
 			st.prepare();
@@ -245,6 +252,11 @@ public class ConnectionManager {
             st.close();
           //Insertar la versión de la base de datos Llave 999
 			st = d.createStatement("INSERT INTO 'preferencias' VALUES(999,2)");
+			st.prepare();
+			st.execute();
+			st.close();
+		//Insertar en el log la fecha de creacion
+			st = d.createStatement("INSERT INTO 'log'(fecha, descripcion) VALUES(datetime()," + " 'Se crea BD')");
 			st.prepare();
 			st.execute();
 			st.close();

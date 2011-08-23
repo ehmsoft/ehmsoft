@@ -1025,7 +1025,6 @@ throws Exception {
 }
 
 public void borrarPreferencia(int id_preferencia) throws Exception {
-// TODO Auto-generated method stub
 	Database d = null;
 	try {
 		connMgr.prepararBD();
@@ -1046,6 +1045,26 @@ public void borrarPreferencia(int id_preferencia) throws Exception {
 	}
 
 }
+	public void log(String descripcion) throws Exception{
+		Database d = null;
+		try {
+			connMgr.prepararBD();
+			d = DatabaseFactory.open(connMgr.getDbLocation());
+			Statement stPreferencias = d
+					.createStatement("INSERT INTO log(fecha, descripcion) VALUES(datetime(),?) ");
+			stPreferencias.prepare();
+			stPreferencias.bind(1, descripcion);
+			stPreferencias.execute();
+			stPreferencias.close();
+			
+		} catch (Exception e) {
+			throw e;
+		} finally {
+			if (d != null) {
+				d.close();
+			}
+		}
+	}
 	public Vector consultarDemandantes() throws Exception {// Devuelve una
 															// vector iterable
 															// de todos los
