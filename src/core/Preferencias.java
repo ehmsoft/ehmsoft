@@ -2,7 +2,7 @@ package core;
 
 import persistence.Persistence;
 import net.rim.device.api.ui.Font;
-import net.rim.device.api.ui.UiApplication;
+
 
 public class Preferencias {
 	private static boolean mostrarCampoBusqueda = true;
@@ -12,6 +12,9 @@ public class Preferencias {
 	private static boolean recodarUltimaCategoria = false;
 	private static int pantallaInicial = Persistence.LISTADO_PROCESOS;
 	private static int cantidadActuacionesCriticas = 10;
+	
+	//TODO Agregar las constantes respectivas
+	
 	public static boolean isMostrarCampoBusqueda() {
 		return mostrarCampoBusqueda;
 	}
