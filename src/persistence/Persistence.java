@@ -1000,7 +1000,7 @@ try {
 
 }
 
-public void actualizarPreferencia(int id_preferencia, long valor)
+public void actualizarPreferencia(int id_preferencia, String valor)
 throws Exception {
 	Database d = null;
 	try {
@@ -1031,7 +1031,7 @@ public void borrarPreferencia(int id_preferencia) throws Exception {
 		connMgr.prepararBD();
 		d = DatabaseFactory.open(connMgr.getDbLocation());
 		Statement stPreferencias = d
-				.createStatement("UPDATE preferencias SET valor = 0 WHERE id_preferencia = ?");
+				.createStatement("UPDATE preferencias SET valor = '0' WHERE id_preferencia = ?");
 		stPreferencias.prepare();
 		stPreferencias.bind(1, id_preferencia);
 		stPreferencias.execute();
@@ -1915,8 +1915,8 @@ public void borrarPreferencia(int id_preferencia) throws Exception {
 		}
 		return campo;
 	}
-	public long consultarPreferencia(int id_preferencia) throws Exception {
-		long valor = 0;
+	public String consultarPreferencia(int id_preferencia) throws Exception {
+		String valor = "0";
 		Database d = null;
 		try {
 			connMgr.prepararBD();
@@ -1928,7 +1928,7 @@ public void borrarPreferencia(int id_preferencia) throws Exception {
 			Cursor cursor = st.getCursor();
 			if (cursor.next()) {
 				Row row = cursor.getRow();
-				valor = row.getLong(0);
+				valor = row.getString(0);
 				
 			}
 			st.close();
