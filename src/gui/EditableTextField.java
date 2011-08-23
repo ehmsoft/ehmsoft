@@ -40,6 +40,10 @@ public class EditableTextField extends HorizontalFieldManager {
 		setText(initialValue);
 	}
 	
+	public EditableTextField(String label, long style) {
+		this(label,"",style);
+	}
+	
 	public EditableTextField(String label, String initialValue) {
 		this(label, initialValue, 0);
 	}
@@ -49,10 +53,10 @@ public class EditableTextField extends HorizontalFieldManager {
 	}
 
 	public void setText(String text) {
-		if(_editable) {
-			_txtField.setText(text);
-		} else {
-			_lblField.setText(text);
+		_txtField.setText(text);
+		_lblField.setText(text);
+		if (text.length() != 0) {
+			setEditable(false);
 		}
 	}
 	

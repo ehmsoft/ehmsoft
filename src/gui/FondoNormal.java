@@ -45,6 +45,14 @@ public abstract class FondoNormal extends MainScreen {
 		}
 	}
 	
+	public Field getFieldWithFocus() {
+		return _vertical.getFieldWithFocus();
+	}
+	
+	public Field getLeafFieldWithFocus() {
+		return _vertical.getLeafFieldWithFocus();
+	}
+	
 	public void delete(Field field) {
 		_vertical.delete(field);
 		int index = _vertical.getFieldWithFocusIndex();
