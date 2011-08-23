@@ -316,7 +316,6 @@ public class Prueba extends MainScreen {
 			}
 			VerJuzgado ver = new VerJuzgado(juzgado);
 			UiApplication.getUiApplication().pushModalScreen(ver.getScreen());
-			ver.actualizarJuzgado();
 		}
 	};
 
@@ -337,7 +336,6 @@ public class Prueba extends MainScreen {
 			}
 			VerPersona ver = new VerPersona(persona);
 			UiApplication.getUiApplication().pushModalScreen(ver.getScreen());
-			ver.actualizarPersona();
 		}
 	};
 
@@ -358,7 +356,6 @@ public class Prueba extends MainScreen {
 			}
 			VerPersona ver = new VerPersona(persona);
 			UiApplication.getUiApplication().pushModalScreen(ver.getScreen());
-			ver.actualizarPersona();
 		}
 	};
 

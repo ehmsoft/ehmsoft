@@ -182,7 +182,6 @@ public class ListadoPersonasScreen extends MainScreen {
 			VerPersona verPersona = new VerPersona(old);
 			UiApplication.getUiApplication().pushModalScreen(
 					verPersona.getScreen());
-			verPersona.actualizarPersona();
 			Persona nw = verPersona.getPersona();
 			_lista.update(old, nw);
 			if (_lista.getKeywordField().getTextLength() != 0) {

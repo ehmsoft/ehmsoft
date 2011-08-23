@@ -60,7 +60,7 @@ public class NuevaPersona {
 	private void guardarPersona() {
 
 		if (_screen.getNombre().equals("")) {
-			_screen.showAlert("El campo Nombre es obligatorio");
+			_screen.alert("El campo Nombre es obligatorio");
 		} else if (_screen.getTelefono().equals("")) {
 			Object[] ask = { "Guardar", "Cancelar" };
 			int sel = _screen.ask(ask,
@@ -81,10 +81,10 @@ public class NuevaPersona {
 			new Persistence().guardarPersona(_persona);
 			UiApplication.getUiApplication().popScreen(_screen);
 		} catch (NullPointerException e) {
-			_screen.showAlert("Tarjeta SD no presente, la aplicación se cerrará, verifique e inicie nuevamente");
+			_screen.alert(Util.noSD());
 			System.exit(0);
 		} catch (Exception e) {
-			_screen.showAlert(e.toString());
+			_screen.alert(e.toString());
 		}
 	}
 

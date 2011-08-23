@@ -526,7 +526,6 @@ public class VerProcesoScreen extends FondoNormal {
 					VerPersona verPersona = new VerPersona(_demandante);
 					UiApplication.getUiApplication().pushModalScreen(
 							verPersona.getScreen());
-					verPersona.actualizarPersona();
 					_demandante = verPersona.getPersona();
 					_lblDemandante.setText(_demandante.getNombre());
 					_lblDemandante.setFocus();
@@ -534,7 +533,6 @@ public class VerProcesoScreen extends FondoNormal {
 					VerPersona verPersona = new VerPersona(_demandado);
 					UiApplication.getUiApplication().pushModalScreen(
 							verPersona.getScreen());
-					verPersona.actualizarPersona();
 					_demandado = verPersona.getPersona();
 					_lblDemandado.setText(_demandado.getNombre());
 					_lblDemandado.setFocus();
@@ -543,7 +541,6 @@ public class VerProcesoScreen extends FondoNormal {
 					UiApplication.getUiApplication().pushModalScreen(
 							verJuzgado.getScreen());
 					try {
-						verJuzgado.actualizarJuzgado();
 						_juzgado = verJuzgado.getJuzgado();
 						_lblJuzgado.setText(_juzgado.getNombre());
 					} catch (NullPointerException e) {

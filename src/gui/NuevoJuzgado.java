@@ -69,7 +69,7 @@ public class NuevoJuzgado {
 			new Persistence().guardarJuzgado(_juzgado);
 			UiApplication.getUiApplication().popScreen(_screen);
 		} catch (NullPointerException e) {
-			_screen.showAlert("Tarjeta SD no presente, la aplicación se cerrará, verifique e inicie nuevamente");
+			_screen.showAlert(Util.noSD());
 			System.exit(0);
 		} catch (Exception e) {
 			_screen.showAlert(e.toString());

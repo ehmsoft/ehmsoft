@@ -177,7 +177,6 @@ public class VerActuacionScreen extends FondoNormal {
 			if (f.equals(_txtJuzgado)) {
 				VerJuzgado v = new VerJuzgado(_juzgado);
 				UiApplication.getUiApplication().pushModalScreen(v.getScreen());
-				v.actualizarJuzgado();
 				_juzgado = v.getJuzgado();
 				_txtJuzgado.setText(_juzgado.getNombre());
 				_txtJuzgado.setFocus();

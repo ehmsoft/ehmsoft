@@ -79,7 +79,6 @@ public class ListadoJuzgadosPopUp extends PopupScreen {
 			VerJuzgado v = new VerJuzgado(old);
 			UiApplication.getUiApplication().pushModalScreen(
 					v.getScreen());
-			v.actualizarJuzgado();
 			Juzgado nw = v.getJuzgado();
 			_lista.update(old, nw);
 			if (_lista.getKeywordField().getTextLength() != 0) {
