@@ -740,7 +740,6 @@ public class Persistence implements Cargado, Guardado {
 	}
 
 	public void borrarCategoria(Categoria categoria) throws Exception {
-		// TODO Auto-generated method stub
 		if (Integer.parseInt(categoria.getId_categoria()) != 1) {
 			Database d = null;
 			try {
@@ -1045,6 +1044,7 @@ public void borrarPreferencia(int id_preferencia) throws Exception {
 	}
 
 }
+
 	public void log(String descripcion) throws Exception{
 		Database d = null;
 		try {
@@ -1055,8 +1055,7 @@ public void borrarPreferencia(int id_preferencia) throws Exception {
 			stPreferencias.prepare();
 			stPreferencias.bind(1, descripcion);
 			stPreferencias.execute();
-			stPreferencias.close();
-			
+			stPreferencias.close();		
 		} catch (Exception e) {
 			throw e;
 		} finally {
