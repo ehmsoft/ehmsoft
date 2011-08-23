@@ -1,6 +1,8 @@
 package gui;
 
-import net.rim.device.api.ui.component.Dialog;
+import net.rim.device.api.ui.Field;
+import net.rim.device.api.ui.FieldChangeListener;
+import net.rim.device.api.ui.UiApplication;
 import persistence.Persistence;
 import core.Juzgado;
 
@@ -9,57 +11,92 @@ public class VerJuzgado {
 	private Juzgado _juzgado;
 
 	public VerJuzgado(Juzgado juzgado) {
-		_screen = new VerJuzgadoScreen(juzgado);
 		_juzgado = juzgado;
+		_screen = new VerJuzgadoScreen();
+		_screen.setNombre(_juzgado.getNombre());
+		_screen.setCiudad(_juzgado.getCiudad());
+		_screen.setDireccion(_juzgado.getDireccion());
+		_screen.setTelefono(_juzgado.getTelefono());
+		_screen.setTipo(_juzgado.getTipo());
+		_screen.setChangeListener(listener);
 	}
+	
+	FieldChangeListener listener = new FieldChangeListener() {
+		
+		public void fieldChanged(Field field, int context) {
+			if(context == _screen.GUARDAR) {
+				actualizarJuzgado();
+			} else if(context == _screen.CERRAR) {
+				cerrarPantalla();
+			} else if(context == _screen.ELIMINAR) {
+				eliminarJuzgado();
+			}
+		}
+	};
 
 	public VerJuzgadoScreen getScreen() {
 		return _screen;
 	}
-
-	public void actualizarJuzgado() throws NullPointerException{
-		if (_screen.isGuardado()) {
-			try {
-				Persistence persistence = new Persistence();
-				boolean cambio = false;
-				Juzgado juzgado = _screen.getJuzgado();
-
-				if (!juzgado.getNombre().equals(_screen.getNombre()))
-					cambio = true;
-				if (!juzgado.getCiudad().equals(_screen.getCiudad()))
-					cambio = true;
-				if (!juzgado.getTelefono().equals(_screen.getTelefono()))
-					cambio = true;
-				if (!juzgado.getDireccion().equals(_screen.getDireccion()))
-					cambio = true;
-				if (!juzgado.getTipo().equals(_screen.getTipo()))
-					cambio = true;
-
-				if (cambio) {
-					_juzgado = new Juzgado(_screen.getNombre(),
-							_screen.getCiudad(), _screen.getDireccion(),
-							_screen.getTelefono(), _screen.getTipo(),
-							_juzgado.getId_juzgado());
-					persistence.actualizarJuzgado(_juzgado);
-				}
-			} catch (Exception e) {
-				Dialog.alert("actualizarJuzgado -> " + e.toString());
-			}
-		}
-		else if (_screen.isEliminado()) {
-			Persistence p;
-			try {
-				p = new Persistence();
-				p.borrarJuzgado(_juzgado);
-			} catch (Exception e) {
-				Dialog.alert(e.toString());
-			}
-			throw new NullPointerException("Se está eliminando el juzgado con id: "
-					+ _juzgado.getId_juzgado());
-		}
-	}
-
+	
 	public Juzgado getJuzgado() {
 		return _juzgado;
+	}
+
+	private void actualizarJuzgado() {
+		if (_screen.getNombre().length() == 0) {
+			_screen.alert("El campo Nombre es obligatorio");
+		} else {
+			Juzgado juzgado = new Juzgado(_screen.getNombre(),
+					_screen.getCiudad(), _screen.getDireccion(),
+					_screen.getTelefono(), _screen.getTipo(),
+					_juzgado.getId_juzgado());
+			if (!_juzgado.equals(juzgado)) {
+				try {
+					new Persistence().actualizarJuzgado(juzgado);
+				} catch (NullPointerException e) {
+					_screen.alert(Util.noSD());
+					System.exit(0);
+				} catch (Exception e) {
+					_screen.alert(e.toString());
+				}
+				_juzgado = juzgado;
+			}
+			UiApplication.getUiApplication().popScreen(_screen);
+		}
+	}
+	
+	private void eliminarJuzgado() {
+		Object[] ask = {"Aceptar", "Cancelar"};
+		int sel = _screen.ask(ask, "¿Esta seguro que desea eliminar el juzgado", 1);
+		if(sel == 0) {
+			try {
+				new Persistence().borrarJuzgado(_juzgado);
+			} catch(NullPointerException e) {
+				_screen.alert(Util.noSD());
+				System.exit(0);
+			} catch (Exception e) {
+				_screen.alert(e.toString());
+			}
+			_juzgado = null;
+			UiApplication.getUiApplication().popScreen(_screen);
+		}
+	}
+	
+	private void cerrarPantalla() {
+		Juzgado juzgado = new Juzgado(_screen.getNombre(),
+				_screen.getCiudad(), _screen.getDireccion(),
+				_screen.getTelefono(), _screen.getTipo(),
+				_juzgado.getId_juzgado());
+		if (!juzgado.equals(_juzgado)) {
+			Object[] ask = { "Guardar", "Descartar", "Cancelar" };
+			int sel = _screen.ask(ask, "Se han detectado cambios", 2);
+			if (sel == 0) {
+				actualizarJuzgado();
+			} else if (sel == 1) {
+				UiApplication.getUiApplication().popScreen(_screen);
+			}
+		} else {
+			UiApplication.getUiApplication().popScreen(_screen);
+		}
 	}
 }
