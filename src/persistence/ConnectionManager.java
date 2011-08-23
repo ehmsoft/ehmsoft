@@ -204,7 +204,7 @@ public class ConnectionManager {
 			//Crear Tabla Preferencias
 			st = d.createStatement("CREATE TABLE 'preferencias'("+
 					"'id_preferencia' INTEGER PRIMARY KEY,"+
-			"'valor' INTEGER)");
+			"'valor' TEXT)");
 			st.prepare();
 			st.execute();
 			st.close();
