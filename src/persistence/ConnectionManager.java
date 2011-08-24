@@ -262,7 +262,7 @@ public class ConnectionManager {
 			st.close();
 		//insertar preferencias	
 			Persistence preferencias = new Persistence();
-			preferencias.restaurarPreferencias();
+			preferencias.guardarPreferencias();
 			
 			
 		}catch(Exception e){

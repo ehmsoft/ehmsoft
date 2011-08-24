@@ -1050,10 +1050,73 @@ throws Exception {
 
 }
 
-public void restaurarPreferencias() throws Exception {
-// TODO Auto-generated method stub
+public void guardarPreferencias() throws Exception {
+	Database d = null;
+	try {
+		connMgr.prepararBD();
+		d = DatabaseFactory.open(connMgr.getDbLocation());
+		Statement stFuenteTipo = d.createStatement("INSERT INTO preferencias (id_preferencia, valor) VALUES( 10001,"+"'0000')");
+		Statement stFuenteTamano = d.createStatement("INSERT INTO preferencias (id_preferencia, valor) VALUES( 10002,"+"'0000')");
+		Statement stFuenteEstilo = d.createStatement("INSERT INTO preferencias (id_preferencia, valor) VALUES( 10003,"+"'0000')");
+		Statement stPantallaInicial = d.createStatement("INSERT INTO preferencias (id_preferencia, valor) VALUES( 10101,"+"'0000')");
+		Statement stTituloPantalla = d.createStatement("INSERT INTO preferencias (id_preferencia, valor) VALUES( 10102,"+"'0000')");
+		Statement stRecordarUltimaCategoria = d.createStatement("INSERT INTO preferencias (id_preferencia, valor) VALUES( 10201,"+"'0000')");
+		Statement stUltimaCategoria = d.createStatement("INSERT INTO preferencias (id_preferencia, valor) VALUES( 10202,"+"'0000')");
+		Statement stMostrarBusqueda= d.createStatement("INSERT INTO preferencias (id_preferencia, valor) VALUES( 10301,"+"'0000')");
+		Statement stNombreUsuario= d.createStatement("INSERT INTO preferencias (id_preferencia, valor) VALUES( 10401,"+"'0000')");
+		Statement stCantidadActCriticas= d.createStatement("INSERT INTO preferencias (id_preferencia, valor) VALUES( 10501,"+"'0000')");
+		
+		stFuenteTipo.prepare();
+		stFuenteTamano.prepare();
+		stFuenteEstilo.prepare();
+		stPantallaInicial.prepare();
+		stTituloPantalla.prepare();
+		stRecordarUltimaCategoria.prepare();
+		stUltimaCategoria.prepare();
+		stMostrarBusqueda.prepare();
+		stNombreUsuario.prepare();
+		stCantidadActCriticas.prepare();
+		
+		stFuenteTipo.execute();
+		stFuenteTamano.execute();
+		stFuenteEstilo.execute();
+		stPantallaInicial.execute();
+		stTituloPantalla.execute();
+		stRecordarUltimaCategoria.execute();
+		stUltimaCategoria.execute();
+		stMostrarBusqueda.execute();
+		stNombreUsuario.execute();
+		stCantidadActCriticas.execute();
+		
+		stFuenteTipo.close();
+		stFuenteTamano.close();
+		stFuenteEstilo.close();
+		stPantallaInicial.close();
+		stTituloPantalla.close();
+		stRecordarUltimaCategoria.close();
+		stUltimaCategoria.close();
+		stMostrarBusqueda.close();
+		stNombreUsuario.close();
+		stCantidadActCriticas.close();
+		
+		
+		
+		
+	} catch (Exception e) {
+		throw e;
+	} finally {
+		if (d != null) {
+			d.close();
+		}
+	}
+	
 
 }
+public void borrarPreferencias() throws Exception {
+	// TODO Auto-generated method stu
+		
+
+	}
 
 	public void log(String descripcion) throws Exception{
 		Database d = null;
