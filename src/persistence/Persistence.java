@@ -1042,6 +1042,16 @@ public void borrarPreferencia(int id_preferencia) throws Exception {
 			d.close();
 		}
 	}
+}
+
+public void actualizarPreferencias(Preferencias preferencia)
+throws Exception {
+// TODO Auto-generated method stub
+
+}
+
+public void restaurarPreferencias() throws Exception {
+// TODO Auto-generated method stub
 
 }
 
@@ -2004,6 +2014,16 @@ public void borrarPreferencia(int id_preferencia) throws Exception {
 				+ hora + ":" + minuto;
 		return nuevafecha;
 	}
+
+
+
+	public Preferencias consultarPreferencias(Preferencias preferencia)
+			throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	
 
 	
 }

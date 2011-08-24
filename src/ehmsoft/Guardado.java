@@ -41,6 +41,9 @@ public interface Guardado {
 	//preferencias
 	public void actualizarPreferencia(int id_preferencia,String valor) throws Exception;
 	public void borrarPreferencia(int id_preferencia) throws Exception;
+	
+	public void actualizarPreferencias(Preferencias preferencia) throws Exception;
+	public void restaurarPreferencias() throws Exception;
 	//Log
 	public void log(String descripcion) throws Exception;
 }
