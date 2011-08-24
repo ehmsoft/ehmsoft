@@ -14,8 +14,6 @@ import net.rim.device.api.ui.component.Dialog;
 import net.rim.device.api.ui.component.LabelField;
 import net.rim.device.api.ui.component.Menu;
 import net.rim.device.api.ui.container.HorizontalFieldManager;
-import core.CalendarManager;
-import core.Juzgado;
 
 public class NuevaActuacionScreen extends FondoNormal {
 
@@ -24,11 +22,6 @@ public class NuevaActuacionScreen extends FondoNormal {
 	private DateField _dfFechaProxima;
 	private BasicEditField _txtDescripcion;
 	private CheckboxField _cbCita;
-
-	private Juzgado _juzgado;
-	private String _uid;
-
-	private boolean _guardar;
 
 	/**
 	 * Crea una NuevaActuacionScreen inicializando los componentes y
@@ -59,8 +52,6 @@ public class NuevaActuacionScreen extends FondoNormal {
 		_cbCita = new CheckboxField("Crear cita", false);
 		_cbCita.setChangeListener(listenerCita);
 		add(_cbCita);
-
-		addMenuItem(menuGuardar);
 	}
 
 	protected void makeMenu(Menu menu, int instance) {
@@ -82,18 +73,7 @@ public class NuevaActuacionScreen extends FondoNormal {
 	private final MenuItem menuAgregar = new MenuItem("Agregar", 0, 0) {
 
 		public void run() {
-			ListadoJuzgados l = new ListadoJuzgados(true);
-			l.setTitle("Seleccione un juzgado");
-			UiApplication.getUiApplication().pushModalScreen(l.getScreen());
-			try {
-				_juzgado = l.getSelected();
-				setJuzgado(_juzgado);
-			} catch (NullPointerException e) {
-			} catch (Exception e) {
-				Dialog.alert(e.toString());
-			} finally {
-				l = null;
-			}
+			fieldChangeNotify(Util.ADD_JUZGADO);
 		}
 	};
 
@@ -106,65 +86,35 @@ public class NuevaActuacionScreen extends FondoNormal {
 
 	private FieldChangeListener listenerCita = new FieldChangeListener() {
 		public void fieldChanged(Field field, int context) {
-			if (_cbCita.getChecked()) {
-				NuevaCita n = new NuevaCita(getDescripcion(), new Date(
-						_dfFechaProxima.getDate()));
-				UiApplication.getUiApplication().pushModalScreen(n.getScreen());
-				n.guardarCita();
-				_uid = n.getUid();
-				if (_uid == null) {
-					_cbCita.setChecked(false);
-				}
-			} else {
-				try {
-					if (_uid != null) {
-						CalendarManager.borrarCita(_uid);
-					}
-				} catch (Exception e) {
-					Dialog.alert(e.toString());
-				}
-			}
+			fieldChangeNotify(Util.ADD_CITA);
 		}
 	};
 
 	private final MenuItem menuGuardar = new MenuItem("Guardar", 0, 0) {
 
 		public void run() {
-			if (_txtDescripcion.getTextLength() == 0) {
-				Dialog.alert("Debe agregar una descripción");
-			} else if (_juzgado == null) {
-				Object[] ask = { "Guardar", "Cancelar" };
-				int sel = Dialog.ask("Juzgado se considera importante", ask, 1);
-				if (sel == 0) {
-					if (_txtDescripcion.getTextLength() == 0) {
-						Dialog.alert("Debe agregar una descripción");
-					} else {
-						_guardar = true;
-						UiApplication.getUiApplication().popScreen(getScreen());
-					}
-				}
-			} else {
-				_guardar = true;
-				UiApplication.getUiApplication().popScreen(getScreen());
-			}
+			fieldChangeNotify(Util.GUARDAR);
 		}
 	};
-
-	/**
-	 * @return el Juzgado asociado al objeto, en caso de no existir se retorna
-	 *         null
-	 */
-	public Juzgado getJuzgado() {
-		return _juzgado;
+	
+	public void alert(String alert) {
+		Dialog.alert(alert);
 	}
 
-	/**
-	 * @param juzgado
-	 *            Se asigna al Objeto un Juzgado
-	 */
-	public void setJuzgado(Juzgado juzgado) {
-		_lblJuzgado.setText(juzgado.getNombre());
-		_juzgado = juzgado;
+	public int ask(Object[] options, String string, int index) {
+		return Dialog.ask(string, options, index);
+	}
+	
+	public boolean hasAlarma() {
+		return _cbCita.getChecked();
+	}
+	
+	public void setChecked(boolean checked) {
+		_cbCita.setChecked(checked);
+	}
+
+	public void setJuzgado(String text) {
+		_lblJuzgado.setText(text);
 	}
 
 	/**
@@ -194,43 +144,11 @@ public class NuevaActuacionScreen extends FondoNormal {
 	 *         retorna null
 	 */
 	public String getDescripcion() {
-		String descripcion = null;
-		try {
-			descripcion = _txtDescripcion.getText();
-		} catch (NullPointerException e) {
-			return descripcion;
-		}
-		return descripcion;
-	}
-
-	public String getUid() {
-		return _uid;
-	}
-
-	public boolean isGuardado() {
-		return _guardar;
+		return _txtDescripcion.getText();
 	}
 
 	public boolean onClose() {
-		if (_txtDescripcion.getTextLength() == 0 && _juzgado == null) {
-			UiApplication.getUiApplication().popScreen(getScreen());
-			return true;
-		} else {
-			Object[] ask = { "Guardar", "Descartar", "Cancelar" };
-			int sel = Dialog.ask("Se han detectado cambios", ask, 2);
-			if (sel == 0) {
-				_guardar = true;
-				UiApplication.getUiApplication().popScreen(getScreen());
-				return true;
-			}
-			if (sel == 1) {
-				UiApplication.getUiApplication().popScreen(getScreen());
-				return true;
-			}
-			if (sel == 2) {
-				return false;
-			} else
-				return false;
-		}
+		fieldChangeNotify(Util.CERRAR);
+		return false;
 	}
 }

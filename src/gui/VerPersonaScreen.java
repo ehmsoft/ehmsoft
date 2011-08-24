@@ -20,12 +20,12 @@ public class VerPersonaScreen extends FondoNormal {
 
 	public VerPersonaScreen() {
 
-		_txtNombre = new EditableTextField("Nombre: ", "", BasicEditField.NO_NEWLINE);
-		_txtId = new EditableTextField("Cédula: ", "", BasicEditField.NO_NEWLINE);
-		_txtTelefono = new EditableTextField("Teléfono: ", "", BasicEditField.NO_NEWLINE);
-		_txtDireccion = new EditableTextField("Dirección: ", "", BasicEditField.NO_NEWLINE);
-		_txtCorreo = new EditableTextField("Correo: ", "", BasicEditField.NO_NEWLINE);
-		_txtNotas = new EditableTextField("Notas: ", "", 0);
+		_txtNombre = new EditableTextField("Nombre: ", BasicEditField.NO_NEWLINE);
+		_txtId = new EditableTextField("Cédula: ", BasicEditField.NO_NEWLINE);
+		_txtTelefono = new EditableTextField("Teléfono: ", BasicEditField.NO_NEWLINE);
+		_txtDireccion = new EditableTextField("Dirección: ", BasicEditField.NO_NEWLINE);
+		_txtCorreo = new EditableTextField("Correo: ", BasicEditField.NO_NEWLINE);
+		_txtNotas = new EditableTextField("Notas: ", 0);
 
 		add(_txtNombre);
 		add(_txtId);

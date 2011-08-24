@@ -23,16 +23,13 @@ public class NuevaCitaPopUp extends PopupScreen {
 	private BasicEditField _txtTiempo;
 	private ObjectChoiceField _ocTiempo;
 	private GridFieldManager _grid;
-	private SeparatorField _separator;
-	private ButtonField _btnAceptar;
-	private ButtonField _btnCancelar;
-	private LabelField _lblFecha;
 	private DateField _dfFecha;
+	private VerticalFieldManager _bottom;
 
 	public final int GUARDAR = 1;
 	public final int CERRAR = 2;
 
-	public NuevaCitaPopUp(String descripcion, Date fecha) {
+	public NuevaCitaPopUp() {
 		super(new VerticalFieldManager());
 
 		LabelField labelField = new LabelField("Crear cita",
@@ -44,19 +41,13 @@ public class NuevaCitaPopUp extends PopupScreen {
 		_grid.setColumnProperty(0, GridFieldManager.FIXED_SIZE, 200);
 		_grid.setColumnProperty(1, GridFieldManager.PREFERRED_SIZE, 20);
 
-		_txtDescripcion = new BasicEditField("Descripción: ", descripcion);
-		add(_txtDescripcion);
+		_txtDescripcion = new BasicEditField("Descripción: ", "");		
 
-		_lblFecha = new LabelField(fecha.toString());
-		add(_lblFecha);
-
-		_dfFecha = new DateField("Fecha: ", fecha.getTime(),
+		_dfFecha = new DateField("Fecha: ", System.currentTimeMillis(),
 				DateField.DATE_TIME);
-		add(_dfFecha);
 
 		_cbAlarma = new CheckboxField("Alarma", false);
 		_cbAlarma.setChangeListener(listenerTiempo);
-		add(_cbAlarma);
 
 		_txtTiempo = new BasicEditField("Anticipación: ", null, 3,
 				BasicEditField.FILTER_INTEGER);
@@ -68,16 +59,21 @@ public class NuevaCitaPopUp extends PopupScreen {
 		_grid.add(_txtTiempo);
 		_grid.add(_ocTiempo);
 
-		_separator = new SeparatorField();
-		add(_separator);
-		_btnAceptar = new ButtonField("Aceptar", ButtonField.CONSUME_CLICK
-				| Field.FIELD_HCENTER);
-		_btnAceptar.setChangeListener(listenerAceptar);
-		add(_btnAceptar);
-		_btnCancelar = new ButtonField("Cancelar", ButtonField.CONSUME_CLICK
-				| Field.FIELD_HCENTER);
-		_btnCancelar.setChangeListener(listenerCancelar);
-		add(_btnCancelar);
+		ButtonField btnAceptar = new ButtonField("Aceptar", Field.FIELD_HCENTER);
+		ButtonField btnCancelar = new ButtonField("Cancelar", Field.FIELD_HCENTER);
+		btnAceptar.setChangeListener(listenerAceptar);	
+		btnCancelar.setChangeListener(listenerCancelar);
+		
+		_bottom = new VerticalFieldManager();
+		_bottom.add(new SeparatorField());
+		_bottom.add(btnAceptar);
+		_bottom.add(btnCancelar);
+		
+		add(_txtDescripcion);
+		add(_dfFecha);
+		add(_cbAlarma);
+
+		add(_bottom);
 	}
 
 	private FieldChangeListener listenerAceptar = new FieldChangeListener() {
@@ -98,18 +94,22 @@ public class NuevaCitaPopUp extends PopupScreen {
 
 		public void fieldChanged(Field field, int context) {
 			if (_cbAlarma.getChecked()) {
-				delete(_separator);
-				delete(_btnAceptar);
-				delete(_btnCancelar);
+				delete(_bottom);
 				add(_grid);
-				add(_separator);
-				add(_btnAceptar);
-				add(_btnCancelar);
+				add(_bottom);
 			} else {
 				delete(_grid);
 			}
 		}
 	};
+	
+	public void setDescripcion(String text) {
+		_txtDescripcion.setText(text);
+	}
+	
+	public void setFecha(Date date) {
+		_dfFecha.setDate(date);
+	}
 
 	public void setAlarma(boolean alarma) {
 		_cbAlarma.setChecked(alarma);
@@ -137,5 +137,10 @@ public class NuevaCitaPopUp extends PopupScreen {
 
 	public String getIntervalo() {
 		return (String) _ocTiempo.getChoice(_ocTiempo.getSelectedIndex());
+	}
+	
+	public boolean onClose() {
+		fieldChangeNotify(CERRAR);
+		return false;
 	}
 }

@@ -1,10 +1,10 @@
 package gui;
 
-public class ListadoActuacionesScreen extends ListaScreen{
-
+public class ListadoActuacionesPopUp extends ListaPopUp{
+	
 	private ListadoActuacionesLista _lista;
-
-	public ListadoActuacionesScreen() {
+	
+	public ListadoActuacionesPopUp() {
 		super();
 		_lista = new ListadoActuacionesLista();
 		add(_lista);

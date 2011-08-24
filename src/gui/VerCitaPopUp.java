@@ -1,12 +1,10 @@
 package gui;
 
-import java.util.Calendar;
 import java.util.Date;
 
-import net.rim.device.api.system.KeyListener;
+import net.rim.device.api.i18n.DateFormat;
 import net.rim.device.api.ui.Field;
 import net.rim.device.api.ui.FieldChangeListener;
-import net.rim.device.api.ui.UiApplication;
 import net.rim.device.api.ui.component.BasicEditField;
 import net.rim.device.api.ui.component.ButtonField;
 import net.rim.device.api.ui.component.CheckboxField;
@@ -30,19 +28,12 @@ public class VerCitaPopUp extends PopupScreen {
 	private ButtonField _btnAceptar;
 	private ButtonField _btnCancelar;
 	private DateField _dfFecha;
+	
+	public final int GUARDAR = 1;
+	public final int CERRAR = 3;
 
-	private boolean _guardar = false;
-
-	private final String _descripcion;
-	private final Date _date;
-	private final int _alarma;
-
-	public VerCitaPopUp(String descripcion, Date date, int alarma) {
+	public VerCitaPopUp() {
 		super(new VerticalFieldManager());
-
-		_descripcion = descripcion;
-		_date = date;
-		_alarma = alarma;
 
 		LabelField labelField = new LabelField("Ver cita", Field.FIELD_HCENTER);
 		add(labelField);
@@ -51,33 +42,16 @@ public class VerCitaPopUp extends PopupScreen {
 		_g.setColumnProperty(0, GridFieldManager.FIXED_SIZE, 200);
 		_g.setColumnProperty(1, GridFieldManager.PREFERRED_SIZE, 20);
 
-		_txtDescripcion = new BasicEditField("Descripción: ", descripcion);
+		_txtDescripcion = new BasicEditField("Descripción: ", "");
 		add(_txtDescripcion);
 
-		_dfFecha = new DateField("Fecha: ", date.getTime(), DateField.DATE_TIME);
+		_dfFecha = new DateField("Fecha: ", 0, DateFormat.DATE_FULL | DateFormat.TIME_LONG);
 		add(_dfFecha);
 
-		Object[] choices = { "Minutos", "Horas", "Días" };
-		_nfTiempo = new ObjectChoiceField(null, choices, 0, FIELD_LEFT);
-
-		if (alarma < 3600) {
-			_nfTiempo.setSelectedIndex("Minutos");
-			alarma = alarma / 60;
-		} else if (alarma < 86400) {
-			_nfTiempo.setSelectedIndex("Horas");
-			alarma = alarma / 3600;
-		} else if (alarma >= 86400) {
-			_nfTiempo.setSelectedIndex("Días");
-			alarma = alarma / 86400;
-		}
+		_nfTiempo = new ObjectChoiceField(null, null, 0, FIELD_LEFT);
 
 		_txtTiempo = new BasicEditField("Anticipación: ", null, 3,
 				BasicEditField.FILTER_INTEGER);
-		if (alarma > 0) {
-			_txtTiempo.setText(alarma + "");
-		} else {
-			_txtTiempo.setText("5");
-		}
 
 		_g.add(_txtTiempo);
 		_g.add(_nfTiempo);
@@ -99,10 +73,6 @@ public class VerCitaPopUp extends PopupScreen {
 				| Field.FIELD_HCENTER);
 		_btnCancelar.setChangeListener(listenerCancelar);
 		add(_btnCancelar);
-	
-		if (alarma > 0) {
-			_cbAlarma.setChecked(true);
-		}
 	}
 
 	private FieldChangeListener listenerTiempo = new FieldChangeListener() {
@@ -125,30 +95,44 @@ public class VerCitaPopUp extends PopupScreen {
 	private FieldChangeListener listenerAceptar = new FieldChangeListener() {
 
 		public void fieldChanged(Field field, int context) {
-			if (isCambiado()) {
-				_guardar = true;
-				UiApplication.getUiApplication().popScreen(getScreen());
-			}
+			fieldChangeNotify(GUARDAR);
 		}
 	};
 
 	private FieldChangeListener listenerCancelar = new FieldChangeListener() {
 
 		public void fieldChanged(Field field, int context) {
-			if (isCambiado()) {
-				Object[] ask = { "Guardar", "Descartar", "Cancelar" };
-				int sel = Dialog.ask("Se han detectado cambios", ask, 1);
-				if (sel == 0) {
-					_guardar = true;
-					UiApplication.getUiApplication().popScreen(getScreen());
-				} else if (sel == 1) {
-					UiApplication.getUiApplication().popScreen(getScreen());
-				}
-			} else {
-				UiApplication.getUiApplication().popScreen(getScreen());
-			}
+			fieldChangeNotify(CERRAR);
 		}
 	};
+	
+	public void alert(String alert) {
+		Dialog.alert(alert);
+	}
+
+	public int ask(Object[] options, String string, int index) {
+		return Dialog.ask(string, options, index);
+	}
+	
+	public void setDescripcion(String text) {
+		_txtDescripcion.setText(text);
+	}
+	
+	public void setFecha(Date date) {
+		_dfFecha.setDate(date);
+	}
+	
+	public void setDuracion(String text) {
+		_txtTiempo.setText(text);
+	}
+	
+	public void setIntervalo(int index) {
+		_nfTiempo.setSelectedIndex(index);
+	}
+	
+	public void setChoices(Object[] choices) {
+		_nfTiempo.setChoices(choices);
+	}
 
 	public String getDescripcion() {
 		return _txtDescripcion.getText();
@@ -158,56 +142,19 @@ public class VerCitaPopUp extends PopupScreen {
 		return new Date(_dfFecha.getDate());
 	}
 
-	public boolean isGuardado() {
-		return _guardar;
-	}
-
-	public boolean isCambiado() {
-		boolean cambio = false;
-		Calendar f1 = Calendar.getInstance();
-		f1.setTime(_date);
-		Calendar f2 = Calendar.getInstance();
-		f2.setTime(getFecha());
-
-		if ((f1.get(Calendar.YEAR) != f2.get(Calendar.YEAR))
-				|| (f1.get(Calendar.MONTH) != f2.get(Calendar.MONTH))
-				|| (f1.get(Calendar.DAY_OF_MONTH) != f2
-						.get(Calendar.DAY_OF_MONTH))
-				|| (f1.get(Calendar.HOUR_OF_DAY) != f2
-						.get(Calendar.HOUR_OF_DAY))) {
-			cambio = true;
-		} else if (!_descripcion.equals(getDescripcion())) {
-			cambio = true;
-		} else if (_alarma == 0 && _cbAlarma.getChecked()) {
-			cambio = true;
-		} else if (_alarma != 0 && _alarma != getDuracion()) {
-			cambio = true;
-		}
-		return cambio;
-	}
-
 	public int getDuracion() {
-		int duracion = Integer.parseInt(_txtTiempo.getText());
-		if (getIntervalo().equals("Días")) {
-			duracion = duracion * 86400;
-		} else if (getIntervalo().equals("Horas")) {
-			duracion = duracion * 3600;
-		} else if (getIntervalo().equals("Minutos")) {
-			duracion = duracion * 60;
-		}
-
-		return duracion;
+		return Integer.parseInt(_txtTiempo.getText());
 	}
 
-	private String getIntervalo() {
-		return (String) _nfTiempo.getChoice(_nfTiempo.getSelectedIndex());
+	public int getIntervalo() {
+		return _nfTiempo.getSelectedIndex();
 	}
 	
 	public boolean hasAlarma() {
 		return _cbAlarma.getChecked();
 	}
 
-	public class ListenerKey implements KeyListener {
+/*	public class ListenerKey implements KeyListener {
 		// Implement methods in the KeyListener interface for handling keyboard
 		// events:
 		public boolean keyChar(char key, int status, int time) {
@@ -245,5 +192,10 @@ public class VerCitaPopUp extends PopupScreen {
 		public boolean keyUp(int keycode, int time) {
 			return false;
 		}
+	}*/
+	
+	public boolean onClose() {
+		fieldChangeNotify(CERRAR);
+		return false;
 	}
 }

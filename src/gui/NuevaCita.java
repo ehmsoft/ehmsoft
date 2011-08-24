@@ -13,7 +13,9 @@ public class NuevaCita {
 	private String _uid;
 
 	public NuevaCita(String descripcion, Date fecha) {
-		_screen = new NuevaCitaPopUp(descripcion, fecha);
+		_screen = new NuevaCitaPopUp();
+		_screen.setDescripcion(descripcion);
+		_screen.setFecha(fecha);
 		_screen.setChangeListener(listener);
 	}
 
@@ -40,11 +42,11 @@ public class NuevaCita {
 		return _screen.hasAlarma();
 	}
 
-	public void guardarCita() {
+	private void guardarCita() {
 		if (_screen.hasAlarma()) {
 			int alarma = _screen.getDuracion();
 			String intervalo = _screen.getIntervalo();
-			if (intervalo.equalsIgnoreCase("dias")) {
+			if (intervalo.equalsIgnoreCase("días")) {
 				alarma *= 86400;
 			} else if (intervalo.equalsIgnoreCase("horas")) {
 				alarma *= 3600;
@@ -54,20 +56,20 @@ public class NuevaCita {
 			try {
 				_uid = CalendarManager.agregarCita(_screen.getFecha(),
 						_screen.getDescripcion(), alarma);
-				UiApplication.getUiApplication().popScreen(_screen);
 			} catch (Exception e) {
 				_screen.setAlarma(false);
 				_screen.alert("No se pudo guardar la cita en el calendario");
 			}
+			UiApplication.getUiApplication().popScreen(_screen);
 		} else {
 			try {
 				_uid = CalendarManager.agregarCita(_screen.getFecha(),
 						_screen.getDescripcion());
-				UiApplication.getUiApplication().popScreen(_screen);
 			} catch (Exception e) {
 				_screen.alert("No se pudo guardar la cita en el calendario");
 
 			}
+			UiApplication.getUiApplication().popScreen(_screen);
 		}
 	}
 
