@@ -28,6 +28,6 @@ public class Main extends UiApplication
     public Main()
     {        
         // Push a screen onto the UI stack for rendering.
-        pushScreen(new PreferenciasGeneralesScreen());
+        pushScreen(new PruebaT());
     }
 }

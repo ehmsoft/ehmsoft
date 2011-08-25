@@ -43,7 +43,6 @@ public interface Guardado {
 	public void borrarPreferencia(int id_preferencia) throws Exception;
 	
 	public void actualizarPreferencias(Preferencias preferencia) throws Exception;
-	public void guardarPreferencias() throws Exception;
 	public void borrarPreferencias() throws Exception;
 	//Log
 	public void log(String descripcion) throws Exception;

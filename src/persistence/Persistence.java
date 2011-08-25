@@ -1050,70 +1050,61 @@ throws Exception {
 
 }
 
-public void guardarPreferencias() throws Exception {
+
+
+public void borrarPreferencias() throws Exception {
 	Database d = null;
 	try {
 		connMgr.prepararBD();
 		d = DatabaseFactory.open(connMgr.getDbLocation());
-		Statement stFuenteTipo = d.createStatement("INSERT INTO preferencias (id_preferencia, valor) VALUES( 10001,"+"'0000')");
-		Statement stFuenteTamano = d.createStatement("INSERT INTO preferencias (id_preferencia, valor) VALUES( 10002,"+"'0000')");
-		Statement stFuenteEstilo = d.createStatement("INSERT INTO preferencias (id_preferencia, valor) VALUES( 10003,"+"'0000')");
-		Statement stPantallaInicial = d.createStatement("INSERT INTO preferencias (id_preferencia, valor) VALUES( 10101,"+"'0000')");
-		Statement stTituloPantalla = d.createStatement("INSERT INTO preferencias (id_preferencia, valor) VALUES( 10102,"+"'0000')");
-		Statement stRecordarUltimaCategoria = d.createStatement("INSERT INTO preferencias (id_preferencia, valor) VALUES( 10201,"+"'0000')");
-		Statement stUltimaCategoria = d.createStatement("INSERT INTO preferencias (id_preferencia, valor) VALUES( 10202,"+"'0000')");
-		Statement stMostrarBusqueda= d.createStatement("INSERT INTO preferencias (id_preferencia, valor) VALUES( 10301,"+"'0000')");
-		Statement stNombreUsuario= d.createStatement("INSERT INTO preferencias (id_preferencia, valor) VALUES( 10401,"+"'0000')");
-		Statement stCantidadActCriticas= d.createStatement("INSERT INTO preferencias (id_preferencia, valor) VALUES( 10501,"+"'0000')");
 		
+		Statement stFuenteTipo = d.createStatement("UPDATE preferencias SET valor='0000' WHERE id_preferencia = 10001)");
 		stFuenteTipo.prepare();
-		stFuenteTamano.prepare();
-		stFuenteEstilo.prepare();
-		stPantallaInicial.prepare();
-		stTituloPantalla.prepare();
-		stRecordarUltimaCategoria.prepare();
-		stUltimaCategoria.prepare();
-		stMostrarBusqueda.prepare();
-		stNombreUsuario.prepare();
-		stCantidadActCriticas.prepare();
-		
 		stFuenteTipo.execute();
-		stFuenteTamano.execute();
-		stFuenteEstilo.execute();
-		stPantallaInicial.execute();
-		stTituloPantalla.execute();
-		stRecordarUltimaCategoria.execute();
-		stUltimaCategoria.execute();
-		stMostrarBusqueda.execute();
-		stNombreUsuario.execute();
-		stCantidadActCriticas.execute();
-		
 		stFuenteTipo.close();
+		Statement stFuenteTamano = d.createStatement("UPDATE preferencias SET valor='0000' WHERE id_preferencia = 10002)");
+		stFuenteTamano.prepare();
+		stFuenteTamano.execute();
 		stFuenteTamano.close();
+		Statement stFuenteEstilo = d.createStatement("UPDATE preferencias SET valor='0000' WHERE id_preferencia = 10003)");
+		stFuenteEstilo.prepare();
+		stFuenteEstilo.execute();
 		stFuenteEstilo.close();
+		Statement stPantallaInicial = d.createStatement("UPDATE preferencias SET valor='0000' WHERE id_preferencia = 10101)");
+		stPantallaInicial.prepare();
+		stPantallaInicial.execute();
 		stPantallaInicial.close();
+		Statement stTituloPantalla = d.createStatement("UPDATE preferencias SET valor='0000' WHERE id_preferencia = 10102)");
+		stTituloPantalla.prepare();
+		stTituloPantalla.execute();
 		stTituloPantalla.close();
+		Statement stRecordarUltimaCategoria = d.createStatement("UPDATE preferencias SET valor='0000' WHERE id_preferencia =10201)");
+		stRecordarUltimaCategoria.prepare();
+		stRecordarUltimaCategoria.execute();
 		stRecordarUltimaCategoria.close();
+		Statement stUltimaCategoria = d.createStatement("UPDATE preferencias SET valor='0000' WHERE id_preferencia = 10202)");
+		stUltimaCategoria.prepare();
+		stUltimaCategoria.execute();
 		stUltimaCategoria.close();
+		Statement stMostrarBusqueda= d.createStatement("UPDATE preferencias SET valor='0000' WHERE id_preferencia = 10301)");
+		stMostrarBusqueda.prepare();
+		stMostrarBusqueda.execute();
 		stMostrarBusqueda.close();
+		Statement stNombreUsuario= d.createStatement("UPDATE preferencias SET valor='0000' WHERE id_preferencia = 10401)");
+		stNombreUsuario.prepare();
+		stNombreUsuario.execute();
 		stNombreUsuario.close();
-		stCantidadActCriticas.close();
-		
-		
-		
-		
-	} catch (Exception e) {
+		Statement stCantidadActCriticas= d.createStatement("UPDATE preferencias SET valor='0000' WHERE id_preferencia = 10501)");
+		stCantidadActCriticas.prepare();
+		stCantidadActCriticas.execute();
+		stCantidadActCriticas.close();	
+		} catch (Exception e) {
 		throw e;
 	} finally {
 		if (d != null) {
 			d.close();
 		}
 	}
-	
-
-}
-public void borrarPreferencias() throws Exception {
-	// TODO Auto-generated method stu
 		
 
 	}

@@ -261,10 +261,47 @@ public class ConnectionManager {
 			st.execute();
 			st.close();
 		//insertar preferencias	
-			Persistence preferencias = new Persistence();
-			preferencias.guardarPreferencias();
-			
-			
+			Statement stFuenteTipo = d.createStatement("INSERT INTO preferencias (id_preferencia, valor) VALUES( 10001,"+"'0000')");
+			stFuenteTipo.prepare();
+			stFuenteTipo.execute();
+			stFuenteTipo.close();
+			Statement stFuenteTamano = d.createStatement("INSERT INTO preferencias (id_preferencia, valor) VALUES( 10002,"+"'0000')");
+			stFuenteTamano.prepare();
+			stFuenteTamano.execute();
+			stFuenteTamano.close();
+			Statement stFuenteEstilo = d.createStatement("INSERT INTO preferencias (id_preferencia, valor) VALUES( 10003,"+"'0000')");
+			stFuenteEstilo.prepare();
+			stFuenteEstilo.execute();
+			stFuenteEstilo.close();
+			Statement stPantallaInicial = d.createStatement("INSERT INTO preferencias (id_preferencia, valor) VALUES( 10101,"+"'0000')");
+			stPantallaInicial.prepare();
+			stPantallaInicial.execute();
+			stPantallaInicial.close();
+			Statement stTituloPantalla = d.createStatement("INSERT INTO preferencias (id_preferencia, valor) VALUES( 10102,"+"'0000')");
+			stTituloPantalla.prepare();
+			stTituloPantalla.execute();
+			stTituloPantalla.close();
+			Statement stRecordarUltimaCategoria = d.createStatement("INSERT INTO preferencias (id_preferencia, valor) VALUES( 10201,"+"'0000')");
+			stRecordarUltimaCategoria.prepare();
+			stRecordarUltimaCategoria.execute();
+			stRecordarUltimaCategoria.close();
+			Statement stUltimaCategoria = d.createStatement("INSERT INTO preferencias (id_preferencia, valor) VALUES( 10202,"+"'0000')");
+			stUltimaCategoria.prepare();
+			stUltimaCategoria.execute();
+			stUltimaCategoria.close();
+			Statement stMostrarBusqueda= d.createStatement("INSERT INTO preferencias (id_preferencia, valor) VALUES( 10301,"+"'0000')");
+			stMostrarBusqueda.prepare();
+			stMostrarBusqueda.execute();
+			stMostrarBusqueda.close();
+			Statement stNombreUsuario= d.createStatement("INSERT INTO preferencias (id_preferencia, valor) VALUES( 10401,"+"'0000')");
+			stNombreUsuario.prepare();
+			stNombreUsuario.execute();
+			stNombreUsuario.close();
+			Statement stCantidadActCriticas= d.createStatement("INSERT INTO preferencias (id_preferencia, valor) VALUES( 10501,"+"'0000')");
+			stCantidadActCriticas.prepare();
+			stCantidadActCriticas.execute();	
+			stCantidadActCriticas.close();
+								
 		}catch(Exception e){
 			throw e;
 		}finally{
