@@ -42,13 +42,6 @@ public class ListadoCampos {
 			_screen = new ListadoCamposScreen();
 		}
 		
-		if((_style & SEARCH) == SEARCH) {
-			_screen.setSearchField();
-		}
-		if((_style & SEARCH) != NO_NUEVO) {
-			_screen.addElement("Crear nuevo campo", 0);
-		}
-		
 		try {
 			_vectorCampos = new Persistence().consultarAtributos();
 		} catch(NullPointerException e) {
@@ -60,6 +53,13 @@ public class ListadoCampos {
 		
 		addCampos();
 		((Screen)_screen).setChangeListener(listener);
+		
+		if((_style & SEARCH) == SEARCH) {
+			_screen.setSearchField();
+		}
+		if((_style & NO_NUEVO) != NO_NUEVO) {
+			_screen.addElement("Crear nuevo campo", 0);
+		}
 	}
 	
 	FieldChangeListener listener = new FieldChangeListener() {
@@ -113,7 +113,7 @@ public class ListadoCampos {
 		UiApplication.getUiApplication().pushModalScreen(n.getScreen());
 		CampoPersonalizado campo = n.getCampo();
 		if (campo != null) {
-			if ((_style & NO_NUEVO) != NO_NUEVO) {
+			if ((_style & NO_NUEVO) == NO_NUEVO) {
 				_screen.addElement(campo, 0);
 			} else {
 				_screen.addElement(campo, 1);

@@ -3,18 +3,21 @@ package gui;
 import java.util.Vector;
 
 import net.rim.device.api.ui.component.Dialog;
+import net.rim.device.api.ui.container.HorizontalFieldManager;
 import net.rim.device.api.ui.container.PopupScreen;
 import net.rim.device.api.ui.container.VerticalFieldManager;
 
 public abstract class ListaPopUp extends PopupScreen implements ListadosInterface{
 	protected ListaListas _lista;
+	private HorizontalFieldManager _searchField = new HorizontalFieldManager(USE_ALL_WIDTH);
 	
 	public ListaPopUp() {
 		super(new VerticalFieldManager(VERTICAL_SCROLL | VERTICAL_SCROLLBAR));
+		add(_searchField);
 	}
 	
 	public void setSearchField() {
-		add(_lista.getKeywordField());
+		_searchField.add(_lista.getKeywordField());
 	}
 	
 	public void alert(String alert) {

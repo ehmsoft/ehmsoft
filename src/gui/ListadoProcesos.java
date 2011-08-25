@@ -42,13 +42,6 @@ public class ListadoProcesos {
 			_screen = new ListadoProcesosScreen();
 		}
 		
-		if((_style & SEARCH) == SEARCH) {
-			_screen.setSearchField();
-		}
-		if((_style & SEARCH) != NO_NUEVO) {
-			_screen.addElement("Crear nuevo proceso", 0);
-		}
-		
 		try {
 			_vectorProcesos = new Persistence().consultarProcesos();
 		} catch(NullPointerException e) {
@@ -60,6 +53,13 @@ public class ListadoProcesos {
 		
 		addProcesos();
 		((Screen)_screen).setChangeListener(listener);
+		
+		if((_style & SEARCH) == SEARCH) {
+			_screen.setSearchField();
+		}
+		if((_style & NO_NUEVO) != NO_NUEVO) {
+			_screen.addElement("Crear nuevo proceso", 0);
+		}
 	}
 	
 	FieldChangeListener listener = new FieldChangeListener() {
@@ -113,7 +113,7 @@ public class ListadoProcesos {
 		UiApplication.getUiApplication().pushModalScreen(n.getScreen());
 		Proceso proceso = n.getProceso();
 		if (proceso != null) {
-			if ((_style & NO_NUEVO) != NO_NUEVO) {
+			if ((_style & NO_NUEVO) == NO_NUEVO) {
 				_screen.addElement(proceso, 0);
 			} else {
 				_screen.addElement(proceso, 1);

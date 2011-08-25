@@ -2,15 +2,10 @@ package ehmsoft;
 
 import gui.ListadoActuaciones;
 import gui.ListadoCampos;
-import gui.ListadoCamposScreen;
 import gui.ListadoCategorias;
-import gui.ListadoCategoriasScreen;
 import gui.ListadoJuzgados;
-import gui.ListadoJuzgadosScreen;
 import gui.ListadoPersonas;
-import gui.ListadoPersonasScreen;
 import gui.ListadoProcesos;
-import gui.ListadoProcesosScreen;
 import gui.NuevaActuacion;
 import gui.NuevaCategoria;
 import gui.NuevaPersona;
@@ -144,7 +139,6 @@ public class Prueba extends MainScreen {
 				ListadoActuaciones listadoA = new ListadoActuaciones(proceso);
 				UiApplication.getUiApplication().pushModalScreen(
 						listadoA.getScreen());
-				listadoA.getSelected();
 			}
 		}
 	};
@@ -152,7 +146,7 @@ public class Prueba extends MainScreen {
 	private FieldChangeListener listenerListadoCategorias = new FieldChangeListener() {
 
 		public void fieldChanged(Field field, int context) {
-			ListadoCategorias l = new ListadoCategorias(ListadoCategoriasScreen.SEARCH);
+			ListadoCategorias l = new ListadoCategorias(ListadoCategorias.SEARCH);
 			UiApplication.getUiApplication().pushModalScreen(l.getScreen());
 			l.getSelected();
 			}
@@ -161,7 +155,7 @@ public class Prueba extends MainScreen {
 	private FieldChangeListener listenerListadoCampos = new FieldChangeListener() {
 
 		public void fieldChanged(Field field, int context) {
-			ListadoCampos l = new ListadoCampos(ListadoCamposScreen.SEARCH | ListadoCamposScreen.ON_CLICK_VER);
+			ListadoCampos l = new ListadoCampos(ListadoCampos.SEARCH | ListadoCampos.ON_CLICK_VER);
 			UiApplication.getUiApplication().pushModalScreen(l.getScreen());
 			l.getSelected();
 			}
@@ -170,37 +164,34 @@ public class Prueba extends MainScreen {
 	private FieldChangeListener listenerListadoJuzgados = new FieldChangeListener() {
 
 		public void fieldChanged(Field field, int context) {
-			ListadoJuzgados listado = new ListadoJuzgados(ListadoJuzgadosScreen.SEARCH);
+			ListadoJuzgados listado = new ListadoJuzgados(ListadoJuzgados.SEARCH);
 			UiApplication.getUiApplication().pushModalScreen(
 					listado.getScreen());
-			listado.getSelected();
 		}
 	};
 
 	private FieldChangeListener listenerListadoDemandantes = new FieldChangeListener() {
 
 		public void fieldChanged(Field field, int context) {
-			ListadoPersonas listado = new ListadoPersonas(1, ListadoPersonasScreen.SEARCH);
+			ListadoPersonas listado = new ListadoPersonas(1, ListadoPersonas.SEARCH);
 			UiApplication.getUiApplication().pushModalScreen(
 					listado.getScreen());
-			listado.getSelected();
 		}
 	};
 
 	private FieldChangeListener listenerListadoDemandados = new FieldChangeListener() {
 
 		public void fieldChanged(Field field, int context) {
-			ListadoPersonas listado = new ListadoPersonas(2, ListadoPersonasScreen.SEARCH);
+			ListadoPersonas listado = new ListadoPersonas(2, ListadoPersonas.SEARCH);
 			UiApplication.getUiApplication().pushModalScreen(
 					listado.getScreen());
-			listado.getSelected();
 		}
 	};
 
 	private FieldChangeListener listenerListadoProcesos = new FieldChangeListener() {
 
 		public void fieldChanged(Field field, int context) {
-			ListadoProcesos listado = new ListadoProcesos(ListadoProcesosScreen.SEARCH);
+			ListadoProcesos listado = new ListadoProcesos(ListadoProcesos.SEARCH);
 			UiApplication.getUiApplication().pushModalScreen(
 					listado.getScreen());
 			listado.getSelected();
@@ -216,11 +207,6 @@ public class Prueba extends MainScreen {
 					listado.getScreen());
 			nueva.setProceso(listado.getSelected());
 			UiApplication.getUiApplication().pushModalScreen(nueva.getScreen());
-			try {
-				nueva.guardarActuacion();
-			} catch (Exception e) {
-				Dialog.alert(e.toString());
-			}
 		}
 	};
 	
@@ -229,11 +215,6 @@ public class Prueba extends MainScreen {
 		public void fieldChanged(Field field, int context) {
 			NuevaCategoria n = new NuevaCategoria();
 			UiApplication.getUiApplication().pushModalScreen(n.getScreen());
-			try {
-				n.guardarCategoria();
-			} catch (Exception e) {
-				Dialog.alert(e.toString());
-			}
 		}
 	};
 
@@ -266,11 +247,6 @@ public class Prueba extends MainScreen {
 		public void fieldChanged(Field field, int context) {
 			NuevoProceso nuevo = new NuevoProceso();
 			UiApplication.getUiApplication().pushModalScreen(nuevo.getScreen());
-			try {
-				nuevo.guardarProceso();
-			} catch (Exception e) {
-				Dialog.alert(e.toString());
-			}
 		}
 	};
 
@@ -291,11 +267,6 @@ public class Prueba extends MainScreen {
 			}
 			VerActuacion ver = new VerActuacion(actuacion);
 			UiApplication.getUiApplication().pushModalScreen(ver.getScreen());
-			try {
-				ver.actualizarActuacion();
-			} catch (Exception e) {
-				Dialog.alert(e.toString());
-			}
 		}
 	};
 

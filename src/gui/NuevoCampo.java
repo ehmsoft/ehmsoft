@@ -49,9 +49,9 @@ public class NuevoCampo {
 
 		if (nombre.length() == 0) {
 			_screen.alert("El campo Nombre es obligatorio");
-		} else if (lonMax < lonMin) {
+		} else if (lonMax < lonMin && lonMax != 0) {
 			_screen.alert("La longitud máxima no puede ser menor que la longitud mínima");
-		} else if (lonMax == lonMin) {
+		} else if (lonMax == lonMin && lonMax != 0) {
 			_screen.alert("La longitud máxima no puede ser igual que la longitud mínima");
 		} else {
 			_campo = new CampoPersonalizado(nombre, null, new Boolean(

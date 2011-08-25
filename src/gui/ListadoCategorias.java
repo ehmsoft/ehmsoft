@@ -42,13 +42,6 @@ public class ListadoCategorias {
 			_screen = new ListadoCategoriasScreen();
 		}
 		
-		if((_style & SEARCH) == SEARCH) {
-			_screen.setSearchField();
-		}
-		if((_style & SEARCH) != NO_NUEVO) {
-			_screen.addElement("Crear nuevo categoria", 0);
-		}
-		
 		try {
 			_vectorCategorias = new Persistence().consultarCategorias();
 		} catch(NullPointerException e) {
@@ -60,6 +53,13 @@ public class ListadoCategorias {
 		
 		addCategorias();
 		((Screen)_screen).setChangeListener(listener);
+		
+		if((_style & SEARCH) == SEARCH) {
+			_screen.setSearchField();
+		}
+		if((_style & NO_NUEVO) != NO_NUEVO) {
+			_screen.addElement("Crear nueva categoria", 0);
+		}
 	}
 	
 	FieldChangeListener listener = new FieldChangeListener() {
@@ -113,7 +113,7 @@ public class ListadoCategorias {
 		UiApplication.getUiApplication().pushModalScreen(n.getScreen());
 		Categoria categoria = n.getCategoria();
 		if (categoria != null) {
-			if ((_style & NO_NUEVO) != NO_NUEVO) {
+			if ((_style & NO_NUEVO) == NO_NUEVO) {
 				_screen.addElement(categoria, 0);
 			} else {
 				_screen.addElement(categoria, 1);

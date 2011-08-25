@@ -5,14 +5,17 @@ import java.util.Vector;
 import net.rim.device.api.ui.MenuItem;
 import net.rim.device.api.ui.component.Dialog;
 import net.rim.device.api.ui.component.Menu;
+import net.rim.device.api.ui.container.HorizontalFieldManager;
 import net.rim.device.api.ui.container.MainScreen;
 
 public abstract class ListaScreen extends MainScreen implements ListadosInterface{
 	
 	protected ListaListas _lista;
+	private HorizontalFieldManager _searchField = new HorizontalFieldManager(USE_ALL_WIDTH);
 	
 	public ListaScreen() {
 		super(MainScreen.VERTICAL_SCROLL | MainScreen.VERTICAL_SCROLLBAR);
+		add(_searchField);
 	}
 	
 	protected boolean navigationClick(int status, int time) {
@@ -42,7 +45,7 @@ public abstract class ListaScreen extends MainScreen implements ListadosInterfac
 	};
 	
 	public void setSearchField() {
-		add(_lista.getKeywordField());
+		_searchField.add(_lista.getKeywordField());
 	}
 	
 	public void alert(String alert) {

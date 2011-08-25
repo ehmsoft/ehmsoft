@@ -44,13 +44,6 @@ public class ListadoPersonas {
 			_screen = new ListadoPersonasScreen();
 		}
 		
-		if((_style & SEARCH) == SEARCH) {
-			_screen.setSearchField();
-		}
-		if((_style & SEARCH) != NO_NUEVO) {
-			_screen.addElement("Crear nuevo juzgado", 0);
-		}
-		
 		try {
 			if(_tipo == 1) {
 				_vectorPersonas = new Persistence().consultarDemandantes();
@@ -66,6 +59,17 @@ public class ListadoPersonas {
 		
 		addPersonas();
 		((Screen)_screen).setChangeListener(listener);
+		
+		if((_style & SEARCH) == SEARCH) {
+			_screen.setSearchField();
+		}
+		if((_style & NO_NUEVO) != NO_NUEVO) {
+			if(_tipo == 1) {
+				_screen.addElement("Crear nuevo demandante", 0);
+			} else {
+				_screen.addElement("Crear nuevo demandado", 0);
+			}
+		}
 	}
 	
 	FieldChangeListener listener = new FieldChangeListener() {
@@ -119,7 +123,7 @@ public class ListadoPersonas {
 		UiApplication.getUiApplication().pushModalScreen(n.getScreen());
 		Persona juzgado = n.getPersona();
 		if (juzgado != null) {
-			if ((_style & NO_NUEVO) != NO_NUEVO) {
+			if ((_style & NO_NUEVO) == NO_NUEVO) {
 				_screen.addElement(juzgado, 0);
 			} else {
 				_screen.addElement(juzgado, 1);

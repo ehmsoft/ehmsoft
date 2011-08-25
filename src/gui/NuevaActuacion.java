@@ -28,6 +28,7 @@ public class NuevaActuacion {
 		_proceso = proceso;
 		_screen = new NuevaActuacionScreen();
 		_screen.setJuzgado(_juzgado.getNombre());
+		_screen.setChangeListener(listener);
 	}
 
 	public NuevaActuacion() {
@@ -51,13 +52,6 @@ public class NuevaActuacion {
 
 	public void setProceso(Proceso proceso) {
 		_proceso = proceso;
-	}
-
-	/**
-	 * @return El Proceso asociado al objeto NuevaActuacion
-	 */
-	public Proceso getProceso() {
-		return _proceso;
 	}
 
 	/**

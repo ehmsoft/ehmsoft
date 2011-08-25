@@ -45,13 +45,6 @@ public class ListadoActuaciones {
 			_screen = new ListadoActuacionesScreen();
 		}
 		
-		if((_style & SEARCH) == SEARCH) {
-			_screen.setSearchField();
-		}
-		if((_style & SEARCH) != NO_NUEVO) {
-			_screen.addElement("Crear nuevo juzgado", 0);
-		}
-		
 		try {
 			_vectorActuaciones = new Persistence().consultarActuaciones(_proceso);
 		} catch(NullPointerException e) {
@@ -63,6 +56,13 @@ public class ListadoActuaciones {
 		
 		addActuaciones();
 		((Screen)_screen).setChangeListener(listener);
+		
+		if((_style & SEARCH) == SEARCH) {
+			_screen.setSearchField();
+		}
+		if((_style & SEARCH) != NO_NUEVO) {
+			_screen.addElement("Crear nueva actuación", 0);
+		}
 	}
 	
 	FieldChangeListener listener = new FieldChangeListener() {
@@ -116,7 +116,7 @@ public class ListadoActuaciones {
 		UiApplication.getUiApplication().pushModalScreen(n.getScreen());
 		Actuacion actuacion = n.getActuacion();
 		if (actuacion != null) {
-			if ((_style & NO_NUEVO) != NO_NUEVO) {
+			if ((_style & NO_NUEVO) == NO_NUEVO) {
 				_screen.addElement(actuacion, 0);
 			} else {
 				_screen.addElement(actuacion, 1);

@@ -7,7 +7,6 @@ import gui.ListadoCampos;
 import gui.ListadoCategorias;
 import gui.ListadoJuzgados;
 import gui.ListadoPersonas;
-import gui.ListadoPersonasScreen;
 import gui.ListadoProcesos;
 import gui.PersonasManager;
 import net.rim.device.api.system.KeyListener;
@@ -83,11 +82,11 @@ class Listados extends PopupScreen {
 		String s = (String)_lista.get(_lista,_lista.getSelectedIndex());
 		if(s.equals("Demandantes")) {
 			UiApplication.getUiApplication().popScreen(getScreen());
-			ListadoPersonas l = new ListadoPersonas(1, ListadoPersonasScreen.ON_CLICK_VER | ListadoPersonasScreen.SEARCH);
+			ListadoPersonas l = new ListadoPersonas(1, ListadoPersonas.ON_CLICK_VER | ListadoPersonas.SEARCH);
 			UiApplication.getUiApplication().pushModalScreen(l.getScreen());
 		} else if (s.equals("Demandados")) {
 			UiApplication.getUiApplication().popScreen(getScreen());
-			ListadoPersonas l = new ListadoPersonas(2, ListadoPersonasScreen.ON_CLICK_VER);
+			ListadoPersonas l = new ListadoPersonas(2, ListadoPersonas.ON_CLICK_VER);
 			UiApplication.getUiApplication().pushModalScreen(l.getScreen());
 		} else if (s.equals("Juzgados")) {
 			UiApplication.getUiApplication().popScreen(getScreen());
