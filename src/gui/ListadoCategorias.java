@@ -45,10 +45,10 @@ public class ListadoCategorias {
 		try {
 			_vectorCategorias = new Persistence().consultarCategorias();
 		} catch(NullPointerException e) {
-			_screen.alert(Util.noSDString());
+			Util.noSd();
 			System.exit(0);
 		} catch (Exception e) {
-			_screen.alert(e.toString());
+			Util.alert(e.toString());
 		}
 		
 		addCategorias();
@@ -109,9 +109,7 @@ public class ListadoCategorias {
 	}
 	
 	private void nuevoCategoria() {
-		NuevaCategoria n = new NuevaCategoria();
-		UiApplication.getUiApplication().pushModalScreen(n.getScreen());
-		Categoria categoria = n.getCategoria();
+		Categoria categoria = Util.nuevaCategoria(false);
 		if (categoria != null) {
 			if ((_style & NO_NUEVO) == NO_NUEVO) {
 				_screen.addElement(categoria, 0);
@@ -119,14 +117,11 @@ public class ListadoCategorias {
 				_screen.addElement(categoria, 1);
 			}
 		}
-		n = null;
 	}
 	
 	private void verCategoria() {
 		Categoria selected = (Categoria)_screen.getSelected();
-		VerCategoria v = new VerCategoria(selected);
-		UiApplication.getUiApplication().pushModalScreen(v.getScreen());
-		Categoria categoria = v.getCategoria();
+		Categoria categoria = Util.verCategoria(selected);
 		if(categoria != null) {
 			_screen.replace(selected, categoria);
 		} else {

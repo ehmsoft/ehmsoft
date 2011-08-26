@@ -48,10 +48,9 @@ public class NuevoProceso {
 			_categorias.insertElementAt(ninguna, 0);
 
 		} catch (NullPointerException e) {
-			_screen.alert(Util.noSDString());
-			System.exit(0);
+			Util.noSd();
 		} catch (Exception e) {
-			_screen.alert(e.toString());
+			Util.alert(e.toString());
 		}
 
 		Object[] categorias = new Object[_categorias.size()];
@@ -135,7 +134,7 @@ public class NuevoProceso {
 		Enumeration e = _campos.elements();
 		while (e.hasMoreElements()) {
 			CampoPersonalizado campo = (CampoPersonalizado) e.nextElement();
-			if (campo.isObligatorio().booleanValue()) {
+			if (campo.isObligatorio().booleanValue() && campo.getValor().length() == 0) {
 				_screen.alert("El campo " + campo.getNombre()
 						+ " es obligatorio");
 				ret = true;
@@ -157,42 +156,31 @@ public class NuevoProceso {
 	}
 
 	private void addDemandante() {
-		ListadoPersonas l = new ListadoPersonas(1, true);
-		UiApplication.getUiApplication().pushModalScreen(l.getScreen());
-		Persona demandante = l.getSelected();
+		Persona demandante = Util.listadoPersonas(1, true);
 		if (demandante != null) {
 			_demandante = demandante;
 			_screen.setDemandante(_demandante.getNombre());
 		}
-		l = null;
 	}
 
 	private void addDemandado() {
-		ListadoPersonas l = new ListadoPersonas(2, true);
-		UiApplication.getUiApplication().pushModalScreen(l.getScreen());
-		Persona demandado = l.getSelected();
+		Persona demandado = Util.listadoPersonas(2, true);
 		if (demandado != null) {
 			_demandado = demandado;
 			_screen.setDemandado(_demandado.getNombre());
 		}
-		l = null;
 	}
 
 	private void addJuzgado() {
-		ListadoJuzgados l = new ListadoJuzgados(true);
-		UiApplication.getUiApplication().pushModalScreen(l.getScreen());
-		Juzgado juzgado = l.getSelected();
+		Juzgado juzgado = Util.listadoJuzgados(true);
 		if (juzgado != null) {
 			_juzgado = juzgado;
 			_screen.setJuzgado(_juzgado.getNombre());
 		}
-		l = null;
 	}
 
 	private void newActuacion() {
-		NuevaActuacion n = new NuevaActuacion();
-		UiApplication.getUiApplication().pushModalScreen(n.getScreen());
-		Actuacion actuacion = n.getActuacion();
+		Actuacion actuacion = Util.nuevaActuacion();
 		if (actuacion != null) {
 			_actuaciones.addElement(actuacion);
 			Object[] actuaciones = new Object[_actuaciones.size()];
@@ -200,13 +188,10 @@ public class NuevoProceso {
 			_screen.addActuaciones(actuaciones);
 			_screen.selectActuacion(_actuaciones.indexOf(actuacion));
 		}
-		n = null;
 	}
 
 	private void addCategoria() {
-		ListadoCategorias l = new ListadoCategorias(true);
-		UiApplication.getUiApplication().pushModalScreen(l.getScreen());
-		Categoria categoria = l.getSelected();
+		Categoria categoria = Util.listadoCategorias(true);
 		if (categoria != null) {
 			_categorias.addElement(categoria);
 			Object[] categorias = new Object[_categorias.size()];
@@ -214,13 +199,10 @@ public class NuevoProceso {
 			_screen.addCategorias(categorias);
 			_screen.selectCategoria(_categorias.indexOf(categoria));
 		}
-		l = null;
 	}
 
 	private void addCampo() {
-		ListadoCampos l = new ListadoCampos(true);
-		UiApplication.getUiApplication().pushModalScreen(l.getScreen());
-		CampoPersonalizado campo = l.getSelected();
+		CampoPersonalizado campo = Util.listadoCampos(true);
 		if (campo != null) {
 			_campos.addElement(campo);
 			_screen.addCampo(campo, campo.getNombre());
@@ -232,9 +214,7 @@ public class NuevoProceso {
 	}
 
 	private void newCategoria() {
-		NuevaCategoria n = new NuevaCategoria(true);
-		UiApplication.getUiApplication().pushModalScreen(n.getScreen());
-		Categoria categoria = n.getCategoria();
+		Categoria categoria = Util.nuevaCategoria(true);
 		if (categoria != null) {
 			_categorias.addElement(categoria);
 			Object[] categorias = new Object[_categorias.size()];

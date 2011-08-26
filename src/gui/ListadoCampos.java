@@ -45,10 +45,9 @@ public class ListadoCampos {
 		try {
 			_vectorCampos = new Persistence().consultarAtributos();
 		} catch(NullPointerException e) {
-			_screen.alert(Util.noSDString());
-			System.exit(0);
+			Util.noSd();
 		} catch (Exception e) {
-			_screen.alert(e.toString());
+			Util.alert(e.toString());
 		}
 		
 		addCampos();
@@ -109,9 +108,7 @@ public class ListadoCampos {
 	}
 	
 	private void nuevoCampo() {
-		NuevoCampo n = new NuevoCampo();
-		UiApplication.getUiApplication().pushModalScreen(n.getScreen());
-		CampoPersonalizado campo = n.getCampo();
+		CampoPersonalizado campo = Util.nuevoCampoPersonalizado();
 		if (campo != null) {
 			if ((_style & NO_NUEVO) == NO_NUEVO) {
 				_screen.addElement(campo, 0);
@@ -119,14 +116,11 @@ public class ListadoCampos {
 				_screen.addElement(campo, 1);
 			}
 		}
-		n = null;
 	}
 	
 	private void verCampo() {
 		CampoPersonalizado selected = (CampoPersonalizado)_screen.getSelected();
-		VerCampo v = new VerCampo(selected);
-		UiApplication.getUiApplication().pushModalScreen(v.getScreen());
-		CampoPersonalizado campo = v.getCampo();
+		CampoPersonalizado campo = Util.verCampo(selected);
 		if(campo != null) {
 			_screen.replace(selected, campo);
 		} else {
@@ -139,10 +133,9 @@ public class ListadoCampos {
 		try {
 			new Persistence().borrarAtributo(selected);
 		} catch (NullPointerException e) {
-			_screen.alert(Util.noSDString());
-			System.exit(0);
+			Util.noSd();
 		} catch (Exception e) {
-			_screen.alert(e.toString());
+			Util.alert(e.toString());
 		}
 		_screen.remove(selected);
 	}

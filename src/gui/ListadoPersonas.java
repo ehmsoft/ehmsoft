@@ -51,10 +51,9 @@ public class ListadoPersonas {
 				_vectorPersonas = new Persistence().consultarDemandados();
 			}
 		} catch(NullPointerException e) {
-			_screen.alert(Util.noSDString());
-			System.exit(0);
+			Util.noSd();
 		} catch (Exception e) {
-			_screen.alert(e.toString());
+			Util.alert(e.toString());
 		}
 		
 		addPersonas();
@@ -119,24 +118,19 @@ public class ListadoPersonas {
 	}
 	
 	private void nuevaPersona() {
-		NuevaPersona n = new NuevaPersona(_tipo);
-		UiApplication.getUiApplication().pushModalScreen(n.getScreen());
-		Persona juzgado = n.getPersona();
-		if (juzgado != null) {
+		Persona persona = Util.nuevaPersona(_tipo);
+		if (persona != null) {
 			if ((_style & NO_NUEVO) == NO_NUEVO) {
-				_screen.addElement(juzgado, 0);
+				_screen.addElement(persona, 0);
 			} else {
-				_screen.addElement(juzgado, 1);
+				_screen.addElement(persona, 1);
 			}
 		}
-		n = null;
 	}
 	
 	private void verPersona() {
 		Persona selected = (Persona)_screen.getSelected();
-		VerPersona v = new VerPersona(selected);
-		UiApplication.getUiApplication().pushModalScreen(v.getScreen());
-		Persona juzgado = v.getPersona();
+		Persona juzgado = Util.verPersona(selected);
 		if(juzgado != null) {
 			_screen.replace(selected, juzgado);
 		} else {

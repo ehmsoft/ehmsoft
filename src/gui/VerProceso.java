@@ -187,7 +187,7 @@ public class VerProceso {
 	
 	private void addCampo() {
 		CampoPersonalizado campo;
-		campo = Util.listadoCampos();
+		campo = Util.listadoCampos(true);
 		if (campo != null) {
 			_camposNuevos.addElement(campo);
 			_screen.addCampo(campo, campo.getNombre(), "");
@@ -389,7 +389,7 @@ public class VerProceso {
 	}
 	
 	private void addDemandante() {
-		_demandante = Util.listadoPersonas(1);
+		_demandante = Util.listadoPersonas(1, true);
 		if(_demandante != null) {
 			_screen.setDemandante(_demandante.getNombre());
 		} else {
@@ -401,7 +401,7 @@ public class VerProceso {
 	}
 	
 	private void addDemandado() {
-		_demandado = Util.listadoPersonas(2);
+		_demandado = Util.listadoPersonas(2, true);
 		if(_demandado != null) {
 			_screen.setDemandado(_demandado.getNombre());
 		} else {
@@ -413,7 +413,7 @@ public class VerProceso {
 	}
 	
 	private void addJuzgado() {
-		_juzgado = Util.listadoJuzgados();
+		_juzgado = Util.listadoJuzgados(true);
 		if(_juzgado != null) {
 			_screen.setJuzgado(_juzgado.getNombre());
 		} else {
@@ -425,7 +425,7 @@ public class VerProceso {
 	}
 	
 	private void addCategoria() {
-		_categoria = Util.listadoCategorias();
+		_categoria = Util.listadoCategorias(true);
 		if(_categoria != null) {
 			_screen.setCategoria(_categoria.getDescripcion());
 		} else {
@@ -437,7 +437,7 @@ public class VerProceso {
 	}
 	
 	private void newActuacion() {
-		Actuacion actuacion = Util.newActuacion(_proceso);
+		Actuacion actuacion = Util.nuevaActuacion(_proceso);
 		if(actuacion != null) {
 			_actuaciones.addElement(actuacion);
 			Object[] actuaciones = new Object[_actuaciones.size()];

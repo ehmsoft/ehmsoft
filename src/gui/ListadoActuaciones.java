@@ -112,9 +112,7 @@ public class ListadoActuaciones {
 	}
 	
 	private void nuevaActuacion() {
-		NuevaActuacion n = new NuevaActuacion(_proceso);
-		UiApplication.getUiApplication().pushModalScreen(n.getScreen());
-		Actuacion actuacion = n.getActuacion();
+		Actuacion actuacion = Util.nuevaActuacion(_proceso);
 		if (actuacion != null) {
 			if ((_style & NO_NUEVO) == NO_NUEVO) {
 				_screen.addElement(actuacion, 0);
@@ -122,14 +120,11 @@ public class ListadoActuaciones {
 				_screen.addElement(actuacion, 1);
 			}
 		}
-		n = null;
 	}
 	
 	private void verActuacion() {
 		Actuacion selected = (Actuacion)_screen.getSelected();
-		VerActuacion v = new VerActuacion(selected);
-		UiApplication.getUiApplication().pushModalScreen(v.getScreen());
-		Actuacion actuacion = v.getActuacion();
+		Actuacion actuacion = Util.verActuacion(selected);
 		if(actuacion != null) {
 			_screen.replace(selected, actuacion);
 		} else {
@@ -142,10 +137,9 @@ public class ListadoActuaciones {
 		try {
 			new Persistence().borrarActuacion(selected);
 		} catch (NullPointerException e) {
-			_screen.alert(Util.noSDString());
-			System.exit(0);
+			Util.noSd();
 		} catch (Exception e) {
-			_screen.alert(e.toString());
+			Util.alert(e.toString());
 		}
 		_screen.remove(selected);
 	}

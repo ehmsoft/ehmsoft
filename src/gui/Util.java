@@ -136,40 +136,70 @@ public class Util {
 		return v.getActuacion();
 	}
 	
-	public static Persona listadoPersonas(int tipo) {
-		ListadoPersonas l = new ListadoPersonas(tipo);
+	public static Proceso verProceso(Proceso proceso) {
+		VerProceso v = new VerProceso(proceso);
+		UiApplication.getUiApplication().pushModalScreen(v.getScreen());
+		return v.getProceso();
+	}
+	
+	public static Persona listadoPersonas(int tipo, boolean popup) {
+		ListadoPersonas l = new ListadoPersonas(tipo, popup);
 		UiApplication.getUiApplication().pushModalScreen(l.getScreen());
 		return l.getSelected();
 	}
 	
-	public static Juzgado listadoJuzgados() {
-		ListadoJuzgados l = new ListadoJuzgados();
+	public static Juzgado listadoJuzgados(boolean popup) {
+		ListadoJuzgados l = new ListadoJuzgados(popup);
 		UiApplication.getUiApplication().pushModalScreen(l.getScreen());
 		return l.getSelected();
 	}
 	
-	public static Categoria listadoCategorias() {
-		ListadoCategorias l = new ListadoCategorias();
+	public static Categoria listadoCategorias(boolean popup) {
+		ListadoCategorias l = new ListadoCategorias(popup);
 		UiApplication.getUiApplication().pushModalScreen(l.getScreen());
 		return l.getSelected();
 	}
 	
-	public static CampoPersonalizado listadoCampos() {
-		ListadoCampos l = new ListadoCampos(true);
+	public static CampoPersonalizado listadoCampos(boolean popup) {
+		ListadoCampos l = new ListadoCampos(popup);
 		UiApplication.getUiApplication().pushModalScreen(l.getScreen());
 		return l.getSelected();
 	}
 	
-	public static Actuacion newActuacion(Proceso proceso) {
+	public static Actuacion nuevaActuacion(Proceso proceso) {
 		NuevaActuacion n = new NuevaActuacion(proceso);
 		UiApplication.getUiApplication().pushModalScreen(n.getScreen());
 		return n.getActuacion();
 	}
 	
-	public static Actuacion newActuacion() {
+	public static Actuacion nuevaActuacion() {
 		NuevaActuacion n = new NuevaActuacion();
 		UiApplication.getUiApplication().pushModalScreen(n.getScreen());
 		return n.getActuacion();
+	}
+	
+	public static CampoPersonalizado nuevoCampoPersonalizado() {
+		NuevoCampo n = new NuevoCampo();
+		UiApplication.getUiApplication().pushModalScreen(n.getScreen());
+		return n.getCampo();
+	}
+	
+	public static Categoria nuevaCategoria(boolean popup) {
+		NuevaCategoria n = new NuevaCategoria(popup);
+		UiApplication.getUiApplication().pushModalScreen(n.getScreen());
+		return n.getCategoria();
+	}
+	
+	public static Juzgado nuevoJuzgado() {
+		NuevoJuzgado n = new NuevoJuzgado();
+		UiApplication.getUiApplication().pushModalScreen(n.getScreen());
+		return n.getJuzgado();
+	}
+	
+	public static Persona nuevaPersona(int tipo) {
+		NuevaPersona n = new NuevaPersona(tipo);
+		UiApplication.getUiApplication().pushModalScreen(n.getScreen());
+		return n.getPersona();
 	}
 
 	public static String calendarToString(Calendar calendar, boolean largo) {

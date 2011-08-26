@@ -118,9 +118,7 @@ public class VerActuacion {
 
 	private void verJuzgado() {
 		if (!_juzgado.getId_juzgado().equals("1")) {
-			VerJuzgado v = new VerJuzgado(_juzgado);
-			UiApplication.getUiApplication().pushModalScreen(v.getScreen());
-			Juzgado juzgado = v.getJuzgado();
+			Juzgado juzgado = Util.verJuzgado(_juzgado);
 			if (juzgado != null) {
 				_juzgado = juzgado;
 				_screen.setJuzgado(_juzgado.getNombre());
@@ -147,10 +145,9 @@ public class VerActuacion {
 	}
 
 	private void addJuzgado() {
-		ListadoJuzgados l = new ListadoJuzgados(true);
-		UiApplication.getUiApplication().pushModalScreen(l.getScreen());
-		if (l.getSelected() != null) {
-			_juzgado = l.getSelected();
+		Juzgado juzgado = Util.listadoJuzgados(true);
+		if (juzgado != null) {
+			_juzgado = juzgado;
 			_screen.setJuzgado(_juzgado.getNombre());
 		}
 	}
@@ -162,10 +159,9 @@ public class VerActuacion {
 			try {
 				new Persistence().borrarActuacion(_actuacion);
 			} catch(NullPointerException e) {
-				_screen.alert(Util.noSDString());
-				System.exit(0);
+				Util.noSd();
 			} catch (Exception e) {
-				_screen.alert(e.toString());
+				Util.alert(e.toString());
 			}
 			_actuacion = null;
 			UiApplication.getUiApplication().popScreen(_screen);

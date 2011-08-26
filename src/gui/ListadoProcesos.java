@@ -45,10 +45,9 @@ public class ListadoProcesos {
 		try {
 			_vectorProcesos = new Persistence().consultarProcesos();
 		} catch(NullPointerException e) {
-			_screen.alert(Util.noSDString());
-			System.exit(0);
+			Util.noSd();
 		} catch (Exception e) {
-			_screen.alert(e.toString());
+			Util.alert(e.toString());
 		}
 		
 		addProcesos();
@@ -124,9 +123,7 @@ public class ListadoProcesos {
 	
 	private void verProceso() {
 		Proceso selected = (Proceso)_screen.getSelected();
-		VerProceso v = new VerProceso(selected);
-		UiApplication.getUiApplication().pushModalScreen(v.getScreen());
-		Proceso proceso = v.getProceso();
+		Proceso proceso = Util.verProceso(selected);
 		if(proceso != null) {
 			_screen.replace(selected, proceso);
 		} else {
