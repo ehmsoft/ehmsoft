@@ -70,6 +70,8 @@ public class ListadoJuzgados {
 				verJuzgado();
 			} else if (context == Util.CERRAR) {
 				cerrarPantalla();
+			} else if(context == Util.ELIMINAR) {
+				eliminarJuzgado();
 			}
 		}
 	};
@@ -124,21 +126,25 @@ public class ListadoJuzgados {
 		if(juzgado != null) {
 			_screen.replace(selected, juzgado);
 		} else {
-			eliminarJuzgado();
+			_screen.remove(selected);
 		}
 	}
 	
 	private void eliminarJuzgado() {
-		Juzgado selected = (Juzgado)_screen.getSelected();
-		try {
-			new Persistence().borrarJuzgado(selected);
-		} catch (NullPointerException e) {
-			_screen.alert(Util.noSDString());
-			System.exit(0);
-		} catch (Exception e) {
-			_screen.alert(e.toString());
+		Object[] ask = { "Aceptar", "Cancelar" };
+		int sel = _screen.ask(ask, Util.delBDJuzgado(), 1);
+		if (sel == 0) {
+			Juzgado selected = (Juzgado) _screen.getSelected();
+			try {
+				new Persistence().borrarJuzgado(selected);
+			} catch (NullPointerException e) {
+				_screen.alert(Util.noSDString());
+				System.exit(0);
+			} catch (Exception e) {
+				_screen.alert(e.toString());
+			}
+			_screen.remove(selected);
 		}
-		_screen.remove(selected);
 	}
 	
 	private void cerrarPantalla() {

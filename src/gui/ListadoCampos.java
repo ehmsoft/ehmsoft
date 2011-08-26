@@ -70,6 +70,8 @@ public class ListadoCampos {
 				verCampo();
 			} else if (context == Util.CERRAR) {
 				cerrarPantalla();
+			} else if(context == Util.ELIMINAR) {
+				eliminarCampo();
 			}
 		}
 	};
@@ -124,20 +126,25 @@ public class ListadoCampos {
 		if(campo != null) {
 			_screen.replace(selected, campo);
 		} else {
-			eliminarCampo();
+			_screen.remove(selected);
 		}
 	}
 	
 	private void eliminarCampo() {
-		CampoPersonalizado selected = (CampoPersonalizado)_screen.getSelected();
-		try {
-			new Persistence().borrarAtributo(selected);
-		} catch (NullPointerException e) {
-			Util.noSd();
-		} catch (Exception e) {
-			Util.alert(e.toString());
+		Object[] ask = { "Aceptar", "Cancelar" };
+		int sel = _screen.ask(ask, Util.delBDCampo(), 1);
+		if (sel == 0) {
+			CampoPersonalizado selected = (CampoPersonalizado) _screen
+					.getSelected();
+			try {
+				new Persistence().borrarAtributo(selected);
+			} catch (NullPointerException e) {
+				Util.noSd();
+			} catch (Exception e) {
+				Util.alert(e.toString());
+			}
+			_screen.remove(selected);
 		}
-		_screen.remove(selected);
 	}
 	
 	private void cerrarPantalla() {

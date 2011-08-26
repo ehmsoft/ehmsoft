@@ -71,6 +71,8 @@ public class ListadoCategorias {
 				verCategoria();
 			} else if (context == Util.CERRAR) {
 				cerrarPantalla();
+			} else if (context == Util.ELIMINAR) {
+				eliminarCategoria();
 			}
 		}
 	};
@@ -125,21 +127,25 @@ public class ListadoCategorias {
 		if(categoria != null) {
 			_screen.replace(selected, categoria);
 		} else {
-			eliminarCategoria();
+			_screen.remove(selected);
 		}
 	}
 	
 	private void eliminarCategoria() {
-		Categoria selected = (Categoria)_screen.getSelected();
-		try {
-			new Persistence().borrarCategoria(selected);
-		} catch (NullPointerException e) {
-			_screen.alert(Util.noSDString());
-			System.exit(0);
-		} catch (Exception e) {
-			_screen.alert(e.toString());
+		Object[] ask = { "Aceptar", "Cancelar" };
+		int sel = _screen.ask(ask, Util.delBDCategoria(), 1);
+		if (sel == 0) {
+			Categoria selected = (Categoria) _screen.getSelected();
+			try {
+				new Persistence().borrarCategoria(selected);
+			} catch (NullPointerException e) {
+				_screen.alert(Util.noSDString());
+				System.exit(0);
+			} catch (Exception e) {
+				_screen.alert(e.toString());
+			}
+			_screen.remove(selected);
 		}
-		_screen.remove(selected);
 	}
 	
 	private void cerrarPantalla() {

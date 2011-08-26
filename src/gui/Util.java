@@ -70,6 +70,50 @@ public class Util {
 		});
 	}
 	
+	public static String delBDJuzgado() {
+		return "¿Desea eliminar el juzgado?. Se eliminará definitivamente y de cada proceso que lo contenga";
+	}
+	
+	public static String delBDPersona() {
+		return "¿Desea eliminar la persona?. Se eliminará definitivamente y de cada proceso que la contenga";
+	}
+	
+	public static String delBDCategoria() {
+		return "¿Desea eliminar la categoría?. Se eliminará de definitivamente y cada proceso ligado a esta";
+	}
+	
+	public static String delBDCampo() {
+		return "¿Desea eliminar el campo personalizado?. Se eliminará definitivamente y de cada proceso que lo contenga";
+	}
+	
+	public static String delBDActuacion() {
+		return "¿Desea eliminar la actuación?. Se eliminará definitivamente";
+	}
+	
+	public static String delBDProceso() {
+		return "¿Desea eliminar el proceso?. Se eliminará definitivamente y las actuaciones ligadas a este";
+	}
+	
+	public static String delJuzgado() {
+		return "¿Desea eliminar el juzgado?";
+	}
+	
+	public static String delPersona() {
+		return "¿Desea eliminar la persona?";
+	}
+	
+	public static String delCategoria() {
+		return "¿Desea eliminar la categoría?";
+	}
+	
+	public static String delCampo() {
+		return "¿Desea eliminar el campo personalizado?";
+	}
+	
+	public static String delActuacion() {
+		return "¿Desea eliminar la actuación?";
+	}
+	
 	public static Persona consultarPersonaVacia(int tipo) {
 		Persona persona = null;
 		try {

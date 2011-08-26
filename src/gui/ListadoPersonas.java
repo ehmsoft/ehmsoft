@@ -80,6 +80,8 @@ public class ListadoPersonas {
 				verPersona();
 			} else if (context == Util.CERRAR) {
 				cerrarPantalla();
+			} else if(context == Util.ELIMINAR) {
+				eliminarPersona();
 			}
 		}
 	};
@@ -130,25 +132,29 @@ public class ListadoPersonas {
 	
 	private void verPersona() {
 		Persona selected = (Persona)_screen.getSelected();
-		Persona juzgado = Util.verPersona(selected);
-		if(juzgado != null) {
-			_screen.replace(selected, juzgado);
+		Persona persona = Util.verPersona(selected);
+		if(persona != null) {
+			_screen.replace(selected, persona);
 		} else {
-			eliminarPersona();
+			_screen.remove(selected);
 		}
 	}
 	
 	private void eliminarPersona() {
-		Persona selected = (Persona)_screen.getSelected();
-		try {
-			new Persistence().borrarPersona(selected);
-		} catch (NullPointerException e) {
-			_screen.alert(Util.noSDString());
-			System.exit(0);
-		} catch (Exception e) {
-			_screen.alert(e.toString());
+		Object[] ask = { "Aceptar", "Cancelar" };
+		int sel = _screen.ask(ask, Util.delBDPersona(), 1);
+		if (sel == 0) {
+			Persona selected = (Persona) _screen.getSelected();
+			try {
+				new Persistence().borrarPersona(selected);
+			} catch (NullPointerException e) {
+				_screen.alert(Util.noSDString());
+				System.exit(0);
+			} catch (Exception e) {
+				_screen.alert(e.toString());
+			}
+			_screen.remove(selected);
 		}
-		_screen.remove(selected);
 	}
 	
 	private void cerrarPantalla() {

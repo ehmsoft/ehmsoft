@@ -70,6 +70,8 @@ public class ListadoProcesos {
 				verProceso();
 			} else if (context == Util.CERRAR) {
 				cerrarPantalla();
+			} else if(context == Util.ELIMINAR) {
+				eliminarProceso();
 			}
 		}
 	};
@@ -127,21 +129,25 @@ public class ListadoProcesos {
 		if(proceso != null) {
 			_screen.replace(selected, proceso);
 		} else {
-			eliminarProceso();
+			_screen.remove(selected);
 		}
 	}
 	
 	private void eliminarProceso() {
-		Proceso selected = (Proceso)_screen.getSelected();
-		try {
-			new Persistence().borrarProceso(selected);
-		} catch (NullPointerException e) {
-			_screen.alert(Util.noSDString());
-			System.exit(0);
-		} catch (Exception e) {
-			_screen.alert(e.toString());
+		Object[] ask = { "Aceptar", "Cancelar" };
+		int sel = _screen.ask(ask, Util.delBDProceso(), 1);
+		if (sel == 0) {
+			Proceso selected = (Proceso) _screen.getSelected();
+			try {
+				new Persistence().borrarProceso(selected);
+			} catch (NullPointerException e) {
+				_screen.alert(Util.noSDString());
+				System.exit(0);
+			} catch (Exception e) {
+				_screen.alert(e.toString());
+			}
+			_screen.remove(selected);
 		}
-		_screen.remove(selected);
 	}
 	
 	private void cerrarPantalla() {

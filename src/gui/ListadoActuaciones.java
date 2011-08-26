@@ -74,6 +74,8 @@ public class ListadoActuaciones {
 				verActuacion();
 			} else if (context == Util.CERRAR) {
 				cerrarPantalla();
+			} else if(context == Util.ELIMINAR) {
+				eliminarActuacion();
 			}
 		}
 	};
@@ -128,20 +130,24 @@ public class ListadoActuaciones {
 		if(actuacion != null) {
 			_screen.replace(selected, actuacion);
 		} else {
-			eliminarActuacion();
+			_screen.remove(selected);
 		}
 	}
 	
 	private void eliminarActuacion() {
-		Actuacion selected = (Actuacion)_screen.getSelected();
-		try {
-			new Persistence().borrarActuacion(selected);
-		} catch (NullPointerException e) {
-			Util.noSd();
-		} catch (Exception e) {
-			Util.alert(e.toString());
+		Object[] ask = { "Aceptar", "Cancelar" };
+		int sel = _screen.ask(ask, Util.delBDActuacion(), 1);
+		if (sel == 0) {
+			Actuacion selected = (Actuacion) _screen.getSelected();
+			try {
+				new Persistence().borrarActuacion(selected);
+			} catch (NullPointerException e) {
+				Util.noSd();
+			} catch (Exception e) {
+				Util.alert(e.toString());
+			}
+			_screen.remove(selected);
 		}
-		_screen.remove(selected);
 	}
 	
 	private void cerrarPantalla() {
