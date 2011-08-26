@@ -110,6 +110,8 @@ public class VerProceso {
 				verCampo();
 			} else if(context == Util.ELIMINAR_CAMPO) {
 				eliminarCampo();
+			} else if(context == Util.ELIMINAR) {
+				eliminarProceso();
 			}
 		}
 	};
@@ -212,7 +214,7 @@ public class VerProceso {
 	
 	private void eliminarCampo() {
 		Object[] ask = {"Aceptar", "Cancelar"};
-		int sel = _screen.ask(ask, "¿Esta seguro que desea eliminar el campo del proceso?", 1);
+		int sel = _screen.ask(ask, Util.delCampo(), 1);
 		if(sel == 0) {
 			CampoPersonalizado old = (CampoPersonalizado) _screen.getCookieOfFocused();
 			_screen.eliminarCampo();
@@ -272,10 +274,7 @@ public class VerProceso {
 	
 	private void eliminarDemandante() {
 		Object[] ask = { "Aceptar", "Cancelar" };
-		int sel = _screen
-				.ask(ask,
-						"¿Está seguro que desea eliminar el demandante del proceso?",
-						1);
+		int sel = _screen.ask(ask, Util.delPersona(), 1);
 		if (sel == 0) {
 			if (_demandanteVacio == null) {
 				_demandanteVacio = Util.consultarPersonaVacia(1);
@@ -287,10 +286,7 @@ public class VerProceso {
 	
 	private void eliminarDemandado() {
 		Object[] ask = { "Aceptar", "Cancelar" };
-		int sel = _screen
-				.ask(ask,
-						"¿Está seguro que desea eliminar el demandado del proceso?",
-						1);
+		int sel = _screen.ask(ask, Util.delPersona(), 1);
 		if (sel == 0) {
 			if (_demandadoVacio == null) {
 				_demandadoVacio = Util.consultarPersonaVacia(2);
@@ -302,10 +298,7 @@ public class VerProceso {
 	
 	private void eliminarJuzgado() {
 		Object[] ask = { "Aceptar", "Cancelar" };
-		int sel = _screen
-				.ask(ask,
-						"¿Está seguro que desea eliminar el juzgado del proceso?",
-						1);
+		int sel = _screen.ask(ask, Util.delJuzgado(), 1);
 		if (sel == 0) {
 			if (_juzgadoVacio == null) {
 				_juzgadoVacio = Util.consultarJuzgadoVacio();
@@ -443,6 +436,22 @@ public class VerProceso {
 			Object[] actuaciones = new Object[_actuaciones.size()];
 			_actuaciones.copyInto(actuaciones);
 			_screen.setActuaciones(actuaciones);
+		}
+	}
+	
+	private void eliminarProceso() {
+		Object[] ask = { "Aceptar", "Cancelar" };
+		int sel = _screen.ask(ask, Util.delBDProceso(), 1);
+		if (sel == 0) {
+			try {
+				new Persistence().borrarProceso(_proceso);
+			} catch (NullPointerException e) {
+				Util.noSd();
+			} catch (Exception e) {
+				Util.alert(e.toString());
+			}
+			_proceso = null;
+			UiApplication.getUiApplication().popScreen(_screen);
 		}
 	}
 	

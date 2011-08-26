@@ -61,7 +61,7 @@ public class VerCategoria {
 
 	private void eliminarCategoria() {
 		Object[] ask = {"Aceptar", "Cancelar"};
-		int sel = _screen.ask(ask, "¿Esta seguro que desea eliminar la categoría?", 1);
+		int sel = _screen.ask(ask, Util.delBDCategoria(), 1);
 		if(sel == 0) {
 			try {
 				new Persistence().borrarCategoria(_categoria);

@@ -67,7 +67,7 @@ public class VerJuzgado {
 	
 	private void eliminarJuzgado() {
 		Object[] ask = {"Aceptar", "Cancelar"};
-		int sel = _screen.ask(ask, "¿Esta seguro que desea eliminar el juzgado", 1);
+		int sel = _screen.ask(ask, Util.delBDJuzgado(), 1);
 		if(sel == 0) {
 			try {
 				new Persistence().borrarJuzgado(_juzgado);

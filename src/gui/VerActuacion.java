@@ -154,7 +154,7 @@ public class VerActuacion {
 
 	private void eliminarActuacion() {
 		Object[] ask = {"Aceptar", "Cancelar"};
-		int sel = _screen.ask(ask, "¿Esta seguro que desea eliminar la actuación?", 1);
+		int sel = _screen.ask(ask, Util.delBDActuacion(), 1);
 		if(sel == 0) {
 			try {
 				new Persistence().borrarActuacion(_actuacion);

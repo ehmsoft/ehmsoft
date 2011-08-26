@@ -68,7 +68,7 @@ public class VerPersona {
 	
 	private void eliminarPersona() {
 		Object[] ask = {"Aceptar", "Cancelar"};
-		int sel = _screen.ask(ask, "¿Esta seguro que desea eliminar la persona?", 1);
+		int sel = _screen.ask(ask, Util.delBDPersona(), 1);
 		if(sel == 0) {
 			try {
 				new Persistence().borrarPersona(_persona);

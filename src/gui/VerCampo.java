@@ -79,7 +79,7 @@ public class VerCampo {
 
 	private void eliminarCampo() {
 		Object[] ask = {"Aceptar", "Cancelar"};
-		int sel = _screen.ask(ask, "¿Esta seguro que desea eliminar el campo personalizado?", 1);
+		int sel = _screen.ask(ask, Util.delBDCampo(), 1);
 		if(sel == 0) {
 			try {
 				new Persistence().borrarAtributo(_campo);
