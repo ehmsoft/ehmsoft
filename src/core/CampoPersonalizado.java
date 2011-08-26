@@ -87,6 +87,60 @@ public class CampoPersonalizado {
 	public String toString() {
 		return getNombre();
 	}
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result
+				+ ((id_atributo == null) ? 0 : id_atributo.hashCode());
+		result = prime * result
+				+ ((id_campo == null) ? 0 : id_campo.hashCode());
+		result = prime * result + longitudMax;
+		result = prime * result + longitudMin;
+		result = prime * result + ((nombre == null) ? 0 : nombre.hashCode());
+		result = prime * result
+				+ ((obligatorio == null) ? 0 : obligatorio.hashCode());
+		result = prime * result + ((valor == null) ? 0 : valor.hashCode());
+		return result;
+	}
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (!(obj instanceof CampoPersonalizado))
+			return false;
+		CampoPersonalizado other = (CampoPersonalizado) obj;
+		if (id_atributo == null) {
+			if (other.id_atributo != null)
+				return false;
+		} else if (!id_atributo.equals(other.id_atributo))
+			return false;
+		if (id_campo == null) {
+			if (other.id_campo != null)
+				return false;
+		} else if (!id_campo.equals(other.id_campo))
+			return false;
+		if (longitudMax != other.longitudMax)
+			return false;
+		if (longitudMin != other.longitudMin)
+			return false;
+		if (nombre == null) {
+			if (other.nombre != null)
+				return false;
+		} else if (!nombre.equals(other.nombre))
+			return false;
+		if (obligatorio == null) {
+			if (other.obligatorio != null)
+				return false;
+		} else if (!obligatorio.equals(other.obligatorio))
+			return false;
+		if (valor == null) {
+			if (other.valor != null)
+				return false;
+		} else if (!valor.equals(other.valor))
+			return false;
+		return true;
+	}
 	
 	
 }
