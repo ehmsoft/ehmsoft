@@ -60,7 +60,7 @@ public class NuevoCampo {
 				try {
 					new Persistence().guardarAtributo(_campo);
 				} catch (NullPointerException e) {
-					_screen.alert(Util.noSD());
+					_screen.alert(Util.noSDString());
 					System.exit(0);
 				} catch (Exception e) {
 					_screen.alert(e.toString());

@@ -51,7 +51,7 @@ public class ListadoPersonas {
 				_vectorPersonas = new Persistence().consultarDemandados();
 			}
 		} catch(NullPointerException e) {
-			_screen.alert(Util.noSD());
+			_screen.alert(Util.noSDString());
 			System.exit(0);
 		} catch (Exception e) {
 			_screen.alert(e.toString());
@@ -149,7 +149,7 @@ public class ListadoPersonas {
 		try {
 			new Persistence().borrarPersona(selected);
 		} catch (NullPointerException e) {
-			_screen.alert(Util.noSD());
+			_screen.alert(Util.noSDString());
 			System.exit(0);
 		} catch (Exception e) {
 			_screen.alert(e.toString());

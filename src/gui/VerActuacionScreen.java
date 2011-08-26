@@ -72,6 +72,18 @@ public class VerActuacionScreen extends FondoNormal {
 		_alarm.setBitmap(_bell);
 	}
 	
+	public void setDescripcion(String text) {
+		_txtDescripcion.setText(text);
+	}
+	
+	public void setFecha(Date date) {
+		_dfFecha.setDate(date);
+	}
+	
+	public void setFechaProxima(Date date) {
+		_dfFechaProxima.setDate(date);
+	}
+	
 	public void removeClock() {
 		_cita.setBitmap(null);
 		removeBell();

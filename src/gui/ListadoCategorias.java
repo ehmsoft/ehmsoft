@@ -45,7 +45,7 @@ public class ListadoCategorias {
 		try {
 			_vectorCategorias = new Persistence().consultarCategorias();
 		} catch(NullPointerException e) {
-			_screen.alert(Util.noSD());
+			_screen.alert(Util.noSDString());
 			System.exit(0);
 		} catch (Exception e) {
 			_screen.alert(e.toString());
@@ -139,7 +139,7 @@ public class ListadoCategorias {
 		try {
 			new Persistence().borrarCategoria(selected);
 		} catch (NullPointerException e) {
-			_screen.alert(Util.noSD());
+			_screen.alert(Util.noSDString());
 			System.exit(0);
 		} catch (Exception e) {
 			_screen.alert(e.toString());

@@ -347,7 +347,6 @@ public class Prueba extends MainScreen {
 			}
 			VerProceso ver = new VerProceso(proceso);
 			UiApplication.getUiApplication().pushModalScreen(ver.getScreen());
-			ver.actualizarProceso();
 		}
 	};
 	

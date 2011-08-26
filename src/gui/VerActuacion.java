@@ -21,10 +21,15 @@ public class VerActuacion {
 		_uid = _actuacion.getUid();
 		_juzgado = _actuacion.getJuzgado();
 		_screen = new VerActuacionScreen();
+		_screen.setChangeListener(listener);
+		_screen.setJuzgado(_juzgado.getNombre());
+		_screen.setDescripcion(_actuacion.getDescripcion());
+		_screen.setFecha(_actuacion.getFecha().getTime());
+		_screen.setFechaProxima(_actuacion.getFechaProxima().getTime());
 		try {
 			_emptyJuzgado = new Persistence().consultarJuzgado("1");
 		} catch (NullPointerException e) {
-			_screen.alert(Util.noSD());
+			_screen.alert(Util.noSDString());
 			System.exit(0);
 		} catch (Exception e) {
 			_screen.alert(e.toString());
@@ -45,8 +50,6 @@ public class VerActuacion {
 				eliminarCita();
 			}
 		}
-		_screen.setChangeListener(listener);
-		_screen.setJuzgado(_juzgado.getNombre());
 	}
 
 	FieldChangeListener listener = new FieldChangeListener() {
@@ -91,7 +94,7 @@ public class VerActuacion {
 				try {
 					new Persistence().actualizarActuacion(actuacion);
 				} catch (NullPointerException e) {
-					_screen.alert(Util.noSD());
+					_screen.alert(Util.noSDString());
 					System.exit(0);
 				} catch (Exception e) {
 					_screen.alert(e.toString());
@@ -159,7 +162,7 @@ public class VerActuacion {
 			try {
 				new Persistence().borrarActuacion(_actuacion);
 			} catch(NullPointerException e) {
-				_screen.alert(Util.noSD());
+				_screen.alert(Util.noSDString());
 				System.exit(0);
 			} catch (Exception e) {
 				_screen.alert(e.toString());

@@ -55,7 +55,7 @@ public class VerPersona {
 				try {
 					new Persistence().actualizarPersona(persona);
 				} catch (NullPointerException e) {
-					_screen.alert(Util.noSD());
+					_screen.alert(Util.noSDString());
 					System.exit(0);
 				} catch (Exception e) {
 					_screen.alert(e.toString());
@@ -73,7 +73,7 @@ public class VerPersona {
 			try {
 				new Persistence().borrarPersona(_persona);
 			} catch(NullPointerException e) {
-				_screen.alert(Util.noSD());
+				_screen.alert(Util.noSDString());
 				System.exit(0);
 			} catch (Exception e) {
 				_screen.alert(e.toString());

@@ -20,7 +20,7 @@ public class NuevaActuacion {
 		try {
 			_juzgado = new Persistence().consultarJuzgado("1");
 		} catch (NullPointerException e) {
-			_screen.alert(Util.noSD());
+			_screen.alert(Util.noSDString());
 			System.exit(0);
 		} catch (Exception e) {
 			_screen.alert(e.toString());
@@ -81,7 +81,7 @@ public class NuevaActuacion {
 					new Persistence().guardarActuacion(_actuacion,
 							_proceso.getId_proceso());
 				} catch (NullPointerException e) {
-					_screen.alert(Util.noSD());
+					_screen.alert(Util.noSDString());
 					System.exit(0);
 				} catch (Exception e) {
 					_screen.alert(e.toString());

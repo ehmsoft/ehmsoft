@@ -81,7 +81,7 @@ public class NuevaPersona {
 			new Persistence().guardarPersona(_persona);
 			UiApplication.getUiApplication().popScreen(_screen);
 		} catch (NullPointerException e) {
-			_screen.alert(Util.noSD());
+			_screen.alert(Util.noSDString());
 			System.exit(0);
 		} catch (Exception e) {
 			_screen.alert(e.toString());

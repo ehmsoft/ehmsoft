@@ -45,7 +45,7 @@ public class ListadoCampos {
 		try {
 			_vectorCampos = new Persistence().consultarAtributos();
 		} catch(NullPointerException e) {
-			_screen.alert(Util.noSD());
+			_screen.alert(Util.noSDString());
 			System.exit(0);
 		} catch (Exception e) {
 			_screen.alert(e.toString());
@@ -139,7 +139,7 @@ public class ListadoCampos {
 		try {
 			new Persistence().borrarAtributo(selected);
 		} catch (NullPointerException e) {
-			_screen.alert(Util.noSD());
+			_screen.alert(Util.noSDString());
 			System.exit(0);
 		} catch (Exception e) {
 			_screen.alert(e.toString());

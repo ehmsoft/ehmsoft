@@ -34,10 +34,13 @@ public class EditableTextField extends HorizontalFieldManager {
 		this(style);
 		_label.setText(label);
 		if(initialValue.equals("") || initialValue == null) {
-			_editable = true;
-			this.replace(_lblField, _txtField);
+			setEditable();
 		}
 		setText(initialValue);
+	}
+	
+	public EditableTextField(String label) {
+		this(label, "", 0);
 	}
 	
 	public EditableTextField(String label, long style) {
@@ -95,7 +98,6 @@ public class EditableTextField extends HorizontalFieldManager {
 	}
 
 	public void setEditable() {
-		_txtField.setText(_lblField.getText());
 		this.replace(_lblField, _txtField);
 		_editable = true;
 	}
@@ -108,9 +110,10 @@ public class EditableTextField extends HorizontalFieldManager {
 		if(editable) {
 			setEditable();
 		} else {
-			_lblField.setText(_txtField.getText());
-			this.replace(_txtField, _lblField);
-			_editable = false;
+			if(!this.getField(1).equals(_lblField)) {
+				this.replace(_txtField, _lblField);
+				_editable = false;
+			}
 		}
 	}
 }

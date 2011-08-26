@@ -66,7 +66,7 @@ public class VerCampo {
 				try {
 					new Persistence().actualizarAtributo(campo);
 				} catch (NullPointerException e) {
-					_screen.alert(Util.noSD());
+					_screen.alert(Util.noSDString());
 					System.exit(0);
 				} catch (Exception e) {
 					_screen.alert(e.toString());
@@ -84,7 +84,7 @@ public class VerCampo {
 			try {
 				new Persistence().borrarAtributo(_campo);
 			} catch(NullPointerException e) {
-				_screen.alert(Util.noSD());
+				_screen.alert(Util.noSDString());
 				System.exit(0);
 			} catch (Exception e) {
 				_screen.alert(e.toString());

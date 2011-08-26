@@ -45,7 +45,7 @@ public class ListadoProcesos {
 		try {
 			_vectorProcesos = new Persistence().consultarProcesos();
 		} catch(NullPointerException e) {
-			_screen.alert(Util.noSD());
+			_screen.alert(Util.noSDString());
 			System.exit(0);
 		} catch (Exception e) {
 			_screen.alert(e.toString());
@@ -139,7 +139,7 @@ public class ListadoProcesos {
 		try {
 			new Persistence().borrarProceso(selected);
 		} catch (NullPointerException e) {
-			_screen.alert(Util.noSD());
+			_screen.alert(Util.noSDString());
 			System.exit(0);
 		} catch (Exception e) {
 			_screen.alert(e.toString());

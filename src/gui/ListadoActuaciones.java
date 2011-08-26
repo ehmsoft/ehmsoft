@@ -48,7 +48,7 @@ public class ListadoActuaciones {
 		try {
 			_vectorActuaciones = new Persistence().consultarActuaciones(_proceso);
 		} catch(NullPointerException e) {
-			_screen.alert(Util.noSD());
+			_screen.alert(Util.noSDString());
 			System.exit(0);
 		} catch (Exception e) {
 			_screen.alert(e.toString());
@@ -142,7 +142,7 @@ public class ListadoActuaciones {
 		try {
 			new Persistence().borrarActuacion(selected);
 		} catch (NullPointerException e) {
-			_screen.alert(Util.noSD());
+			_screen.alert(Util.noSDString());
 			System.exit(0);
 		} catch (Exception e) {
 			_screen.alert(e.toString());

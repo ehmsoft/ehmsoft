@@ -48,7 +48,7 @@ public class NuevoProceso {
 			_categorias.insertElementAt(ninguna, 0);
 
 		} catch (NullPointerException e) {
-			_screen.alert(Util.noSD());
+			_screen.alert(Util.noSDString());
 			System.exit(0);
 		} catch (Exception e) {
 			_screen.alert(e.toString());
@@ -110,9 +110,8 @@ public class NuevoProceso {
 			_screen.alert("El Demandado es obligatorio");
 		} else if (_juzgado == null) {
 			_screen.alert("El juzgado es obligatorio");
-		} else if(isCampoObligatorio()) {
-		}
-		else {
+		} else if (isCampoObligatorio()) {
+		} else {
 			_proceso = new Proceso(_demandante, _demandado, _screen.getFecha(),
 					_juzgado, _screen.getRadicado(),
 					_screen.getRadicadoUnico(), _actuaciones,
@@ -122,7 +121,7 @@ public class NuevoProceso {
 			try {
 				new Persistence().guardarProceso(_proceso);
 			} catch (NullPointerException e) {
-				_screen.alert(Util.noSD());
+				_screen.alert(Util.noSDString());
 				System.exit(0);
 			} catch (Exception e) {
 				_screen.alert(e.toString());
@@ -130,14 +129,15 @@ public class NuevoProceso {
 			UiApplication.getUiApplication().popScreen(_screen);
 		}
 	}
-	
+
 	private boolean isCampoObligatorio() {
 		boolean ret = false;
 		Enumeration e = _campos.elements();
-		while(e.hasMoreElements()) {
-			CampoPersonalizado campo = (CampoPersonalizado)e.nextElement();
-			if(campo.isObligatorio().booleanValue()) {
-				_screen.alert("El campo " + campo.getNombre() + " es obligatorio");
+		while (e.hasMoreElements()) {
+			CampoPersonalizado campo = (CampoPersonalizado) e.nextElement();
+			if (campo.isObligatorio().booleanValue()) {
+				_screen.alert("El campo " + campo.getNombre()
+						+ " es obligatorio");
 				ret = true;
 				break;
 			}

@@ -48,7 +48,7 @@ public class VerCategoria {
 				try {
 					new Persistence().actualizarCategoria(categoria);
 				} catch (NullPointerException e) {
-					_screen.alert(Util.noSD());
+					_screen.alert(Util.noSDString());
 					System.exit(0);
 				} catch (Exception e) {
 					_screen.alert(e.toString());
@@ -66,7 +66,7 @@ public class VerCategoria {
 			try {
 				new Persistence().borrarCategoria(_categoria);
 			} catch(NullPointerException e) {
-				_screen.alert(Util.noSD());
+				_screen.alert(Util.noSDString());
 				System.exit(0);
 			} catch (Exception e) {
 				_screen.alert(e.toString());

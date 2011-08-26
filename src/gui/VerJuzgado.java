@@ -54,7 +54,7 @@ public class VerJuzgado {
 				try {
 					new Persistence().actualizarJuzgado(juzgado);
 				} catch (NullPointerException e) {
-					_screen.alert(Util.noSD());
+					_screen.alert(Util.noSDString());
 					System.exit(0);
 				} catch (Exception e) {
 					_screen.alert(e.toString());
@@ -72,7 +72,7 @@ public class VerJuzgado {
 			try {
 				new Persistence().borrarJuzgado(_juzgado);
 			} catch(NullPointerException e) {
-				_screen.alert(Util.noSD());
+				_screen.alert(Util.noSDString());
 				System.exit(0);
 			} catch (Exception e) {
 				_screen.alert(e.toString());
