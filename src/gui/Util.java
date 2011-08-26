@@ -1,6 +1,7 @@
 package gui;
 
 import java.util.Calendar;
+import java.util.Vector;
 
 import persistence.Persistence;
 
@@ -13,6 +14,9 @@ import core.Proceso;
 
 import net.rim.device.api.ui.UiApplication;
 import net.rim.device.api.ui.component.Dialog;
+import net.rim.device.api.ui.component.LabelField;
+import net.rim.device.api.ui.container.PopupScreen;
+import net.rim.device.api.ui.container.VerticalFieldManager;
 
 public class Util {
 	
@@ -46,6 +50,18 @@ public class Util {
 	public static final short ELIMINAR = 23;
 
 	public static final short CLICK = 24;
+	
+	public static PopupScreen WAIT_SCREEN;
+	
+	public static void pushWaitScreen() {
+		WAIT_SCREEN = new PopupScreen(new VerticalFieldManager());
+		WAIT_SCREEN.add(new LabelField("Procesando, espere porfavor..."));
+		UiApplication.getUiApplication().pushGlobalScreen(WAIT_SCREEN, 0, UiApplication.GLOBAL_QUEUE);
+	}
+	
+	public static void popModalScreen() {
+		UiApplication.getUiApplication().popScreen(WAIT_SCREEN);
+	}
 
 	public static String noSDString() {
 		return("Tarjeta SD no presente, la aplicación se cerrará, verifique e inicie nuevamente");

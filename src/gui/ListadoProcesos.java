@@ -6,6 +6,9 @@ import net.rim.device.api.ui.Field;
 import net.rim.device.api.ui.FieldChangeListener;
 import net.rim.device.api.ui.Screen;
 import net.rim.device.api.ui.UiApplication;
+import net.rim.device.api.ui.component.LabelField;
+import net.rim.device.api.ui.container.PopupScreen;
+import net.rim.device.api.ui.container.VerticalFieldManager;
 import persistence.Persistence;
 import core.Proceso;
 
@@ -41,16 +44,24 @@ public class ListadoProcesos {
 		else {
 			_screen = new ListadoProcesosScreen();
 		}
+
+		Util.pushWaitScreen();
+
+		UiApplication.getUiApplication().invokeLater(new Runnable() {
+
+			public void run() {
+				try {
+					_vectorProcesos = new Persistence().consultarProcesos();
+				} catch (NullPointerException e) {
+					Util.noSd();
+				} catch (Exception e) {
+					Util.alert(e.toString());
+				}
+				addProcesos();
+				Util.popModalScreen();
+			}
+		});
 		
-		try {
-			_vectorProcesos = new Persistence().consultarProcesos();
-		} catch(NullPointerException e) {
-			Util.noSd();
-		} catch (Exception e) {
-			Util.alert(e.toString());
-		}
-		
-		addProcesos();
 		((Screen)_screen).setChangeListener(listener);
 		
 		if((_style & SEARCH) == SEARCH) {
