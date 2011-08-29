@@ -5,7 +5,6 @@ import java.util.Vector;
 
 import net.rim.device.api.ui.Field;
 import net.rim.device.api.ui.FieldChangeListener;
-import net.rim.device.api.ui.UiApplication;
 
 import persistence.Persistence;
 import core.Actuacion;
@@ -126,7 +125,7 @@ public class NuevoProceso {
 			} catch (Exception e) {
 				_screen.alert(e.toString());
 			}
-			UiApplication.getUiApplication().popScreen(_screen);
+			Util.popScreen(_screen);
 		}
 	}
 	
@@ -138,6 +137,11 @@ public class NuevoProceso {
 			if(campo.getLongitudMin() > campo.getValor().length() && campo.getLongitudMin() != 0) {
 				Util.alert("El campo " + campo.getNombre() + " posee una longitud minima de " + 
 						campo.getLongitudMin()  + " caracteres, y usted ingresó " + campo.getValor().length());
+				ret = true;
+			}
+			if(campo.getLongitudMax() < campo.getValor().length() && campo.getLongitudMax() != 0) {
+				Util.alert("El campo " + campo.getNombre() + " posee una longitud máxima de " + 
+						campo.getLongitudMax()  + " caracteres, y usted ingresó " + campo.getValor().length());
 				ret = true;
 			}
 		}
@@ -240,7 +244,18 @@ public class NuevoProceso {
 	}
 
 	private void cerrarPantalla() {
-		UiApplication.getUiApplication().popScreen(_screen);
+		if (_actuaciones.size() != 0 || _campos.size() != 0
+				|| _demandante != null || _demandado != null
+				|| _juzgado != null) {
+			Object[] ask = { "Guardar", "Descartar", "Cancelar" };
+			int sel = _screen.ask(ask, "Se han detectado cambios", 2);
+			if (sel == 1) {
+				guardarProceso();
+			} else if (sel == 2) {
+				Util.popScreen(_screen);
+			}
+		} else {
+			Util.popScreen(_screen);
+		}
 	}
-
 }

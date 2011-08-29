@@ -7,6 +7,7 @@ import persistence.Persistence;
 
 import net.rim.device.api.ui.Field;
 import net.rim.device.api.ui.FieldChangeListener;
+import net.rim.device.api.util.CloneableVector;
 import core.Actuacion;
 import core.CampoPersonalizado;
 import core.Categoria;
@@ -33,6 +34,7 @@ public class VerProceso {
 	private Vector _campos;
 	private Vector _camposNuevos;
 	private Vector _camposEliminados;
+	private Vector _camposOriginales;
 	
 	public VerProceso(Proceso proceso) {
 		_camposNuevos = new Vector();
@@ -43,6 +45,7 @@ public class VerProceso {
 		_juzgado = _proceso.getJuzgado();
 		_actuaciones = _proceso.getActuaciones();
 		_campos = _proceso.getCampos();
+		_camposOriginales = CloneableVector.clone(_campos);
 		_categoria = _proceso.getCategoria();
 		
 		_screen = new VerProcesoScreen();
@@ -132,32 +135,53 @@ public class VerProceso {
 		} else if (_juzgado == null) {
 			_screen.alert("El juzgado es obligatorio");
 		} else if(isCampoObligatorio()) {
-		} else if(checkLonMin()) {
+		} else if(checkLong()) {
 		}
 		else {
-			Proceso proceso = new Proceso(_demandante, _demandado, _screen.getFecha(),
-					_juzgado, _screen.getRadicado(),
-					_screen.getRadicadoUnico(), _actuaciones,
-					_screen.getEstado(), (Categoria) _categoria,
-					_screen.getTipo(), _screen.getNotas(), _campos,
-					_screen.getPrioridad());
 			if(_camposNuevos.size() != 0) {
 				guardarCamposNuevos();
 			}
 			if(_camposEliminados.size() != 0) {
 				eliminarCampos();
 			}
+			Proceso proceso = new Proceso(_demandante, _demandado, _screen.getFecha(),
+					_juzgado, _screen.getRadicado(),
+					_screen.getRadicadoUnico(), _actuaciones,
+					_screen.getEstado(), (Categoria) _categoria,
+					_screen.getTipo(), _screen.getNotas(), _campos,
+					_screen.getPrioridad());
 			if(!proceso.equals(_proceso)) {
 				try {
 					new Persistence().actualizarProceso(proceso);
 					_proceso = proceso;
 				} catch(NullPointerException e1) {
 					Util.noSd();
-				} catch(Exception e1) {
+				} catch (Exception e1) {
 					Util.alert(e1.toString());
+				}
+			} else if (cambioCampos()) {
+				try {
+					Persistence p = new Persistence();
+					Enumeration e = _campos.elements();
+					while (e.hasMoreElements()) {
+						p.actualizarCampoPersonalizado((CampoPersonalizado) e
+								.nextElement());
+					}
+				} catch (NullPointerException e) {
+					Util.noSd();
+				} catch (Exception e) {
+					Util.alert(e.toString());
 				}
 			}
 			Util.popScreen(_screen);
+		}
+	}
+	
+	private boolean cambioCampos() {
+		if(_campos.equals(_camposOriginales)) {
+			return false;
+		} else {
+			return true;
 		}
 	}
 	
@@ -202,12 +226,22 @@ public class VerProceso {
 				.getCookieOfFocused();
 		nw = Util.verCampo(old);
 		if (!old.equals(nw)) {
-			int index = _campos.indexOf(old);
-			_campos.removeElementAt(index);
-			_campos.insertElementAt(nw, index);
+			if (_campos.contains(old)) {
+				int index = _campos.indexOf(old);
+				_campos.removeElementAt(index);
+				_campos.insertElementAt(nw, index);
+			} else if (_camposNuevos.contains(old)) {
+				int index = _camposNuevos.indexOf(old);
+				_camposNuevos.removeElementAt(index);
+				_camposNuevos.insertElementAt(nw, index);
+			}
 			_screen.modificarCampo(nw, nw.getNombre());
-		} else if (nw == null){
-			_campos.removeElement(old);
+		} else if (nw == null) {
+			if (_campos.contains(old)) {
+				_campos.removeElement(old);
+			} else if (_camposNuevos.contains(old)) {
+				_camposNuevos.removeElement(old);
+			}
 			_screen.eliminarCampo();
 		}
 	}
@@ -229,7 +263,7 @@ public class VerProceso {
 		}
 	}
 	
-	private boolean checkLonMin() {
+	private boolean checkLong() {
 		boolean ret = false;
 		Enumeration e = _campos.elements();
 		while(e.hasMoreElements()) {
@@ -237,6 +271,11 @@ public class VerProceso {
 			if(campo.getLongitudMin() > campo.getValor().length() && campo.getLongitudMin() != 0) {
 				Util.alert("El campo " + campo.getNombre() + " posee una longitud minima de " + 
 						campo.getLongitudMin()  + " caracteres, y usted ingresó " + campo.getValor().length());
+				ret = true;
+			}
+			if(campo.getLongitudMax() < campo.getValor().length() && campo.getLongitudMax() != 0) {
+				Util.alert("El campo " + campo.getNombre() + " posee una longitud máxima de " + 
+						campo.getLongitudMax()  + " caracteres, y usted ingresó " + campo.getValor().length());
 				ret = true;
 			}
 		}
@@ -247,6 +286,11 @@ public class VerProceso {
 			if(campo.getLongitudMin() > campo.getValor().length() && campo.getLongitudMin() != 0) {
 				Util.alert("El campo " + campo.getNombre() + "posee una longitud minima de " + 
 						campo.getLongitudMin()  + " caracteres, y usted ingresó " + campo.getValor().length());
+				ret = true;
+			}
+			if(campo.getLongitudMax() < campo.getValor().length() && campo.getLongitudMax() != 0) {
+				Util.alert("El campo " + campo.getNombre() + " posee una longitud máxima de " + 
+						campo.getLongitudMax()  + " caracteres, y usted ingresó " + campo.getValor().length());
 				ret = true;
 			}
 		}
