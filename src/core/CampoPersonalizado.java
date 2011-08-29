@@ -110,16 +110,6 @@ public class CampoPersonalizado {
 		if (!(obj instanceof CampoPersonalizado))
 			return false;
 		CampoPersonalizado other = (CampoPersonalizado) obj;
-		if (id_atributo == null) {
-			if (other.id_atributo != null)
-				return false;
-		} else if (!id_atributo.equals(other.id_atributo))
-			return false;
-		if (id_campo == null) {
-			if (other.id_campo != null)
-				return false;
-		} else if (!id_campo.equals(other.id_campo))
-			return false;
 		if (longitudMax != other.longitudMax)
 			return false;
 		if (longitudMin != other.longitudMin)
