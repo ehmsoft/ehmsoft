@@ -12,6 +12,7 @@ import core.Juzgado;
 import core.Persona;
 import core.Proceso;
 
+import net.rim.device.api.ui.Screen;
 import net.rim.device.api.ui.UiApplication;
 import net.rim.device.api.ui.component.Dialog;
 import net.rim.device.api.ui.component.LabelField;
@@ -53,14 +54,21 @@ public class Util {
 	
 	public static PopupScreen WAIT_SCREEN;
 	
+	public static void popScreen(Screen screen) {
+		UiApplication.getUiApplication().popScreen(screen);
+	}
+	
 	public static void pushWaitScreen() {
 		WAIT_SCREEN = new PopupScreen(new VerticalFieldManager());
 		WAIT_SCREEN.add(new LabelField("Procesando, espere porfavor..."));
-		UiApplication.getUiApplication().pushGlobalScreen(WAIT_SCREEN, 0, UiApplication.GLOBAL_QUEUE);
+		UiApplication.getUiApplication().pushGlobalScreen(WAIT_SCREEN, 0,
+				UiApplication.GLOBAL_QUEUE);
 	}
-	
+
 	public static void popModalScreen() {
-		UiApplication.getUiApplication().popScreen(WAIT_SCREEN);
+		if (!WAIT_SCREEN.isDisplayed())
+			;
+		popScreen(WAIT_SCREEN);
 	}
 
 	public static String noSDString() {

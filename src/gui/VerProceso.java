@@ -7,7 +7,6 @@ import persistence.Persistence;
 
 import net.rim.device.api.ui.Field;
 import net.rim.device.api.ui.FieldChangeListener;
-import net.rim.device.api.ui.UiApplication;
 import core.Actuacion;
 import core.CampoPersonalizado;
 import core.Categoria;
@@ -157,7 +156,7 @@ public class VerProceso {
 					Util.alert(e1.toString());
 				}
 			}
-			UiApplication.getUiApplication().popScreen(_screen);
+			Util.popScreen(_screen);
 		}
 	}
 	
@@ -309,44 +308,59 @@ public class VerProceso {
 	}
 	
 	private void verDemandante() {
-		if(_demandante != null) {
-			_demandante = Util.verPersona(_demandante);
-			if(_demandante != null) {
-				_screen.setDemandante(_demandante.getNombre());
-			} else {
-				if(_demandanteVacio == null) {
-					_demandanteVacio = Util.consultarPersonaVacia(1);
+		if (!_demandante.getId_persona().equals("1")) {
+			if (_demandante != null) {
+				_demandante = Util.verPersona(_demandante);
+				if (_demandante != null) {
+					_proceso.setDemandante(_demandante);
+					_screen.setDemandante(_demandante.getNombre());
+				} else {
+					if (_demandanteVacio == null) {
+						_demandanteVacio = Util.consultarPersonaVacia(1);
+					}
+					_screen.setDemandante(_demandanteVacio.getNombre());
 				}
-				_screen.setDemandante(_demandanteVacio.getNombre());
 			}
+		} else {
+			addDemandante();
 		}
 	}
 	
 	private void verDemandado() {
-		if(_demandado != null) {
-			_demandado = Util.verPersona(_demandado);
-			if(_demandado != null) {
-				_screen.setDemandado(_demandado.getNombre());
-			} else {
-				if(_demandadoVacio == null) {
-					_demandadoVacio = Util.consultarPersonaVacia(2);
+		if (!_demandado.getId_persona().equals("1")) {
+			if (_demandado != null) {
+				_demandado = Util.verPersona(_demandado);
+				if (_demandado != null) {
+					_proceso.setDemandado(_demandado);
+					_screen.setDemandado(_demandado.getNombre());
+				} else {
+					if (_demandadoVacio == null) {
+						_demandadoVacio = Util.consultarPersonaVacia(2);
+					}
+					_screen.setDemandado(_demandadoVacio.getNombre());
 				}
-				_screen.setDemandado(_demandadoVacio.getNombre());
 			}
+		} else {
+			addDemandado();
 		}
 	}
-	
+
 	private void verJuzgado() {
-		if(_juzgado != null) {
-			_juzgado = Util.verJuzgado(_juzgado);
-			if(_juzgado != null) {
-				_screen.setJuzgado(_juzgado.getNombre());
-			} else {
-				if(_juzgadoVacio == null) {
-					_juzgadoVacio = Util.consultarJuzgadoVacio();
+		if (!_juzgado.getId_juzgado().equals("1")) {
+			if (_juzgado != null) {
+				_juzgado = Util.verJuzgado(_juzgado);
+				if (_juzgado != null) {
+					_proceso.setJuzgado(_juzgado);
+					_screen.setJuzgado(_juzgado.getNombre());
+				} else {
+					if (_juzgadoVacio == null) {
+						_juzgadoVacio = Util.consultarJuzgadoVacio();
+					}
+					_screen.setJuzgado(_juzgadoVacio.getNombre());
 				}
-				_screen.setJuzgado(_juzgadoVacio.getNombre());
 			}
+		} else {
+			addJuzgado();
 		}
 	}
 	
@@ -451,11 +465,26 @@ public class VerProceso {
 				Util.alert(e.toString());
 			}
 			_proceso = null;
-			UiApplication.getUiApplication().popScreen(_screen);
+			Util.popScreen(_screen);
 		}
 	}
 	
 	private void cerrarPantalla() {
-		UiApplication.getUiApplication().popScreen(_screen);
+		Proceso proceso = new Proceso(_demandante, _demandado,
+				_screen.getFecha(), _juzgado, _screen.getRadicado(),
+				_screen.getRadicadoUnico(), _actuaciones, _screen.getEstado(),
+				(Categoria) _categoria, _screen.getTipo(), _screen.getNotas(),
+				_campos, _screen.getPrioridad());
+		if (!proceso.equals(_proceso)) {
+			Object[] ask = { "Guardar", "Descartar", "Cancelar" };
+			int sel = _screen.ask(ask, "Se han detectado cambios", 2);
+			if (sel == 0) {
+				actualizarProceso();
+			} else if (sel == 1) {
+				Util.popScreen(_screen);
+			}
+		} else {
+			Util.popScreen(_screen);
+		}
 	}
 }

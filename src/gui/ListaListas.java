@@ -45,11 +45,14 @@ abstract class ListaListas extends KeywordFilterField {
 	}
 
 	public void update(Object old, Object nw) {
-		if(!old.equals(nw)) {
-			setText("");
-			_u.update(old, nw);
-			setText(nw.toString());
-			updateList();
+		_u.update(old, nw);
+		updateList();
+		invalidate();
+		if (getKeywordField().getTextLength() != 0) {
+			if (!old.equals(nw)) {
+				setText("");
+				setText(nw.toString());
+			}
 		}
 	}
 
