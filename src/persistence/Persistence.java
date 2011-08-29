@@ -1508,7 +1508,7 @@ public void borrarPreferencia(int id_preferencia) throws Exception {
 			connMgr.prepararBD();
 			d = DatabaseFactory.open(connMgr.getDbLocation());
 			Statement st = d
-					.createStatement("SELECT * FROM juzgados order by nombre");
+					.createStatement("SELECT id_juzgado, nombre, ciudad, tipo, direccion, telefono FROM juzgados order by nombre");
 			st.prepare();
 			Cursor cursor = st.getCursor();
 			while (cursor.next()) {
@@ -1544,7 +1544,7 @@ public void borrarPreferencia(int id_preferencia) throws Exception {
 			connMgr.prepararBD();
 			d = DatabaseFactory.open(connMgr.getDbLocation());
 			Statement st = d
-					.createStatement("SELECT * FROM juzgados where id_juzgado = ?");
+					.createStatement("SELECT id_juzgado, nombre, ciudad, tipo, direccion, telefono FROM juzgados where id_juzgado = ?");
 			st.prepare();
 			st.bind(1, id_juzgado);
 			Cursor cursor = st.getCursor();
