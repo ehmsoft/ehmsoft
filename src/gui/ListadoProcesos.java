@@ -6,9 +6,6 @@ import net.rim.device.api.ui.Field;
 import net.rim.device.api.ui.FieldChangeListener;
 import net.rim.device.api.ui.Screen;
 import net.rim.device.api.ui.UiApplication;
-import net.rim.device.api.ui.component.LabelField;
-import net.rim.device.api.ui.container.PopupScreen;
-import net.rim.device.api.ui.container.VerticalFieldManager;
 import persistence.Persistence;
 import core.Proceso;
 
