@@ -132,6 +132,7 @@ public class VerProceso {
 		} else if (_juzgado == null) {
 			_screen.alert("El juzgado es obligatorio");
 		} else if(isCampoObligatorio()) {
+		} else if(checkLonMin()) {
 		}
 		else {
 			Proceso proceso = new Proceso(_demandante, _demandado, _screen.getFecha(),
@@ -205,7 +206,7 @@ public class VerProceso {
 			_campos.removeElementAt(index);
 			_campos.insertElementAt(nw, index);
 			_screen.modificarCampo(nw, nw.getNombre());
-		} else {
+		} else if (nw == null){
 			_campos.removeElement(old);
 			_screen.eliminarCampo();
 		}
@@ -228,6 +229,30 @@ public class VerProceso {
 		}
 	}
 	
+	private boolean checkLonMin() {
+		boolean ret = false;
+		Enumeration e = _campos.elements();
+		while(e.hasMoreElements()) {
+			CampoPersonalizado campo = (CampoPersonalizado)e.nextElement();
+			if(campo.getLongitudMin() > campo.getValor().length() && campo.getLongitudMin() != 0) {
+				Util.alert("El campo " + campo.getNombre() + " posee una longitud minima de " + 
+						campo.getLongitudMin()  + " caracteres, y usted ingresó " + campo.getValor().length());
+				ret = true;
+			}
+		}
+		
+		e = _camposNuevos.elements();
+		while(e.hasMoreElements()) {
+			CampoPersonalizado campo = (CampoPersonalizado)e.nextElement();
+			if(campo.getLongitudMin() > campo.getValor().length() && campo.getLongitudMin() != 0) {
+				Util.alert("El campo " + campo.getNombre() + "posee una longitud minima de " + 
+						campo.getLongitudMin()  + " caracteres, y usted ingresó " + campo.getValor().length());
+				ret = true;
+			}
+		}
+		return ret;
+	}
+	
 	private boolean isCampoObligatorio() {
 		boolean ret = false;
 		Enumeration e = _campos.elements();
@@ -236,7 +261,6 @@ public class VerProceso {
 			if(campo.isObligatorio().booleanValue() && campo.getValor().length() == 0) {
 				_screen.alert("El campo " + campo.getNombre() + " es obligatorio");
 				ret = true;
-				break;
 			}
 		}
 		
@@ -246,7 +270,6 @@ public class VerProceso {
 			if(campo.isObligatorio().booleanValue() && campo.getValor().length() == 0) {
 				_screen.alert("El campo " + campo.getNombre() + " es obligatorio");
 				ret = true;
-				break;
 			}
 		}
 		return ret;

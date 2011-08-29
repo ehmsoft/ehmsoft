@@ -1,7 +1,6 @@
 package gui;
 
 import java.util.Calendar;
-import java.util.Vector;
 
 import persistence.Persistence;
 
