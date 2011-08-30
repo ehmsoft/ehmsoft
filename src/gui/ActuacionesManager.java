@@ -1,5 +1,7 @@
 package gui;
 
+import gui.Listados.ListadoActuacionesLista;
+
 import java.util.Vector;
 
 import core.Actuacion;

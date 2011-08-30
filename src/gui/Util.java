@@ -1,5 +1,21 @@
 package gui;
 
+import gui.Listados.ListadoCampos;
+import gui.Listados.ListadoCategorias;
+import gui.Listados.ListadoJuzgados;
+import gui.Listados.ListadoPersonas;
+import gui.Nuevos.NuevaActuacion;
+import gui.Nuevos.NuevaCategoria;
+import gui.Nuevos.NuevaPersona;
+import gui.Nuevos.NuevoCampo;
+import gui.Nuevos.NuevoJuzgado;
+import gui.Ver.VerActuacion;
+import gui.Ver.VerCampo;
+import gui.Ver.VerCategoria;
+import gui.Ver.VerJuzgado;
+import gui.Ver.VerPersona;
+import gui.Ver.VerProceso;
+
 import java.util.Calendar;
 
 import persistence.Persistence;
