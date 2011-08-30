@@ -1,10 +1,9 @@
 package gui;
 
 import net.rim.device.api.ui.MenuItem;
-import net.rim.device.api.ui.UiApplication;
+import net.rim.device.api.ui.component.BasicEditField;
 import net.rim.device.api.ui.component.Dialog;
 import net.rim.device.api.ui.component.Menu;
-import core.Juzgado;
 
 public class VerJuzgadoScreen extends FondoNormal {
 
@@ -13,24 +12,20 @@ public class VerJuzgadoScreen extends FondoNormal {
 	private EditableTextField _txtDireccion;
 	private EditableTextField _txtTelefono;
 	private EditableTextField _txtTipo;
+	
+	public final int GUARDAR = 1;
+	public final int ELIMINAR = 2;
+	public final int CERRAR = 3;
 
-	private Juzgado _juzgado;
-
-	private boolean _guardar = false;
-	private boolean _eliminar = false;
-
-	public VerJuzgadoScreen(Juzgado juzgado) {
+	public VerJuzgadoScreen() {
 
 		setTitle("Ver juzgado");
-		_juzgado = juzgado;
 
-		_txtNombre = new EditableTextField("Nombre: ", _juzgado.getNombre());
-		_txtCiudad = new EditableTextField("Ciudad: ", _juzgado.getCiudad());
-		_txtDireccion = new EditableTextField("Direccion: ",
-				_juzgado.getDireccion());
-		_txtTelefono = new EditableTextField("Teléfono: ",
-				_juzgado.getTelefono());
-		_txtTipo = new EditableTextField("Tipo: ", _juzgado.getTipo());
+		_txtNombre = new EditableTextField("Nombre: ", BasicEditField.NO_NEWLINE);
+		_txtCiudad = new EditableTextField("Ciudad: ", BasicEditField.NO_NEWLINE);
+		_txtDireccion = new EditableTextField("Direccion: ", BasicEditField.NO_NEWLINE);
+		_txtTelefono = new EditableTextField("Teléfono: ", BasicEditField.NO_NEWLINE);
+		_txtTipo = new EditableTextField("Tipo: ", BasicEditField.NO_NEWLINE);
 
 		add(_txtNombre);
 		add(_txtCiudad);
@@ -50,20 +45,14 @@ public class VerJuzgadoScreen extends FondoNormal {
 	private final MenuItem menuGuardar = new MenuItem("Guardar", 0, 0) {
 
 		public void run() {
-			_guardar = true;
-			UiApplication.getUiApplication().popScreen(getScreen());
+			fieldChangeNotify(GUARDAR);
 		}
 	};
 	
 	private final MenuItem menuEliminar = new MenuItem("Eliminar", 0, 0) {
 
 		public void run() {
-			Object[] ask = { "Si", "No" };
-			int sel = Dialog.ask("¿Desea eliminar lel juzgado?", ask, 1);
-			if (sel == 0) {
-				_eliminar = true;
-				UiApplication.getUiApplication().popScreen(getScreen());
-			}
+			fieldChangeNotify(ELIMINAR);
 		}
 	};
 
@@ -88,7 +77,35 @@ public class VerJuzgadoScreen extends FondoNormal {
 			_txtTipo.setEditable();
 		}
 	};
+	
+	public void alert(String alert) {
+		Dialog.alert(alert);
+	}
 
+	public int ask(Object[] options, String string, int index) {
+		return Dialog.ask(string, options, index);
+	}
+
+	public void setNombre(String text) {
+		_txtNombre.setText(text);
+	}
+
+	public void setCiudad(String text) {
+		_txtCiudad.setText(text);
+	}
+
+	public void setTelefono(String text) {
+		_txtTelefono.setText(text);
+	}
+
+	public void setDireccion(String text) {
+		_txtDireccion.setText(text);
+	}
+
+	public void setTipo(String text) {
+		_txtTipo.setText(text);
+	}
+	
 	public String getNombre() {
 		return _txtNombre.getText();
 	}
@@ -109,46 +126,8 @@ public class VerJuzgadoScreen extends FondoNormal {
 		return _txtTipo.getText();
 	}
 
-	public Juzgado getJuzgado() {
-		return _juzgado;
-	}
-
-	public boolean isGuardado() {
-		return _guardar;
-	}
-	
-	public boolean isEliminado() {
-		return _eliminar;
-	}
-
 	public boolean onClose() {
-		boolean cambio = false;
-		if (!_juzgado.getNombre().equals(this.getNombre()))
-			cambio = true;
-		if (!_juzgado.getCiudad().equals(this.getCiudad()))
-			cambio = true;
-		if (!_juzgado.getTelefono().equals(this.getTelefono()))
-			cambio = true;
-		if (!_juzgado.getDireccion().equals(this.getDireccion()))
-			cambio = true;
-		if (!_juzgado.getTipo().equals(this.getTipo()))
-			cambio = true;
-		if (!cambio) {
-			UiApplication.getUiApplication().popScreen(getScreen());
-			return true;
-		} else {
-			Object[] ask = { "Guardar", "Descartar", "Cancelar" };
-			int sel = Dialog.ask("Se han detectado cambios", ask, 1);
-			if (sel == 0) {
-				_guardar = true;
-				UiApplication.getUiApplication().popScreen(getScreen());
-				return true;
-			} else if (sel == 1) {
-				UiApplication.getUiApplication().popScreen(getScreen());
-				return true;
-			} else {
-				return false;
-			}
-		}
+		fieldChangeNotify(CERRAR);
+		return false;
 	}
 }

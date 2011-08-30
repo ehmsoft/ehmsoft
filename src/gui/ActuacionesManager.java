@@ -98,11 +98,11 @@ public class ActuacionesManager extends CustomManager {
 			}
 			_descripcion.setText(a.getDescripcion());
 			_juzgado.setText(a.getJuzgado().getNombre());
-			String fecha = ListadoActuacionesLista.calendarToString(
+			String fecha = Util.calendarToString(
 					a.getFecha(), true);
 			fecha = fecha.substring(0, 10) + "\n" + fecha.substring(11);
 			_fecha.setText(fecha);
-			fecha = ListadoActuacionesLista.calendarToString(
+			fecha = Util.calendarToString(
 					a.getFechaProxima(), true);
 			fecha = fecha.substring(0, 10) + "\n" + fecha.substring(11);
 			_fechaProxima.setText(fecha);

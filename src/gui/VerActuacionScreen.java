@@ -12,12 +12,7 @@ import net.rim.device.api.ui.component.DateField;
 import net.rim.device.api.ui.component.Dialog;
 import net.rim.device.api.ui.component.LabelField;
 import net.rim.device.api.ui.component.Menu;
-import net.rim.device.api.ui.component.SeparatorField;
 import net.rim.device.api.ui.container.HorizontalFieldManager;
-import net.rim.device.api.ui.container.VerticalFieldManager;
-import core.Actuacion;
-import core.CalendarManager;
-import core.Juzgado;
 
 public class VerActuacionScreen extends FondoNormal {
 
@@ -25,80 +20,84 @@ public class VerActuacionScreen extends FondoNormal {
 	private DateField _dfFecha;
 	private DateField _dfFechaProxima;
 	private EditableTextField _txtDescripcion;
-	private Actuacion _actuacion;
-	private Juzgado _juzgado;	
 
-	private boolean _guardar = false;
-	private boolean _eliminar = false;
-	private String _uid;
 	private BitmapField _cita;
 	private BitmapField _alarm;
 	private Bitmap _bell = Bitmap.getBitmapResource("bell.png");
 	private Bitmap _clock = Bitmap.getBitmapResource("clock.png");
+	private boolean _hasAlarm = false;
 
-	public VerActuacionScreen(Actuacion actuacion) {		
-		HorizontalFieldManager h = new HorizontalFieldManager();
-		VerticalFieldManager r = new VerticalFieldManager(Field.USE_ALL_WIDTH);
-		VerticalFieldManager l = new VerticalFieldManager();
-		HorizontalFieldManager r1 = new HorizontalFieldManager(Field.FIELD_RIGHT);
-		_cita = new BitmapField(null);
-		_alarm = new BitmapField(null);
-		
-		r1.add(_cita);
-		r1.add(_alarm);
-		
-		l.add(new LabelField("Actuacion"));
-		r.add(r1);		
+	public VerActuacionScreen() {
+		HorizontalFieldManager titleContainer = new HorizontalFieldManager();
+		titleContainer.add(new LabelField("Actuacion"));
 
-		h.add(l);
-		h.add(r);
-		setTitle(h);		
+		_cita = new BitmapField(null, BitmapField.FIELD_VCENTER);
+		_alarm = new BitmapField(null, BitmapField.FIELD_VCENTER);
 
-		_actuacion = actuacion;
-		_uid = _actuacion.getUid();
-		_juzgado = actuacion.getJuzgado();
+		titleContainer.add(_cita);
+		titleContainer.add(_alarm);
 
-		_txtJuzgado = new EditableTextField("Juzgado: ", _actuacion
-				.getJuzgado().getNombre());
+		setTitle(titleContainer);
 
-		_dfFecha = new DateField("Fecha: ", _actuacion.getFecha().getTime()
-				.getTime(), DateField.DATE_TIME);
+		_txtJuzgado = new EditableTextField("Juzgado: ", "");
+
+		_dfFecha = new DateField("Fecha: ", 0, DateField.DATE_TIME);
 		_dfFecha.setEditable(false);
 
-		_dfFechaProxima = new DateField("Fecha próxima: ", _actuacion
-				.getFechaProxima().getTime().getTime(), DateField.DATE_TIME);
+		_dfFechaProxima = new DateField("Fecha próxima: ", 0, DateField.DATE_TIME);
 		_dfFechaProxima.setEditable(false);
 
-		_txtDescripcion = new EditableTextField("Descripción: ",
-				_actuacion.getDescripcion());
+		_txtDescripcion = new EditableTextField("Descripción: ", "");
 
 		add(_txtJuzgado);
 		add(_dfFecha);
 		add(_dfFechaProxima);
 		add(_txtDescripcion);
 	}
-	
-	public void setCita(boolean cita, boolean alarm) {
-		if(cita) {
-			_cita.setBitmap(_clock);
-		} else {
-			_cita.setBitmap(null);
-		}
-		if(alarm) {
-			_alarm.setBitmap(_bell);
-		} else {
-			_alarm.setBitmap(null);
-		}
+
+	public void setClock() {
+		_cita.setBitmap(_clock);
+		_hasAlarm = true;
 	}
 	
+	public void setBell() {
+		_alarm.setBitmap(_bell);
+	}
+	
+	public void setDescripcion(String text) {
+		_txtDescripcion.setText(text);
+	}
+	
+	public void setFecha(Date date) {
+		_dfFecha.setDate(date);
+	}
+	
+	public void setFechaProxima(Date date) {
+		_dfFechaProxima.setDate(date);
+	}
+	
+	public void removeClock() {
+		_cita.setBitmap(null);
+		removeBell();
+		_hasAlarm = false;
+	}
+	
+	public void removeBell() {
+		_alarm.setBitmap(null);
+	}
+	
+	public void setJuzgado(String text) {
+		_txtJuzgado.setText(text);
+	}
+
 	protected void makeMenu(Menu menu, int instance) {
 		Field focus = UiApplication.getUiApplication().getActiveScreen()
-		.getFieldWithFocus();
-		if(focus.equals(_txtJuzgado)) {
+				.getFieldWithFocus();
+		if (focus.equals(_txtJuzgado)) {
 			menu.add(menuCambiar);
 			menu.addSeparator();
 		}
-		if(_uid != null) {
+		if (_hasAlarm) {
 			menu.add(menuVerCita);
 			menu.add(menuEliminarCita);
 			menu.addSeparator();
@@ -116,55 +115,29 @@ public class VerActuacionScreen extends FondoNormal {
 	private final MenuItem menuVerCita = new MenuItem("Ver cita", 0, 0) {
 
 		public void run() {
-			try {
-				VerCita v = new VerCita(_uid);
-				UiApplication.getUiApplication().pushModalScreen(v.getScreen());
-				v.guardarCita();
-			} catch (Exception e) {
-				Dialog.alert(e.toString());
-			}
+			fieldChangeNotify(Util.VER_CITA);
 		}
 	};
 
 	private final MenuItem menuAddCita = new MenuItem("Agregar cita", 0, 0) {
 
 		public void run() {
-			NuevaCita n = new NuevaCita(getDescripcion(), getFechaProxima().getTime());
-			UiApplication.getUiApplication().pushModalScreen(n.getScreen());
-			_uid = n.getUid();
-			if(_uid != null) {
-				setCita(true, false);
-				if(n.isAlarma()) {
-					setCita(true, true);
-				}
-			}
+			fieldChangeNotify(Util.ADD_CITA);
 		}
 	};
-	
+
 	private final MenuItem menuEliminarCita = new MenuItem("Eliminar cita", 0,
 			0) {
 
 		public void run() {
-			Object[] ask = { "Aceptar", "Cancelar" };
-			int sel = Dialog.ask("¿Desea eliminar la cita del calendario?",
-					ask, 1);
-			if (sel == 0) {
-				try {
-					CalendarManager.borrarCita(_uid);
-					_uid = null;
-					setCita(false, false);
-				} catch(Exception e) {
-					Dialog.alert(e.toString());
-				}
-			}
+			fieldChangeNotify(Util.ELIMINAR_CITA);
 		}
 	};
-	
+
 	private final MenuItem menuGuardar = new MenuItem("Guardar", 0, 0) {
 
 		public void run() {
-			_guardar = true;
-			UiApplication.getUiApplication().popScreen(getScreen());
+			fieldChangeNotify(Util.GUARDAR);
 		}
 	};
 
@@ -173,13 +146,7 @@ public class VerActuacionScreen extends FondoNormal {
 		public void run() {
 			Field f = getFieldWithFocus();
 			if (f.equals(_txtJuzgado)) {
-				VerJuzgado v = new VerJuzgado(_juzgado);
-				UiApplication.getUiApplication().pushModalScreen(
-						v.getScreen());
-				v.actualizarJuzgado();
-				_juzgado = v.getJuzgado();
-				_txtJuzgado.setText(_juzgado.getNombre());
-				_txtJuzgado.setFocus();
+				fieldChangeNotify(Util.VER_JUZGADO);
 			}
 			if (f.equals(_dfFecha)) {
 				_dfFecha.setEditable(true);
@@ -199,7 +166,6 @@ public class VerActuacionScreen extends FondoNormal {
 	private final MenuItem menuEditarTodo = new MenuItem("Editar todo", 0, 0) {
 
 		public void run() {
-			_txtJuzgado.setEditable();
 			_dfFecha.setEditable(true);
 			_dfFechaProxima.setEditable(true);
 			_txtDescripcion.setEditable();
@@ -209,47 +175,24 @@ public class VerActuacionScreen extends FondoNormal {
 	private final MenuItem menuCambiar = new MenuItem("Cambiar", 0, 0) {
 
 		public void run() {
-			Field f = getFieldWithFocus();
-			if (f.equals(_txtJuzgado)) {
-				ListadoJuzgados juzgados = new ListadoJuzgados();
-				UiApplication.getUiApplication().pushModalScreen(
-						juzgados.getScreen());
-				try {
-					_juzgado = juzgados.getSelected();
-					_txtJuzgado.setText(_juzgado.getNombre());
-					_txtJuzgado.setFocus();
-				} catch (NullPointerException e) {
-
-				}
-			}
+			fieldChangeNotify(Util.ADD_JUZGADO);
 		}
 	};
 
-	private final MenuItem menuEliminarActuacion = new MenuItem("Eliminar actuación", 0, 0) {
+	private final MenuItem menuEliminarActuacion = new MenuItem(
+			"Eliminar actuación", 0, 0) {
 
 		public void run() {
-			Object[] ask = { "Si", "No" };
-			int sel = Dialog.ask("¿Desea eliminar la actuación?", ask, 1);
-			if (sel == 0) {
-				if(_actuacion.getUid() != null) {
-					sel = Dialog.ask("¿Desea eliminar la cita del calendario?", ask, 1);
-					if(sel == 0) {
-						try {
-						CalendarManager.borrarCita(_uid);
-						_uid = null;
-						} catch(Exception e) {
-							Dialog.alert(e.toString());
-						}
-					}
-				}
-				_eliminar = true;
-				UiApplication.getUiApplication().popScreen(getScreen());
-			}
+			fieldChangeNotify(Util.ELIMINAR);
 		}
 	};
+	
+	public void alert(String alert) {
+		Dialog.alert(alert);
+	}
 
-	public Juzgado getJuzgado() {
-		return _juzgado;
+	public int ask(Object[] options, String string, int index) {
+		return Dialog.ask(string, options, index);
 	}
 
 	public Calendar getFecha() {
@@ -267,73 +210,9 @@ public class VerActuacionScreen extends FondoNormal {
 	public String getDescripcion() {
 		return _txtDescripcion.getText();
 	}
-	
-	public String getUid() {
-		return _uid;
-	}
-
-	public boolean isGuardado() {
-		return _guardar;
-	}
-
-	public boolean isEliminado() {
-		return _eliminar;
-	}
-	
-	public boolean isCambiado() {
-		boolean cambio = false;
-
-		Calendar f1 = _actuacion.getFecha();
-		Calendar f2 = getFecha();
-
-		Calendar fP1 = _actuacion.getFechaProxima();
-		Calendar fP2 = getFechaProxima();
-
-		if (!_actuacion.getJuzgado().getId_juzgado()
-				.equals(getJuzgado().getId_juzgado()))
-			cambio = true;
-		else if ((f1.get(Calendar.YEAR) != f2.get(Calendar.YEAR))
-				|| (f1.get(Calendar.MONTH) != f2.get(Calendar.MONTH))
-				|| (f1.get(Calendar.DAY_OF_MONTH) != f2
-						.get(Calendar.DAY_OF_MONTH))
-				|| (f1.get(Calendar.HOUR_OF_DAY) != f2
-						.get(Calendar.HOUR_OF_DAY))
-				|| (f1.get(Calendar.MINUTE) != f2.get(Calendar.MINUTE)))
-			cambio = true;
-		else if ((fP1.get(Calendar.YEAR) != fP2.get(Calendar.YEAR))
-				|| (fP1.get(Calendar.MONTH) != fP2.get(Calendar.MONTH))
-				|| (fP1.get(Calendar.DAY_OF_MONTH) != fP2
-						.get(Calendar.DAY_OF_MONTH))
-				|| (fP1.get(Calendar.HOUR_OF_DAY) != fP2
-						.get(Calendar.HOUR_OF_DAY))
-				|| (fP1.get(Calendar.MINUTE) != fP2.get(Calendar.MINUTE)))
-			cambio = true;
-		else if (!_actuacion.getDescripcion().equals(
-				getDescripcion()))
-			cambio = true;
-		else if(_actuacion.getUid() != _uid) {
-			cambio = true;
-		}
-		return cambio;
-	}
 
 	public boolean onClose() {
-		if (!isCambiado()) {
-			UiApplication.getUiApplication().popScreen(getScreen());
-			return true;
-		} else {
-			Object[] ask = { "Guardar", "Descartar", "Cancelar" };
-			int sel = Dialog.ask("Se han detectado cambios", ask, 1);
-			if (sel == 0) {
-				_guardar = true;
-				UiApplication.getUiApplication().popScreen(getScreen());
-				return true;
-			} else if (sel == 1) {
-				UiApplication.getUiApplication().popScreen(getScreen());
-				return true;
-			} else {
-				return false;
-			}
-		}
+		fieldChangeNotify(Util.CERRAR);
+		return false;
 	}
 }

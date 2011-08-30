@@ -2,65 +2,58 @@ package gui;
 
 import java.util.Date;
 
-import net.rim.device.api.ui.component.Dialog;
-
-import core.CalendarManager;
+import net.rim.device.api.ui.Field;
+import net.rim.device.api.ui.FieldChangeListener;
 
 public class NuevaCita {
-	
+
 	private NuevaCitaPopUp _screen;
-	private String _uid;
-	
+	private Cita _cita;
+
 	public NuevaCita(String descripcion, Date fecha) {
-		_screen = new NuevaCitaPopUp(descripcion, fecha);
+		_screen = new NuevaCitaPopUp();
+		_screen.setDescripcion(descripcion);
+		_screen.setFecha(fecha);
+		_screen.setChangeListener(listener);
+		_cita = new Cita();
 	}
-	
+
+	FieldChangeListener listener = new FieldChangeListener() {
+
+		public void fieldChanged(Field field, int context) {
+			if (context == _screen.GUARDAR) {
+				guardarCita();
+			} else if (context == _screen.CERRAR) {
+				cerrarPantalla();
+			}
+		}
+	};
+
 	public NuevaCitaPopUp getScreen() {
 		return _screen;
 	}
-	
-	public boolean isGuardado() {
-		return _screen.isGuardado();
+
+	public Cita getCita() {
+		return _cita;
 	}
-	
-	public boolean isAlarma() {
-		return _screen.isAlarma();
+
+	public boolean hasAlarma() {
+		return _screen.hasAlarma();
 	}
-	
-	public String getUid() {
-		if(_uid == null) {
-			guardarCita();
+
+	private void guardarCita() {
+		if (_screen.hasAlarma()) {
+			_cita.setAlarma(_screen.getAlarma());
+		} else {
+			_cita.setAlarma(0);
 		}
-		return _uid;
+		_cita.setDescripcion(_screen.getDescripcion());
+		_cita.setFecha(_screen.getFecha());
+		_cita.guardarCita();
+		Util.popScreen(_screen);
 	}
-	
-	public void guardarCita() {
-		if(_screen.isGuardado()) {
-			if(_screen.isAlarma()) {
-				int duracion = _screen.getDuracion();
-				String intervalo = _screen.getIntervalo();
-				if(intervalo.equals("Días")) {
-					duracion = duracion * 86400;
-				}
-				else if(intervalo.equals("Horas")) {
-					duracion = duracion * 3600;
-				}
-				else if(intervalo.equals("Minutos")) {
-					duracion = duracion * 60;
-				}
-				
-				try {
-					_uid = CalendarManager.agregarCita(_screen.getFecha(), _screen.getDescripcion(), duracion);
-				} catch (Exception e) {
-					Dialog.alert(e.toString());
-				}
-			} else {
-				try {
-					_uid = CalendarManager.agregarCita(_screen.getFecha(), _screen.getDescripcion());
-				} catch (Exception e) {
-					Dialog.alert(e.toString());
-				}
-			}
-		}
+
+	private void cerrarPantalla() {
+		Util.popScreen(_screen);
 	}
 }

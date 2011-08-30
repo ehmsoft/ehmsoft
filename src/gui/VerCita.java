@@ -1,55 +1,59 @@
 package gui;
 
-import java.util.Date;
-
-import javax.microedition.pim.PIMItem;
-
-import net.rim.blackberry.api.pdap.BlackBerryEvent;
-import net.rim.device.api.ui.component.Dialog;
-import core.CalendarManager;
+import net.rim.device.api.ui.Field;
+import net.rim.device.api.ui.FieldChangeListener;
 
 public class VerCita {
-	private String _uid;
-	private VerCitaPopUp _screenPp;
+	private VerCitaPopUp _screen;
+	private Cita _cita;
 
-	public VerCita(String uid) throws Exception {
-		_uid = uid;
-		int alarma = 0;
-
-		BlackBerryEvent event = CalendarManager.consultarCita(_uid);
-		Date date = new Date(event.getDate(BlackBerryEvent.START,
-				PIMItem.ATTR_NONE));
-		String desc = event.getString(BlackBerryEvent.SUMMARY,
-				PIMItem.ATTR_NONE);
-		if (event.countValues(BlackBerryEvent.ALARM) > 0) {
-			alarma = event.getInt(BlackBerryEvent.ALARM, PIMItem.ATTR_NONE);
+	public VerCita(Cita cita) {		
+		_cita = cita;
+		
+		Object[] choices = {Cita.MINUTOS, Cita.HORAS , Cita.DIAS};
+		
+		_screen = new VerCitaPopUp();
+		_screen.setChangeListener(listener);
+		_screen.setDescripcion(_cita.getDescripcion());
+		_screen.setFecha(_cita.getFecha());
+		_screen.setChoices(choices);
+		if(_cita.hasAlarma()) {
+			_screen.setAlarma(_cita.getAlarmaConFormato());
+			_screen.setChecked(true);
+		} else {
+			Object[] alarma = {new Integer(5), Cita.MINUTOS};
+			_screen.setAlarma(alarma);
 		}
-		_screenPp = new VerCitaPopUp(desc, date, alarma);
 	}
+	
+	FieldChangeListener listener = new FieldChangeListener() {
 
-	public VerCitaPopUp getScreen() {
-		return _screenPp;
-	}
-
-	public void guardarCita() {
-		if (_screenPp.isGuardado() && _screenPp.isCambiado()) {
-			if (_screenPp.hasAlarma()) {
-				try {
-					CalendarManager
-							.actualizarCita(_uid, _screenPp.getFecha(),
-									_screenPp.getDescripcion(),
-									_screenPp.getDuracion());
-				} catch (Exception e) {
-					Dialog.alert(e.toString());
-				}
-			} else {
-				try {
-					CalendarManager.actualizarCita(_uid, _screenPp.getFecha(),
-							_screenPp.getDescripcion());
-				} catch (Exception e) {
-					Dialog.alert(e.toString());
-				}
+		public void fieldChanged(Field field, int context) {
+			if (context == _screen.GUARDAR) {
+				actualizarCita();
+			} else if (context == _screen.CERRAR) {
+				cerrarPantalla();
 			}
 		}
+	};
+
+	public VerCitaPopUp getScreen() {
+		return _screen;
 	}
+
+	private void actualizarCita() {
+		if (_screen.hasAlarma()) {
+			_cita.setAlarma(_screen.getAlarma());
+		} else {
+			_cita.setAlarma(0);
+		}
+		_cita.setDescripcion(_screen.getDescripcion());
+		_cita.setFecha(_screen.getFecha());
+		_cita.actualizarCita();
+		Util.popScreen(_screen);
+	}
+
+	private void cerrarPantalla() {
+		Util.popScreen(_screen);
+	}	
 }

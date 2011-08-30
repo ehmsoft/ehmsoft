@@ -1,46 +1,57 @@
 package gui;
 
-import net.rim.device.api.ui.component.Dialog;
+import net.rim.device.api.ui.Field;
+import net.rim.device.api.ui.FieldChangeListener;
+import net.rim.device.api.ui.UiApplication;
 import persistence.Persistence;
 import core.Actuacion;
+import core.Juzgado;
 import core.Proceso;
 
 public class NuevaActuacion {
 	private Actuacion _actuacion;
+	private Cita _cita;
+	private Juzgado _juzgado;
+	private Juzgado _juzgadoVacio;
 	private NuevaActuacionScreen _screen;
 	private Proceso _proceso;
 
-	/**
-	 * Se crea una NuevaActuacion sin proceso asociado, este debe ser asignado
-	 * con setProceso(); o si no se generaria excepcion en el guardado
-	 */
-	public NuevaActuacion() {
-		_screen = new NuevaActuacionScreen();
-	}
-
-	/**
-	 * @param proceso
-	 *            Se crea una NuevaActuacion con proceso asociado
-	 */
 	public NuevaActuacion(Proceso proceso) {
+		_juzgadoVacio = Util.consultarJuzgadoVacio();
+		_cita = new Cita();
 		_proceso = proceso;
 		_screen = new NuevaActuacionScreen();
+		_screen.setJuzgado(_juzgadoVacio.getNombre());
+		_screen.setChangeListener(listener);
 	}
 
-	/**
-	 * @param proceso
-	 *            se asocia al objeto NuevaActuacion, despues de esta haber sido
-	 *            creada
-	 */
+	public NuevaActuacion() {
+		this(null);
+	}
+
+	FieldChangeListener listener = new FieldChangeListener() {
+
+		public void fieldChanged(Field field, int context) {
+			if (context == Util.GUARDAR) {
+				guardarActuacion();
+			} else if (context == Util.ADD_JUZGADO) {
+				addJuzgado();
+			} else if (context == Util.ADD_CITA) {
+				addCita();
+			} else if (context == Util.CERRAR) {
+				cerrarPantalla();
+			} else if (context == Util.VER_CITA) {
+				verCita();
+			} else if (context == Util.ADD_CITA) {
+				addCita();
+			} else if (context == Util.ELIMINAR_CITA) {
+				eliminarCita();
+			}
+		}
+	};
+
 	public void setProceso(Proceso proceso) {
 		_proceso = proceso;
-	}
-
-	/**
-	 * @return El Proceso asociado al objeto NuevaActuacion
-	 */
-	public Proceso getProceso() {
-		return _proceso;
 	}
 
 	/**
@@ -54,48 +65,100 @@ public class NuevaActuacion {
 	 * @return La nueva actuacion creada, sí esta no ha sido guardada
 	 *         previamente con guardarActuacion(); se invoca dicho metodo
 	 */
-	public Actuacion getActuacion() throws Exception {
-		if (_actuacion == null) {
-			guardarActuacion();
-		}
+	public Actuacion getActuacion() {
 		return _actuacion;
 	}
 
-	public Actuacion getActuacion(boolean guardado) throws Exception {
-		if (!guardado) {
-			_actuacion = new Actuacion(_screen.getJuzgado(),
-					_screen.getFecha(), _screen.getFechaProxima(),
-					_screen.getDescripcion());
-			return _actuacion;
+	private void guardarActuacion() {
+		if (_screen.getDescripcion().length() == 0) {
+			_screen.alert("El campo Descripción es obligatorio");
+		} else if(_juzgado == null) {
+			Util.alert("El juzgado es obligatorio");
 		} else {
-			return getActuacion();
+			_actuacion = new Actuacion(_juzgado, _screen.getFecha(),
+					_screen.getFechaProxima(), _screen.getDescripcion(), null,
+					_cita.getUid());
+			if (_proceso != null) {
+				try {
+					new Persistence().guardarActuacion(_actuacion,
+							_proceso.getId_proceso());
+				} catch (NullPointerException e) {
+					Util.noSd();
+				} catch (Exception e) {
+					Util.alert(e.toString());
+				}
+			}
+			borrarCitaActuacion();
+			Util.popScreen(_screen);
 		}
 	}
 
-	/**
-	 * Crea el nuevo objeto Actuacion y la guarda en la base de datos usando la
-	 * informacion capturada desde la pantalla
-	 */
-	public void guardarActuacion() throws Exception {
-		if (_screen.isGuardado()) {
-			Persistence guardado = null;
-			_actuacion = new Actuacion(_screen.getJuzgado(),
-					_screen.getFecha(), _screen.getFechaProxima(),
-					_screen.getDescripcion(), null,_screen.getUid());
+	private void addJuzgado() {
+		ListadoJuzgados l = new ListadoJuzgados(true);
+		UiApplication.getUiApplication().pushModalScreen(l.getScreen());
+		Juzgado juzgado = l.getSelected();
+		if (juzgado != null) {
+			_juzgado = juzgado;
+			_screen.setJuzgado(juzgado.getNombre());
+		}
+	}
+	
+	private void borrarCitaActuacion() {
+		if (!_cita.exist() && _actuacion.getUid() != null) {
+			_actuacion.setUid(_cita.getUid());
 			try {
-				guardado = new Persistence();
-			} catch (Exception e) {
-				Dialog.alert("New -> " + e.toString());
-			}
-			try {
-				guardado.guardarActuacion(_actuacion, _proceso.getId_proceso());
+				new Persistence().actualizarActuacion(_actuacion);
 			} catch (NullPointerException e) {
-				throw e;
+				Util.noSd();
 			} catch (Exception e) {
-				Dialog.alert("Guardar -> " + e.toString());
+				Util.alert(e.toString());
+			}
+		}
+	}
+
+	private void addCita() {
+		NuevaCita n = new NuevaCita(_screen.getDescripcion(), _screen
+				.getFechaProxima().getTime());
+		UiApplication.getUiApplication().pushModalScreen(n.getScreen());
+		_cita = n.getCita();
+		if(_cita.exist()) {
+			_screen.setClock();
+			if(_cita.hasAlarma()) {
+				_screen.setBell();
+			}
+		}
+	}
+	
+	private void verCita() {
+		if (_cita.exist()) {
+			VerCita v = new VerCita(_cita);
+			UiApplication.getUiApplication().pushModalScreen(v.getScreen());
+			if(_cita.hasAlarma()) {
+				_screen.setBell();
+			} else {
+				_screen.removeBell();
+			}
+		}
+	}
+	
+	private void eliminarCita() {
+		_cita.eliminarCita();
+		_screen.removeClock();
+	}
+	
+	private void cerrarPantalla() {
+		if (_screen.getDescripcion().length() != 0) {
+			Object[] ask = { "Guardar", "Descartar", "Cancelar" };
+			int sel = _screen.ask(ask, "Se han detectado cambios", 2);
+			if (sel == 0) {
+				guardarActuacion();
+			} else if (sel == 1) {
+				borrarCitaActuacion();
+				Util.popScreen(_screen);
 			}
 		} else {
-			throw new Exception("No se esta guardando el elemento");
+			borrarCitaActuacion();
+			Util.popScreen(_screen);
 		}
 	}
 }
