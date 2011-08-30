@@ -11,6 +11,7 @@ import gui.NuevaCategoria;
 import gui.NuevaPersona;
 import gui.NuevoJuzgado;
 import gui.NuevoProceso;
+import gui.PreferenciasGeneralesScreen;
 import gui.VerActuacion;
 import gui.VerJuzgado;
 import gui.VerPersona;
@@ -28,6 +29,8 @@ import core.Persona;
 import core.Proceso;
 
 public class Prueba extends MainScreen {
+	
+	ButtonField preferencias;
 
 	ButtonField listadoActuaciones;
 	ButtonField listadoCategorias;
@@ -50,6 +53,10 @@ public class Prueba extends MainScreen {
 
 	public Prueba() {
 		super(MainScreen.VERTICAL_SCROLL | MainScreen.VERTICAL_SCROLLBAR);
+		
+		preferencias = new ButtonField("Preferencias");
+		preferencias.setChangeListener(listenerPreferencias);
+		add(preferencias);
 
 		listadoActuaciones = new ButtonField("Listado de actuaciones");
 		listadoActuaciones.setChangeListener(listenerListadoActuaciones);
@@ -126,6 +133,12 @@ public class Prueba extends MainScreen {
 
 	}
 	
+	private FieldChangeListener listenerPreferencias = new FieldChangeListener() {
+		
+		public void fieldChanged(Field field, int context) {
+			UiApplication.getUiApplication().pushModalScreen(new PreferenciasGeneralesScreen());
+		}
+	};	
 
 	private FieldChangeListener listenerListadoActuaciones = new FieldChangeListener() {
 

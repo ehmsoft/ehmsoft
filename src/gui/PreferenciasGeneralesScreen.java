@@ -5,6 +5,7 @@ import net.rim.device.api.ui.Field;
 import net.rim.device.api.ui.FieldChangeListener;
 import net.rim.device.api.ui.Font;
 import net.rim.device.api.ui.FontFamily;
+import net.rim.device.api.ui.XYEdges;
 import net.rim.device.api.ui.component.BasicEditField;
 import net.rim.device.api.ui.component.ButtonField;
 import net.rim.device.api.ui.component.CheckboxField;
@@ -14,6 +15,7 @@ import net.rim.device.api.ui.component.ObjectChoiceField;
 import net.rim.device.api.ui.component.RichTextField;
 import net.rim.device.api.ui.component.SeparatorField;
 import net.rim.device.api.ui.container.MainScreen;
+import net.rim.device.api.ui.decor.BorderFactory;
 
 public class PreferenciasGeneralesScreen extends MainScreen {
 
@@ -56,6 +58,7 @@ public class PreferenciasGeneralesScreen extends MainScreen {
 		_chfEstiloFuente = new ObjectChoiceField("Estilo de fuente:", _listaEstilos);
 		_txtEjemploFuente = new RichTextField("El veloz murciélago hindú comía feliz cardillo y kiwi. La cigüeña tocaba el saxofón detrás del palenque de paja.", Field.NON_FOCUSABLE | Field.USE_ALL_WIDTH);
 		_txtEjemploFuente.setFont(listaFuentes[_chfTipoFuente.getSelectedIndex()].getFont(_significadoEstilos[_chfEstiloFuente.getSelectedIndex()], _listaTamanos[_chfTamanoFuente.getSelectedIndex()]));
+		_txtEjemploFuente.setBorder(BorderFactory.createRoundedBorder(new XYEdges(5, 5, 5, 5)));
 		
 		_chfTipoFuente.setChangeListener(listenerTipoFuente);
 		_chfTamanoFuente.setChangeListener(listenerActualizarFuente);
