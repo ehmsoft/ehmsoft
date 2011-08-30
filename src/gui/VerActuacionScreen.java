@@ -13,7 +13,6 @@ import net.rim.device.api.ui.component.Dialog;
 import net.rim.device.api.ui.component.LabelField;
 import net.rim.device.api.ui.component.Menu;
 import net.rim.device.api.ui.container.HorizontalFieldManager;
-import net.rim.device.api.ui.container.VerticalFieldManager;
 
 public class VerActuacionScreen extends FondoNormal {
 
@@ -29,23 +28,16 @@ public class VerActuacionScreen extends FondoNormal {
 	private boolean _hasAlarm = false;
 
 	public VerActuacionScreen() {
-		HorizontalFieldManager topContainer = new HorizontalFieldManager();
-		VerticalFieldManager citaContainer = new VerticalFieldManager(Field.USE_ALL_WIDTH);
-		VerticalFieldManager titleContainer = new VerticalFieldManager();
-		HorizontalFieldManager iconContainer = new HorizontalFieldManager(
-				Field.FIELD_RIGHT);
-		_cita = new BitmapField(null);
-		_alarm = new BitmapField(null);
-
-		iconContainer.add(_cita);
-		iconContainer.add(_alarm);
-
+		HorizontalFieldManager titleContainer = new HorizontalFieldManager();
 		titleContainer.add(new LabelField("Actuacion"));
-		citaContainer.add(iconContainer);
 
-		topContainer.add(titleContainer);
-		topContainer.add(citaContainer);
-		setTitle(topContainer);
+		_cita = new BitmapField(null, BitmapField.FIELD_VCENTER);
+		_alarm = new BitmapField(null, BitmapField.FIELD_VCENTER);
+
+		titleContainer.add(_cita);
+		titleContainer.add(_alarm);
+
+		setTitle(titleContainer);
 
 		_txtJuzgado = new EditableTextField("Juzgado: ", "");
 

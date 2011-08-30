@@ -1,53 +1,33 @@
 package gui;
 
 import persistence.Persistence;
-import net.rim.blackberry.api.pdap.BlackBerryEvent;
 import net.rim.device.api.ui.Field;
 import net.rim.device.api.ui.FieldChangeListener;
 import net.rim.device.api.ui.UiApplication;
 import core.Actuacion;
-import core.CalendarManager;
 import core.Juzgado;
 
 public class VerActuacion {
 	private VerActuacionScreen _screen;
 	private Actuacion _actuacion;
-	private String _uid;
+	private Cita _cita;
 	private Juzgado _juzgado;
-	private Juzgado _emptyJuzgado;
+	private Juzgado _juzgadoVacio;
 
 	public VerActuacion(Actuacion actuacion) {
 		_actuacion = actuacion;
-		_uid = _actuacion.getUid();
 		_juzgado = _actuacion.getJuzgado();
+		_cita = new Cita(_actuacion.getUid());
 		_screen = new VerActuacionScreen();
 		_screen.setChangeListener(listener);
 		_screen.setJuzgado(_juzgado.getNombre());
 		_screen.setDescripcion(_actuacion.getDescripcion());
 		_screen.setFecha(_actuacion.getFecha().getTime());
 		_screen.setFechaProxima(_actuacion.getFechaProxima().getTime());
-		try {
-			_emptyJuzgado = new Persistence().consultarJuzgado("1");
-		} catch (NullPointerException e) {
-			_screen.alert(Util.noSDString());
-			System.exit(0);
-		} catch (Exception e) {
-			_screen.alert(e.toString());
-		}
-		if (_actuacion.getUid() != null) {
-			try {
-				BlackBerryEvent e = CalendarManager.consultarCita(_actuacion
-						.getUid());
-				if (e == null) {
-					eliminarCita();
-				} else {
-					_screen.setClock();
-					if (e.countValues(BlackBerryEvent.ALARM) > 0) {
-						_screen.setBell();
-					}
-				}
-			} catch (Exception e) {
-				eliminarCita();
+		if(_cita.exist()) {
+			_screen.setClock();
+			if(_cita.hasAlarma()) {
+				_screen.setBell();
 			}
 		}
 	}
@@ -86,45 +66,64 @@ public class VerActuacion {
 	private void actualizarActuacion() {
 		if (_screen.getDescripcion().length() == 0) {
 			_screen.alert("El campo Descripción es obligatorio");
-		} else {
+		} else if(_juzgado == null || _juzgado.getId_juzgado().equals("1")) {
+			Util.alert("El juzgado es obligatorio");
+		}else {
 			Actuacion actuacion = new Actuacion(_juzgado, _screen.getFecha(),
 					_screen.getFechaProxima(), _screen.getDescripcion(),
-					_actuacion.getId_actuacion(), _uid);
+					_actuacion.getId_actuacion(), _cita.getUid());
 			if (!_actuacion.equals(actuacion)) {
 				try {
 					new Persistence().actualizarActuacion(actuacion);
 				} catch (NullPointerException e) {
-					_screen.alert(Util.noSDString());
-					System.exit(0);
+					Util.noSd();
 				} catch (Exception e) {
-					_screen.alert(e.toString());
+					Util.alert(e.toString());
 				}
 				_actuacion = actuacion;
 			}
-			UiApplication.getUiApplication().popScreen(_screen);
+			borrarCitaActuacion();
+			Util.popScreen(_screen);
+		}
+	}
+	
+	private void borrarCitaActuacion() {
+		if (!_cita.exist() && _actuacion.getUid() != null) {
+			_actuacion.setUid(_cita.getUid());
+			try {
+				new Persistence().actualizarActuacion(_actuacion);
+			} catch (NullPointerException e) {
+				Util.noSd();
+			} catch (Exception e) {
+				Util.alert(e.toString());
+			}
 		}
 	}
 
 	private void verCita() {
-		if(_uid != null) {
-			try {
-				VerCita v = new VerCita(_uid);
-				UiApplication.getUiApplication().pushModalScreen(v.getScreen());
-			} catch (Exception e) {
-				eliminarCita();
+		if (_cita.exist()) {
+			VerCita v = new VerCita(_cita);
+			UiApplication.getUiApplication().pushModalScreen(v.getScreen());
+			if(_cita.hasAlarma()) {
+				_screen.setBell();
+			} else {
+				_screen.removeBell();
 			}
 		}
 	}
 
 	private void verJuzgado() {
-		if (!_juzgado.getId_juzgado().equals("1")) {
+		if (!_juzgado.getId_juzgado().equals("1") && _juzgado != null) {
 			Juzgado juzgado = Util.verJuzgado(_juzgado);
 			if (juzgado != null) {
 				_juzgado = juzgado;
 				_screen.setJuzgado(_juzgado.getNombre());
 			} else {
-				_juzgado = _emptyJuzgado;
-				_screen.setJuzgado(_juzgado.getNombre());
+				if (_juzgadoVacio == null) {
+					_juzgadoVacio = Util.consultarJuzgadoVacio();
+				}
+				_juzgado = null;
+				_screen.setJuzgado(_juzgadoVacio.getNombre());
 			}
 		} else {
 			addJuzgado();
@@ -135,10 +134,10 @@ public class VerActuacion {
 		NuevaCita n = new NuevaCita(_screen.getDescripcion(), _screen
 				.getFechaProxima().getTime());
 		UiApplication.getUiApplication().pushModalScreen(n.getScreen());
-		_uid = n.getUid();
-		if (_uid != null) {
+		_cita = n.getCita();
+		if(_cita.exist()) {
 			_screen.setClock();
-			if (n.hasAlarma()) {
+			if(_cita.hasAlarma()) {
 				_screen.setBell();
 			}
 		}
@@ -153,12 +152,12 @@ public class VerActuacion {
 	}
 
 	private void eliminarActuacion() {
-		Object[] ask = {"Aceptar", "Cancelar"};
+		Object[] ask = { "Aceptar", "Cancelar" };
 		int sel = _screen.ask(ask, Util.delBDActuacion(), 1);
-		if(sel == 0) {
+		if (sel == 0) {
 			try {
 				new Persistence().borrarActuacion(_actuacion);
-			} catch(NullPointerException e) {
+			} catch (NullPointerException e) {
 				Util.noSd();
 			} catch (Exception e) {
 				Util.alert(e.toString());
@@ -169,28 +168,25 @@ public class VerActuacion {
 	}
 
 	private void eliminarCita() {
-		if(_uid != null) {
-			try {
-				CalendarManager.borrarCita(_uid);
-			} catch (Exception e) {				
-			}
-		}
-		_uid = null;
+		_cita.eliminarCita();
+		_screen.removeClock();
 	}
 
 	private void cerrarPantalla() {
 		Actuacion actuacion = new Actuacion(_juzgado, _screen.getFecha(),
 				_screen.getFechaProxima(), _screen.getDescripcion(),
-				_actuacion.getId_actuacion(), _uid);
+				_actuacion.getId_actuacion(), _cita.getUid());
 		if (!actuacion.equals(_actuacion)) {
 			Object[] ask = { "Guardar", "Descartar", "Cancelar" };
 			int sel = _screen.ask(ask, "Se han detectado cambios", 2);
 			if (sel == 0) {
 				actualizarActuacion();
 			} else if (sel == 1) {
+				borrarCitaActuacion();
 				UiApplication.getUiApplication().popScreen(_screen);
 			}
 		} else {
+			borrarCitaActuacion();
 			UiApplication.getUiApplication().popScreen(_screen);
 		}
 	}

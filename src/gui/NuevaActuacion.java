@@ -5,29 +5,23 @@ import net.rim.device.api.ui.FieldChangeListener;
 import net.rim.device.api.ui.UiApplication;
 import persistence.Persistence;
 import core.Actuacion;
-import core.CalendarManager;
 import core.Juzgado;
 import core.Proceso;
 
 public class NuevaActuacion {
 	private Actuacion _actuacion;
-	private String _uid;
+	private Cita _cita;
 	private Juzgado _juzgado;
+	private Juzgado _juzgadoVacio;
 	private NuevaActuacionScreen _screen;
 	private Proceso _proceso;
 
 	public NuevaActuacion(Proceso proceso) {
-		try {
-			_juzgado = new Persistence().consultarJuzgado("1");
-		} catch (NullPointerException e) {
-			_screen.alert(Util.noSDString());
-			System.exit(0);
-		} catch (Exception e) {
-			_screen.alert(e.toString());
-		}
+		_juzgadoVacio = Util.consultarJuzgadoVacio();
+		_cita = new Cita();
 		_proceso = proceso;
 		_screen = new NuevaActuacionScreen();
-		_screen.setJuzgado(_juzgado.getNombre());
+		_screen.setJuzgado(_juzgadoVacio.getNombre());
 		_screen.setChangeListener(listener);
 	}
 
@@ -46,6 +40,12 @@ public class NuevaActuacion {
 				addCita();
 			} else if (context == Util.CERRAR) {
 				cerrarPantalla();
+			} else if (context == Util.VER_CITA) {
+				verCita();
+			} else if (context == Util.ADD_CITA) {
+				addCita();
+			} else if (context == Util.ELIMINAR_CITA) {
+				eliminarCita();
 			}
 		}
 	};
@@ -72,24 +72,24 @@ public class NuevaActuacion {
 	private void guardarActuacion() {
 		if (_screen.getDescripcion().length() == 0) {
 			_screen.alert("El campo Descripción es obligatorio");
+		} else if(_juzgado == null) {
+			Util.alert("El juzgado es obligatorio");
 		} else {
 			_actuacion = new Actuacion(_juzgado, _screen.getFecha(),
 					_screen.getFechaProxima(), _screen.getDescripcion(), null,
-					_uid);
+					_cita.getUid());
 			if (_proceso != null) {
 				try {
 					new Persistence().guardarActuacion(_actuacion,
 							_proceso.getId_proceso());
 				} catch (NullPointerException e) {
-					_screen.alert(Util.noSDString());
-					System.exit(0);
+					Util.noSd();
 				} catch (Exception e) {
-					_screen.alert(e.toString());
+					Util.alert(e.toString());
 				}
-				UiApplication.getUiApplication().popScreen(_screen);
-			} else {
-				UiApplication.getUiApplication().popScreen(_screen);
 			}
+			borrarCitaActuacion();
+			Util.popScreen(_screen);
 		}
 	}
 
@@ -102,28 +102,50 @@ public class NuevaActuacion {
 			_screen.setJuzgado(juzgado.getNombre());
 		}
 	}
-
-	private void addCita() {
-		if (_screen.hasAlarma()) {
-			NuevaCita n = new NuevaCita(_screen.getDescripcion(), _screen
-					.getFechaProxima().getTime());
-			UiApplication.getUiApplication().pushModalScreen(n.getScreen());
-			_uid = n.getUid();
-			if (_uid == null) {
-				_screen.setChecked(false);
-			}
-		} else {
-			if (_uid != null) {
-				try {
-					CalendarManager.borrarCita(_uid);
-				} catch (NullPointerException e) {
-				} catch (Exception e) {
-					_screen.alert(e.toString());
-				}
+	
+	private void borrarCitaActuacion() {
+		if (!_cita.exist() && _actuacion.getUid() != null) {
+			_actuacion.setUid(_cita.getUid());
+			try {
+				new Persistence().actualizarActuacion(_actuacion);
+			} catch (NullPointerException e) {
+				Util.noSd();
+			} catch (Exception e) {
+				Util.alert(e.toString());
 			}
 		}
 	}
 
+	private void addCita() {
+		NuevaCita n = new NuevaCita(_screen.getDescripcion(), _screen
+				.getFechaProxima().getTime());
+		UiApplication.getUiApplication().pushModalScreen(n.getScreen());
+		_cita = n.getCita();
+		if(_cita.exist()) {
+			_screen.setClock();
+			if(_cita.hasAlarma()) {
+				_screen.setBell();
+			}
+		}
+	}
+	
+	private void verCita() {
+		if (_cita.exist()) {
+			VerCita v = new VerCita(_cita);
+			UiApplication.getUiApplication().pushModalScreen(v.getScreen());
+			if(_cita.hasAlarma()) {
+				_screen.setBell();
+			} else {
+				_screen.removeBell();
+			}
+		}
+	}
+	
+	private void eliminarCita() {
+		_cita.eliminarCita();
+		_screen.removeClock();
+	}
+	
 	private void cerrarPantalla() {
 		if (_screen.getDescripcion().length() != 0) {
 			Object[] ask = { "Guardar", "Descartar", "Cancelar" };
@@ -131,10 +153,12 @@ public class NuevaActuacion {
 			if (sel == 0) {
 				guardarActuacion();
 			} else if (sel == 1) {
-				UiApplication.getUiApplication().popScreen(_screen);
+				borrarCitaActuacion();
+				Util.popScreen(_screen);
 			}
 		} else {
-			UiApplication.getUiApplication().popScreen(_screen);
+			borrarCitaActuacion();
+			Util.popScreen(_screen);
 		}
 	}
 }

@@ -3,12 +3,10 @@ package gui;
 import java.util.Calendar;
 import java.util.Date;
 
-import net.rim.device.api.ui.Field;
-import net.rim.device.api.ui.FieldChangeListener;
+import net.rim.device.api.system.Bitmap;
 import net.rim.device.api.ui.MenuItem;
-import net.rim.device.api.ui.UiApplication;
 import net.rim.device.api.ui.component.BasicEditField;
-import net.rim.device.api.ui.component.CheckboxField;
+import net.rim.device.api.ui.component.BitmapField;
 import net.rim.device.api.ui.component.DateField;
 import net.rim.device.api.ui.component.Dialog;
 import net.rim.device.api.ui.component.LabelField;
@@ -21,14 +19,27 @@ public class NuevaActuacionScreen extends FondoNormal {
 	private DateField _dfFecha;
 	private DateField _dfFechaProxima;
 	private BasicEditField _txtDescripcion;
-	private CheckboxField _cbCita;
+	private BitmapField _cita;
+	private BitmapField _alarm;
+	private Bitmap _bell = Bitmap.getBitmapResource("bell.png");
+	private Bitmap _clock = Bitmap.getBitmapResource("clock.png");
+	private boolean _hasAlarm = false;
 
 	/**
 	 * Crea una NuevaActuacionScreen inicializando los componentes y
 	 * agregandolos a la pantalla
 	 */
 	public NuevaActuacionScreen() {
-		setTitle("Nueva actuación");
+		HorizontalFieldManager titleContainer = new HorizontalFieldManager();
+		titleContainer.add(new LabelField("Nueva actuacion"));
+
+		_cita = new BitmapField(null, BitmapField.FIELD_VCENTER);
+		_alarm = new BitmapField(null, BitmapField.FIELD_VCENTER);
+
+		titleContainer.add(_cita);
+		titleContainer.add(_alarm);
+
+		setTitle(titleContainer);
 
 		HorizontalFieldManager fldJuzgado = new HorizontalFieldManager();
 
@@ -48,45 +59,69 @@ public class NuevaActuacionScreen extends FondoNormal {
 		_txtDescripcion = new BasicEditField();
 		_txtDescripcion.setLabel("Descripción: ");
 		add(_txtDescripcion);
-
-		_cbCita = new CheckboxField("Crear cita", false);
-		_cbCita.setChangeListener(listenerCita);
-		add(_cbCita);
+	}
+	
+	public void setClock() {
+		_cita.setBitmap(_clock);
+		_hasAlarm = true;
+	}
+	
+	public void setBell() {
+		_alarm.setBitmap(_bell);
+	}
+	
+	public void removeClock() {
+		_cita.setBitmap(null);
+		removeBell();
+		_hasAlarm = false;
+	}
+	
+	public void removeBell() {
+		_alarm.setBitmap(null);
 	}
 
 	protected void makeMenu(Menu menu, int instance) {
-		Field f = UiApplication.getUiApplication().getActiveScreen()
-				.getLeafFieldWithFocus();
-		if (f.equals(_lblJuzgado)) {
-			LabelField temp = (LabelField) f;
-			if (temp.getText().equals("*Ninguno*")) {
-				menu.add(menuAgregar);
-				menu.addSeparator();
-			} else {
-				menu.add(menuCambiar);
-				menu.addSeparator();
-			}
+		menu.add(menuCambiar);
+		menu.addSeparator();
+		if (_hasAlarm) {
+			menu.add(menuVerCita);
+			menu.add(menuEliminarCita);
+			menu.addSeparator();
+		} else {
+			menu.add(menuAddCita);
+			menu.addSeparator();
 		}
+		menu.addSeparator();
 		menu.add(menuGuardar);
 	}
-
-	private final MenuItem menuAgregar = new MenuItem("Agregar", 0, 0) {
+	
+	private final MenuItem menuVerCita = new MenuItem("Ver cita", 0, 0) {
 
 		public void run() {
-			fieldChangeNotify(Util.ADD_JUZGADO);
+			fieldChangeNotify(Util.VER_CITA);
 		}
 	};
+
+	private final MenuItem menuAddCita = new MenuItem("Agregar cita", 0, 0) {
+
+		public void run() {
+			fieldChangeNotify(Util.ADD_CITA);
+		}
+	};
+
+	private final MenuItem menuEliminarCita = new MenuItem("Eliminar cita", 0,
+			0) {
+
+		public void run() {
+			fieldChangeNotify(Util.ELIMINAR_CITA);
+		}
+	};
+
 
 	private final MenuItem menuCambiar = new MenuItem("Cambiar", 0, 0) {
 
 		public void run() {
-			menuAgregar.run();
-		}
-	};
-
-	private FieldChangeListener listenerCita = new FieldChangeListener() {
-		public void fieldChanged(Field field, int context) {
-			fieldChangeNotify(Util.ADD_CITA);
+			fieldChangeNotify(Util.ADD_JUZGADO);
 		}
 	};
 
@@ -106,11 +141,7 @@ public class NuevaActuacionScreen extends FondoNormal {
 	}
 	
 	public boolean hasAlarma() {
-		return _cbCita.getChecked();
-	}
-	
-	public void setChecked(boolean checked) {
-		_cbCita.setChecked(checked);
+		return _hasAlarm;
 	}
 
 	public void setJuzgado(String text) {

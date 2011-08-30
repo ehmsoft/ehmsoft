@@ -74,6 +74,10 @@ public class Util {
 		return("Tarjeta SD no presente, la aplicación se cerrará, verifique e inicie nuevamente");
 	}
 	
+	public static void citaErrorMessage() {
+		alert("No se pudo agregar la cita al calendario, intentelo nuevamente");
+	}
+	
 	public static void noSd() {
 		UiApplication.getUiApplication().invokeLater(new Runnable() {
 			
