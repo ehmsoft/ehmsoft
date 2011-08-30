@@ -60,7 +60,7 @@ public class ListadoActuaciones {
 		if((_style & SEARCH) == SEARCH) {
 			_screen.setSearchField();
 		}
-		if((_style & SEARCH) != NO_NUEVO) {
+		if((_style & NO_NUEVO) != NO_NUEVO) {
 			_screen.addElement("Crear nueva actuación", 0);
 		}
 	}
