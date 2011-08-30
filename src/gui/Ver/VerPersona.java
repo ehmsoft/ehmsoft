@@ -6,6 +6,7 @@ import net.rim.device.api.ui.FieldChangeListener;
 import net.rim.device.api.ui.UiApplication;
 import persistence.Persistence;
 import core.Persona;
+import core.PhoneManager;
 
 public class VerPersona {
 	private VerPersonaScreen _screen;
@@ -26,15 +27,25 @@ public class VerPersona {
 	FieldChangeListener listener = new FieldChangeListener() {
 
 		public void fieldChanged(Field field, int context) {
-			if (context == _screen.GUARDAR) {
+			if (context == Util.GUARDAR) {
 				actualizarPersona();
-			} else if (context == _screen.ELIMINAR) {
+			} else if (context == Util.ELIMINAR) {
 				eliminarPersona();
-			} else if (context == _screen.CERRAR) {
+			} else if (context == Util.CERRAR) {
 				cerrarPantalla();
+			} else if(context == Util.LLAMAR) {
+				llamar();
 			}
 		}
 	};
+	
+	private void llamar() {
+		if (!_screen.getTelefono().equals("")) {
+			PhoneManager.call(_screen.getTelefono());
+		} else {
+			Util.alert("Esta persona no tiene teléfono registrado");
+		}
+	}
 
 	public VerPersonaScreen getScreen() {
 		return _screen;

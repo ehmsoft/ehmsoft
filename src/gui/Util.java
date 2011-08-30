@@ -66,6 +66,7 @@ public class Util {
 	public static final short ELIMINAR = 23;
 
 	public static final short CLICK = 24;
+	public static final int LLAMAR = 27;
 
 	public static PopupScreen WAIT_SCREEN;
 

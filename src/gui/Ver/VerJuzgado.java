@@ -6,6 +6,7 @@ import net.rim.device.api.ui.FieldChangeListener;
 import net.rim.device.api.ui.UiApplication;
 import persistence.Persistence;
 import core.Juzgado;
+import core.PhoneManager;
 
 public class VerJuzgado {
 	private VerJuzgadoScreen _screen;
@@ -25,15 +26,25 @@ public class VerJuzgado {
 	FieldChangeListener listener = new FieldChangeListener() {
 
 		public void fieldChanged(Field field, int context) {
-			if (context == _screen.GUARDAR) {
+			if (context == Util.GUARDAR) {
 				actualizarJuzgado();
-			} else if (context == _screen.CERRAR) {
+			} else if (context == Util.CERRAR) {
 				cerrarPantalla();
-			} else if (context == _screen.ELIMINAR) {
+			} else if (context == Util.ELIMINAR) {
 				eliminarJuzgado();
+			} else if (context == Util.LLAMAR) {
+				llamar();
 			}
 		}
 	};
+	
+	private void llamar() {
+		if (!_screen.getTelefono().equals("")) {
+			PhoneManager.call(_screen.getTelefono());
+		} else {
+			Util.alert("Este juzgado no tiene teléfono registrado");
+		}
+	}
 
 	public VerJuzgadoScreen getScreen() {
 		return _screen;

@@ -5,12 +5,15 @@ import gui.Util;
 
 import java.util.Vector;
 
+import net.rim.device.api.system.KeyListener;
 import net.rim.device.api.ui.Field;
 import net.rim.device.api.ui.FieldChangeListener;
+import net.rim.device.api.ui.Keypad;
 import net.rim.device.api.ui.Screen;
 import net.rim.device.api.ui.UiApplication;
 import persistence.Persistence;
 import core.Persona;
+import core.PhoneManager;
 
 public class ListadoPersonas {
 
@@ -73,7 +76,7 @@ public class ListadoPersonas {
 		}
 	}
 
-	FieldChangeListener listener = new FieldChangeListener() {
+	private FieldChangeListener listener = new FieldChangeListener() {
 
 		public void fieldChanged(Field field, int context) {
 			if (context == Util.CLICK) {
@@ -84,9 +87,22 @@ public class ListadoPersonas {
 				cerrarPantalla();
 			} else if (context == Util.ELIMINAR) {
 				eliminarPersona();
+			} else if (context == Util.LLAMAR) {
+				llamar();
 			}
 		}
 	};
+	
+	private void llamar() {
+		Object selected = _screen.getSelected();
+		if (!String.class.equals(selected)) {
+			if (!((Persona) selected).getTelefono().equals("")) {
+				PhoneManager.call(((Persona) selected).getTelefono());
+			} else {
+				Util.alert("Esta persona no tiene teléfono registrado");
+			}
+		}
+	}
 
 	private void addPersonas() {
 		if (_vectorPersonas != null) {

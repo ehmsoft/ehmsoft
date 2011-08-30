@@ -2,6 +2,9 @@ package gui.Ver;
 
 import gui.EditableTextField;
 import gui.FondoNormal;
+import gui.Util;
+import net.rim.device.api.system.KeyListener;
+import net.rim.device.api.ui.Keypad;
 import net.rim.device.api.ui.MenuItem;
 import net.rim.device.api.ui.component.Dialog;
 import net.rim.device.api.ui.component.Menu;
@@ -15,10 +18,6 @@ public class VerPersonaScreen extends FondoNormal {
 	private EditableTextField _txtDireccion;
 	private EditableTextField _txtCorreo;
 	private EditableTextField _txtNotas;
-
-	public final int GUARDAR = 1;
-	public final int ELIMINAR = 2;
-	public final int CERRAR = 3;
 
 	public VerPersonaScreen() {
 
@@ -36,6 +35,7 @@ public class VerPersonaScreen extends FondoNormal {
 		add(_txtDireccion);
 		add(_txtCorreo);
 		add(_txtNotas);
+		addKeyListener(listener);
 	}
 
 	protected void makeMenu(Menu menu, int instance) {
@@ -49,14 +49,14 @@ public class VerPersonaScreen extends FondoNormal {
 	private final MenuItem menuGuardar = new MenuItem("Guardar", 0, 0) {
 
 		public void run() {
-			fieldChangeNotify(GUARDAR);
+			fieldChangeNotify(Util.GUARDAR);
 		}
 	};
 
 	private final MenuItem menuEliminar = new MenuItem("Eliminar", 0, 0) {
 
 		public void run() {
-			fieldChangeNotify(ELIMINAR);
+			fieldChangeNotify(Util.ELIMINAR);
 		}
 	};
 
@@ -140,7 +140,39 @@ public class VerPersonaScreen extends FondoNormal {
 	}
 
 	public boolean onClose() {
-		fieldChangeNotify(CERRAR);
+		fieldChangeNotify(Util.CERRAR);
 		return false;
 	}
+	
+private KeyListener listener = new KeyListener() {
+		
+		public boolean keyUp(int keycode, int time) {
+			// TODO Auto-generated method stub
+			return false;
+		}
+		
+		public boolean keyStatus(int keycode, int time) {
+			// TODO Auto-generated method stub
+			return false;
+		}
+		
+		public boolean keyRepeat(int keycode, int time) {
+			// TODO Auto-generated method stub
+			return false;
+		}
+		
+		public boolean keyDown(int keycode, int time) {
+			if (Keypad.key(keycode) == Keypad.KEY_SEND) {
+				fieldChangeNotify(Util.LLAMAR);
+				return true;
+			} else {
+				return false;
+			}
+		}
+		
+		public boolean keyChar(char key, int status, int time) {
+			// TODO Auto-generated method stub
+			return false;
+		}
+	};
 }

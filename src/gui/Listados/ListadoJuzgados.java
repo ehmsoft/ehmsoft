@@ -11,6 +11,8 @@ import net.rim.device.api.ui.Screen;
 import net.rim.device.api.ui.UiApplication;
 import persistence.Persistence;
 import core.Juzgado;
+import core.Persona;
+import core.PhoneManager;
 
 public class ListadoJuzgados {
 
@@ -74,9 +76,22 @@ public class ListadoJuzgados {
 				cerrarPantalla();
 			} else if (context == Util.ELIMINAR) {
 				eliminarJuzgado();
+			} else if (context == Util.LLAMAR) {
+				llamar();
 			}
 		}
 	};
+	
+	private void llamar() {
+		Object selected = _screen.getSelected();
+		if (!String.class.equals(selected)) {
+			if (!((Persona) selected).getTelefono().equals("")) {
+				PhoneManager.call(((Persona) selected).getTelefono());
+			} else {
+				Util.alert("Este juzgado no tiene teléfono registrado");
+			}
+		}
+	}
 
 	private void addJuzgados() {
 		if (_vectorJuzgados != null) {
