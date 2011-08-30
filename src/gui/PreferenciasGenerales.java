@@ -37,6 +37,11 @@ public class PreferenciasGenerales {
 	}
 	
 	private void guardarPreferencias() {
+		Preferencias.setNombreUsuario(_screen.getNombreUsuario());
+		Preferencias.setMostrarCampoBusqueda(_screen.isMostrarBusqueda());
+		Preferencias.setMostrarTitulosPantallas(_screen.isMostrarTitulos());
+		Preferencias.setRecodarUltimaCategoria(_screen.isRecordarUltimaCategoria());
+		Preferencias.setTipoFuente(_screen.getFuente());
 		Util.popScreen(_screen);
 	}
 	
