@@ -7,6 +7,7 @@ import persistence.Persistence;
 
 import net.rim.device.api.ui.Field;
 import net.rim.device.api.ui.FieldChangeListener;
+import net.rim.device.api.ui.UiApplication;
 import net.rim.device.api.util.CloneableVector;
 import core.Actuacion;
 import core.CampoPersonalizado;
@@ -114,6 +115,8 @@ public class VerProceso {
 				eliminarCampo();
 			} else if(context == Util.ELIMINAR) {
 				eliminarProceso();
+			} else if(context == Util.VER_LISTADO_ACTUACIONES) {
+				verListadoActuaciones();
 			}
 		}
 	};
@@ -144,6 +147,7 @@ public class VerProceso {
 			if(_camposEliminados.size() != 0) {
 				eliminarCampos();
 			}
+			concatCampos();
 			Proceso proceso = new Proceso(_demandante, _demandado, _screen.getFecha(),
 					_juzgado, _screen.getRadicado(),
 					_screen.getRadicadoUnico(), _actuaciones,
@@ -151,14 +155,19 @@ public class VerProceso {
 					_screen.getTipo(), _screen.getNotas(), _campos,
 					_screen.getPrioridad());
 			if(!proceso.equals(_proceso)) {
-				try {
-					new Persistence().actualizarProceso(proceso);
-					_proceso = proceso;
-				} catch(NullPointerException e1) {
-					Util.noSd();
-				} catch (Exception e1) {
-					Util.alert(e1.toString());
-				}
+				_proceso = proceso;
+				UiApplication.getUiApplication().invokeLater(new Runnable() {
+					
+					public void run() {
+						try {
+							new Persistence().actualizarProceso(_proceso);
+						} catch(NullPointerException e1) {
+							Util.noSd();
+						} catch (Exception e1) {
+							Util.alert(e1.toString());
+						}
+					}
+				});
 			} else if (cambioCampos()) {
 				try {
 					Persistence p = new Persistence();
@@ -175,6 +184,18 @@ public class VerProceso {
 			}
 			Util.popScreen(_screen);
 		}
+	}
+	
+	private void concatCampos() {
+		Enumeration e = _camposNuevos.elements();
+		while(e.hasMoreElements()) {
+			_campos.addElement(e.nextElement());
+		}
+	}
+	
+	private void verListadoActuaciones() {
+		ListadoActuaciones l = new ListadoActuaciones(_proceso, true, ListadoActuaciones.ON_CLICK_VER | ListadoActuaciones.NO_NUEVO);
+		UiApplication.getUiApplication().pushModalScreen(l.getScreen());
 	}
 	
 	private boolean cambioCampos() {

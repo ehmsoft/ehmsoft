@@ -215,6 +215,10 @@ public class VerProcesoScreen extends FondoNormal {
 		menu.add(menuAddCampo);
 		menu.addSeparator();
 		
+		if(f.equals(_ofActuaciones)) {
+			menu.add(menuVerActuaciones);
+		}
+		
 		if (f.equals(_txtCategoria)) {
 			menu.add(menuCambiar);
 			menu.addSeparator();
@@ -239,6 +243,12 @@ public class VerProcesoScreen extends FondoNormal {
 		}
 		menu.add(menuGuardar);
 	}
+	
+	private final MenuItem menuVerActuaciones = new MenuItem("Ver listado", 0, 0) {
+		public void run() {
+			fieldChangeNotify(Util.VER_LISTADO_ACTUACIONES);
+		}
+	};
 
 	private final MenuItem menuModificarCampo = new MenuItem("Modificar", 0, 0) {
 

@@ -34,6 +34,7 @@ public class Util {
 	public static final short VER_CITA = 11;
 	public static final short VER_CATEGORIA = 12;
 	public static final short VER_ACTUACION = 13;
+	public static final short VER_LISTADO_ACTUACIONES = 26;
 	public static final short VER_CAMPO = 25;
 	
 	public static final short NEW_ACTUACION = 14;
@@ -236,7 +237,7 @@ public class Util {
 		UiApplication.getUiApplication().pushModalScreen(l.getScreen());
 		return l.getSelected();
 	}
-	
+
 	public static Actuacion nuevaActuacion(Proceso proceso) {
 		NuevaActuacion n = new NuevaActuacion(proceso);
 		UiApplication.getUiApplication().pushModalScreen(n.getScreen());
