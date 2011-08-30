@@ -104,14 +104,16 @@ public class NuevaActuacion {
 	}
 	
 	private void borrarCitaActuacion() {
-		if (!_cita.exist() && _actuacion.getUid() != null) {
-			_actuacion.setUid(_cita.getUid());
-			try {
-				new Persistence().actualizarActuacion(_actuacion);
-			} catch (NullPointerException e) {
-				Util.noSd();
-			} catch (Exception e) {
-				Util.alert(e.toString());
+		if (_actuacion != null) {
+			if (!_cita.exist() && _actuacion.getUid() != null) {
+				_actuacion.setUid(_cita.getUid());
+				try {
+					new Persistence().actualizarActuacion(_actuacion);
+				} catch (NullPointerException e) {
+					Util.noSd();
+				} catch (Exception e) {
+					Util.alert(e.toString());
+				}
 			}
 		}
 	}
@@ -154,6 +156,9 @@ public class NuevaActuacion {
 				guardarActuacion();
 			} else if (sel == 1) {
 				borrarCitaActuacion();
+				if(_cita.exist() && _actuacion.getUid() == null) {
+					_cita.eliminarCita();
+				}
 				Util.popScreen(_screen);
 			}
 		} else {

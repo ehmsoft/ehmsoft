@@ -183,6 +183,9 @@ public class VerActuacion {
 				actualizarActuacion();
 			} else if (sel == 1) {
 				borrarCitaActuacion();
+				if(_cita.exist() && _actuacion.getUid() == null) {
+					_cita.eliminarCita();
+				}
 				UiApplication.getUiApplication().popScreen(_screen);
 			}
 		} else {
