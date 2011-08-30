@@ -1,5 +1,7 @@
 package gui;
 
+import gui.Listados.ListadoPersonasLista;
+
 import java.util.Vector;
 
 import core.Persona;

@@ -12,7 +12,7 @@ import net.rim.device.api.ui.component.KeywordProvider;
 import net.rim.device.api.ui.component.ListField;
 import net.rim.device.api.ui.component.ListFieldCallback;
 
-abstract class ListaListas extends KeywordFilterField {
+public abstract class ListaListas extends KeywordFilterField {
 	private Unsorted _u;
 
 	public ListaListas() {
