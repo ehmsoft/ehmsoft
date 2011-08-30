@@ -11,6 +11,7 @@ import gui.NuevaCategoria;
 import gui.NuevaPersona;
 import gui.NuevoJuzgado;
 import gui.NuevoProceso;
+import gui.PreferenciasGenerales;
 import gui.PreferenciasGeneralesScreen;
 import gui.VerActuacion;
 import gui.VerJuzgado;
@@ -136,7 +137,8 @@ public class Prueba extends MainScreen {
 	private FieldChangeListener listenerPreferencias = new FieldChangeListener() {
 		
 		public void fieldChanged(Field field, int context) {
-			UiApplication.getUiApplication().pushModalScreen(new PreferenciasGeneralesScreen());
+			PreferenciasGenerales p = new PreferenciasGenerales();
+			UiApplication.getUiApplication().pushModalScreen(p.getScreen());
 		}
 	};	
 

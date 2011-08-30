@@ -3,7 +3,6 @@ package core;
 import persistence.Persistence;
 import net.rim.device.api.ui.Font;
 
-
 public class Preferencias {
 	private static boolean mostrarCampoBusqueda = true;
 	private static Font tipoFuente = Font.getDefault();
@@ -57,7 +56,5 @@ public class Preferencias {
 	public static void setCantidadActuacionesCriticas(
 			int cantidadActuacionesCriticas) {
 		Preferencias.cantidadActuacionesCriticas = cantidadActuacionesCriticas;
-	}
-	
-	
+	}	
 }

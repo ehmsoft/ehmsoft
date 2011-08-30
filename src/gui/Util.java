@@ -51,6 +51,9 @@ public class Util {
 
 	public static final short CLICK = 24;
 	
+	public static final short COPIA_SEGURIDAD = 26;
+	public static final short RESTAURAR_PREFERENCIAS = 27;
+	
 	public static PopupScreen WAIT_SCREEN;
 	
 	public static void popScreen(Screen screen) {
