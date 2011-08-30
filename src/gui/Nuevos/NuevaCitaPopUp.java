@@ -37,7 +37,7 @@ public class NuevaCitaPopUp extends PopupScreen {
 		add(labelField);
 		add(new SeparatorField());
 
-		_txtDescripcion = new BasicEditField("Descripción: ", "");		
+		_txtDescripcion = new BasicEditField("Descripción: ", "");
 
 		_dfFecha = new DateField("Fecha: ", System.currentTimeMillis(),
 				DateField.DATE_TIME);
@@ -49,19 +49,21 @@ public class NuevaCitaPopUp extends PopupScreen {
 				BasicEditField.FILTER_INTEGER);
 		_txtTiempo.setText("5");
 
-		Object[] choices = {Cita.MINUTOS, Cita.HORAS, Cita.DIAS};
-		_ocTiempo = new ObjectChoiceField(null, choices, 0, USE_ALL_WIDTH | FIELD_LEFT);
+		Object[] choices = { Cita.MINUTOS, Cita.HORAS, Cita.DIAS };
+		_ocTiempo = new ObjectChoiceField(null, choices, 0, USE_ALL_WIDTH
+				| FIELD_LEFT);
 
 		ButtonField btnAceptar = new ButtonField("Aceptar", Field.FIELD_HCENTER);
-		ButtonField btnCancelar = new ButtonField("Cancelar", Field.FIELD_HCENTER);
-		btnAceptar.setChangeListener(listenerAceptar);	
+		ButtonField btnCancelar = new ButtonField("Cancelar",
+				Field.FIELD_HCENTER);
+		btnAceptar.setChangeListener(listenerAceptar);
 		btnCancelar.setChangeListener(listenerCancelar);
-		
+
 		_bottom = new VerticalFieldManager();
 		_bottom.add(new SeparatorField());
 		_bottom.add(btnAceptar);
 		_bottom.add(btnCancelar);
-		
+
 		add(_txtDescripcion);
 		add(_dfFecha);
 		add(_cbAlarma);
@@ -97,11 +99,11 @@ public class NuevaCitaPopUp extends PopupScreen {
 			}
 		}
 	};
-	
+
 	public void setDescripcion(String text) {
 		_txtDescripcion.setText(text);
 	}
-	
+
 	public void setFecha(Date date) {
 		_dfFecha.setDate(date);
 	}
@@ -132,7 +134,7 @@ public class NuevaCitaPopUp extends PopupScreen {
 		alarma[1] = _ocTiempo.getChoice(_ocTiempo.getSelectedIndex());
 		return alarma;
 	}
-	
+
 	public boolean onClose() {
 		fieldChangeNotify(CERRAR);
 		return false;

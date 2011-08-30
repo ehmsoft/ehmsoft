@@ -7,7 +7,6 @@ import java.util.Vector;
 
 import net.rim.device.api.ui.Field;
 import net.rim.device.api.ui.FieldChangeListener;
-
 import persistence.Persistence;
 import core.Actuacion;
 import core.CampoPersonalizado;
@@ -111,7 +110,7 @@ public class NuevoProceso {
 		} else if (_juzgado == null) {
 			_screen.alert("El juzgado es obligatorio");
 		} else if (isCampoObligatorio()) {
-		} else if(checkLonMin()) {
+		} else if (checkLonMin()) {
 		} else {
 			_proceso = new Proceso(_demandante, _demandado, _screen.getFecha(),
 					_juzgado, _screen.getRadicado(),
@@ -130,20 +129,28 @@ public class NuevoProceso {
 			Util.popScreen(_screen);
 		}
 	}
-	
+
 	private boolean checkLonMin() {
 		boolean ret = false;
 		Enumeration e = _campos.elements();
-		while(e.hasMoreElements()) {
-			CampoPersonalizado campo = (CampoPersonalizado)e.nextElement();
-			if(campo.getLongitudMin() > campo.getValor().length() && campo.getLongitudMin() != 0) {
-				Util.alert("El campo " + campo.getNombre() + " posee una longitud minima de " + 
-						campo.getLongitudMin()  + " caracteres, y usted ingresó " + campo.getValor().length());
+		while (e.hasMoreElements()) {
+			CampoPersonalizado campo = (CampoPersonalizado) e.nextElement();
+			if (campo.getLongitudMin() > campo.getValor().length()
+					&& campo.getLongitudMin() != 0) {
+				Util.alert("El campo " + campo.getNombre()
+						+ " posee una longitud minima de "
+						+ campo.getLongitudMin()
+						+ " caracteres, y usted ingresó "
+						+ campo.getValor().length());
 				ret = true;
 			}
-			if(campo.getLongitudMax() < campo.getValor().length() && campo.getLongitudMax() != 0) {
-				Util.alert("El campo " + campo.getNombre() + " posee una longitud máxima de " + 
-						campo.getLongitudMax()  + " caracteres, y usted ingresó " + campo.getValor().length());
+			if (campo.getLongitudMax() < campo.getValor().length()
+					&& campo.getLongitudMax() != 0) {
+				Util.alert("El campo " + campo.getNombre()
+						+ " posee una longitud máxima de "
+						+ campo.getLongitudMax()
+						+ " caracteres, y usted ingresó "
+						+ campo.getValor().length());
 				ret = true;
 			}
 		}
@@ -155,7 +162,8 @@ public class NuevoProceso {
 		Enumeration e = _campos.elements();
 		while (e.hasMoreElements()) {
 			CampoPersonalizado campo = (CampoPersonalizado) e.nextElement();
-			if (campo.isObligatorio().booleanValue() && campo.getValor().length() == 0) {
+			if (campo.isObligatorio().booleanValue()
+					&& campo.getValor().length() == 0) {
 				_screen.alert("El campo " + campo.getNombre()
 						+ " es obligatorio");
 				ret = true;

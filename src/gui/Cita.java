@@ -1,9 +1,12 @@
 package gui;
 
 import java.util.Date;
+
+import javax.microedition.pim.Event;
 import javax.microedition.pim.PIMItem;
-import core.CalendarManager;
+
 import net.rim.blackberry.api.pdap.BlackBerryEvent;
+import core.CalendarManager;
 
 public class Cita {
 
@@ -11,7 +14,7 @@ public class Cita {
 	private Date _fecha;
 	private int _alarma;
 	private String _uid;
-	
+
 	public static final String DIAS = "Días";
 	public static final String HORAS = "Horas";
 	public static final String MINUTOS = "Minutos";
@@ -34,7 +37,7 @@ public class Cita {
 	public Cita(String descripcion, Date date, int alarma) {
 		this(descripcion, date, alarma, null);
 	}
-	
+
 	public Cita() {
 		this(null, null, 0, null);
 	}
@@ -42,12 +45,10 @@ public class Cita {
 	public Cita(String uid) {
 		try {
 			BlackBerryEvent e = CalendarManager.consultarCita(uid);
-			_fecha = new Date(e.getDate(BlackBerryEvent.START,
-					PIMItem.ATTR_NONE));
-			_descripcion = e.getString(BlackBerryEvent.SUMMARY,
-					PIMItem.ATTR_NONE);
-			if (e.countValues(BlackBerryEvent.ALARM) > 0) {
-				_alarma = e.getInt(BlackBerryEvent.ALARM, PIMItem.ATTR_NONE);
+			_fecha = new Date(e.getDate(Event.START, PIMItem.ATTR_NONE));
+			_descripcion = e.getString(Event.SUMMARY, PIMItem.ATTR_NONE);
+			if (e.countValues(Event.ALARM) > 0) {
+				_alarma = e.getInt(Event.ALARM, PIMItem.ATTR_NONE);
 			}
 			_uid = uid;
 		} catch (NullPointerException e) {
@@ -56,22 +57,22 @@ public class Cita {
 			Util.alert(e.toString());
 		}
 	}
-	
+
 	public Object[] getAlarmaConFormato() {
 		Object[] ret = new Object[2];
-		if(_alarma >= 86400) {
+		if (_alarma >= 86400) {
 			ret[0] = new Integer(_alarma /= 86400);
 			ret[1] = DIAS;
-		} else if(_alarma >= 3600) {
+		} else if (_alarma >= 3600) {
 			ret[0] = new Integer(_alarma /= 3600);
 			ret[1] = HORAS;
-		} else if(_alarma >= 60) {
+		} else if (_alarma >= 60) {
 			ret[0] = new Integer(_alarma /= 60);
 			ret[1] = MINUTOS;
 		}
 		return ret;
 	}
-	
+
 	public void eliminarCita() {
 		try {
 			CalendarManager.borrarCita(_uid);
@@ -151,10 +152,10 @@ public class Cita {
 	public void setAlarma(int alarma) {
 		_alarma = alarma;
 	}
-	
+
 	public void setAlarma(Object[] alarma) {
-		String intervalo = (String)alarma[1];
-		Integer duracion = (Integer)alarma[0];
+		String intervalo = (String) alarma[1];
+		Integer duracion = (Integer) alarma[0];
 		if (intervalo == DIAS) {
 			_alarma = duracion.intValue() * 86400;
 		} else if (intervalo == HORAS) {

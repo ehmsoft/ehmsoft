@@ -9,25 +9,25 @@ public class VerCita {
 	private VerCitaPopUp _screen;
 	private Cita _cita;
 
-	public VerCita(Cita cita) {		
+	public VerCita(Cita cita) {
 		_cita = cita;
-		
-		Object[] choices = {Cita.MINUTOS, Cita.HORAS , Cita.DIAS};
-		
+
+		Object[] choices = { Cita.MINUTOS, Cita.HORAS, Cita.DIAS };
+
 		_screen = new VerCitaPopUp();
 		_screen.setChangeListener(listener);
 		_screen.setDescripcion(_cita.getDescripcion());
 		_screen.setFecha(_cita.getFecha());
 		_screen.setChoices(choices);
-		if(_cita.hasAlarma()) {
+		if (_cita.hasAlarma()) {
 			_screen.setAlarma(_cita.getAlarmaConFormato());
 			_screen.setChecked(true);
 		} else {
-			Object[] alarma = {new Integer(5), Cita.MINUTOS};
+			Object[] alarma = { new Integer(5), Cita.MINUTOS };
 			_screen.setAlarma(alarma);
 		}
 	}
-	
+
 	FieldChangeListener listener = new FieldChangeListener() {
 
 		public void fieldChanged(Field field, int context) {
@@ -57,5 +57,5 @@ public class VerCita {
 
 	private void cerrarPantalla() {
 		Util.popScreen(_screen);
-	}	
+	}
 }

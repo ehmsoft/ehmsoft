@@ -76,7 +76,7 @@ public class NuevaActuacion {
 	private void guardarActuacion() {
 		if (_screen.getDescripcion().length() == 0) {
 			_screen.alert("El campo Descripción es obligatorio");
-		} else if(_juzgado == null) {
+		} else if (_juzgado == null) {
 			Util.alert("El juzgado es obligatorio");
 		} else {
 			_actuacion = new Actuacion(_juzgado, _screen.getFecha(),
@@ -106,7 +106,7 @@ public class NuevaActuacion {
 			_screen.setJuzgado(juzgado.getNombre());
 		}
 	}
-	
+
 	private void borrarCitaActuacion() {
 		if (_actuacion != null) {
 			if (!_cita.exist() && _actuacion.getUid() != null) {
@@ -127,31 +127,31 @@ public class NuevaActuacion {
 				.getFechaProxima().getTime());
 		UiApplication.getUiApplication().pushModalScreen(n.getScreen());
 		_cita = n.getCita();
-		if(_cita.exist()) {
+		if (_cita.exist()) {
 			_screen.setClock();
-			if(_cita.hasAlarma()) {
+			if (_cita.hasAlarma()) {
 				_screen.setBell();
 			}
 		}
 	}
-	
+
 	private void verCita() {
 		if (_cita.exist()) {
 			VerCita v = new VerCita(_cita);
 			UiApplication.getUiApplication().pushModalScreen(v.getScreen());
-			if(_cita.hasAlarma()) {
+			if (_cita.hasAlarma()) {
 				_screen.setBell();
 			} else {
 				_screen.removeBell();
 			}
 		}
 	}
-	
+
 	private void eliminarCita() {
 		_cita.eliminarCita();
 		_screen.removeClock();
 	}
-	
+
 	private void cerrarPantalla() {
 		if (_screen.getDescripcion().length() != 0) {
 			Object[] ask = { "Guardar", "Descartar", "Cancelar" };
@@ -160,7 +160,7 @@ public class NuevaActuacion {
 				guardarActuacion();
 			} else if (sel == 1) {
 				borrarCitaActuacion();
-				if(_cita.exist() && _actuacion.getUid() == null) {
+				if (_cita.exist() && _actuacion.getUid() == null) {
 					_cita.eliminarCita();
 				}
 				Util.popScreen(_screen);

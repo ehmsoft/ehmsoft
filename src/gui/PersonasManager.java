@@ -4,16 +4,17 @@ import gui.Listados.ListadoPersonasLista;
 
 import java.util.Vector;
 
-import core.Persona;
-
-import persistence.Persistence;
+import net.rim.device.api.ui.DrawStyle;
+import net.rim.device.api.ui.Field;
 import net.rim.device.api.ui.component.Dialog;
 import net.rim.device.api.ui.component.LabelField;
 import net.rim.device.api.ui.component.SeparatorField;
 import net.rim.device.api.ui.container.HorizontalFieldManager;
+import persistence.Persistence;
+import core.Persona;
 
-public class PersonasManager extends CustomManager{
-	
+public class PersonasManager extends CustomManager {
+
 	private LabelField _nombre;
 	private LabelField _cedula;
 	private LabelField _telefono;
@@ -21,7 +22,7 @@ public class PersonasManager extends CustomManager{
 	private LabelField _correo;
 	private LabelField _notas;
 
-	public PersonasManager(){
+	public PersonasManager() {
 		super();
 		setTitle("Personas");
 		Persistence p;
@@ -33,15 +34,15 @@ public class PersonasManager extends CustomManager{
 		} catch (Exception e) {
 			Dialog.alert(e.toString());
 		}
-		setLista(_lista,1);
-		
+		setLista(_lista, 1);
+
 		HorizontalFieldManager nombre = new HorizontalFieldManager();
 		HorizontalFieldManager cedula = new HorizontalFieldManager();
 		HorizontalFieldManager telefono = new HorizontalFieldManager();
 		HorizontalFieldManager direccion = new HorizontalFieldManager();
 		HorizontalFieldManager correo = new HorizontalFieldManager();
 		HorizontalFieldManager notas = new HorizontalFieldManager();
-		
+
 		nombre.add(new LabelField("Nombre: "));
 		nombre.getField(0).setFont(_bold);
 		cedula.add(new LabelField("Cédula: "));
@@ -55,18 +56,13 @@ public class PersonasManager extends CustomManager{
 		notas.add(new LabelField("Notas: "));
 		notas.getField(0).setFont(_bold);
 
-		_nombre = new LabelField("", LabelField.RIGHT
-				| LabelField.USE_ALL_WIDTH);
-		_cedula = new LabelField("", LabelField.RIGHT
-				| LabelField.USE_ALL_WIDTH);
-		_telefono = new LabelField("", LabelField.RIGHT
-				| LabelField.USE_ALL_WIDTH);
-		_direccion = new LabelField("", LabelField.RIGHT
-				| LabelField.USE_ALL_WIDTH);
-		_correo = new LabelField("", LabelField.RIGHT
-				| LabelField.USE_ALL_WIDTH);
-		_notas = new LabelField("", LabelField.RIGHT | LabelField.USE_ALL_WIDTH);
-		
+		_nombre = new LabelField("", DrawStyle.RIGHT | Field.USE_ALL_WIDTH);
+		_cedula = new LabelField("", DrawStyle.RIGHT | Field.USE_ALL_WIDTH);
+		_telefono = new LabelField("", DrawStyle.RIGHT | Field.USE_ALL_WIDTH);
+		_direccion = new LabelField("", DrawStyle.RIGHT | Field.USE_ALL_WIDTH);
+		_correo = new LabelField("", DrawStyle.RIGHT | Field.USE_ALL_WIDTH);
+		_notas = new LabelField("", DrawStyle.RIGHT | Field.USE_ALL_WIDTH);
+
 		nombre.add(_nombre);
 		cedula.add(_cedula);
 		telefono.add(_telefono);

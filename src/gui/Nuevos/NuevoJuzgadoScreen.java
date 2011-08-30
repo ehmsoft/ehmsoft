@@ -4,6 +4,7 @@ import gui.FondoNormal;
 import net.rim.device.api.ui.MenuItem;
 import net.rim.device.api.ui.component.BasicEditField;
 import net.rim.device.api.ui.component.Dialog;
+import net.rim.device.api.ui.component.TextField;
 
 public class NuevoJuzgadoScreen extends FondoNormal {
 
@@ -12,7 +13,7 @@ public class NuevoJuzgadoScreen extends FondoNormal {
 	private BasicEditField _txtDireccion;
 	private BasicEditField _txtTelefono;
 	private BasicEditField _txtTipo;
-	
+
 	public final int GUARDAR = 1;
 	public final int CERRAR = 2;
 
@@ -23,19 +24,19 @@ public class NuevoJuzgadoScreen extends FondoNormal {
 	public NuevoJuzgadoScreen() {
 		setTitle("Nuevo juzgado");
 
-		_txtNombre = new BasicEditField(BasicEditField.NO_NEWLINE);
+		_txtNombre = new BasicEditField(TextField.NO_NEWLINE);
 		_txtNombre.setLabel("Nombre: ");
 
-		_txtCiudad = new BasicEditField(BasicEditField.NO_NEWLINE);
+		_txtCiudad = new BasicEditField(TextField.NO_NEWLINE);
 		_txtCiudad.setLabel("Ciudad: ");
 
-		_txtDireccion = new BasicEditField(BasicEditField.NO_NEWLINE);
+		_txtDireccion = new BasicEditField(TextField.NO_NEWLINE);
 		_txtDireccion.setLabel("Dirección: ");
 
-		_txtTelefono = new BasicEditField(BasicEditField.NO_NEWLINE);
+		_txtTelefono = new BasicEditField(TextField.NO_NEWLINE);
 		_txtTelefono.setLabel("Teléfono: ");
 
-		_txtTipo = new BasicEditField(BasicEditField.NO_NEWLINE);
+		_txtTipo = new BasicEditField(TextField.NO_NEWLINE);
 		_txtTipo.setLabel("Tipo: ");
 
 		add(_txtNombre);

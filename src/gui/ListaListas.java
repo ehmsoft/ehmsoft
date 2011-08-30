@@ -21,11 +21,11 @@ public abstract class ListaListas extends KeywordFilterField {
 		_u = new Unsorted();
 		setLabel("Buscar: ");
 	}
-	
+
 	public void setSelectedIndex(int index) {
 		super.setSelectedIndex(index);
 	}
-	
+
 	public void loadFrom(Vector vector) {
 		_u.loadFrom(vector.elements());
 	}
@@ -67,13 +67,13 @@ public abstract class ListaListas extends KeywordFilterField {
 	}
 
 	public void remove(int index) {
-			_u.delete(index);
-			updateList();
+		_u.delete(index);
+		updateList();
 	}
 
 	public void remove(Object element) {
-			_u.delete(element);
-			updateList();
+		_u.delete(element);
+		updateList();
 	}
 }
 
@@ -89,7 +89,7 @@ class Unsorted extends UnsortedReadableList {
 	public Object getAt(int index) {
 		try {
 			return super.getAt(index);
-		} catch(Exception e) {
+		} catch (Exception e) {
 			return super.getAt(index - 1);
 		}
 	}
@@ -111,12 +111,13 @@ class Callback implements ListFieldCallback {
 
 	public void drawListRow(ListField listField, Graphics graphics, int index,
 			int y, int width) {
-		ReadableList r = ((ListaListas)listField).getResultList();
-		if(String.class.isInstance(r.getAt(index))) {
+		ReadableList r = ((ListaListas) listField).getResultList();
+		if (String.class.isInstance(r.getAt(index))) {
 			graphics.setFont(graphics.getFont().derive(Font.BOLD));
 			int color = graphics.getColor();
 			graphics.setColor(Color.LIGHTGRAY);
-			graphics.drawLine(5, listField.getRowHeight() + y - 1, listField.getWidth() - 5, listField.getRowHeight() + y - 1);
+			graphics.drawLine(5, listField.getRowHeight() + y - 1,
+					listField.getWidth() - 5, listField.getRowHeight() + y - 1);
 			graphics.setColor(color);
 		}
 		graphics.drawText(r.getAt(index).toString(), 0, y);
@@ -133,5 +134,5 @@ class Callback implements ListFieldCallback {
 	public int indexOfList(ListField listField, String prefix, int start) {
 		return 0;
 	}
-	
+
 }

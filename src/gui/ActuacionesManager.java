@@ -4,18 +4,21 @@ import gui.Listados.ListadoActuacionesLista;
 
 import java.util.Vector;
 
-import core.Actuacion;
-import core.CalendarManager;
+import javax.microedition.pim.Event;
 
-import persistence.Persistence;
 import net.rim.blackberry.api.pdap.BlackBerryEvent;
 import net.rim.device.api.system.Bitmap;
+import net.rim.device.api.ui.DrawStyle;
+import net.rim.device.api.ui.Field;
 import net.rim.device.api.ui.component.BitmapField;
 import net.rim.device.api.ui.component.Dialog;
 import net.rim.device.api.ui.component.LabelField;
 import net.rim.device.api.ui.component.SeparatorField;
 import net.rim.device.api.ui.container.HorizontalFieldManager;
 import net.rim.device.api.ui.container.VerticalFieldManager;
+import persistence.Persistence;
+import core.Actuacion;
+import core.CalendarManager;
 
 public class ActuacionesManager extends CustomManager {
 
@@ -40,8 +43,8 @@ public class ActuacionesManager extends CustomManager {
 		} catch (Exception e) {
 			Dialog.alert(e.toString());
 		}
-		setLista(_lista,2);
-		
+		setLista(_lista, 2);
+
 		HorizontalFieldManager juzgado = new HorizontalFieldManager();
 		HorizontalFieldManager fecha = new HorizontalFieldManager();
 		VerticalFieldManager fechas = new VerticalFieldManager();
@@ -64,19 +67,17 @@ public class ActuacionesManager extends CustomManager {
 		alarma.add(_cita);
 		alarma.add(_alarma);
 
-		_juzgado = new LabelField("", LabelField.RIGHT
-				| LabelField.USE_ALL_WIDTH);
-		_fecha = new LabelField("", LabelField.RIGHT | LabelField.USE_ALL_WIDTH);
-		_fechaProxima = new LabelField("", LabelField.RIGHT
-				| LabelField.USE_ALL_WIDTH);
-		_descripcion = new LabelField("", LabelField.RIGHT
-				| LabelField.USE_ALL_WIDTH);
+		_juzgado = new LabelField("", DrawStyle.RIGHT | Field.USE_ALL_WIDTH);
+		_fecha = new LabelField("", DrawStyle.RIGHT | Field.USE_ALL_WIDTH);
+		_fechaProxima = new LabelField("", DrawStyle.RIGHT
+				| Field.USE_ALL_WIDTH);
+		_descripcion = new LabelField("", DrawStyle.RIGHT | Field.USE_ALL_WIDTH);
 
 		juzgado.add(_juzgado);
 		fecha.add(_fecha);
 		fechaP.add(_fechaProxima);
 		descripcion.add(_descripcion);
-		
+
 		_vertical.add(descripcion);
 		_vertical.add(new SeparatorField());
 		_vertical.add(juzgado);
@@ -100,19 +101,17 @@ public class ActuacionesManager extends CustomManager {
 			}
 			_descripcion.setText(a.getDescripcion());
 			_juzgado.setText(a.getJuzgado().getNombre());
-			String fecha = Util.calendarToString(
-					a.getFecha(), true);
+			String fecha = Util.calendarToString(a.getFecha(), true);
 			fecha = fecha.substring(0, 10) + "\n" + fecha.substring(11);
 			_fecha.setText(fecha);
-			fecha = Util.calendarToString(
-					a.getFechaProxima(), true);
+			fecha = Util.calendarToString(a.getFechaProxima(), true);
 			fecha = fecha.substring(0, 10) + "\n" + fecha.substring(11);
 			_fechaProxima.setText(fecha);
 			_cita.setBitmap(null);
 			_alarma.setBitmap(null);
-			if(hasCita(a)) {
+			if (hasCita(a)) {
 				_cita.setBitmap(_clock);
-				if(hasAlarma(a)) {
+				if (hasAlarma(a)) {
 					_alarma.setBitmap(_bell);
 				}
 			}
@@ -120,7 +119,7 @@ public class ActuacionesManager extends CustomManager {
 		} catch (NullPointerException e) {
 		}
 	}
-	
+
 	private boolean hasCita(Actuacion a) {
 		try {
 			BlackBerryEvent e = CalendarManager.consultarCita(a.getUid());
@@ -133,16 +132,16 @@ public class ActuacionesManager extends CustomManager {
 			return false;
 		}
 	}
-	
+
 	private boolean hasAlarma(Actuacion a) {
 		try {
 			BlackBerryEvent e = CalendarManager.consultarCita(a.getUid());
-			if (e.countValues(BlackBerryEvent.ALARM) > 0) {
+			if (e.countValues(Event.ALARM) > 0) {
 				return true;
 			} else {
 				return false;
 			}
-		} catch(Exception e) {
+		} catch (Exception e) {
 			return false;
 		}
 	}

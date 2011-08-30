@@ -16,13 +16,13 @@ public class VerCampo {
 		_screen = new VerCampoScreen();
 		_screen.setNombre(_campo.getNombre());
 		_screen.setObligatorio(_campo.isObligatorio().booleanValue());
-		if(_campo.getLongitudMax() == 0) {
+		if (_campo.getLongitudMax() == 0) {
 			_screen.setLongitudMax("");
 		} else {
 			_screen.setLongitudMax(String.valueOf(_campo.getLongitudMax()));
 		}
-		if(_campo.getLongitudMin() == 0) {
-			
+		if (_campo.getLongitudMin() == 0) {
+
 		} else {
 			_screen.setLongitudMin(String.valueOf(_campo.getLongitudMin()));
 		}
@@ -53,12 +53,13 @@ public class VerCampo {
 	private void actualizarCampo() {
 		if (_screen.getNombre().length() == 0) {
 			_screen.alert("El campo Nombre es obligatorio");
-		} else if(_screen.getLongitudMax() < _screen.getLongitudMin() && _screen.getLongitudMax() != 0) {
+		} else if (_screen.getLongitudMax() < _screen.getLongitudMin()
+				&& _screen.getLongitudMax() != 0) {
 			_screen.alert("La longitud máxima no puede ser menor que la loongitud minima");
-		} else if(_screen.getLongitudMax() == _screen.getLongitudMin() && _screen.getLongitudMax() != 0) {
+		} else if (_screen.getLongitudMax() == _screen.getLongitudMin()
+				&& _screen.getLongitudMax() != 0) {
 			_screen.alert("La longitud máxima no puede ser igual que la loongitud minima");
-		}
-		else {
+		} else {
 			CampoPersonalizado campo = new CampoPersonalizado(
 					_campo.getId_campo(), _campo.getId_atributo(),
 					_screen.getNombre(), null, _screen.isObligatorio(),
@@ -79,12 +80,12 @@ public class VerCampo {
 	}
 
 	private void eliminarCampo() {
-		Object[] ask = {"Aceptar", "Cancelar"};
+		Object[] ask = { "Aceptar", "Cancelar" };
 		int sel = _screen.ask(ask, Util.delBDCampo(), 1);
-		if(sel == 0) {
+		if (sel == 0) {
 			try {
 				new Persistence().borrarAtributo(_campo);
-			} catch(NullPointerException e) {
+			} catch (NullPointerException e) {
 				_screen.alert(Util.noSDString());
 				System.exit(0);
 			} catch (Exception e) {

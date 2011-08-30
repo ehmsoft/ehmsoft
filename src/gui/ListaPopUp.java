@@ -7,19 +7,21 @@ import net.rim.device.api.ui.container.HorizontalFieldManager;
 import net.rim.device.api.ui.container.PopupScreen;
 import net.rim.device.api.ui.container.VerticalFieldManager;
 
-public abstract class ListaPopUp extends PopupScreen implements ListadosInterface{
+public abstract class ListaPopUp extends PopupScreen implements
+		ListadosInterface {
 	protected ListaListas _lista;
-	private HorizontalFieldManager _searchField = new HorizontalFieldManager(USE_ALL_WIDTH);
-	
+	private HorizontalFieldManager _searchField = new HorizontalFieldManager(
+			USE_ALL_WIDTH);
+
 	public ListaPopUp() {
 		super(new VerticalFieldManager(VERTICAL_SCROLL | VERTICAL_SCROLLBAR));
 		add(_searchField);
 	}
-	
+
 	public void setSearchField() {
 		_searchField.add(_lista.getKeywordField());
 	}
-	
+
 	public void alert(String alert) {
 		Dialog.alert(alert);
 	}
@@ -27,7 +29,7 @@ public abstract class ListaPopUp extends PopupScreen implements ListadosInterfac
 	public int ask(Object[] options, String string, int index) {
 		return Dialog.ask(string, options, index);
 	}
-	
+
 	protected boolean navigationClick(int status, int time) {
 		fieldChangeNotify(Util.CLICK);
 		return true;
@@ -36,24 +38,24 @@ public abstract class ListaPopUp extends PopupScreen implements ListadosInterfac
 	public void addElement(Object juzgado) {
 		_lista.insert(juzgado);
 	}
-	
+
 	public void addElement(Object element, int index) {
 		_lista.insert(index, element);
 		_lista.setSelectedIndex(index);
 	}
-	
+
 	public void loadFrom(Vector collection) {
 		_lista.loadFrom(collection);
 	}
-	
+
 	public void remove(Object element) {
 		_lista.remove(element);
 	}
-	
+
 	public void remove(int index) {
 		_lista.remove(index);
 	}
-	
+
 	public void replace(Object old, Object nw) {
 		_lista.update(old, nw);
 	}

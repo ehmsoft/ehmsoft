@@ -18,69 +18,68 @@ public class ListadoCampos {
 	private ListadosInterface _screen;
 	private long _style;
 	private CampoPersonalizado _selected;
-	
+
 	public static final int SEARCH = 1;
 	public static final int ON_CLICK_VER = 2;
 	public static final int ON_CLICK_SELECT = 4;
 	public static final int NO_NUEVO = 8;
-	
+
 	public ListadoCampos() {
 		this(false, 0);
 	}
-	
+
 	public ListadoCampos(boolean popup) {
 		this(popup, 0);
 	}
-	
+
 	public ListadoCampos(long style) {
 		this(false, style);
 	}
 
 	public ListadoCampos(boolean popup, long style) {
 		_style = style;
-		if(popup) {
+		if (popup) {
 			_screen = new ListadoCamposPopUp();
-		}
-		else {
+		} else {
 			_screen = new ListadoCamposScreen();
 		}
-		
+
 		try {
 			_vectorCampos = new Persistence().consultarAtributos();
-		} catch(NullPointerException e) {
+		} catch (NullPointerException e) {
 			Util.noSd();
 		} catch (Exception e) {
 			Util.alert(e.toString());
 		}
-		
+
 		addCampos();
-		((Screen)_screen).setChangeListener(listener);
-		
-		if((_style & SEARCH) == SEARCH) {
+		((Screen) _screen).setChangeListener(listener);
+
+		if ((_style & SEARCH) == SEARCH) {
 			_screen.setSearchField();
 		}
-		if((_style & NO_NUEVO) != NO_NUEVO) {
+		if ((_style & NO_NUEVO) != NO_NUEVO) {
 			_screen.addElement("Crear nuevo campo", 0);
 		}
 	}
-	
+
 	FieldChangeListener listener = new FieldChangeListener() {
-		
+
 		public void fieldChanged(Field field, int context) {
-			if(context == Util.CLICK) {
+			if (context == Util.CLICK) {
 				onClick();
-			} else if(context == Util.VER_ELEMENTO) {
+			} else if (context == Util.VER_ELEMENTO) {
 				verCampo();
 			} else if (context == Util.CERRAR) {
 				cerrarPantalla();
-			} else if(context == Util.ELIMINAR) {
+			} else if (context == Util.ELIMINAR) {
 				eliminarCampo();
 			}
 		}
 	};
 
 	private void addCampos() {
-		if(_vectorCampos != null) {
+		if (_vectorCampos != null) {
 			_screen.loadFrom(_vectorCampos);
 		}
 	}
@@ -95,23 +94,23 @@ public class ListadoCampos {
 	}
 
 	public Screen getScreen() {
-		return (Screen)_screen;
+		return (Screen) _screen;
 
 	}
-	
+
 	public void onClick() {
-		if(String.class.isInstance(_screen.getSelected())) {
+		if (String.class.isInstance(_screen.getSelected())) {
 			nuevoCampo();
 		} else {
-			if((_style & ON_CLICK_VER) == ON_CLICK_VER) {
+			if ((_style & ON_CLICK_VER) == ON_CLICK_VER) {
 				verCampo();
 			} else {
-				_selected = (CampoPersonalizado)_screen.getSelected();
-				UiApplication.getUiApplication().popScreen((Screen)_screen);
+				_selected = (CampoPersonalizado) _screen.getSelected();
+				UiApplication.getUiApplication().popScreen((Screen) _screen);
 			}
 		}
 	}
-	
+
 	private void nuevoCampo() {
 		CampoPersonalizado campo = Util.nuevoCampoPersonalizado();
 		if (campo != null) {
@@ -122,17 +121,18 @@ public class ListadoCampos {
 			}
 		}
 	}
-	
+
 	private void verCampo() {
-		CampoPersonalizado selected = (CampoPersonalizado)_screen.getSelected();
+		CampoPersonalizado selected = (CampoPersonalizado) _screen
+				.getSelected();
 		CampoPersonalizado campo = Util.verCampo(selected);
-		if(campo != null) {
+		if (campo != null) {
 			_screen.replace(selected, campo);
 		} else {
 			_screen.remove(selected);
 		}
 	}
-	
+
 	private void eliminarCampo() {
 		Object[] ask = { "Aceptar", "Cancelar" };
 		int sel = _screen.ask(ask, Util.delBDCampo(), 1);
@@ -149,13 +149,13 @@ public class ListadoCampos {
 			_screen.remove(selected);
 		}
 	}
-	
+
 	private void cerrarPantalla() {
-		if(String.class.isInstance(_screen.getSelected())) {
+		if (String.class.isInstance(_screen.getSelected())) {
 			_selected = null;
 		} else {
-			_selected = (CampoPersonalizado)_screen.getSelected();
+			_selected = (CampoPersonalizado) _screen.getSelected();
 		}
-		UiApplication.getUiApplication().popScreen((Screen)_screen);
+		UiApplication.getUiApplication().popScreen((Screen) _screen);
 	}
 }

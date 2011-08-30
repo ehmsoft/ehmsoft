@@ -5,6 +5,7 @@ import net.rim.device.api.ui.MenuItem;
 import net.rim.device.api.ui.component.BasicEditField;
 import net.rim.device.api.ui.component.CheckboxField;
 import net.rim.device.api.ui.component.Dialog;
+import net.rim.device.api.ui.component.TextField;
 
 public class NuevoCampoScreen extends FondoNormal {
 
@@ -23,16 +24,16 @@ public class NuevoCampoScreen extends FondoNormal {
 
 		setTitle("Nuevo campo personalizado");
 
-		_txtNombre = new BasicEditField(BasicEditField.NO_NEWLINE);
+		_txtNombre = new BasicEditField(TextField.NO_NEWLINE);
 		_txtNombre.setLabel("Nombre: ");
 
 		_cbObligatorio = new CheckboxField(" Obligatorio", false);
 
-		_txtLongMax = new BasicEditField(BasicEditField.NO_NEWLINE
+		_txtLongMax = new BasicEditField(TextField.NO_NEWLINE
 				| BasicEditField.FILTER_INTEGER);
 		_txtLongMax.setLabel("Longitud máxima: ");
 
-		_txtLongMin = new BasicEditField(BasicEditField.NO_NEWLINE
+		_txtLongMin = new BasicEditField(TextField.NO_NEWLINE
 				| BasicEditField.FILTER_INTEGER);
 		_txtLongMin.setLabel("Longitud mínima: ");
 

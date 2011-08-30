@@ -35,8 +35,8 @@ public class VerActuacionScreen extends FondoNormal {
 		HorizontalFieldManager titleContainer = new HorizontalFieldManager();
 		titleContainer.add(new LabelField("Actuacion"));
 
-		_cita = new BitmapField(null, BitmapField.FIELD_VCENTER);
-		_alarm = new BitmapField(null, BitmapField.FIELD_VCENTER);
+		_cita = new BitmapField(null, Field.FIELD_VCENTER);
+		_alarm = new BitmapField(null, Field.FIELD_VCENTER);
 
 		titleContainer.add(_cita);
 		titleContainer.add(_alarm);
@@ -48,7 +48,8 @@ public class VerActuacionScreen extends FondoNormal {
 		_dfFecha = new DateField("Fecha: ", 0, DateField.DATE_TIME);
 		_dfFecha.setEditable(false);
 
-		_dfFechaProxima = new DateField("Fecha próxima: ", 0, DateField.DATE_TIME);
+		_dfFechaProxima = new DateField("Fecha próxima: ", 0,
+				DateField.DATE_TIME);
 		_dfFechaProxima.setEditable(false);
 
 		_txtDescripcion = new EditableTextField("Descripción: ", "");
@@ -63,33 +64,33 @@ public class VerActuacionScreen extends FondoNormal {
 		_cita.setBitmap(_clock);
 		_hasAlarm = true;
 	}
-	
+
 	public void setBell() {
 		_alarm.setBitmap(_bell);
 	}
-	
+
 	public void setDescripcion(String text) {
 		_txtDescripcion.setText(text);
 	}
-	
+
 	public void setFecha(Date date) {
 		_dfFecha.setDate(date);
 	}
-	
+
 	public void setFechaProxima(Date date) {
 		_dfFechaProxima.setDate(date);
 	}
-	
+
 	public void removeClock() {
 		_cita.setBitmap(null);
 		removeBell();
 		_hasAlarm = false;
 	}
-	
+
 	public void removeBell() {
 		_alarm.setBitmap(null);
 	}
-	
+
 	public void setJuzgado(String text) {
 		_txtJuzgado.setText(text);
 	}
@@ -190,7 +191,7 @@ public class VerActuacionScreen extends FondoNormal {
 			fieldChangeNotify(Util.ELIMINAR);
 		}
 	};
-	
+
 	public void alert(String alert) {
 		Dialog.alert(alert);
 	}

@@ -8,6 +8,7 @@ import net.rim.device.api.ui.component.ButtonField;
 import net.rim.device.api.ui.component.Dialog;
 import net.rim.device.api.ui.component.LabelField;
 import net.rim.device.api.ui.component.SeparatorField;
+import net.rim.device.api.ui.component.TextField;
 import net.rim.device.api.ui.container.PopupScreen;
 import net.rim.device.api.ui.container.VerticalFieldManager;
 
@@ -26,7 +27,7 @@ public class NuevaCategoriaPopUp extends PopupScreen implements
 		add(labelField);
 		add(new SeparatorField());
 
-		_txtDescripcion = new BasicEditField(BasicEditField.NO_NEWLINE);
+		_txtDescripcion = new BasicEditField(TextField.NO_NEWLINE);
 		_txtDescripcion.setLabel("Descripcion: ");
 
 		add(_txtDescripcion);

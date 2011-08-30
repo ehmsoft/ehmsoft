@@ -3,10 +3,10 @@ package gui.Ver;
 import gui.Cita;
 import gui.Util;
 import gui.Nuevos.NuevaCita;
-import persistence.Persistence;
 import net.rim.device.api.ui.Field;
 import net.rim.device.api.ui.FieldChangeListener;
 import net.rim.device.api.ui.UiApplication;
+import persistence.Persistence;
 import core.Actuacion;
 import core.Juzgado;
 
@@ -27,9 +27,9 @@ public class VerActuacion {
 		_screen.setDescripcion(_actuacion.getDescripcion());
 		_screen.setFecha(_actuacion.getFecha().getTime());
 		_screen.setFechaProxima(_actuacion.getFechaProxima().getTime());
-		if(_cita.exist()) {
+		if (_cita.exist()) {
 			_screen.setClock();
-			if(_cita.hasAlarma()) {
+			if (_cita.hasAlarma()) {
 				_screen.setBell();
 			}
 		}
@@ -69,9 +69,9 @@ public class VerActuacion {
 	private void actualizarActuacion() {
 		if (_screen.getDescripcion().length() == 0) {
 			_screen.alert("El campo Descripción es obligatorio");
-		} else if(_juzgado == null || _juzgado.getId_juzgado().equals("1")) {
+		} else if (_juzgado == null || _juzgado.getId_juzgado().equals("1")) {
 			Util.alert("El juzgado es obligatorio");
-		}else {
+		} else {
 			Actuacion actuacion = new Actuacion(_juzgado, _screen.getFecha(),
 					_screen.getFechaProxima(), _screen.getDescripcion(),
 					_actuacion.getId_actuacion(), _cita.getUid());
@@ -89,7 +89,7 @@ public class VerActuacion {
 			Util.popScreen(_screen);
 		}
 	}
-	
+
 	private void borrarCitaActuacion() {
 		if (!_cita.exist() && _actuacion.getUid() != null) {
 			_actuacion.setUid(_cita.getUid());
@@ -107,7 +107,7 @@ public class VerActuacion {
 		if (_cita.exist()) {
 			VerCita v = new VerCita(_cita);
 			UiApplication.getUiApplication().pushModalScreen(v.getScreen());
-			if(_cita.hasAlarma()) {
+			if (_cita.hasAlarma()) {
 				_screen.setBell();
 			} else {
 				_screen.removeBell();
@@ -138,9 +138,9 @@ public class VerActuacion {
 				.getFechaProxima().getTime());
 		UiApplication.getUiApplication().pushModalScreen(n.getScreen());
 		_cita = n.getCita();
-		if(_cita.exist()) {
+		if (_cita.exist()) {
 			_screen.setClock();
-			if(_cita.hasAlarma()) {
+			if (_cita.hasAlarma()) {
 				_screen.setBell();
 			}
 		}
@@ -186,7 +186,7 @@ public class VerActuacion {
 				actualizarActuacion();
 			} else if (sel == 1) {
 				borrarCitaActuacion();
-				if(_cita.exist() && _actuacion.getUid() == null) {
+				if (_cita.exist() && _actuacion.getUid() == null) {
 					_cita.eliminarCita();
 				}
 				UiApplication.getUiApplication().popScreen(_screen);

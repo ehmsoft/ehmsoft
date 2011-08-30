@@ -19,7 +19,7 @@ public class NuevaCategoria {
 		} else {
 			_screen = new NuevaCategoriaScreen();
 		}
-		((Screen)_screen).setChangeListener(listener);
+		((Screen) _screen).setChangeListener(listener);
 	}
 
 	FieldChangeListener listener = new FieldChangeListener() {

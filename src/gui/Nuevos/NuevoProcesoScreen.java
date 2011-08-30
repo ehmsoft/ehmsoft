@@ -16,6 +16,7 @@ import net.rim.device.api.ui.component.LabelField;
 import net.rim.device.api.ui.component.Menu;
 import net.rim.device.api.ui.component.NumericChoiceField;
 import net.rim.device.api.ui.component.ObjectChoiceField;
+import net.rim.device.api.ui.component.TextField;
 import net.rim.device.api.ui.container.HorizontalFieldManager;
 
 public class NuevoProcesoScreen extends FondoNormal {
@@ -44,36 +45,36 @@ public class NuevoProcesoScreen extends FondoNormal {
 		_txtCampos = new Vector();
 
 		HorizontalFieldManager fldDemandante = new HorizontalFieldManager();
-		_lblDemandante = new LabelField("*Ninguno*", LabelField.FOCUSABLE);
+		_lblDemandante = new LabelField("*Ninguno*", Field.FOCUSABLE);
 		fldDemandante.add(new LabelField("Demandante: "));
 		fldDemandante.add(_lblDemandante);
 		add(fldDemandante);
 
 		HorizontalFieldManager fldDemandado = new HorizontalFieldManager();
-		_lblDemandado = new LabelField("*Ninguno*", LabelField.FOCUSABLE);
+		_lblDemandado = new LabelField("*Ninguno*", Field.FOCUSABLE);
 		fldDemandado.add(new LabelField("Demandado: "));
 		fldDemandado.add(_lblDemandado);
 		add(fldDemandado);
 
 		HorizontalFieldManager fldJuzgado = new HorizontalFieldManager();
-		_lblJuzgado = new LabelField("*Ninguno*", LabelField.FOCUSABLE);
+		_lblJuzgado = new LabelField("*Ninguno*", Field.FOCUSABLE);
 		fldJuzgado.add(new LabelField("Juzgado: "));
 		fldJuzgado.add(_lblJuzgado);
 		add(fldJuzgado);
 
-		_txtRadicado = new BasicEditField(BasicEditField.NO_NEWLINE);
+		_txtRadicado = new BasicEditField(TextField.NO_NEWLINE);
 		_txtRadicado.setLabel("Radicado: ");
 		add(_txtRadicado);
 
-		_txtRadicadoUnico = new BasicEditField(BasicEditField.NO_NEWLINE);
+		_txtRadicadoUnico = new BasicEditField(TextField.NO_NEWLINE);
 		_txtRadicadoUnico.setLabel("Radicado unico: ");
 		add(_txtRadicadoUnico);
 
-		_txtTipo = new BasicEditField(BasicEditField.NO_NEWLINE);
+		_txtTipo = new BasicEditField(TextField.NO_NEWLINE);
 		_txtTipo.setLabel("Tipo: ");
 		add(_txtTipo);
 
-		_txtEstado = new BasicEditField(BasicEditField.NO_NEWLINE);
+		_txtEstado = new BasicEditField(TextField.NO_NEWLINE);
 		_txtEstado.setLabel("Estado:");
 		add(_txtEstado);
 
@@ -267,7 +268,7 @@ public class NuevoProcesoScreen extends FondoNormal {
 	 * @return La cadena con el estado ingresado en la pantalla
 	 */
 	public String getEstado() {
-		return (String) _txtEstado.getText();
+		return _txtEstado.getText();
 	}
 
 	/**

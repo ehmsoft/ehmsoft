@@ -3,9 +3,9 @@ package gui.Ver;
 import gui.EditableTextField;
 import gui.FondoNormal;
 import net.rim.device.api.ui.MenuItem;
-import net.rim.device.api.ui.component.BasicEditField;
 import net.rim.device.api.ui.component.Dialog;
 import net.rim.device.api.ui.component.Menu;
+import net.rim.device.api.ui.component.TextField;
 
 public class VerJuzgadoScreen extends FondoNormal {
 
@@ -14,7 +14,7 @@ public class VerJuzgadoScreen extends FondoNormal {
 	private EditableTextField _txtDireccion;
 	private EditableTextField _txtTelefono;
 	private EditableTextField _txtTipo;
-	
+
 	public final int GUARDAR = 1;
 	public final int ELIMINAR = 2;
 	public final int CERRAR = 3;
@@ -23,11 +23,12 @@ public class VerJuzgadoScreen extends FondoNormal {
 
 		setTitle("Ver juzgado");
 
-		_txtNombre = new EditableTextField("Nombre: ", BasicEditField.NO_NEWLINE);
-		_txtCiudad = new EditableTextField("Ciudad: ", BasicEditField.NO_NEWLINE);
-		_txtDireccion = new EditableTextField("Direccion: ", BasicEditField.NO_NEWLINE);
-		_txtTelefono = new EditableTextField("Teléfono: ", BasicEditField.NO_NEWLINE);
-		_txtTipo = new EditableTextField("Tipo: ", BasicEditField.NO_NEWLINE);
+		_txtNombre = new EditableTextField("Nombre: ", TextField.NO_NEWLINE);
+		_txtCiudad = new EditableTextField("Ciudad: ", TextField.NO_NEWLINE);
+		_txtDireccion = new EditableTextField("Direccion: ",
+				TextField.NO_NEWLINE);
+		_txtTelefono = new EditableTextField("Teléfono: ", TextField.NO_NEWLINE);
+		_txtTipo = new EditableTextField("Tipo: ", TextField.NO_NEWLINE);
 
 		add(_txtNombre);
 		add(_txtCiudad);
@@ -35,7 +36,7 @@ public class VerJuzgadoScreen extends FondoNormal {
 		add(_txtTelefono);
 		add(_txtTipo);
 	}
-	
+
 	protected void makeMenu(Menu menu, int instance) {
 		menu.add(menuEditar);
 		menu.add(menuEditarTodo);
@@ -50,7 +51,7 @@ public class VerJuzgadoScreen extends FondoNormal {
 			fieldChangeNotify(GUARDAR);
 		}
 	};
-	
+
 	private final MenuItem menuEliminar = new MenuItem("Eliminar", 0, 0) {
 
 		public void run() {
@@ -79,7 +80,7 @@ public class VerJuzgadoScreen extends FondoNormal {
 			_txtTipo.setEditable();
 		}
 	};
-	
+
 	public void alert(String alert) {
 		Dialog.alert(alert);
 	}
@@ -107,7 +108,7 @@ public class VerJuzgadoScreen extends FondoNormal {
 	public void setTipo(String text) {
 		_txtTipo.setText(text);
 	}
-	
+
 	public String getNombre() {
 		return _txtNombre.getText();
 	}

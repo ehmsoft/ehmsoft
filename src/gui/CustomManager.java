@@ -13,14 +13,14 @@ import net.rim.device.api.ui.container.VerticalFieldManager;
 import net.rim.device.api.ui.decor.Border;
 import net.rim.device.api.ui.decor.BorderFactory;
 
-public abstract class CustomManager extends Manager{
-	
+public abstract class CustomManager extends Manager {
+
 	protected ListaListas _lista;
 	protected ListadoManager _manager;
 	protected VerticalFieldManager _title;
 	protected VerticalFieldManager _vertical;
 	protected Font _bold;
-	
+
 	public CustomManager() {
 		super(0);
 		Font t = getFont();
@@ -32,12 +32,12 @@ public abstract class CustomManager extends Manager{
 		_bold = getFont().derive(Font.BOLD);
 		_vertical = new VerticalFieldManager(Field.NON_FOCUSABLE);
 		_lista = new ListadoActuacionesLista();
-		_title = new VerticalFieldManager(VerticalFieldManager.USE_ALL_WIDTH);
+		_title = new VerticalFieldManager(Field.USE_ALL_WIDTH);
 		_title.add(new LabelField("Manager generico", Field.FIELD_HCENTER));
 		_title.add(new SeparatorField());
 		_title.setFont(_bold);
 	}
-	
+
 	FocusChangeListener listenerLista = new FocusChangeListener() {
 
 		public void focusChanged(Field field, int eventType) {
@@ -47,11 +47,11 @@ public abstract class CustomManager extends Manager{
 
 	protected void rightUpdate() {
 	}
-	
+
 	protected void setTitle(String title) {
-		((LabelField)_title.getField(0)).setText(title);
+		((LabelField) _title.getField(0)).setText(title);
 	}
-	
+
 	protected void setLista(ListaListas lista, int rows) {
 		_lista = lista;
 		Font t = _lista.getFont();
@@ -70,7 +70,7 @@ public abstract class CustomManager extends Manager{
 		_manager = new ListadoManager(_lista);
 		_manager.setBorder(border);
 	}
-	
+
 	protected void sublayout(int width, int height) {
 		int p = (int) (Display.getHeight() * 0.02777);
 		int w = (int) (Display.getWidth() * 0.0333333333333);
@@ -108,7 +108,8 @@ class ListadoManager extends Manager {
 		int w = (int) (Display.getWidth() * 0.0333333333333);
 		int h = (int) (Display.getHeight() * 0.133333333);
 
-		layoutChild(_lista, width + p, Display.getHeight() - h - (w * 2) - (2 * p));
+		layoutChild(_lista, width + p, Display.getHeight() - h - (w * 2)
+				- (2 * p));
 		setPositionChild(_lista, 0, 0);
 		setExtent((Display.getWidth() - (w * 2)) / 2 - (p * 3),
 				Display.getHeight() - h - (w * 2) - (2 * p));

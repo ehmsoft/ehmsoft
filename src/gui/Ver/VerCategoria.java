@@ -17,15 +17,15 @@ public class VerCategoria {
 		_screen.setDescripcion(_categoria.getDescripcion());
 		_screen.setChangeListener(listener);
 	}
-	
+
 	FieldChangeListener listener = new FieldChangeListener() {
-		
+
 		public void fieldChanged(Field field, int context) {
-			if(context == Util.GUARDAR) {
+			if (context == Util.GUARDAR) {
 				actualizarCategoria();
-			} else if(context == Util.CERRAR) {
+			} else if (context == Util.CERRAR) {
 				cerrarPantalla();
-			} else if(context == Util.ELIMINAR) {
+			} else if (context == Util.ELIMINAR) {
 				eliminarCategoria();
 			}
 		}
@@ -61,12 +61,12 @@ public class VerCategoria {
 	}
 
 	private void eliminarCategoria() {
-		Object[] ask = {"Aceptar", "Cancelar"};
+		Object[] ask = { "Aceptar", "Cancelar" };
 		int sel = _screen.ask(ask, Util.delBDCategoria(), 1);
-		if(sel == 0) {
+		if (sel == 0) {
 			try {
 				new Persistence().borrarCategoria(_categoria);
-			} catch(NullPointerException e) {
+			} catch (NullPointerException e) {
 				_screen.alert(Util.noSDString());
 				System.exit(0);
 			} catch (Exception e) {

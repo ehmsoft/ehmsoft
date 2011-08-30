@@ -7,6 +7,7 @@ import java.util.Calendar;
 import java.util.Date;
 
 import net.rim.device.api.system.Bitmap;
+import net.rim.device.api.ui.Field;
 import net.rim.device.api.ui.MenuItem;
 import net.rim.device.api.ui.component.BasicEditField;
 import net.rim.device.api.ui.component.BitmapField;
@@ -36,8 +37,8 @@ public class NuevaActuacionScreen extends FondoNormal {
 		HorizontalFieldManager titleContainer = new HorizontalFieldManager();
 		titleContainer.add(new LabelField("Nueva actuacion"));
 
-		_cita = new BitmapField(null, BitmapField.FIELD_VCENTER);
-		_alarm = new BitmapField(null, BitmapField.FIELD_VCENTER);
+		_cita = new BitmapField(null, Field.FIELD_VCENTER);
+		_alarm = new BitmapField(null, Field.FIELD_VCENTER);
 
 		titleContainer.add(_cita);
 		titleContainer.add(_alarm);
@@ -46,7 +47,7 @@ public class NuevaActuacionScreen extends FondoNormal {
 
 		HorizontalFieldManager fldJuzgado = new HorizontalFieldManager();
 
-		_lblJuzgado = new LabelField("*Ninguno*", LabelField.FOCUSABLE);
+		_lblJuzgado = new LabelField("*Ninguno*", Field.FOCUSABLE);
 		fldJuzgado.add(new LabelField("Juzgado: "));
 		fldJuzgado.add(_lblJuzgado);
 		add(fldJuzgado);
@@ -63,22 +64,22 @@ public class NuevaActuacionScreen extends FondoNormal {
 		_txtDescripcion.setLabel("Descripción: ");
 		add(_txtDescripcion);
 	}
-	
+
 	public void setClock() {
 		_cita.setBitmap(_clock);
 		_hasAlarm = true;
 	}
-	
+
 	public void setBell() {
 		_alarm.setBitmap(_bell);
 	}
-	
+
 	public void removeClock() {
 		_cita.setBitmap(null);
 		removeBell();
 		_hasAlarm = false;
 	}
-	
+
 	public void removeBell() {
 		_alarm.setBitmap(null);
 	}
@@ -97,7 +98,7 @@ public class NuevaActuacionScreen extends FondoNormal {
 		menu.addSeparator();
 		menu.add(menuGuardar);
 	}
-	
+
 	private final MenuItem menuVerCita = new MenuItem("Ver cita", 0, 0) {
 
 		public void run() {
@@ -120,7 +121,6 @@ public class NuevaActuacionScreen extends FondoNormal {
 		}
 	};
 
-
 	private final MenuItem menuCambiar = new MenuItem("Cambiar", 0, 0) {
 
 		public void run() {
@@ -134,7 +134,7 @@ public class NuevaActuacionScreen extends FondoNormal {
 			fieldChangeNotify(Util.GUARDAR);
 		}
 	};
-	
+
 	public void alert(String alert) {
 		Dialog.alert(alert);
 	}
@@ -142,7 +142,7 @@ public class NuevaActuacionScreen extends FondoNormal {
 	public int ask(Object[] options, String string, int index) {
 		return Dialog.ask(string, options, index);
 	}
-	
+
 	public boolean hasAlarma() {
 		return _hasAlarm;
 	}

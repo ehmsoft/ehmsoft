@@ -4,9 +4,9 @@ import gui.EditableTextField;
 import gui.FondoNormal;
 import gui.Util;
 import net.rim.device.api.ui.MenuItem;
-import net.rim.device.api.ui.component.BasicEditField;
 import net.rim.device.api.ui.component.Dialog;
 import net.rim.device.api.ui.component.Menu;
+import net.rim.device.api.ui.component.TextField;
 
 public class VerCategoriaScreen extends FondoNormal {
 
@@ -15,11 +15,12 @@ public class VerCategoriaScreen extends FondoNormal {
 	public VerCategoriaScreen() {
 		setTitle("Ver categoría");
 
-		_txtDescripcion = new EditableTextField("Nombre: ", BasicEditField.NO_NEWLINE);
+		_txtDescripcion = new EditableTextField("Nombre: ",
+				TextField.NO_NEWLINE);
 
 		add(_txtDescripcion);
 	}
-	
+
 	protected void makeMenu(Menu menu, int instance) {
 		menu.add(menuEditar);
 		menu.addSeparator();
@@ -47,7 +48,7 @@ public class VerCategoriaScreen extends FondoNormal {
 			fieldChangeNotify(Util.ELIMINAR);
 		}
 	};
-	
+
 	public void alert(String alert) {
 		Dialog.alert(alert);
 	}
@@ -59,7 +60,7 @@ public class VerCategoriaScreen extends FondoNormal {
 	public String getDescripcion() {
 		return _txtDescripcion.getText();
 	}
-	
+
 	public void setDescripcion(String text) {
 		_txtDescripcion.setText(text);
 	}

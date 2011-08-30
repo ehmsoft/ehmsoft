@@ -1,10 +1,11 @@
 package gui.Listados;
 
 import gui.ListaListas;
-import core.Categoria;
 import net.rim.device.api.ui.component.KeywordProvider;
+import core.Categoria;
 
-public class ListadoCategoriasLista extends ListaListas implements KeywordProvider {
+public class ListadoCategoriasLista extends ListaListas implements
+		KeywordProvider {
 
 	public ListadoCategoriasLista() {
 		super();

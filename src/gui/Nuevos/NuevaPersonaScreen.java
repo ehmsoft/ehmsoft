@@ -4,6 +4,7 @@ import gui.FondoNormal;
 import net.rim.device.api.ui.MenuItem;
 import net.rim.device.api.ui.component.BasicEditField;
 import net.rim.device.api.ui.component.Dialog;
+import net.rim.device.api.ui.component.TextField;
 
 public class NuevaPersonaScreen extends FondoNormal {
 
@@ -13,7 +14,7 @@ public class NuevaPersonaScreen extends FondoNormal {
 	private BasicEditField _txtTelefono;
 	private BasicEditField _txtCorreo;
 	private BasicEditField _txtNotas;
-	
+
 	public final int GUARDAR = 1;
 	public final int CERRAR = 2;
 
@@ -21,17 +22,17 @@ public class NuevaPersonaScreen extends FondoNormal {
 		super();
 
 		// Se inicializan con el estilo
-		_txtNombre = new BasicEditField(BasicEditField.NO_NEWLINE);
+		_txtNombre = new BasicEditField(TextField.NO_NEWLINE);
 		_txtNombre.setLabel("Nombre: ");
-		_txtCedula = new BasicEditField(BasicEditField.NO_NEWLINE);
+		_txtCedula = new BasicEditField(TextField.NO_NEWLINE);
 		_txtCedula.setLabel("Cédula: ");
-		_txtDireccion = new BasicEditField(BasicEditField.NO_NEWLINE);
+		_txtDireccion = new BasicEditField(TextField.NO_NEWLINE);
 		_txtDireccion.setLabel("Dirección: ");
 		_txtNotas = new BasicEditField();
 		_txtNotas.setLabel("Notas: ");
-		_txtTelefono = new BasicEditField(BasicEditField.NO_NEWLINE);
+		_txtTelefono = new BasicEditField(TextField.NO_NEWLINE);
 		_txtTelefono.setLabel("Teléfono: ");
-		_txtCorreo = new BasicEditField(BasicEditField.NO_NEWLINE);
+		_txtCorreo = new BasicEditField(TextField.NO_NEWLINE);
 		_txtCorreo.setLabel("Correo: ");
 		// Se agregan los elementos a la pantalla
 

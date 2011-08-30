@@ -1,8 +1,8 @@
 package gui.Listados;
 
 import gui.ListaListas;
-import core.Persona;
 import net.rim.device.api.ui.component.KeywordProvider;
+import core.Persona;
 
 public class ListadoPersonasLista extends ListaListas implements
 		KeywordProvider {

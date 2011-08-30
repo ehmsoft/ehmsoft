@@ -10,12 +10,12 @@ import java.util.Vector;
 
 import net.rim.device.api.ui.Field;
 import net.rim.device.api.ui.MenuItem;
-import net.rim.device.api.ui.component.BasicEditField;
 import net.rim.device.api.ui.component.DateField;
 import net.rim.device.api.ui.component.Dialog;
 import net.rim.device.api.ui.component.Menu;
 import net.rim.device.api.ui.component.NumericChoiceField;
 import net.rim.device.api.ui.component.ObjectChoiceField;
+import net.rim.device.api.ui.component.TextField;
 
 public class VerProcesoScreen extends FondoNormal {
 
@@ -31,26 +31,24 @@ public class VerProcesoScreen extends FondoNormal {
 	private DateField _dfFecha;
 	private NumericChoiceField _nfPrioridad;
 	private ObjectChoiceField _ofActuaciones;
-	
-	private Vector _txtCampos;
-	
-	private Field _focused;
 
+	private Vector _txtCampos;
+
+	private Field _focused;
 
 	public VerProcesoScreen() {
 		_txtCampos = new Vector();
 		setTitle("Ver proceso");
 
 		_txtDemandante = new EditableTextField("Demandante: ",
-				BasicEditField.NO_NEWLINE);
+				TextField.NO_NEWLINE);
 		add(_txtDemandante);
 
 		_txtDemandado = new EditableTextField("Demandado: ",
-				BasicEditField.NO_NEWLINE);
+				TextField.NO_NEWLINE);
 		add(_txtDemandado);
 
-		_txtJuzgado = new EditableTextField("juzgado: ",
-				BasicEditField.NO_NEWLINE);
+		_txtJuzgado = new EditableTextField("juzgado: ", TextField.NO_NEWLINE);
 		add(_txtJuzgado);
 
 		_dfFecha = new DateField("Fecha: ", 0, DateField.DATE_TIME);
@@ -83,7 +81,7 @@ public class VerProcesoScreen extends FondoNormal {
 		_nfPrioridad.setEditable(false);
 		add(_nfPrioridad);
 	}
-	
+
 	public void alert(String alert) {
 		Dialog.alert(alert);
 	}
@@ -91,7 +89,7 @@ public class VerProcesoScreen extends FondoNormal {
 	public int ask(Object[] options, String string, int index) {
 		return Dialog.ask(string, options, index);
 	}
-	
+
 	public void addCampo(Object cookie, String nombre, String valor) {
 		nombre = nombre + ": ";
 		EditableTextField txt = new EditableTextField(nombre);
@@ -104,15 +102,15 @@ public class VerProcesoScreen extends FondoNormal {
 	public void eliminarCampo(int index) {
 		_txtCampos.removeElementAt(index);
 	}
-	
+
 	public void eliminarCampo() {
 		delete(_focused);
 		_txtCampos.removeElement(_focused);
 	}
-	
-	public void modificarCampo(Object cookie,String text) {
+
+	public void modificarCampo(Object cookie, String text) {
 		_focused.setCookie(cookie);
-		((EditableTextField)_focused).setLabel(text + ": ");
+		((EditableTextField) _focused).setLabel(text + ": ");
 	}
 
 	public Object[] getCampo(int index) {
@@ -121,51 +119,51 @@ public class VerProcesoScreen extends FondoNormal {
 		ret[1] = ((EditableTextField) _txtCampos.elementAt(index)).getText();
 		return ret;
 	}
-	
+
 	public void setDemandante(String text) {
 		_txtDemandante.setText(text);
 	}
-	
+
 	public void setDemandado(String text) {
 		_txtDemandado.setText(text);
 	}
-	
+
 	public void setJuzgado(String text) {
 		_txtJuzgado.setText(text);
 	}
-	
+
 	public void setRadicado(String text) {
 		_txtRadicado.setText(text);
 	}
-	
+
 	public void setRadicadoUnico(String text) {
 		_txtRadicadoUnico.setText(text);
 	}
-	
+
 	public void setEstado(String text) {
 		_txtEstado.setText(text);
 	}
-	
+
 	public void setCategoria(String text) {
 		_txtCategoria.setText(text);
 	}
-	
+
 	public void setTipo(String text) {
 		_txtTipo.setText(text);
 	}
-	
+
 	public void setNotas(String text) {
 		_txtNotas.setText(text);
 	}
-	
+
 	public void setFecha(Date date) {
 		_dfFecha.setDate(date);
 	}
-	
+
 	public void setPrioridad(int element) {
 		_nfPrioridad.setSelectedIndex(String.valueOf(element));
 	}
-	
+
 	public void setActuaciones(Object[] choices) {
 		_ofActuaciones.setChoices(choices);
 	}
@@ -173,7 +171,7 @@ public class VerProcesoScreen extends FondoNormal {
 	public String getEstado() {
 		return _txtEstado.getText();
 	}
-	
+
 	public Object getCookieOfFocused() {
 		return _focused.getCookie();
 	}
@@ -203,9 +201,9 @@ public class VerProcesoScreen extends FondoNormal {
 	public String getTipo() {
 		return _txtTipo.getText();
 	}
-	
+
 	public Object getActuacion() {
-		if(_ofActuaciones.getSize() != 0) {
+		if (_ofActuaciones.getSize() != 0) {
 			return _ofActuaciones.getChoice(_ofActuaciones.getSelectedIndex());
 		} else {
 			return null;
@@ -214,15 +212,15 @@ public class VerProcesoScreen extends FondoNormal {
 
 	protected void makeMenu(Menu menu, int instance) {
 		Field f = getFieldWithFocus();
-		
+
 		menu.add(menuAddActuacion);
 		menu.add(menuAddCampo);
 		menu.addSeparator();
-		
-		if(f.equals(_ofActuaciones)) {
+
+		if (f.equals(_ofActuaciones)) {
 			menu.add(menuVerActuaciones);
 		}
-		
+
 		if (f.equals(_txtCategoria)) {
 			menu.add(menuCambiar);
 			menu.addSeparator();
@@ -247,8 +245,9 @@ public class VerProcesoScreen extends FondoNormal {
 		}
 		menu.add(menuGuardar);
 	}
-	
-	private final MenuItem menuVerActuaciones = new MenuItem("Ver listado", 0, 0) {
+
+	private final MenuItem menuVerActuaciones = new MenuItem("Ver listado", 0,
+			0) {
 		public void run() {
 			fieldChangeNotify(Util.VER_LISTADO_ACTUACIONES);
 		}
@@ -273,12 +272,12 @@ public class VerProcesoScreen extends FondoNormal {
 			0, 0) {
 
 		public void run() {
-			EditableTextField f = (EditableTextField)getFieldWithFocus();
-			if(f.equals(_txtDemandante)) {
+			EditableTextField f = (EditableTextField) getFieldWithFocus();
+			if (f.equals(_txtDemandante)) {
 				fieldChangeNotify(Util.ELIMINAR_DEMANDANTE);
-			} else if(f.equals(_txtDemandado)) {
+			} else if (f.equals(_txtDemandado)) {
 				fieldChangeNotify(Util.ELIMINAR_DEMANDADO);
-			} else if(f.equals(_txtJuzgado)) {
+			} else if (f.equals(_txtJuzgado)) {
 				fieldChangeNotify(Util.ELIMINAR_JUZGADO);
 			}
 		}
@@ -335,14 +334,14 @@ public class VerProcesoScreen extends FondoNormal {
 	private final MenuItem menuCambiar = new MenuItem("Cambiar", 0, 0) {
 
 		public void run() {
-			EditableTextField f = (EditableTextField)getFieldWithFocus();
-			if(f.equals(_txtDemandante)) {
+			EditableTextField f = (EditableTextField) getFieldWithFocus();
+			if (f.equals(_txtDemandante)) {
 				fieldChangeNotify(Util.ADD_DEMANDANTE);
-			} else if(f.equals(_txtDemandado)) {
+			} else if (f.equals(_txtDemandado)) {
 				fieldChangeNotify(Util.ADD_DEMANDADO);
-			} else if(f.equals(_txtJuzgado)) {
+			} else if (f.equals(_txtJuzgado)) {
 				fieldChangeNotify(Util.ADD_JUZGADO);
-			} else if(f.equals(_txtCategoria)) {
+			} else if (f.equals(_txtCategoria)) {
 				fieldChangeNotify(Util.ADD_CATEGORIA);
 			}
 		}

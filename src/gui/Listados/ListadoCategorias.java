@@ -18,59 +18,58 @@ public class ListadoCategorias {
 	private ListadosInterface _screen;
 	private long _style;
 	private Categoria _selected;
-	
+
 	public static final int SEARCH = 1;
 	public static final int ON_CLICK_VER = 2;
 	public static final int ON_CLICK_SELECT = 4;
 	public static final int NO_NUEVO = 8;
-	
+
 	public ListadoCategorias() {
 		this(false, 0);
 	}
-	
+
 	public ListadoCategorias(boolean popup) {
 		this(popup, 0);
 	}
-	
+
 	public ListadoCategorias(long style) {
 		this(false, style);
 	}
 
 	public ListadoCategorias(boolean popup, long style) {
 		_style = style;
-		if(popup) {
+		if (popup) {
 			_screen = new ListadoCategoriasPopUp();
-		}
-		else {
+		} else {
 			_screen = new ListadoCategoriasScreen();
 		}
-		
+
 		try {
 			_vectorCategorias = new Persistence().consultarCategorias();
-		} catch(NullPointerException e) {
+		} catch (NullPointerException e) {
 			Util.noSd();
 			System.exit(0);
 		} catch (Exception e) {
 			Util.alert(e.toString());
 		}
-		
+
 		addCategorias();
-		((Screen)_screen).setChangeListener(listener);
-		
-		if((_style & SEARCH) == SEARCH) {
+		((Screen) _screen).setChangeListener(listener);
+
+		if ((_style & SEARCH) == SEARCH) {
 			_screen.setSearchField();
 		}
-		if((_style & NO_NUEVO) != NO_NUEVO) {
+		if ((_style & NO_NUEVO) != NO_NUEVO) {
 			_screen.addElement("Crear nueva categoria", 0);
 		}
 	}
-	
+
 	FieldChangeListener listener = new FieldChangeListener() {
-		
+
 		public void fieldChanged(Field field, int context) {
-			if(context == Util.CLICK) {
+			if (context == Util.CLICK) {
 				onClick();
-			} else if(context == Util.VER_ELEMENTO) {
+			} else if (context == Util.VER_ELEMENTO) {
 				verCategoria();
 			} else if (context == Util.CERRAR) {
 				cerrarPantalla();
@@ -81,7 +80,7 @@ public class ListadoCategorias {
 	};
 
 	private void addCategorias() {
-		if(_vectorCategorias != null) {
+		if (_vectorCategorias != null) {
 			_screen.loadFrom(_vectorCategorias);
 		}
 	}
@@ -96,23 +95,23 @@ public class ListadoCategorias {
 	}
 
 	public Screen getScreen() {
-		return (Screen)_screen;
+		return (Screen) _screen;
 
 	}
-	
+
 	public void onClick() {
-		if(String.class.isInstance(_screen.getSelected())) {
+		if (String.class.isInstance(_screen.getSelected())) {
 			nuevoCategoria();
 		} else {
-			if((_style & ON_CLICK_VER) == ON_CLICK_VER) {
+			if ((_style & ON_CLICK_VER) == ON_CLICK_VER) {
 				verCategoria();
 			} else {
-				_selected = (Categoria)_screen.getSelected();
-				UiApplication.getUiApplication().popScreen((Screen)_screen);
+				_selected = (Categoria) _screen.getSelected();
+				UiApplication.getUiApplication().popScreen((Screen) _screen);
 			}
 		}
 	}
-	
+
 	private void nuevoCategoria() {
 		Categoria categoria = Util.nuevaCategoria(false);
 		if (categoria != null) {
@@ -123,17 +122,17 @@ public class ListadoCategorias {
 			}
 		}
 	}
-	
+
 	private void verCategoria() {
-		Categoria selected = (Categoria)_screen.getSelected();
+		Categoria selected = (Categoria) _screen.getSelected();
 		Categoria categoria = Util.verCategoria(selected);
-		if(categoria != null) {
+		if (categoria != null) {
 			_screen.replace(selected, categoria);
 		} else {
 			_screen.remove(selected);
 		}
 	}
-	
+
 	private void eliminarCategoria() {
 		Object[] ask = { "Aceptar", "Cancelar" };
 		int sel = _screen.ask(ask, Util.delBDCategoria(), 1);
@@ -150,13 +149,13 @@ public class ListadoCategorias {
 			_screen.remove(selected);
 		}
 	}
-	
+
 	private void cerrarPantalla() {
-		if(String.class.isInstance(_screen.getSelected())) {
+		if (String.class.isInstance(_screen.getSelected())) {
 			_selected = null;
 		} else {
-			_selected = (Categoria)_screen.getSelected();
+			_selected = (Categoria) _screen.getSelected();
 		}
-		UiApplication.getUiApplication().popScreen((Screen)_screen);
+		UiApplication.getUiApplication().popScreen((Screen) _screen);
 	}
 }

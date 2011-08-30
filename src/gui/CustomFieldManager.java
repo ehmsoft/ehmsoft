@@ -8,7 +8,7 @@ import net.rim.device.api.ui.Graphics;
 import net.rim.device.api.ui.Manager;
 import net.rim.device.api.ui.container.VerticalFieldManager;
 
-public class CustomFieldManager extends Manager {	
+public class CustomFieldManager extends Manager {
 
 	private CustomButtonField _left, _right;
 	private VerticalFieldManager _manager;
@@ -20,8 +20,9 @@ public class CustomFieldManager extends Manager {
 		_nodo = _nodo.getSiguiente();
 		_manager = new VerticalFieldManager();
 		_manager.add((Manager) _nodo.getElement());
-		
-		_right = new CustomButtonField(Field.FOCUSABLE, Bitmap.getBitmapResource("transparente.png"));
+
+		_right = new CustomButtonField(Field.FOCUSABLE,
+				Bitmap.getBitmapResource("transparente.png"));
 		FieldChangeListener _listenRight = new FieldChangeListener() {
 
 			public void fieldChanged(Field field, int context) {
@@ -30,8 +31,9 @@ public class CustomFieldManager extends Manager {
 			}
 		};
 		_right.setChangeListener(_listenRight);
-		
-		_left = new CustomButtonField(Field.FOCUSABLE, Bitmap.getBitmapResource("transparente.png"));		
+
+		_left = new CustomButtonField(Field.FOCUSABLE,
+				Bitmap.getBitmapResource("transparente.png"));
 		FieldChangeListener _listenLeft = new FieldChangeListener() {
 
 			public void fieldChanged(Field field, int context) {
@@ -40,7 +42,7 @@ public class CustomFieldManager extends Manager {
 			}
 		};
 		_left.setChangeListener(_listenLeft);
-		
+
 		add(_left);
 		add(_manager);
 		add(_right);
@@ -61,7 +63,7 @@ public class CustomFieldManager extends Manager {
 				(Display.getHeight() / 2) - (w / 2) - h);
 		setExtent(Display.getWidth(), Display.getHeight() - h);
 	}
-	
+
 	protected void paint(Graphics g) {
 		super.paint(g);
 		int width = Display.getWidth();
@@ -88,7 +90,7 @@ public class CustomFieldManager extends Manager {
 		_manager.deleteAll();
 		_manager.add((Manager) _nodo.getElement());
 	}
-	
+
 	public void moveRight() {
 		/*
 		 * _nodo = _nodo.getAnterior(); _manager = (Manager) _nodo.getElement();

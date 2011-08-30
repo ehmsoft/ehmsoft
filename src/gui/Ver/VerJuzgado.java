@@ -21,15 +21,15 @@ public class VerJuzgado {
 		_screen.setTipo(_juzgado.getTipo());
 		_screen.setChangeListener(listener);
 	}
-	
+
 	FieldChangeListener listener = new FieldChangeListener() {
-		
+
 		public void fieldChanged(Field field, int context) {
-			if(context == _screen.GUARDAR) {
+			if (context == _screen.GUARDAR) {
 				actualizarJuzgado();
-			} else if(context == _screen.CERRAR) {
+			} else if (context == _screen.CERRAR) {
 				cerrarPantalla();
-			} else if(context == _screen.ELIMINAR) {
+			} else if (context == _screen.ELIMINAR) {
 				eliminarJuzgado();
 			}
 		}
@@ -38,7 +38,7 @@ public class VerJuzgado {
 	public VerJuzgadoScreen getScreen() {
 		return _screen;
 	}
-	
+
 	public Juzgado getJuzgado() {
 		return _juzgado;
 	}
@@ -65,14 +65,14 @@ public class VerJuzgado {
 			UiApplication.getUiApplication().popScreen(_screen);
 		}
 	}
-	
+
 	private void eliminarJuzgado() {
-		Object[] ask = {"Aceptar", "Cancelar"};
+		Object[] ask = { "Aceptar", "Cancelar" };
 		int sel = _screen.ask(ask, Util.delBDJuzgado(), 1);
-		if(sel == 0) {
+		if (sel == 0) {
 			try {
 				new Persistence().borrarJuzgado(_juzgado);
-			} catch(NullPointerException e) {
+			} catch (NullPointerException e) {
 				_screen.alert(Util.noSDString());
 				System.exit(0);
 			} catch (Exception e) {
@@ -82,12 +82,11 @@ public class VerJuzgado {
 			UiApplication.getUiApplication().popScreen(_screen);
 		}
 	}
-	
+
 	private void cerrarPantalla() {
-		Juzgado juzgado = new Juzgado(_screen.getNombre(),
-				_screen.getCiudad(), _screen.getDireccion(),
-				_screen.getTelefono(), _screen.getTipo(),
-				_juzgado.getId_juzgado());
+		Juzgado juzgado = new Juzgado(_screen.getNombre(), _screen.getCiudad(),
+				_screen.getDireccion(), _screen.getTelefono(),
+				_screen.getTipo(), _juzgado.getId_juzgado());
 		if (!juzgado.equals(_juzgado)) {
 			Object[] ask = { "Guardar", "Descartar", "Cancelar" };
 			int sel = _screen.ask(ask, "Se han detectado cambios", 2);

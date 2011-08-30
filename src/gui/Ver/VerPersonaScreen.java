@@ -3,9 +3,9 @@ package gui.Ver;
 import gui.EditableTextField;
 import gui.FondoNormal;
 import net.rim.device.api.ui.MenuItem;
-import net.rim.device.api.ui.component.BasicEditField;
 import net.rim.device.api.ui.component.Dialog;
 import net.rim.device.api.ui.component.Menu;
+import net.rim.device.api.ui.component.TextField;
 
 public class VerPersonaScreen extends FondoNormal {
 
@@ -15,18 +15,19 @@ public class VerPersonaScreen extends FondoNormal {
 	private EditableTextField _txtDireccion;
 	private EditableTextField _txtCorreo;
 	private EditableTextField _txtNotas;
-	
+
 	public final int GUARDAR = 1;
 	public final int ELIMINAR = 2;
 	public final int CERRAR = 3;
 
 	public VerPersonaScreen() {
 
-		_txtNombre = new EditableTextField("Nombre: ", BasicEditField.NO_NEWLINE);
-		_txtId = new EditableTextField("Cédula: ", BasicEditField.NO_NEWLINE);
-		_txtTelefono = new EditableTextField("Teléfono: ", BasicEditField.NO_NEWLINE);
-		_txtDireccion = new EditableTextField("Dirección: ", BasicEditField.NO_NEWLINE);
-		_txtCorreo = new EditableTextField("Correo: ", BasicEditField.NO_NEWLINE);
+		_txtNombre = new EditableTextField("Nombre: ", TextField.NO_NEWLINE);
+		_txtId = new EditableTextField("Cédula: ", TextField.NO_NEWLINE);
+		_txtTelefono = new EditableTextField("Teléfono: ", TextField.NO_NEWLINE);
+		_txtDireccion = new EditableTextField("Dirección: ",
+				TextField.NO_NEWLINE);
+		_txtCorreo = new EditableTextField("Correo: ", TextField.NO_NEWLINE);
 		_txtNotas = new EditableTextField("Notas: ", 0);
 
 		add(_txtNombre);
@@ -36,7 +37,7 @@ public class VerPersonaScreen extends FondoNormal {
 		add(_txtCorreo);
 		add(_txtNotas);
 	}
-	
+
 	protected void makeMenu(Menu menu, int instance) {
 		menu.add(menuEditar);
 		menu.add(menuEditarTodo);
@@ -51,7 +52,7 @@ public class VerPersonaScreen extends FondoNormal {
 			fieldChangeNotify(GUARDAR);
 		}
 	};
-	
+
 	private final MenuItem menuEliminar = new MenuItem("Eliminar", 0, 0) {
 
 		public void run() {
@@ -81,7 +82,7 @@ public class VerPersonaScreen extends FondoNormal {
 			_txtNotas.setEditable();
 		}
 	};
-	
+
 	public void alert(String alert) {
 		Dialog.alert(alert);
 	}
@@ -113,7 +114,7 @@ public class VerPersonaScreen extends FondoNormal {
 	public void setNotas(String text) {
 		_txtNotas.setText(text);
 	}
-	
+
 	public String getNombre() {
 		return _txtNombre.getText();
 	}

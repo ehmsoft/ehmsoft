@@ -1,10 +1,10 @@
 package gui.Ver;
 
 import gui.Util;
-import persistence.Persistence;
 import net.rim.device.api.ui.Field;
 import net.rim.device.api.ui.FieldChangeListener;
 import net.rim.device.api.ui.UiApplication;
+import persistence.Persistence;
 import core.Persona;
 
 public class VerPersona {
@@ -22,15 +22,15 @@ public class VerPersona {
 		_screen.setNotas(_persona.getNotas());
 		_screen.setChangeListener(listener);
 	}
-	
+
 	FieldChangeListener listener = new FieldChangeListener() {
-		
+
 		public void fieldChanged(Field field, int context) {
-			if(context == _screen.GUARDAR) {
+			if (context == _screen.GUARDAR) {
 				actualizarPersona();
-			} else if(context == _screen.ELIMINAR) {
+			} else if (context == _screen.ELIMINAR) {
 				eliminarPersona();
-			} else if(context == _screen.CERRAR) {
+			} else if (context == _screen.CERRAR) {
 				cerrarPantalla();
 			}
 		}
@@ -39,7 +39,7 @@ public class VerPersona {
 	public VerPersonaScreen getScreen() {
 		return _screen;
 	}
-	
+
 	public Persona getPersona() {
 		return _persona;
 	}
@@ -48,10 +48,11 @@ public class VerPersona {
 		if (_screen.getNombre().length() == 0) {
 			_screen.alert("El campo Nombre es obligatorio");
 		} else {
-			Persona persona = new Persona(_persona.getTipo(), _screen.getCedula(),
-					_screen.getNombre(), _screen.getTelefono(),
-					_screen.getDireccion(), _screen.getCorreo(),
-					_screen.getNotas(), _persona.getId_persona());
+			Persona persona = new Persona(_persona.getTipo(),
+					_screen.getCedula(), _screen.getNombre(),
+					_screen.getTelefono(), _screen.getDireccion(),
+					_screen.getCorreo(), _screen.getNotas(),
+					_persona.getId_persona());
 			if (!persona.equals(_persona)) {
 				try {
 					new Persistence().actualizarPersona(persona);
@@ -66,14 +67,14 @@ public class VerPersona {
 			UiApplication.getUiApplication().popScreen(_screen);
 		}
 	}
-	
+
 	private void eliminarPersona() {
-		Object[] ask = {"Aceptar", "Cancelar"};
+		Object[] ask = { "Aceptar", "Cancelar" };
 		int sel = _screen.ask(ask, Util.delBDPersona(), 1);
-		if(sel == 0) {
+		if (sel == 0) {
 			try {
 				new Persistence().borrarPersona(_persona);
-			} catch(NullPointerException e) {
+			} catch (NullPointerException e) {
 				_screen.alert(Util.noSDString());
 				System.exit(0);
 			} catch (Exception e) {

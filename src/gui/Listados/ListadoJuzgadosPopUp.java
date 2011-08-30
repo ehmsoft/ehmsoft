@@ -2,7 +2,7 @@ package gui.Listados;
 
 import gui.ListaPopUp;
 
-public class ListadoJuzgadosPopUp extends ListaPopUp{
+public class ListadoJuzgadosPopUp extends ListaPopUp {
 
 	public ListadoJuzgadosPopUp() {
 		super();

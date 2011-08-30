@@ -5,6 +5,8 @@ import gui.Util;
 
 import java.util.Calendar;
 
+import javax.microedition.pim.Event;
+
 import net.rim.blackberry.api.pdap.BlackBerryEvent;
 import net.rim.device.api.collection.ReadableList;
 import net.rim.device.api.system.Bitmap;
@@ -17,11 +19,12 @@ import net.rim.device.api.ui.component.ListFieldCallback;
 import core.Actuacion;
 import core.CalendarManager;
 
-public class ListadoActuacionesLista extends ListaListas implements KeywordProvider, ListFieldCallback{
-	
+public class ListadoActuacionesLista extends ListaListas implements
+		KeywordProvider, ListFieldCallback {
+
 	private Bitmap _bell = Bitmap.getBitmapResource("bell.png");
 	private Bitmap _clock = Bitmap.getBitmapResource("clock.png");
-	
+
 	public ListadoActuacionesLista() {
 		super();
 		setRowHeight(getFont().getHeight() * 2);
@@ -45,36 +48,42 @@ public class ListadoActuacionesLista extends ListaListas implements KeywordProvi
 			try {
 				int count = 0;
 				if (objeto.getUid() != null) {
-					BlackBerryEvent e = CalendarManager.consultarCita(objeto.getUid());
-					if(e != null) {
+					BlackBerryEvent e = CalendarManager.consultarCita(objeto
+							.getUid());
+					if (e != null) {
 						graphics.drawBitmap(0, y, 16, 16, _clock, 0, 0);
 						count += 16;
-						if (e.countValues(BlackBerryEvent.ALARM) > 0) {
-							graphics.drawBitmap(16,y,16,16,_bell,0,0);
+						if (e.countValues(Event.ALARM) > 0) {
+							graphics.drawBitmap(16, y, 16, 16, _bell, 0, 0);
 							count += 16;
 						}
-					} 
+					}
 				}
 				graphics.drawText(objeto.toString(), 0 + count, y);
 				graphics.drawText(
-						Util.calendarToString(objeto.getFechaProxima(), false), 15,
-						y + getFont().getHeight());
+						Util.calendarToString(objeto.getFechaProxima(), false),
+						15, y + getFont().getHeight());
 			} catch (Exception e) {
 			}
 		}
 
 	}
-	
+
 	public String[] getKeywords(Object element) {
 		if (String.class.isInstance(element)) {
 			return null;
 		} else {
 			String[] s = new String[5];
-			s[0] = ((Actuacion)element).getDescripcion();
-			s[1] = ((Actuacion)element).getFechaProxima().get(Calendar.DAY_OF_MONTH) + "";
-			s[2] = ((Actuacion)element).getFechaProxima().get(Calendar.MONTH) + "";
-			s[3] = ((Actuacion)element).getFechaProxima().get(Calendar.YEAR) + "";
-			s[4] = ((Actuacion)element).getFechaProxima().get(Calendar.HOUR) + "";
+			s[0] = ((Actuacion) element).getDescripcion();
+			s[1] = ((Actuacion) element).getFechaProxima().get(
+					Calendar.DAY_OF_MONTH)
+					+ "";
+			s[2] = ((Actuacion) element).getFechaProxima().get(Calendar.MONTH)
+					+ "";
+			s[3] = ((Actuacion) element).getFechaProxima().get(Calendar.YEAR)
+					+ "";
+			s[4] = ((Actuacion) element).getFechaProxima().get(Calendar.HOUR)
+					+ "";
 			return s;
 		}
 	}

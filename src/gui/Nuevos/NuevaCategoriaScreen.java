@@ -4,6 +4,7 @@ import gui.FondoNormal;
 import net.rim.device.api.ui.MenuItem;
 import net.rim.device.api.ui.component.BasicEditField;
 import net.rim.device.api.ui.component.Dialog;
+import net.rim.device.api.ui.component.TextField;
 
 public class NuevaCategoriaScreen extends FondoNormal implements
 		NuevaCategoriaInterface {
@@ -16,7 +17,7 @@ public class NuevaCategoriaScreen extends FondoNormal implements
 	public NuevaCategoriaScreen() {
 		setTitle("Nueva categoría");
 
-		_txtDescripcion = new BasicEditField(BasicEditField.NO_NEWLINE);
+		_txtDescripcion = new BasicEditField(TextField.NO_NEWLINE);
 		_txtDescripcion.setLabel("Descripcion: ");
 
 		add(_txtDescripcion);

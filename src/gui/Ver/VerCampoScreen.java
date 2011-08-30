@@ -28,18 +28,20 @@ public class VerCampoScreen extends FondoNormal {
 		_cfObligatorio.setEditable(false);
 		add(_cfObligatorio);
 
-		_txtLongMax = new EditableTextField("Longitud máxima: ", BasicEditField.FILTER_INTEGER);
+		_txtLongMax = new EditableTextField("Longitud máxima: ",
+				BasicEditField.FILTER_INTEGER);
 		add(_txtLongMax);
 
-		_txtLongMin = new EditableTextField("Longitud minima: ", BasicEditField.FILTER_INTEGER);
+		_txtLongMin = new EditableTextField("Longitud minima: ",
+				BasicEditField.FILTER_INTEGER);
 		add(_txtLongMin);
 
- 		addMenuItem(menuGuardar);
+		addMenuItem(menuGuardar);
 		addMenuItem(menuEditar);
 		addMenuItem(menuEditarTodo);
 		addMenuItem(menuEliminar);
 	}
-	
+
 	protected void makeMenu(Menu menu, int instance) {
 		menu.add(menuEditar);
 		menu.add(menuEditarTodo);
@@ -95,7 +97,7 @@ public class VerCampoScreen extends FondoNormal {
 			fieldChangeNotify(Util.ELIMINAR);
 		}
 	};
-	
+
 	public void alert(String alert) {
 		Dialog.alert(alert);
 	}
@@ -103,7 +105,7 @@ public class VerCampoScreen extends FondoNormal {
 	public int ask(Object[] options, String string, int index) {
 		return Dialog.ask(string, options, index);
 	}
-	
+
 	public void setNombre(String text) {
 		_txtNombre.setText(text);
 	}
@@ -137,7 +139,7 @@ public class VerCampoScreen extends FondoNormal {
 	}
 
 	public int getLongitudMin() {
-		if(_txtLongMin.getText().length() == 0) {
+		if (_txtLongMin.getText().length() == 0) {
 			return 0;
 		} else {
 			return Integer.parseInt(_txtLongMin.getText());
