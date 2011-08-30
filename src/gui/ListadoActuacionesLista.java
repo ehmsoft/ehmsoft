@@ -54,7 +54,7 @@ public class ListadoActuacionesLista extends ListaListas implements KeywordProvi
 				}
 				graphics.drawText(objeto.toString(), 0 + count, y);
 				graphics.drawText(
-						calendarToString(objeto.getFechaProxima(), false), 15,
+						Util.calendarToString(objeto.getFechaProxima(), false), 15,
 						y + getFont().getHeight());
 			} catch (Exception e) {
 			}
@@ -89,45 +89,5 @@ public class ListadoActuacionesLista extends ListaListas implements KeywordProvi
 	public int indexOfList(ListField listField, String prefix, int start) {
 		// TODO Auto-generated method stub
 		return 0;
-	}
-	
-	static public String calendarToString(Calendar calendar, boolean alas) {
-		String string = "";
-		if (calendar.get(Calendar.DAY_OF_MONTH) < 10) {
-			string = string + "0";
-		}
-		string = string + calendar.get(Calendar.DAY_OF_MONTH);
-		string = string + "/";
-		if ((calendar.get(Calendar.MONTH) + 1) < 10) {
-			string = string + "0";
-		}
-		string = string + (calendar.get(Calendar.MONTH) + 1);
-		string = string + "/";
-		string = string + calendar.get(Calendar.YEAR);
-		if (alas) {
-			if (calendar.get(Calendar.HOUR) == 1) {
-				string = string + " a la ";
-			} else {
-				string = string + " a las ";
-			}
-		} else {
-			string = string + " - ";
-		}
-		if (calendar.get(Calendar.HOUR) < 10) {
-			string = string + "0";
-		}
-		string = string + calendar.get(Calendar.HOUR);
-		string = string + ":";
-		if(calendar.get(Calendar.MINUTE) < 10) {
-			string = string + "0";
-		}
-		string = string + calendar.get(Calendar.MINUTE);
-		string = string + " ";
-		if (calendar.get(Calendar.AM_PM) == Calendar.AM) {
-			string = string + ("AM");
-		} else {
-			string = string + ("PM");
-		}
-		return string;
 	}
 }

@@ -1,11 +1,9 @@
 package gui;
 
 import net.rim.device.api.ui.MenuItem;
-import net.rim.device.api.ui.UiApplication;
 import net.rim.device.api.ui.component.BasicEditField;
 import net.rim.device.api.ui.component.Dialog;
 import net.rim.device.api.ui.component.Menu;
-import core.Persona;
 
 public class VerPersonaScreen extends FondoNormal {
 
@@ -15,40 +13,19 @@ public class VerPersonaScreen extends FondoNormal {
 	private EditableTextField _txtDireccion;
 	private EditableTextField _txtCorreo;
 	private EditableTextField _txtNotas;
+	
+	public final int GUARDAR = 1;
+	public final int ELIMINAR = 2;
+	public final int CERRAR = 3;
 
-	private Persona _persona;
+	public VerPersonaScreen() {
 
-	private boolean _guardar = false;
-	private boolean _eliminar = false;
-
-	public VerPersonaScreen(Persona persona) {
-
-		_persona = persona;
-
-		if (_persona.getTipo() == 1)
-			setTitle("Ver demandante");
-		else if (_persona.getTipo() == 2)
-			setTitle("Ver demandado");
-		else
-			setTitle("Ver persona");
-
-		_txtNombre = new EditableTextField("Nombre: ", _persona.getNombre(),
-				BasicEditField.NO_NEWLINE);
-
-		_txtId = new EditableTextField("Cédula: ", _persona.getId(),
-				BasicEditField.NO_NEWLINE);
-
-		_txtTelefono = new EditableTextField("Teléfono: ",
-				_persona.getTelefono(), BasicEditField.NO_NEWLINE);
-
-		_txtDireccion = new EditableTextField("Dirección: ",
-				_persona.getDireccion(), BasicEditField.NO_NEWLINE);
-
-		_txtCorreo = new EditableTextField("Correo: ", _persona.getCorreo(),
-				BasicEditField.NO_NEWLINE);
-
-		_txtNotas = new EditableTextField("Notas: ", _persona.getNotas(),
-				BasicEditField.NO_NEWLINE);
+		_txtNombre = new EditableTextField("Nombre: ", BasicEditField.NO_NEWLINE);
+		_txtId = new EditableTextField("Cédula: ", BasicEditField.NO_NEWLINE);
+		_txtTelefono = new EditableTextField("Teléfono: ", BasicEditField.NO_NEWLINE);
+		_txtDireccion = new EditableTextField("Dirección: ", BasicEditField.NO_NEWLINE);
+		_txtCorreo = new EditableTextField("Correo: ", BasicEditField.NO_NEWLINE);
+		_txtNotas = new EditableTextField("Notas: ", 0);
 
 		add(_txtNombre);
 		add(_txtId);
@@ -69,25 +46,14 @@ public class VerPersonaScreen extends FondoNormal {
 	private final MenuItem menuGuardar = new MenuItem("Guardar", 0, 0) {
 
 		public void run() {
-			_guardar = true;
-			UiApplication.getUiApplication().popScreen(getScreen());
+			fieldChangeNotify(GUARDAR);
 		}
 	};
 	
 	private final MenuItem menuEliminar = new MenuItem("Eliminar", 0, 0) {
 
 		public void run() {
-			Object[] ask = { "Si", "No" };
-			int sel = 1;
-			if(_persona.getTipo() == 1) {
-				sel = Dialog.ask("¿Desea eliminar el demandante?", ask, 1);
-			} else if (_persona.getTipo() == 2) {
-				sel = Dialog.ask("¿Desea eliminar el demandado?", ask, 1);
-			}
-			if (sel == 0) {
-				_eliminar = true;
-				UiApplication.getUiApplication().popScreen(getScreen());
-			}
+			fieldChangeNotify(ELIMINAR);
 		}
 	};
 
@@ -95,9 +61,7 @@ public class VerPersonaScreen extends FondoNormal {
 
 		public void run() {
 			EditableTextField f = (EditableTextField) getFieldWithFocus();
-			if (f.isEditable())
-				;
-			else {
+			if (!f.isEditable()) {
 				f.setEditable();
 				f.setFocus();
 			}
@@ -115,12 +79,44 @@ public class VerPersonaScreen extends FondoNormal {
 			_txtNotas.setEditable();
 		}
 	};
+	
+	public void alert(String alert) {
+		Dialog.alert(alert);
+	}
 
+	public int ask(Object[] options, String string, int index) {
+		return Dialog.ask(string, options, index);
+	}
+
+	public void setNombre(String text) {
+		_txtNombre.setText(text);
+	}
+
+	public void setCedula(String text) {
+		_txtId.setText(text);
+	}
+
+	public void setTelefono(String text) {
+		_txtTelefono.setText(text);
+	}
+
+	public void setDireccion(String text) {
+		_txtDireccion.setText(text);
+	}
+
+	public void setCorreo(String text) {
+		_txtCorreo.setText(text);
+	}
+
+	public void setNotas(String text) {
+		_txtNotas.setText(text);
+	}
+	
 	public String getNombre() {
 		return _txtNombre.getText();
 	}
 
-	public String getId() {
+	public String getCedula() {
 		return _txtId.getText();
 	}
 
@@ -140,48 +136,8 @@ public class VerPersonaScreen extends FondoNormal {
 		return _txtNotas.getText();
 	}
 
-	public Persona getPersona() {
-		return _persona;
-	}
-
-	public boolean isGuardado() {
-		return _guardar;
-	}
-	
-	public boolean isEliminado() {
-		return _eliminar;
-	}
-
 	public boolean onClose() {
-		boolean cambio = false;
-		if (!_persona.getNombre().equals(this.getNombre()))
-			cambio = true;
-		if (!_persona.getId().equals(this.getId()))
-			cambio = true;
-		if (!_persona.getTelefono().equals(this.getTelefono()))
-			cambio = true;
-		if (!_persona.getDireccion().equals(this.getDireccion()))
-			cambio = true;
-		if (!_persona.getCorreo().equals(this.getCorreo()))
-			cambio = true;
-		if (!_persona.getNotas().equals(this.getNotas()))
-			cambio = true;
-		if (!cambio) {
-			UiApplication.getUiApplication().popScreen(getScreen());
-			return true;
-		} else {
-			Object[] ask = { "Guardar", "Descartar", "Cancelar" };
-			int sel = Dialog.ask("Se han detectado cambios", ask, 1);
-			if (sel == 0) {
-				_guardar = true;
-				UiApplication.getUiApplication().popScreen(getScreen());
-				return true;
-			} else if (sel == 1) {
-				UiApplication.getUiApplication().popScreen(getScreen());
-				return true;
-			} else {
-				return false;
-			}
-		}
+		fieldChangeNotify(CERRAR);
+		return false;
 	}
 }

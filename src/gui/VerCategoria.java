@@ -1,6 +1,8 @@
 package gui;
 
-import net.rim.device.api.ui.component.Dialog;
+import net.rim.device.api.ui.Field;
+import net.rim.device.api.ui.FieldChangeListener;
+import net.rim.device.api.ui.UiApplication;
 import persistence.Persistence;
 import core.Categoria;
 
@@ -9,47 +11,84 @@ public class VerCategoria {
 	private Categoria _categoria;
 
 	public VerCategoria(Categoria categoria) {
-		_screen = new VerCategoriaScreen(categoria);
 		_categoria = categoria;
+		_screen = new VerCategoriaScreen();
+		_screen.setDescripcion(_categoria.getDescripcion());
+		_screen.setChangeListener(listener);
 	}
+	
+	FieldChangeListener listener = new FieldChangeListener() {
+		
+		public void fieldChanged(Field field, int context) {
+			if(context == Util.GUARDAR) {
+				actualizarCategoria();
+			} else if(context == Util.CERRAR) {
+				cerrarPantalla();
+			} else if(context == Util.ELIMINAR) {
+				eliminarCategoria();
+			}
+		}
+	};
 
 	public VerCategoriaScreen getScreen() {
 		return _screen;
 	}
 
-	public void actualizarCategoria() {
-		if (_screen.isGuardado()) {
-			try {
-				Persistence persistence = new Persistence();
-				boolean cambio = false;
+	public Categoria getCategoria() {
+		return _categoria;
+	}
 
-				if (!_categoria.getDescripcion().equals(
-						_screen.getDescripcion()))
-					cambio = true;
-
-				if (cambio) {
-					_categoria = new Categoria(_categoria.getId_categoria(),
-							_screen.getDescripcion());
-					persistence.actualizarCategoria(_categoria);
+	private void actualizarCategoria() {
+		if (_screen.getDescripcion().length() == 0) {
+			_screen.alert("El campo Descripcion es obligatorio");
+		} else {
+			Categoria categoria = new Categoria(_categoria.getId_categoria(),
+					_screen.getDescripcion());
+			if (!categoria.equals(_categoria)) {
+				try {
+					new Persistence().actualizarCategoria(categoria);
+				} catch (NullPointerException e) {
+					_screen.alert(Util.noSDString());
+					System.exit(0);
+				} catch (Exception e) {
+					_screen.alert(e.toString());
 				}
-			} catch (Exception e) {
-				Dialog.alert("actualizarCategoria -> " + e.toString());
+				_categoria = categoria;
 			}
-		}
-		if (_screen.isEliminado()) {
-			Persistence p;
-			try {
-				p = new Persistence();
-				p.borrarCategoria(_categoria);
-				_categoria = p.consultarCategoria("1");
-			} catch (Exception e) {
-				Dialog.alert(e.toString());
-			}
+			UiApplication.getUiApplication().popScreen(_screen);
 		}
 	}
 
-	public Categoria getCategoria() {
-		actualizarCategoria();
-		return _categoria;
+	private void eliminarCategoria() {
+		Object[] ask = {"Aceptar", "Cancelar"};
+		int sel = _screen.ask(ask, Util.delBDCategoria(), 1);
+		if(sel == 0) {
+			try {
+				new Persistence().borrarCategoria(_categoria);
+			} catch(NullPointerException e) {
+				_screen.alert(Util.noSDString());
+				System.exit(0);
+			} catch (Exception e) {
+				_screen.alert(e.toString());
+			}
+			_categoria = null;
+			UiApplication.getUiApplication().popScreen(_screen);
+		}
+	}
+
+	private void cerrarPantalla() {
+		Categoria categoria = new Categoria(_categoria.getId_categoria(),
+				_screen.getDescripcion());
+		if (!categoria.equals(_categoria)) {
+			Object[] ask = { "Guardar", "Descartar", "Cancelar" };
+			int sel = _screen.ask(ask, "Se han detectado cambios", 2);
+			if (sel == 0) {
+				actualizarCategoria();
+			} else if (sel == 1) {
+				UiApplication.getUiApplication().popScreen(_screen);
+			}
+		} else {
+			UiApplication.getUiApplication().popScreen(_screen);
+		}
 	}
 }

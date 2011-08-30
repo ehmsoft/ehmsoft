@@ -34,10 +34,17 @@ public class EditableTextField extends HorizontalFieldManager {
 		this(style);
 		_label.setText(label);
 		if(initialValue.equals("") || initialValue == null) {
-			_editable = true;
-			this.replace(_lblField, _txtField);
+			setEditable();
 		}
 		setText(initialValue);
+	}
+	
+	public EditableTextField(String label) {
+		this(label, "", 0);
+	}
+	
+	public EditableTextField(String label, long style) {
+		this(label,"",style);
 	}
 	
 	public EditableTextField(String label, String initialValue) {
@@ -49,10 +56,10 @@ public class EditableTextField extends HorizontalFieldManager {
 	}
 
 	public void setText(String text) {
-		if(_editable) {
-			_txtField.setText(text);
-		} else {
-			_lblField.setText(text);
+		_txtField.setText(text);
+		_lblField.setText(text);
+		if (text.length() != 0) {
+			setEditable(false);
 		}
 	}
 	
@@ -91,7 +98,6 @@ public class EditableTextField extends HorizontalFieldManager {
 	}
 
 	public void setEditable() {
-		_txtField.setText(_lblField.getText());
 		this.replace(_lblField, _txtField);
 		_editable = true;
 	}
@@ -104,9 +110,10 @@ public class EditableTextField extends HorizontalFieldManager {
 		if(editable) {
 			setEditable();
 		} else {
-			_lblField.setText(_txtField.getText());
-			this.replace(_txtField, _lblField);
-			_editable = false;
+			if(!this.getField(1).equals(_lblField)) {
+				this.replace(_txtField, _lblField);
+				_editable = false;
+			}
 		}
 	}
 }

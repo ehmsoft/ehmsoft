@@ -1,11 +1,9 @@
 package gui;
 
 import net.rim.device.api.ui.MenuItem;
-import net.rim.device.api.ui.UiApplication;
 import net.rim.device.api.ui.component.BasicEditField;
 import net.rim.device.api.ui.component.CheckboxField;
 import net.rim.device.api.ui.component.Dialog;
-import net.rim.device.api.ui.container.VerticalFieldManager;
 
 public class NuevoCampoScreen extends FondoNormal {
 
@@ -17,12 +15,12 @@ public class NuevoCampoScreen extends FondoNormal {
 	private BasicEditField _txtLongMax;
 	private BasicEditField _txtLongMin;
 
-	private boolean _guardar = false;
+	public final int GUARDAR = 1;
+	public final int CERRAR = 2;
 
 	public NuevoCampoScreen() {
 
 		setTitle("Nuevo campo personalizado");
-		VerticalFieldManager vertical = new VerticalFieldManager();
 
 		_txtNombre = new BasicEditField(BasicEditField.NO_NEWLINE);
 		_txtNombre.setLabel("Nombre: ");
@@ -37,38 +35,35 @@ public class NuevoCampoScreen extends FondoNormal {
 				| BasicEditField.FILTER_INTEGER);
 		_txtLongMin.setLabel("Longitud mínima: ");
 
-		vertical.add(_txtNombre);
-		vertical.add(_cbObligatorio);
-		vertical.add(_txtLongMax);
-		vertical.add(_txtLongMin);
+		add(_txtNombre);
+		add(_cbObligatorio);
+		add(_txtLongMax);
+		add(_txtLongMin);
 
-		add(vertical);
 		addMenuItem(menuGuardar);
 	}
 
 	private final MenuItem menuGuardar = new MenuItem("Guardar", 0, 0) {
 
 		public void run() {
-			if(_txtNombre.getTextLength() != 0) { 
-			if (getLongMax() >= getLongMin()) {
-				_guardar = true;
-				UiApplication.getUiApplication().popScreen(getScreen());
-			}
-			else {
-				Dialog.alert("La longitud mínima no puede ser mayor que la longitud máxima, corrija y guarde nuevamente");
-			}
-			} else {
-				Dialog.alert("El campo Nombre es obligatorio");
-			}
+			fieldChangeNotify(GUARDAR);
 		}
 	};
+
+	public void alert(String alert) {
+		Dialog.alert(alert);
+	}
+
+	public int ask(Object[] options, String string, int index) {
+		return Dialog.ask(string, options, index);
+	}
 
 	public String getNombre() {
 		return _txtNombre.getText();
 	}
 
-	public Boolean isObligatorio() {
-		return new Boolean(_cbObligatorio.getChecked());
+	public boolean isObligatorio() {
+		return _cbObligatorio.getChecked();
 	}
 
 	public int getLongMax() {
@@ -91,31 +86,8 @@ public class NuevoCampoScreen extends FondoNormal {
 		return lon;
 	}
 
-	public boolean isGuardado() {
-		return _guardar;
-	}
-
 	public boolean onClose() {
-		if (_txtNombre.getTextLength() == 0 && _txtLongMax.getTextLength() == 0
-				&& _txtLongMin.getTextLength() == 0) {
-			UiApplication.getUiApplication().popScreen(getScreen());
-			return true;
-		} else {
-			Object[] ask = { "Guardar", "Descartar", "Cancelar" };
-			int sel = Dialog.ask("Se han detectado cambios", ask, 2);
-			if (sel == 0) {
-				_guardar = true;
-				UiApplication.getUiApplication().popScreen(getScreen());
-				return true;
-			}
-			if (sel == 1) {
-				UiApplication.getUiApplication().popScreen(getScreen());
-				return true;
-			}
-			if (sel == 2) {
-				return false;
-			} else
-				return false;
-		}
+		fieldChangeNotify(CERRAR);
+		return false;
 	}
 }

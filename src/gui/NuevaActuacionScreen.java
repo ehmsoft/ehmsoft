@@ -3,19 +3,15 @@ package gui;
 import java.util.Calendar;
 import java.util.Date;
 
-import net.rim.device.api.ui.Field;
-import net.rim.device.api.ui.FieldChangeListener;
+import net.rim.device.api.system.Bitmap;
 import net.rim.device.api.ui.MenuItem;
-import net.rim.device.api.ui.UiApplication;
 import net.rim.device.api.ui.component.BasicEditField;
-import net.rim.device.api.ui.component.CheckboxField;
+import net.rim.device.api.ui.component.BitmapField;
 import net.rim.device.api.ui.component.DateField;
 import net.rim.device.api.ui.component.Dialog;
 import net.rim.device.api.ui.component.LabelField;
 import net.rim.device.api.ui.component.Menu;
 import net.rim.device.api.ui.container.HorizontalFieldManager;
-import core.CalendarManager;
-import core.Juzgado;
 
 public class NuevaActuacionScreen extends FondoNormal {
 
@@ -23,19 +19,27 @@ public class NuevaActuacionScreen extends FondoNormal {
 	private DateField _dfFecha;
 	private DateField _dfFechaProxima;
 	private BasicEditField _txtDescripcion;
-	private CheckboxField _cbCita;
-
-	private Juzgado _juzgado;
-	private String _uid;
-
-	private boolean _guardar;
+	private BitmapField _cita;
+	private BitmapField _alarm;
+	private Bitmap _bell = Bitmap.getBitmapResource("bell.png");
+	private Bitmap _clock = Bitmap.getBitmapResource("clock.png");
+	private boolean _hasAlarm = false;
 
 	/**
 	 * Crea una NuevaActuacionScreen inicializando los componentes y
 	 * agregandolos a la pantalla
 	 */
 	public NuevaActuacionScreen() {
-		setTitle("Nueva actuación");
+		HorizontalFieldManager titleContainer = new HorizontalFieldManager();
+		titleContainer.add(new LabelField("Nueva actuacion"));
+
+		_cita = new BitmapField(null, BitmapField.FIELD_VCENTER);
+		_alarm = new BitmapField(null, BitmapField.FIELD_VCENTER);
+
+		titleContainer.add(_cita);
+		titleContainer.add(_alarm);
+
+		setTitle(titleContainer);
 
 		HorizontalFieldManager fldJuzgado = new HorizontalFieldManager();
 
@@ -55,115 +59,93 @@ public class NuevaActuacionScreen extends FondoNormal {
 		_txtDescripcion = new BasicEditField();
 		_txtDescripcion.setLabel("Descripción: ");
 		add(_txtDescripcion);
-		
-		_cbCita = new CheckboxField("Crear cita", false);
-		_cbCita.setChangeListener(listenerCita);
-		add(_cbCita);
-
-		addMenuItem(menuGuardar);
 	}
 	
+	public void setClock() {
+		_cita.setBitmap(_clock);
+		_hasAlarm = true;
+	}
+	
+	public void setBell() {
+		_alarm.setBitmap(_bell);
+	}
+	
+	public void removeClock() {
+		_cita.setBitmap(null);
+		removeBell();
+		_hasAlarm = false;
+	}
+	
+	public void removeBell() {
+		_alarm.setBitmap(null);
+	}
+
 	protected void makeMenu(Menu menu, int instance) {
-		Field f = UiApplication.getUiApplication().getActiveScreen().getLeafFieldWithFocus();
-		if(f.equals(_lblJuzgado)) {
-			LabelField temp = (LabelField) f;
-			if(temp.getText().equals("*Ninguno*")) {
-				menu.add(menuAgregar);
-				menu.addSeparator();
-			} else {
-				menu.add(menuCambiar);
-				menu.addSeparator();
-			}
+		menu.add(menuCambiar);
+		menu.addSeparator();
+		if (_hasAlarm) {
+			menu.add(menuVerCita);
+			menu.add(menuEliminarCita);
+			menu.addSeparator();
+		} else {
+			menu.add(menuAddCita);
+			menu.addSeparator();
 		}
+		menu.addSeparator();
 		menu.add(menuGuardar);
 	}
 	
-	private final MenuItem menuAgregar = new MenuItem("Agregar", 0, 0) {
+	private final MenuItem menuVerCita = new MenuItem("Ver cita", 0, 0) {
 
 		public void run() {
-			ListadoJuzgados l = new ListadoJuzgados(true);
-			l.setTitle("Seleccione un juzgado");
-			UiApplication.getUiApplication().pushModalScreen(l.getScreen());
-			try {
-				_juzgado = l.getSelected();
-				setJuzgado(_juzgado);
-			} catch(NullPointerException e) {
-			} catch(Exception e) {
-				Dialog.alert(e.toString());
-			} finally {
-				l = null;
-			}
+			fieldChangeNotify(Util.VER_CITA);
 		}
 	};
-	
+
+	private final MenuItem menuAddCita = new MenuItem("Agregar cita", 0, 0) {
+
+		public void run() {
+			fieldChangeNotify(Util.ADD_CITA);
+		}
+	};
+
+	private final MenuItem menuEliminarCita = new MenuItem("Eliminar cita", 0,
+			0) {
+
+		public void run() {
+			fieldChangeNotify(Util.ELIMINAR_CITA);
+		}
+	};
+
+
 	private final MenuItem menuCambiar = new MenuItem("Cambiar", 0, 0) {
 
 		public void run() {
-			menuAgregar.run();
-		}
-	};
-	
-	private FieldChangeListener listenerCita = new FieldChangeListener() {
-		public void fieldChanged(Field field, int context) {
-			if (_cbCita.getChecked()) {
-				NuevaCita n = new NuevaCita(getDescripcion(), new Date(
-						_dfFechaProxima.getDate()));
-				UiApplication.getUiApplication().pushModalScreen(n.getScreen());
-				n.guardarCita();
-				_uid = n.getUid();
-				if (!n.isGuardado()) {
-					_cbCita.setChecked(false);
-				}
-			} else {
-				try {
-					if(_uid != null) {
-						CalendarManager.borrarCita(_uid);
-					}
-				} catch (Exception e) {
-					Dialog.alert(e.toString());
-				}
-			}
+			fieldChangeNotify(Util.ADD_JUZGADO);
 		}
 	};
 
 	private final MenuItem menuGuardar = new MenuItem("Guardar", 0, 0) {
 
 		public void run() {
-			if (_txtDescripcion.getTextLength() == 0) {
-				Dialog.alert("Debe agregar una descripción");
-			} else if (_juzgado == null) {
-				Object[] ask = { "Guardar", "Cancelar" };
-				int sel = Dialog.ask("Juzgado se considera importante", ask, 1);
-				if (sel == 0) {
-					if (_txtDescripcion.getTextLength() == 0) {
-						Dialog.alert("Debe agregar una descripción");
-					} else {
-						_guardar = true;
-						UiApplication.getUiApplication().popScreen(getScreen());
-					}
-				}
-			} else {
-				_guardar = true;
-				UiApplication.getUiApplication().popScreen(getScreen());
-			}
+			fieldChangeNotify(Util.GUARDAR);
 		}
 	};
-
-	/**
-	 * @return el Juzgado asociado al objeto, en caso de no existir se retorna
-	 *         null
-	 */
-	public Juzgado getJuzgado() {
-		return _juzgado;
+	
+	public void alert(String alert) {
+		Dialog.alert(alert);
 	}
 
-	/**
-	 * @param juzgado
-	 *            Se asigna al Objeto un Juzgado
-	 */
-	public void setJuzgado(Juzgado juzgado) {
-		_lblJuzgado.setText(juzgado.getNombre());
-		_juzgado = juzgado;
+	public int ask(Object[] options, String string, int index) {
+		return Dialog.ask(string, options, index);
+	}
+	
+	public boolean hasAlarma() {
+		return _hasAlarm;
+	}
+
+	public void setJuzgado(String text) {
+		_lblJuzgado.setText(text);
 	}
 
 	/**
@@ -193,43 +175,11 @@ public class NuevaActuacionScreen extends FondoNormal {
 	 *         retorna null
 	 */
 	public String getDescripcion() {
-		String descripcion = null;
-		try {
-			descripcion = _txtDescripcion.getText();
-		} catch (NullPointerException e) {
-			return descripcion;
-		}
-		return descripcion;
-	}
-	
-	public String getUid() {
-		return _uid;
-	}
-
-	public boolean isGuardado() {
-		return _guardar;
+		return _txtDescripcion.getText();
 	}
 
 	public boolean onClose() {
-		if (_txtDescripcion.getTextLength() == 0 && _juzgado == null) {
-			UiApplication.getUiApplication().popScreen(getScreen());
-			return true;
-		} else {
-			Object[] ask = { "Guardar", "Descartar", "Cancelar" };
-			int sel = Dialog.ask("Se han detectado cambios", ask, 2);
-			if (sel == 0) {
-				_guardar = true;
-				UiApplication.getUiApplication().popScreen(getScreen());
-				return true;
-			}
-			if (sel == 1) {
-				UiApplication.getUiApplication().popScreen(getScreen());
-				return true;
-			}
-			if (sel == 2) {
-				return false;
-			} else
-				return false;
-		}
+		fieldChangeNotify(Util.CERRAR);
+		return false;
 	}
 }

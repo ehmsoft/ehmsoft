@@ -1,14 +1,16 @@
 package gui;
 
 import net.rim.device.api.ui.MenuItem;
-import net.rim.device.api.ui.UiApplication;
 import net.rim.device.api.ui.component.BasicEditField;
 import net.rim.device.api.ui.component.Dialog;
 
-public class NuevaCategoriaScreen extends FondoNormal {
+public class NuevaCategoriaScreen extends FondoNormal implements
+		NuevaCategoriaInterface {
 
 	private BasicEditField _txtDescripcion;
-	private boolean _guardar = false;
+
+	public static final int GUARDAR = 1;
+	public static final int CERRAR = 2;
 
 	public NuevaCategoriaScreen() {
 		setTitle("Nueva categoría");
@@ -23,44 +25,24 @@ public class NuevaCategoriaScreen extends FondoNormal {
 	private final MenuItem menuGuardar = new MenuItem("Guardar", 0, 0) {
 
 		public void run() {
-			if (_txtDescripcion.getTextLength() == 0) {
-				Dialog.inform("Todos los campos están vacíos, no se guardará");
-				UiApplication.getUiApplication().popScreen(getScreen());
-			} else {
-				_guardar = true;
-				UiApplication.getUiApplication().popScreen(getScreen());
-			}
+			fieldChangeNotify(GUARDAR);
 		}
 	};
+
+	public void alert(String string) {
+		Dialog.alert(string);
+	}
+
+	public int ask(Object[] options, String string, int index) {
+		return Dialog.ask(string, options, index);
+	}
 
 	public String getDescripcion() {
 		return _txtDescripcion.getText();
 	}
 
-	public boolean isGuardado() {
-		return _guardar;
-	}
-
 	public boolean onClose() {
-		if (_txtDescripcion.getTextLength() != 0) {
-			Object[] ask = { "Guardar", "Descartar", "Cancelar" };
-			int sel = Dialog.ask("Se han detectado cambios", ask, 2);
-			if (sel == 0) {
-				_guardar = true;
-				UiApplication.getUiApplication().popScreen(getScreen());
-				return true;
-			}
-			if (sel == 1) {
-				UiApplication.getUiApplication().popScreen(getScreen());
-				return true;
-			}
-			if (sel == 2) {
-				return false;
-			}
-		} else {
-			UiApplication.getUiApplication().popScreen(getScreen());
-			return true;
-		}
+		fieldChangeNotify(CERRAR);
 		return false;
 	}
 }

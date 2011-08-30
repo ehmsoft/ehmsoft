@@ -19,6 +19,11 @@ abstract class ListaListas extends KeywordFilterField {
 		super();
 		setCallback(new Callback());
 		_u = new Unsorted();
+		setLabel("Buscar: ");
+	}
+	
+	public void setSelectedIndex(int index) {
+		super.setSelectedIndex(index);
 	}
 	
 	public void loadFrom(Vector vector) {
@@ -42,6 +47,13 @@ abstract class ListaListas extends KeywordFilterField {
 	public void update(Object old, Object nw) {
 		_u.update(old, nw);
 		updateList();
+		invalidate();
+		if (getKeywordField().getTextLength() != 0) {
+			if (!old.equals(nw)) {
+				setText("");
+				setText(nw.toString());
+			}
+		}
 	}
 
 	public void setText(String text) {
@@ -55,13 +67,13 @@ abstract class ListaListas extends KeywordFilterField {
 	}
 
 	public void remove(int index) {
-		_u.delete(index);
-		updateList();
+			_u.delete(index);
+			updateList();
 	}
 
 	public void remove(Object element) {
-		_u.delete(element);
-		updateList();
+			_u.delete(element);
+			updateList();
 	}
 }
 
@@ -72,6 +84,14 @@ class Unsorted extends UnsortedReadableList {
 
 	public void insert(Object element) {
 		doAdd(element);
+	}
+
+	public Object getAt(int index) {
+		try {
+			return super.getAt(index);
+		} catch(Exception e) {
+			return super.getAt(index - 1);
+		}
 	}
 
 	public void delete(int index) {
