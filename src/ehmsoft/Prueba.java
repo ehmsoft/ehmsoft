@@ -6,6 +6,7 @@ import gui.Listados.ListadoCampos;
 import gui.Listados.ListadoCategorias;
 import gui.Listados.ListadoJuzgados;
 import gui.Listados.ListadoPersonas;
+import gui.Listados.ListadoPlantillas;
 import gui.Listados.ListadoProcesos;
 import gui.Nuevos.NuevaActuacion;
 import gui.Nuevos.NuevaCategoria;
@@ -37,6 +38,7 @@ public class Prueba extends MainScreen {
 	ButtonField listadoDemandantes;
 	ButtonField listadoDemandados;
 	ButtonField listadoProcesos;
+	ButtonField listadoPlantillas;
 	ButtonField nuevaActuacion;
 	ButtonField nuevaCategoria;
 	ButtonField nuevoDemandante;
@@ -81,6 +83,10 @@ public class Prueba extends MainScreen {
 		listadoProcesos = new ButtonField("Listado de procesos");
 		listadoProcesos.setChangeListener(listenerListadoProcesos);
 		add(listadoProcesos);
+		
+		listadoPlantillas = new ButtonField("Listado de plantillas");
+		listadoPlantillas.setChangeListener(listenerListadoPlantillas);
+		add(listadoPlantillas);
 
 		nuevaActuacion = new ButtonField("Nueva actuación");
 		nuevaActuacion.setChangeListener(listenerNuevaActuacion);
@@ -197,7 +203,15 @@ public class Prueba extends MainScreen {
 			ListadoProcesos listado = new ListadoProcesos(ListadoProcesos.SEARCH);
 			UiApplication.getUiApplication().pushModalScreen(
 					listado.getScreen());
-			listado.getSelected();
+		}
+	};
+	
+	private FieldChangeListener listenerListadoPlantillas = new FieldChangeListener() {
+
+		public void fieldChanged(Field field, int context) {
+			ListadoPlantillas listado = new ListadoPlantillas(ListadoProcesos.SEARCH);
+			UiApplication.getUiApplication().pushModalScreen(
+					listado.getScreen());
 		}
 	};
 

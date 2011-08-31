@@ -4,14 +4,15 @@ import gui.ActuacionesManager;
 import gui.CustomFieldManager;
 import gui.ListaCircular;
 import gui.PersonasManager;
+import gui.Util;
 import gui.Listados.ListadoCampos;
 import gui.Listados.ListadoCategorias;
 import gui.Listados.ListadoJuzgados;
 import gui.Listados.ListadoPersonas;
 import gui.Listados.ListadoProcesos;
-import net.rim.device.api.system.KeyListener;
 import net.rim.device.api.ui.MenuItem;
 import net.rim.device.api.ui.UiApplication;
+import net.rim.device.api.ui.component.Dialog;
 import net.rim.device.api.ui.component.LabelField;
 import net.rim.device.api.ui.component.Menu;
 import net.rim.device.api.ui.component.ObjectListField;
@@ -47,12 +48,28 @@ public class ScreenMain extends MainScreen {
 
 	protected void makeMenu(Menu menu, int instance) {
 		menu.add(menuListas);
+		menu.add(menuNuevos);
+		menu.add(menuPreferencias);
 	}
 	
 	private final MenuItem menuListas = new MenuItem("Listado",0, 0) {
 		
 		public void run() {
-			UiApplication.getUiApplication().pushModalScreen(new Listados());
+			UiApplication.getUiApplication().pushModalScreen(new Listados(Listados.LISTA));
+		}
+	};
+	
+	private final MenuItem menuNuevos = new MenuItem("Nuevo", 0, 0) {
+		
+		public void run() {
+			UiApplication.getUiApplication().pushModalScreen(new Listados(Listados.NUEVO));
+		}
+	};
+	
+	private final MenuItem menuPreferencias = new MenuItem("Preferencias", 0, 0) {
+		
+		public void run() {
+			Dialog.alert("En desarrollo en la otra rama");
 		}
 	};
 }
@@ -60,82 +77,75 @@ public class ScreenMain extends MainScreen {
 class Listados extends PopupScreen {
 	
 	private ObjectListField _lista;
+	private int _style;
 	
-	public Listados() {
+	public static final short LISTA = 1;
+	public static final short NUEVO = 2;
+	
+	public Listados(int style) {
 		super(new VerticalFieldManager());
-		add(new LabelField("Seleccione un listado", FIELD_HCENTER));
-		add(new SeparatorField());
-		
+		_style = style;
 		_lista = new ObjectListField();
-		
-		Object[] o = {"Demandantes", "Demandados", "Juzgados","Campos personalizados", 
-				"Categorías", "Procesos"};
-		
-		_lista.set(o);
+		if((_style & LISTA) == LISTA) {
+			add(new LabelField("Ver listado de:", FIELD_HCENTER));
+			Object[] o = {"Demandantes", "Demandados", "Juzgados", "Campos personalizados", 
+					"Categorías", "Procesos"};
+			_lista.set(o);
+		} else if((_style & NUEVO) == NUEVO) {
+			add(new LabelField("Crear:", FIELD_HCENTER));
+			Object[] o = {"Demandante", "Demandado", "Juzgado", "Campos personalizado", 
+					"Categoría", "Proceso"};
+			_lista.set(o);
+		}
+		add(new SeparatorField());
 		add(_lista);
-		addKeyListener(new ListenerKey());
-	}
-	
-	
+	}	
 	
 	protected boolean navigationClick(int arg0, int arg1) {
-		String s = (String)_lista.get(_lista,_lista.getSelectedIndex());
-		if(s.equals("Demandantes")) {
-			UiApplication.getUiApplication().popScreen(getScreen());
-			ListadoPersonas l = new ListadoPersonas(1, ListadoPersonas.ON_CLICK_VER | ListadoPersonas.SEARCH);
-			UiApplication.getUiApplication().pushModalScreen(l.getScreen());
-		} else if (s.equals("Demandados")) {
-			UiApplication.getUiApplication().popScreen(getScreen());
-			ListadoPersonas l = new ListadoPersonas(2, ListadoPersonas.ON_CLICK_VER);
-			UiApplication.getUiApplication().pushModalScreen(l.getScreen());
-		} else if (s.equals("Juzgados")) {
-			UiApplication.getUiApplication().popScreen(getScreen());
-			ListadoJuzgados l = new ListadoJuzgados();
-			UiApplication.getUiApplication().pushModalScreen(l.getScreen());
-		} else if (s.equals("Campos personalizados")) {
-			UiApplication.getUiApplication().popScreen(getScreen());
-			ListadoCampos l = new ListadoCampos();
-			UiApplication.getUiApplication().pushModalScreen(l.getScreen());
-		} else if (s.equals("Categorias")) {
-			UiApplication.getUiApplication().popScreen(getScreen());
-			ListadoCategorias l = new ListadoCategorias();
-			UiApplication.getUiApplication().pushModalScreen(l.getScreen());
-		} else if (s.equals("Procesos")) {
-			UiApplication.getUiApplication().popScreen(getScreen());
-			ListadoProcesos l = new ListadoProcesos();
-			UiApplication.getUiApplication().pushModalScreen(l.getScreen());
-		}
-		return super.navigationClick(arg0, arg1);
-	}
-
-
-
-	public class ListenerKey implements KeyListener
-	 {    
-	     public boolean keyChar( char key, int status, int time ) 
-	     {
-	         return false;
-	     }
-	     
-		public boolean keyDown(int keycode, int time) {
-			if (keycode == 1769472) {
-				UiApplication.getUiApplication().popScreen(getScreen());
-				return true;
-			} else {
-				return false;
+		int index = _lista.getSelectedIndex();
+		UiApplication.getUiApplication().popScreen(this);
+		if (index == 0) {
+			if ((_style & LISTA) == LISTA) {
+				Util.listadoPersonas(1, false, ListadoPersonas.ON_CLICK_VER);
+			} else if ((_style & NUEVO) == NUEVO) {
+				Util.nuevaPersona(1);
+			}
+		} else if (index == 1) {
+			if ((_style & LISTA) == LISTA) {
+				Util.listadoPersonas(2, false, ListadoPersonas.ON_CLICK_VER);
+			} else if ((_style & NUEVO) == NUEVO) {
+				Util.nuevaPersona(2);
+			}
+		} else if (index == 2) {
+			if ((_style & LISTA) == LISTA) {
+				Util.listadoJuzgados(false, ListadoJuzgados.ON_CLICK_VER);
+			} else if ((_style & NUEVO) == NUEVO) {
+				Util.nuevoJuzgado();
+			}
+		} else if (index == 3) {
+			if ((_style & LISTA) == LISTA) {
+				Util.listadoCampos(false, ListadoCampos.ON_CLICK_VER);
+			} else if ((_style & NUEVO) == NUEVO) {
+				Util.nuevoCampoPersonalizado();
+			}
+		} else if (index == 4) {
+			if ((_style & LISTA) == LISTA) {
+				Util.listadoCategorias(false, ListadoCategorias.ON_CLICK_VER);
+			} else if ((_style & NUEVO) == NUEVO) {
+				Util.nuevaCategoria(false);
+			}
+		} else if (index == 5) {
+			if ((_style & LISTA) == LISTA) {
+				Util.listadoProcesos(false, ListadoProcesos.ON_CLICK_VER);
+			} else if ((_style & NUEVO) == NUEVO) {
+				Util.nuevoProceso();
 			}
 		}
-
-		public boolean keyRepeat(int keycode, int time) {
-			return false;
-		}
-
-		public boolean keyStatus(int keycode, int time) {
-			return false;
-		}
-
-		public boolean keyUp(int keycode, int time) {
-			return false;
-		}
-	 }
+		return true;
+	}
+	
+	public boolean onClose() {
+		UiApplication.getUiApplication().popScreen(this);
+		return true;
+	}
 }

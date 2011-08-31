@@ -83,14 +83,21 @@ public class NuevaActuacion {
 					_screen.getFechaProxima(), _screen.getDescripcion(), null,
 					_cita.getUid());
 			if (_proceso != null) {
-				try {
-					new Persistence().guardarActuacion(_actuacion,
-							_proceso.getId_proceso());
-				} catch (NullPointerException e) {
-					Util.noSd();
-				} catch (Exception e) {
-					Util.alert(e.toString());
-				}
+				Util.pushWaitScreen();
+				UiApplication.getUiApplication().invokeLater(new Runnable() {
+					public void run() {
+						try {
+							new Persistence().guardarActuacion(_actuacion,
+									_proceso.getId_proceso());
+						} catch (NullPointerException e) {
+							Util.noSd();
+						} catch (Exception e) {
+							Util.alert(e.toString());
+						}
+						Util.popWaitScreen();
+					}
+				});
+
 			}
 			borrarCitaActuacion();
 			Util.popScreen(_screen);

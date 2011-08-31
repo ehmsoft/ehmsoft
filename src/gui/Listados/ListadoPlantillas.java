@@ -2,7 +2,7 @@ package gui.Listados;
 
 import gui.ListadosInterface;
 import gui.Util;
-import gui.Nuevos.NuevoProceso;
+import gui.Nuevos.NuevaPlantilla;
 
 import java.util.Vector;
 
@@ -11,38 +11,38 @@ import net.rim.device.api.ui.FieldChangeListener;
 import net.rim.device.api.ui.Screen;
 import net.rim.device.api.ui.UiApplication;
 import persistence.Persistence;
-import core.Proceso;
+import core.Plantilla;
 
-public class ListadoProcesos {
+public class ListadoPlantillas {
 
-	private Vector _vectorProcesos;
+	private Vector _vectorPlantillas;
 	private ListadosInterface _screen;
 	private long _style;
-	private Proceso _selected;
+	private Plantilla _selected;
 
 	public static final int SEARCH = 1;
 	public static final int ON_CLICK_VER = 2;
 	public static final int ON_CLICK_SELECT = 4;
 	public static final int NO_NUEVO = 8;
 
-	public ListadoProcesos() {
+	public ListadoPlantillas() {
 		this(false, 0);
 	}
 
-	public ListadoProcesos(boolean popup) {
+	public ListadoPlantillas(boolean popup) {
 		this(popup, 0);
 	}
 
-	public ListadoProcesos(long style) {
+	public ListadoPlantillas(long style) {
 		this(false, style);
 	}
 
-	public ListadoProcesos(boolean popup, long style) {
+	public ListadoPlantillas(boolean popup, long style) {
 		_style = style;
 		if (popup) {
-			_screen = new ListadoProcesosPopUp();
+			_screen = new ListadoPlantillasPopUp();
 		} else {
-			_screen = new ListadoProcesosScreen();
+			_screen = new ListadoPlantillasScreen();
 		}
 
 		Util.pushWaitScreen();
@@ -51,15 +51,15 @@ public class ListadoProcesos {
 
 			public void run() {
 				try {
-					_vectorProcesos = new Persistence().consultarProcesos();
+					_vectorPlantillas = new Persistence().consultarPlantillas();
 				} catch (NullPointerException e) {
 					Util.noSd();
 				} catch (Exception e) {
 					Util.alert(e.toString());
 				}
-				addProcesos();
+				addPlantillas();
 				if ((_style & NO_NUEVO) != NO_NUEVO) {
-					_screen.addElement("Crear nuevo proceso", 0);
+					_screen.addElement("Crear nueva plantilla", 0);
 				}
 				Util.popWaitScreen();
 			}
@@ -72,33 +72,33 @@ public class ListadoProcesos {
 		}
 	}
 
-	FieldChangeListener listener = new FieldChangeListener() {
+	private FieldChangeListener listener = new FieldChangeListener() {
 
 		public void fieldChanged(Field field, int context) {
 			if (context == Util.CLICK) {
 				onClick();
 			} else if (context == Util.VER_ELEMENTO) {
-				verProceso();
+				verPlantilla();
 			} else if (context == Util.CERRAR) {
 				cerrarPantalla();
 			} else if (context == Util.ELIMINAR) {
-				eliminarProceso();
+				eliminarPlantilla();
 			}
 		}
 	};
 
-	private void addProcesos() {
-		if (_vectorProcesos != null) {
-			_screen.loadFrom(_vectorProcesos);
+	private void addPlantillas() {
+		if (_vectorPlantillas != null) {
+			_screen.loadFrom(_vectorPlantillas);
 		}
 	}
 
-	public void setVectorProcesos(Vector procesos) {
-		_vectorProcesos = procesos;
-		addProcesos();
+	public void setVectorPlantillas(Vector plantillas) {
+		_vectorPlantillas = plantillas;
+		addPlantillas();
 	}
 
-	public Proceso getSelected() {
+	public Plantilla getSelected() {
 		return _selected;
 	}
 
@@ -109,21 +109,21 @@ public class ListadoProcesos {
 
 	public void onClick() {
 		if (String.class.isInstance(_screen.getSelected())) {
-			nuevoProceso();
+			nuevaPlantilla();
 		} else {
 			if ((_style & ON_CLICK_VER) == ON_CLICK_VER) {
-				verProceso();
+				verPlantilla();
 			} else {
-				_selected = (Proceso) _screen.getSelected();
+				_selected = (Plantilla) _screen.getSelected();
 				UiApplication.getUiApplication().popScreen((Screen) _screen);
 			}
 		}
 	}
 
-	private void nuevoProceso() {
-		NuevoProceso n = new NuevoProceso();
+	private void nuevaPlantilla() {
+		NuevaPlantilla n = new NuevaPlantilla();
 		UiApplication.getUiApplication().pushModalScreen(n.getScreen());
-		Proceso proceso = n.getProceso();
+		Plantilla proceso = n.getPlantilla();
 		if (proceso != null) {
 			if ((_style & NO_NUEVO) == NO_NUEVO) {
 				_screen.addElement(proceso, 0);
@@ -134,23 +134,23 @@ public class ListadoProcesos {
 		n = null;
 	}
 
-	private void verProceso() {
-		Proceso selected = (Proceso) _screen.getSelected();
-		Proceso proceso = Util.verProceso(selected);
-		if (proceso != null) {
-			_screen.replace(selected, proceso);
+	private void verPlantilla() {
+		Plantilla selected = (Plantilla) _screen.getSelected();
+		Plantilla plantilla = Util.verPlantilla(selected);
+		if (plantilla != null) {
+			_screen.replace(selected, plantilla);
 		} else {
 			_screen.remove(selected);
 		}
 	}
 
-	private void eliminarProceso() {
+	private void eliminarPlantilla() {
 		Object[] ask = { "Aceptar", "Cancelar" };
-		int sel = _screen.ask(ask, Util.delBDProceso(), 1);
+		int sel = _screen.ask(ask, Util.delBDPlantilla(), 1);
 		if (sel == 0) {
-			Proceso selected = (Proceso) _screen.getSelected();
+			Plantilla selected = (Plantilla) _screen.getSelected();
 			try {
-				new Persistence().borrarProceso(selected);
+				new Persistence().borrarPlantilla(selected);
 			} catch (NullPointerException e) {
 				_screen.alert(Util.noSDString());
 				System.exit(0);
@@ -162,11 +162,7 @@ public class ListadoProcesos {
 	}
 
 	private void cerrarPantalla() {
-		if (String.class.isInstance(_screen.getSelected())) {
-			_selected = null;
-		} else {
-			_selected = (Proceso) _screen.getSelected();
-		}
+		_selected = null;
 		UiApplication.getUiApplication().popScreen((Screen) _screen);
 	}
 }

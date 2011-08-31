@@ -4,16 +4,19 @@ import gui.Listados.ListadoCampos;
 import gui.Listados.ListadoCategorias;
 import gui.Listados.ListadoJuzgados;
 import gui.Listados.ListadoPersonas;
+import gui.Listados.ListadoProcesos;
 import gui.Nuevos.NuevaActuacion;
 import gui.Nuevos.NuevaCategoria;
 import gui.Nuevos.NuevaPersona;
 import gui.Nuevos.NuevoCampo;
 import gui.Nuevos.NuevoJuzgado;
+import gui.Nuevos.NuevoProceso;
 import gui.Ver.VerActuacion;
 import gui.Ver.VerCampo;
 import gui.Ver.VerCategoria;
 import gui.Ver.VerJuzgado;
 import gui.Ver.VerPersona;
+import gui.Ver.VerPlantilla;
 import gui.Ver.VerProceso;
 
 import java.util.Calendar;
@@ -33,6 +36,7 @@ import core.CampoPersonalizado;
 import core.Categoria;
 import core.Juzgado;
 import core.Persona;
+import core.Plantilla;
 import core.Proceso;
 
 public class Util {
@@ -163,6 +167,10 @@ public class Util {
 	public static String delBDProceso() {
 		return "¿Desea eliminar el proceso?. Se eliminará definitivamente y las actuaciones ligadas a este";
 	}
+	
+	public static String delBDPlantilla() {
+		return "¿Desea eliminar la plantilla?. Se eliminará definitivamente";
+	}
 
 	public static String delJuzgado() {
 		return "¿Desea eliminar el juzgado?";
@@ -255,27 +263,39 @@ public class Util {
 		UiApplication.getUiApplication().pushModalScreen(v.getScreen());
 		return v.getProceso();
 	}
+	
+	public static Plantilla verPlantilla(Plantilla plantilla) {
+		VerPlantilla v = new VerPlantilla(plantilla);
+		UiApplication.getUiApplication().pushModalScreen(v.getScreen());
+		return v.getPlantilla();
+	}
 
-	public static Persona listadoPersonas(int tipo, boolean popup) {
-		ListadoPersonas l = new ListadoPersonas(tipo, popup);
+	public static Persona listadoPersonas(int tipo, boolean popup, int style) {
+		ListadoPersonas l = new ListadoPersonas(tipo, popup, style);
 		UiApplication.getUiApplication().pushModalScreen(l.getScreen());
 		return l.getSelected();
 	}
 
-	public static Juzgado listadoJuzgados(boolean popup) {
-		ListadoJuzgados l = new ListadoJuzgados(popup);
+	public static Juzgado listadoJuzgados(boolean popup, int style) {
+		ListadoJuzgados l = new ListadoJuzgados(popup, style);
 		UiApplication.getUiApplication().pushModalScreen(l.getScreen());
 		return l.getSelected();
 	}
 
-	public static Categoria listadoCategorias(boolean popup) {
-		ListadoCategorias l = new ListadoCategorias(popup);
+	public static Categoria listadoCategorias(boolean popup, int style) {
+		ListadoCategorias l = new ListadoCategorias(popup, style);
 		UiApplication.getUiApplication().pushModalScreen(l.getScreen());
 		return l.getSelected();
 	}
 
-	public static CampoPersonalizado listadoCampos(boolean popup) {
-		ListadoCampos l = new ListadoCampos(popup);
+	public static CampoPersonalizado listadoCampos(boolean popup, int style) {
+		ListadoCampos l = new ListadoCampos(popup, style);
+		UiApplication.getUiApplication().pushModalScreen(l.getScreen());
+		return l.getSelected();
+	}
+	
+	public static Proceso listadoProcesos(boolean popup, int style) {
+		ListadoProcesos l = new ListadoProcesos(popup, style);
 		UiApplication.getUiApplication().pushModalScreen(l.getScreen());
 		return l.getSelected();
 	}
@@ -314,6 +334,12 @@ public class Util {
 		NuevaPersona n = new NuevaPersona(tipo);
 		UiApplication.getUiApplication().pushModalScreen(n.getScreen());
 		return n.getPersona();
+	}
+	
+	public static Proceso nuevoProceso() {
+		NuevoProceso n = new NuevoProceso();
+		UiApplication.getUiApplication().pushModalScreen(n.getScreen());
+		return n.getProceso();
 	}
 
 	public static String calendarToString(Calendar calendar, boolean largo) {

@@ -52,15 +52,22 @@ public class NuevaCategoria {
 			_screen.alert("El campo Descripción es obligatorio");
 		} else {
 			_categoria = new Categoria(descripcion);
-			try {
-				new Persistence().guardarCategoria(_categoria);
-				UiApplication.getUiApplication().popScreen(getScreen());
-			} catch (NullPointerException e) {
-				_screen.alert(Util.noSDString());
-				System.exit(0);
-			} catch (Exception e) {
-				_screen.alert(e.toString());
-			}
+			Util.popWaitScreen();
+			UiApplication.getUiApplication().invokeLater(new Runnable() {
+				
+				public void run() {
+					try {
+						new Persistence().guardarCategoria(_categoria);
+						UiApplication.getUiApplication().popScreen(getScreen());
+					} catch (NullPointerException e) {
+						_screen.alert(Util.noSDString());
+						System.exit(0);
+					} catch (Exception e) {
+						_screen.alert(e.toString());
+					}
+					Util.popWaitScreen();
+				}
+			});
 		}
 	}
 

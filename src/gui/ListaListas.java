@@ -12,12 +12,12 @@ import net.rim.device.api.ui.component.KeywordProvider;
 import net.rim.device.api.ui.component.ListField;
 import net.rim.device.api.ui.component.ListFieldCallback;
 
-public abstract class ListaListas extends KeywordFilterField {
+public abstract class ListaListas extends KeywordFilterField implements ListFieldCallback{
 	private Unsorted _u;
 
 	public ListaListas() {
 		super();
-		setCallback(new Callback());
+		setCallback(this);
 		_u = new Unsorted();
 		setLabel("Buscar: ");
 	}
@@ -75,6 +75,32 @@ public abstract class ListaListas extends KeywordFilterField {
 		_u.delete(element);
 		updateList();
 	}
+	
+	public void drawListRow(ListField listField, Graphics graphics, int index,
+			int y, int width) {
+		ReadableList r = ((ListaListas) listField).getResultList();
+		if (String.class.isInstance(r.getAt(index))) {
+			graphics.setFont(graphics.getFont().derive(Font.BOLD));
+			int color = graphics.getColor();
+			graphics.setColor(Color.LIGHTGRAY);
+			graphics.drawLine(5, listField.getRowHeight() + y - 1,
+					listField.getWidth() - 5, listField.getRowHeight() + y - 1);
+			graphics.setColor(color);
+		}
+		graphics.drawText(r.getAt(index).toString(), 0, y);
+	}
+
+	public Object get(ListField listField, int index) {
+		return null;
+	}
+
+	public int getPreferredWidth(ListField listField) {
+		return 0;
+	}
+
+	public int indexOfList(ListField listField, String prefix, int start) {
+		return 0;
+	}
 }
 
 class Unsorted extends UnsortedReadableList {
@@ -105,34 +131,4 @@ class Unsorted extends UnsortedReadableList {
 	public void update(Object old, Object nw) {
 		doUpdate(old, nw);
 	}
-}
-
-class Callback implements ListFieldCallback {
-
-	public void drawListRow(ListField listField, Graphics graphics, int index,
-			int y, int width) {
-		ReadableList r = ((ListaListas) listField).getResultList();
-		if (String.class.isInstance(r.getAt(index))) {
-			graphics.setFont(graphics.getFont().derive(Font.BOLD));
-			int color = graphics.getColor();
-			graphics.setColor(Color.LIGHTGRAY);
-			graphics.drawLine(5, listField.getRowHeight() + y - 1,
-					listField.getWidth() - 5, listField.getRowHeight() + y - 1);
-			graphics.setColor(color);
-		}
-		graphics.drawText(r.getAt(index).toString(), 0, y);
-	}
-
-	public Object get(ListField listField, int index) {
-		return null;
-	}
-
-	public int getPreferredWidth(ListField listField) {
-		return 0;
-	}
-
-	public int indexOfList(ListField listField, String prefix, int start) {
-		return 0;
-	}
-
 }

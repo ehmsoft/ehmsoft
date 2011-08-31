@@ -1,7 +1,6 @@
 package gui.Ver;
 
 import gui.Util;
-import gui.Listados.ListadoActuaciones;
 
 import java.util.Enumeration;
 import java.util.Vector;
@@ -11,17 +10,16 @@ import net.rim.device.api.ui.FieldChangeListener;
 import net.rim.device.api.ui.UiApplication;
 import net.rim.device.api.util.CloneableVector;
 import persistence.Persistence;
-import core.Actuacion;
 import core.CampoPersonalizado;
 import core.Categoria;
 import core.Juzgado;
 import core.Persona;
-import core.Proceso;
+import core.Plantilla;
 
-public class VerProceso {
+public class VerPlantilla {
 
-	private VerProcesoScreen _screen;
-	private Proceso _proceso;
+	private VerPlantillaScreen _screen;
+	private Plantilla _plantilla;
 
 	private Persona _demandante;
 	private Persona _demandado;
@@ -33,38 +31,43 @@ public class VerProceso {
 	private Juzgado _juzgadoVacio;
 	private Categoria _categoriaVacia;
 
-	private Vector _actuaciones;
 	private Vector _campos;
 	private Vector _camposNuevos;
 	private Vector _camposEliminados;
 	private Vector _camposOriginales;
 
-	public VerProceso(Proceso proceso) {
+	public VerPlantilla(Plantilla plantilla) {
 		_camposNuevos = new Vector();
 		_camposEliminados = new Vector();
-		_proceso = proceso;
-		_demandante = _proceso.getDemandante();
-		_demandado = _proceso.getDemandado();
-		_juzgado = _proceso.getJuzgado();
-		_actuaciones = _proceso.getActuaciones();
-		_campos = _proceso.getCampos();
-		_camposOriginales = CloneableVector.clone(_campos);
-		_categoria = _proceso.getCategoria();
+		_plantilla = plantilla;
+		_demandante = _plantilla.getDemandante();
+		_demandado = _plantilla.getDemandado();
+		_juzgado = _plantilla.getJuzgado();
+		_categoria = _plantilla.getCategoria();
+		
+		try {
+			_campos = new Persistence().consultarCamposPlantilla(_plantilla);
+		} catch (NullPointerException e) {
+			Util.noSd();
+		} catch (Exception e) {
+			Util.alert(e.toString());
+		}
+		if(_campos != null) {
+			_camposOriginales = CloneableVector.clone(_campos);
+		}
+		_plantilla.setCampos(_campos);
 
-		_screen = new VerProcesoScreen();
-		_screen.setFecha(_proceso.getFecha().getTime());
-		_screen.setRadicado(_proceso.getRadicado());
-		_screen.setRadicadoUnico(_proceso.getRadicadoUnico());
-		_screen.setEstado(_proceso.getEstado());
-		_screen.setTipo(_proceso.getTipo());
-		_screen.setNotas(_proceso.getNotas());
-		_screen.setPrioridad(_proceso.getPrioridad());
+		_screen = new VerPlantillaScreen();
+		_screen.setNombre(_plantilla.getNombre());
+		_screen.setRadicado(_plantilla.getRadicado());
+		_screen.setRadicadoUnico(_plantilla.getRadicadoUnico());
+		_screen.setEstado(_plantilla.getEstado());
+		_screen.setTipo(_plantilla.getTipo());
+		_screen.setNotas(_plantilla.getNotas());
+		_screen.setPrioridad(_plantilla.getPrioridad());
 		_screen.setDemandante(_demandante.getNombre());
 		_screen.setDemandado(_demandado.getNombre());
 		_screen.setJuzgado(_juzgado.getNombre());
-		Object[] actuaciones = new Object[_actuaciones.size()];
-		_actuaciones.copyInto(actuaciones);
-		_screen.setActuaciones(actuaciones);
 		_screen.setCategoria(_categoria.getDescripcion());
 		if (_campos != null) {
 			Enumeration e = _campos.elements();
@@ -80,7 +83,7 @@ public class VerProceso {
 
 		public void fieldChanged(Field field, int context) {
 			if (context == Util.GUARDAR) {
-				actualizarProceso();
+				actualizarPlantilla();
 			} else if (context == Util.ADD_CAMPO) {
 				addCampo();
 			} else if (context == Util.ELIMINAR_DEMANDANTE) {
@@ -97,8 +100,6 @@ public class VerProceso {
 				verJuzgado();
 			} else if (context == Util.VER_CATEGORIA) {
 				verCategoria();
-			} else if (context == Util.VER_ACTUACION) {
-				verActuacion();
 			} else if (context == Util.ADD_DEMANDANTE) {
 				addDemandante();
 			} else if (context == Util.ADD_DEMANDADO) {
@@ -107,8 +108,6 @@ public class VerProceso {
 				addJuzgado();
 			} else if (context == Util.ADD_CATEGORIA) {
 				addCategoria();
-			} else if (context == Util.NEW_ACTUACION) {
-				newActuacion();
 			} else if (context == Util.CERRAR) {
 				cerrarPantalla();
 			} else if (context == Util.VER_CAMPO) {
@@ -116,30 +115,22 @@ public class VerProceso {
 			} else if (context == Util.ELIMINAR_CAMPO) {
 				eliminarCampo();
 			} else if (context == Util.ELIMINAR) {
-				eliminarProceso();
-			} else if (context == Util.VER_LISTADO_ACTUACIONES) {
-				verListadoActuaciones();
+				eliminarPlantilla();
 			}
 		}
 	};
 
-	public Proceso getProceso() {
-		return _proceso;
+	public Plantilla getPlantilla() {
+		return _plantilla;
 	}
 
-	public VerProcesoScreen getScreen() {
+	public VerPlantillaScreen getScreen() {
 		return _screen;
 	}
 
-	private void actualizarProceso() {
+	private void actualizarPlantilla() {
 		getValoresCampos();
-		if (_demandante == null) {
-			_screen.alert("El Demandante es obligatorio");
-		} else if (_demandado == null) {
-			_screen.alert("El Demandado es obligatorio");
-		} else if (_juzgado == null) {
-			_screen.alert("El juzgado es obligatorio");
-		} else if (isCampoObligatorio()) {
+		if (isCampoObligatorio()) {
 		} else if (checkLong()) {
 		} else {
 			if (_camposNuevos.size() != 0) {
@@ -149,18 +140,19 @@ public class VerProceso {
 				eliminarCampos();
 			}
 			concatCampos();
-			Proceso proceso = new Proceso(_demandante, _demandado,
-					_screen.getFecha(), _juzgado, _screen.getRadicado(),
-					_screen.getRadicadoUnico(), _actuaciones,
-					_screen.getEstado(), _categoria, _screen.getTipo(),
-					_screen.getNotas(), _campos, _screen.getPrioridad());
-			if (!proceso.equals(_proceso)) {
-				_proceso = proceso;
+			Plantilla plantilla = new Plantilla(_screen.getNombre(),
+					_plantilla.getId_plantilla(), _demandante, _demandado,
+					_juzgado, _screen.getRadicado(),
+					_screen.getRadicadoUnico(), _screen.getEstado(),
+					_categoria, _screen.getTipo(), _screen.getNotas(), _campos,
+					_screen.getPrioridad());
+			if (!plantilla.equals(_plantilla)) {
+				_plantilla = plantilla;
 				UiApplication.getUiApplication().invokeLater(new Runnable() {
 
 					public void run() {
 						try {
-							new Persistence().actualizarProceso(_proceso);
+							new Persistence().actualizarPlantilla(_plantilla);
 						} catch (NullPointerException e1) {
 							Util.noSd();
 						} catch (Exception e1) {
@@ -173,7 +165,7 @@ public class VerProceso {
 					Persistence p = new Persistence();
 					Enumeration e = _campos.elements();
 					while (e.hasMoreElements()) {
-						p.actualizarCampoPersonalizado((CampoPersonalizado) e
+						p.actualizarCampoPlantilla((CampoPersonalizado) e
 								.nextElement());
 					}
 				} catch (NullPointerException e) {
@@ -193,12 +185,6 @@ public class VerProceso {
 		}
 	}
 
-	private void verListadoActuaciones() {
-		ListadoActuaciones l = new ListadoActuaciones(_proceso, true,
-				ListadoActuaciones.ON_CLICK_VER | ListadoActuaciones.NO_NUEVO);
-		UiApplication.getUiApplication().pushModalScreen(l.getScreen());
-	}
-
 	private boolean cambioCampos() {
 		if (_campos.equals(_camposOriginales)) {
 			return false;
@@ -212,7 +198,7 @@ public class VerProceso {
 		while (e.hasMoreElements()) {
 			try {
 				new Persistence()
-						.borrarCampoPersonalizado((CampoPersonalizado) e
+						.borrarCampoPlantilla((CampoPersonalizado) e
 								.nextElement());
 			} catch (NullPointerException e1) {
 				Util.noSd();
@@ -226,9 +212,9 @@ public class VerProceso {
 		Enumeration e = _camposNuevos.elements();
 		while (e.hasMoreElements()) {
 			try {
-				new Persistence().guardarCampoPersonalizado(
+				new Persistence().guardarCampoPlantilla(
 						(CampoPersonalizado) e.nextElement(),
-						_proceso.getId_proceso());
+						_plantilla.getId_plantilla());
 			} catch (NullPointerException e1) {
 				Util.noSd();
 			} catch (Exception e1) {
@@ -251,7 +237,15 @@ public class VerProceso {
 		CampoPersonalizado old = (CampoPersonalizado) _screen
 				.getCookieOfFocused();
 		nw = Util.verCampo(old);
-		if (!old.equals(nw)) {
+		if (nw == null) {
+			if (_campos.contains(old)) {
+				_campos.removeElement(old);
+			} else if (_camposNuevos.contains(old)) {
+				_camposNuevos.removeElement(old);
+			}
+			_screen.eliminarCampo();
+		}
+		else if (!old.equals(nw)) {
 			if (_campos.contains(old)) {
 				int index = _campos.indexOf(old);
 				_campos.removeElementAt(index);
@@ -262,13 +256,6 @@ public class VerProceso {
 				_camposNuevos.insertElementAt(nw, index);
 			}
 			_screen.modificarCampo(nw, nw.getNombre());
-		} else if (nw == null) {
-			if (_campos.contains(old)) {
-				_campos.removeElement(old);
-			} else if (_camposNuevos.contains(old)) {
-				_camposNuevos.removeElement(old);
-			}
-			_screen.eliminarCampo();
 		}
 	}
 
@@ -347,7 +334,7 @@ public class VerProceso {
 			CampoPersonalizado campo = (CampoPersonalizado) e.nextElement();
 			if (campo.isObligatorio().booleanValue()
 					&& campo.getValor().length() == 0) {
-				_screen.alert("El campo " + campo.getNombre()
+				Util.alert("El campo " + campo.getNombre()
 						+ " es obligatorio");
 				ret = true;
 			}
@@ -358,7 +345,7 @@ public class VerProceso {
 			CampoPersonalizado campo = (CampoPersonalizado) e.nextElement();
 			if (campo.isObligatorio().booleanValue()
 					&& campo.getValor().length() == 0) {
-				_screen.alert("El campo " + campo.getNombre()
+				Util.alert("El campo " + campo.getNombre()
 						+ " es obligatorio");
 				ret = true;
 			}
@@ -367,21 +354,18 @@ public class VerProceso {
 	}
 
 	private void getValoresCampos() {
-		for (int i = 0; i < _campos.size(); i++) {
-			Object[] arrayCampo = _screen.getCampo(i);
-			CampoPersonalizado campo = (CampoPersonalizado) arrayCampo[0];
-			String valor = (String) arrayCampo[1];
+		Object[][] campos = _screen.getCampos();
 
-			((CampoPersonalizado) _campos.elementAt(_campos.indexOf(campo)))
-					.setValor(valor);
-		}
-		for (int i = 0; i < _camposNuevos.size(); i++) {
-			Object[] arrayCampo = _screen.getCampo(i + _campos.size());
-			CampoPersonalizado campo = (CampoPersonalizado) arrayCampo[0];
-			String valor = (String) arrayCampo[1];
-
-			((CampoPersonalizado) _camposNuevos.elementAt(_camposNuevos
-					.indexOf(campo))).setValor(valor);
+		for (int i = 0; i < campos[0].length; i++) {
+			CampoPersonalizado campo = (CampoPersonalizado) campos[0][i];
+			String valor = (String) campos[1][i];
+			if (_campos.contains(campo)) {
+				((CampoPersonalizado) _campos.elementAt(_campos.indexOf(campo)))
+						.setValor(valor);
+			} else if (_camposNuevos.contains(campo)) {
+				((CampoPersonalizado) _camposNuevos.elementAt(_camposNuevos
+						.indexOf(campo))).setValor(valor);
+			}
 		}
 	}
 
@@ -426,7 +410,7 @@ public class VerProceso {
 			if (_demandante != null) {
 				_demandante = Util.verPersona(_demandante);
 				if (_demandante != null) {
-					_proceso.setDemandante(_demandante);
+					_plantilla.setDemandante(_demandante);
 					_screen.setDemandante(_demandante.getNombre());
 				} else {
 					if (_demandanteVacio == null) {
@@ -445,7 +429,7 @@ public class VerProceso {
 			if (_demandado != null) {
 				_demandado = Util.verPersona(_demandado);
 				if (_demandado != null) {
-					_proceso.setDemandado(_demandado);
+					_plantilla.setDemandado(_demandado);
 					_screen.setDemandado(_demandado.getNombre());
 				} else {
 					if (_demandadoVacio == null) {
@@ -464,7 +448,7 @@ public class VerProceso {
 			if (_juzgado != null) {
 				_juzgado = Util.verJuzgado(_juzgado);
 				if (_juzgado != null) {
-					_proceso.setJuzgado(_juzgado);
+					_plantilla.setJuzgado(_juzgado);
 					_screen.setJuzgado(_juzgado.getNombre());
 				} else {
 					if (_juzgadoVacio == null) {
@@ -489,23 +473,6 @@ public class VerProceso {
 				}
 				_screen.setCategoria(_categoriaVacia.getDescripcion());
 			}
-		}
-	}
-
-	private void verActuacion() {
-		Actuacion old = (Actuacion) _screen.getActuacion();
-		Actuacion nw;
-		if (old != null) {
-			nw = Util.verActuacion(old);
-			if (nw != null) {
-				_actuaciones.removeElement(old);
-				_actuaciones.addElement(nw);
-			} else {
-				_actuaciones.removeElement(old);
-			}
-			Object[] actuaciones = new Object[_actuaciones.size()];
-			_actuaciones.copyInto(actuaciones);
-			_screen.setActuaciones(actuaciones);
 		}
 	}
 
@@ -557,43 +524,34 @@ public class VerProceso {
 		}
 	}
 
-	private void newActuacion() {
-		Actuacion actuacion = Util.nuevaActuacion(_proceso);
-		if (actuacion != null) {
-			_actuaciones.addElement(actuacion);
-			Object[] actuaciones = new Object[_actuaciones.size()];
-			_actuaciones.copyInto(actuaciones);
-			_screen.setActuaciones(actuaciones);
-		}
-	}
-
-	private void eliminarProceso() {
+	private void eliminarPlantilla() {
 		Object[] ask = { "Aceptar", "Cancelar" };
-		int sel = _screen.ask(ask, Util.delBDProceso(), 1);
+		int sel = _screen.ask(ask, Util.delBDPlantilla(), 1);
 		if (sel == 0) {
 			try {
-				new Persistence().borrarProceso(_proceso);
+				new Persistence().borrarPlantilla(_plantilla);
 			} catch (NullPointerException e) {
 				Util.noSd();
 			} catch (Exception e) {
 				Util.alert(e.toString());
 			}
-			_proceso = null;
+			_plantilla = null;
 			Util.popScreen(_screen);
 		}
 	}
 
 	private void cerrarPantalla() {
-		Proceso proceso = new Proceso(_demandante, _demandado,
-				_screen.getFecha(), _juzgado, _screen.getRadicado(),
-				_screen.getRadicadoUnico(), _actuaciones, _screen.getEstado(),
+		Plantilla plantilla = new Plantilla(_screen.getNombre(),
+				_plantilla.getId_plantilla(), _demandante, _demandado,
+				_juzgado, _screen.getRadicado(),
+				_screen.getRadicadoUnico(), _screen.getEstado(),
 				_categoria, _screen.getTipo(), _screen.getNotas(), _campos,
 				_screen.getPrioridad());
-		if (!proceso.equals(_proceso)) {
+		if (!plantilla.equals(_plantilla)) {
 			Object[] ask = { "Guardar", "Descartar", "Cancelar" };
 			int sel = _screen.ask(ask, "Se han detectado cambios", 2);
 			if (sel == 0) {
-				actualizarProceso();
+				actualizarPlantilla();
 			} else if (sel == 1) {
 				Util.popScreen(_screen);
 			}

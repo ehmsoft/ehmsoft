@@ -147,7 +147,7 @@ public class VerActuacion {
 	}
 
 	private void addJuzgado() {
-		Juzgado juzgado = Util.listadoJuzgados(true);
+		Juzgado juzgado = Util.listadoJuzgados(true, 0);
 		if (juzgado != null) {
 			_juzgado = juzgado;
 			_screen.setJuzgado(_juzgado.getNombre());

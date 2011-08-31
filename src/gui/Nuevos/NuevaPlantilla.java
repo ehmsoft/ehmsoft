@@ -8,45 +8,45 @@ import java.util.Vector;
 import net.rim.device.api.ui.Field;
 import net.rim.device.api.ui.FieldChangeListener;
 import persistence.Persistence;
-import core.Actuacion;
 import core.CampoPersonalizado;
 import core.Categoria;
 import core.Juzgado;
 import core.Persona;
-import core.Proceso;
+import core.Plantilla;
 
-public class NuevoProceso {
+public class NuevaPlantilla {
 
-	private Proceso _proceso;
-	private NuevoProcesoScreen _screen;
+	private Plantilla _plantilla;
+	private NuevaPlantillaScreen _screen;
 
 	private Persona _demandante;
 	private Persona _demandado;
 	private Juzgado _juzgado;
-	private Vector _actuaciones;
 	private Vector _campos;
 	private Vector _categorias;
+
+	private Persona _demandanteVacio;
+	private Persona _demandadoVacio;
+	private Juzgado _juzgadoVacio;
 
 	/**
 	 * Se crea un NuevoProceso y le asocia una pantalla, con este objeto se
 	 * crearan nuevos Procesos
 	 */
-	public NuevoProceso() {
+	public NuevaPlantilla() {
 		_campos = new Vector();
-		_actuaciones = new Vector();
-		_screen = new NuevoProcesoScreen();
+		_demandanteVacio = Util.consultarPersonaVacia(1);
+		_demandadoVacio = Util.consultarPersonaVacia(2);
+		_juzgadoVacio = Util.consultarJuzgadoVacio();
+		_screen = new NuevaPlantillaScreen();
+
 		try {
 			Persistence p = new Persistence();
-
-			_screen.setDemandante(p.consultarPersona("1", 1).getNombre());
-			_screen.setDemandado(p.consultarPersona("1", 2).getNombre());
-			_screen.setJuzgado(p.consultarJuzgado("1").getNombre());
 
 			_categorias = p.consultarCategorias();
 			Categoria ninguna = p.consultarCategoria("1");
 			_categorias.removeElement(ninguna);
 			_categorias.insertElementAt(ninguna, 0);
-
 		} catch (NullPointerException e) {
 			Util.noSd();
 		} catch (Exception e) {
@@ -56,6 +56,9 @@ public class NuevoProceso {
 		Object[] categorias = new Object[_categorias.size()];
 		_categorias.copyInto(categorias);
 		_screen.addCategorias(categorias);
+		_screen.setDemandante(_demandanteVacio.getNombre());
+		_screen.setDemandado(_demandadoVacio.getNombre());
+		_screen.setJuzgado(_juzgadoVacio.getNombre());
 		_screen.setChangeListener(listener);
 	}
 
@@ -68,8 +71,12 @@ public class NuevoProceso {
 				addDemandado();
 			} else if (context == Util.ADD_JUZGADO) {
 				addJuzgado();
-			} else if (context == Util.NEW_ACTUACION) {
-				newActuacion();
+			} else if (context == Util.ELIMINAR_DEMANDANTE) {
+				eliminarDemandante();
+			} else if (context == Util.ELIMINAR_DEMANDADO) {
+				eliminarDemandado();
+			} else if (context == Util.ELIMINAR_JUZGADO) {
+				eliminarJuzgado();
 			} else if (context == Util.NEW_CATEGORIA) {
 				newCategoria();
 			} else if (context == Util.ADD_CATEGORIA) {
@@ -82,18 +89,20 @@ public class NuevoProceso {
 				eliminarCampo();
 			} else if (context == Util.CERRAR) {
 				cerrarPantalla();
+			}  else if (context == Util.VER_CAMPO) {
+				verCampo();
 			}
 		}
 	};
 
-	public Proceso getProceso() {
-		return _proceso;
+	public Plantilla getPlantilla() {
+		return _plantilla;
 	}
 
 	/**
 	 * @return La pantalla asociada al objeto
 	 */
-	public NuevoProcesoScreen getScreen() {
+	public NuevaPlantillaScreen getScreen() {
 		return _screen;
 	}
 
@@ -103,28 +112,31 @@ public class NuevoProceso {
 	 */
 	private void guardarProceso() {
 		getValoresCampos();
-		if (_demandante == null) {
-			_screen.alert("El Demandante es obligatorio");
-		} else if (_demandado == null) {
-			_screen.alert("El Demandado es obligatorio");
-		} else if (_juzgado == null) {
-			_screen.alert("El juzgado es obligatorio");
+		if(_screen.getNombre().equals("")) {
+			Util.alert("El campo Nombre es obligatorio");
 		} else if (isCampoObligatorio()) {
 		} else if (checkLonMin()) {
 		} else {
-			_proceso = new Proceso(_demandante, _demandado, _screen.getFecha(),
-					_juzgado, _screen.getRadicado(),
-					_screen.getRadicadoUnico(), _actuaciones,
-					_screen.getEstado(), (Categoria) _screen.getCategoria(),
-					_screen.getTipo(), _screen.getNotas(), _campos,
-					_screen.getPrioridad());
+			if(_demandante == null) {
+				_demandante = _demandanteVacio;
+			}
+			if(_demandado == null) {
+				_demandado = _demandadoVacio;
+			}
+			if(_juzgado == null) {
+				_juzgado = _juzgadoVacio;
+			}
+			_plantilla = new Plantilla(_screen.getNombre(), _demandante,
+					_demandado, _juzgado, _screen.getRadicado(),
+					_screen.getRadicadoUnico(), _screen.getEstado(),
+					(Categoria) _screen.getCategoria(), _screen.getTipo(),
+					_screen.getNotas(), _campos, _screen.getPrioridad());
 			try {
-				new Persistence().guardarProceso(_proceso);
+				new Persistence().guardarPlantilla(_plantilla);
 			} catch (NullPointerException e) {
-				_screen.alert(Util.noSDString());
-				System.exit(0);
+				Util.noSd();
 			} catch (Exception e) {
-				_screen.alert(e.toString());
+				Util.alert(e.toString());
 			}
 			Util.popScreen(_screen);
 		}
@@ -164,7 +176,7 @@ public class NuevoProceso {
 			CampoPersonalizado campo = (CampoPersonalizado) e.nextElement();
 			if (campo.isObligatorio().booleanValue()
 					&& campo.getValor().length() == 0) {
-				_screen.alert("El campo " + campo.getNombre()
+				Util.alert("El campo " + campo.getNombre()
 						+ " es obligatorio");
 				ret = true;
 				break;
@@ -174,11 +186,12 @@ public class NuevoProceso {
 	}
 
 	private void getValoresCampos() {
-		for (int i = 0; i < _campos.size(); i++) {
-			Object[] arrayCampo = _screen.getCampo(i);
-			CampoPersonalizado campo = (CampoPersonalizado) arrayCampo[0];
-			String valor = (String) arrayCampo[1];
 
+		Object[][] campos = _screen.getCampos();
+
+		for (int i = 0; i < campos[0].length; i++) {
+			CampoPersonalizado campo = (CampoPersonalizado) campos[0][i];
+			String valor = (String) campos[1][i];
 			((CampoPersonalizado) _campos.elementAt(_campos.indexOf(campo)))
 					.setValor(valor);
 		}
@@ -207,16 +220,20 @@ public class NuevoProceso {
 			_screen.setJuzgado(_juzgado.getNombre());
 		}
 	}
+	
+	private void eliminarDemandante() {
+		_demandante = null;
+		_screen.setDemandante(_demandanteVacio.getNombre());
+	}
 
-	private void newActuacion() {
-		Actuacion actuacion = Util.nuevaActuacion();
-		if (actuacion != null) {
-			_actuaciones.addElement(actuacion);
-			Object[] actuaciones = new Object[_actuaciones.size()];
-			_actuaciones.copyInto(actuaciones);
-			_screen.addActuaciones(actuaciones);
-			_screen.selectActuacion(_actuaciones.indexOf(actuacion));
-		}
+	private void eliminarDemandado() {
+		_demandado = null;
+		_screen.setDemandado(_demandadoVacio.getNombre());
+	}
+
+	private void eliminarJuzgado() {
+		_juzgado = null;
+		_screen.setJuzgado(_juzgadoVacio.getNombre());
 	}
 
 	private void addCategoria() {
@@ -239,7 +256,8 @@ public class NuevoProceso {
 	}
 
 	private void eliminarCampo() {
-
+		_campos.removeElement(_screen.getFocused());
+		_screen.eliminarCampo();
 	}
 
 	private void newCategoria() {
@@ -252,9 +270,26 @@ public class NuevoProceso {
 			_screen.selectCategoria(_categorias.indexOf(categoria));
 		}
 	}
+	
+	private void verCampo() {
+		CampoPersonalizado nw;
+		CampoPersonalizado old = (CampoPersonalizado) _screen.getFocused();
+		nw = Util.verCampo(old);
+		if (nw == null) {
+			eliminarCampo();
+		}
+		else if (!old.equals(nw)) {
+			if (_campos.contains(old)) {
+				int index = _campos.indexOf(old);
+				_campos.removeElementAt(index);
+				_campos.insertElementAt(nw, index);
+				_screen.modificarCampo(nw, nw.getNombre());
+			}
+		}
+	}
 
 	private void cerrarPantalla() {
-		if (_actuaciones.size() != 0 || _campos.size() != 0
+		if (_campos.size() != 0
 				|| _demandante != null || _demandado != null
 				|| _juzgado != null) {
 			Object[] ask = { "Guardar", "Descartar", "Cancelar" };
