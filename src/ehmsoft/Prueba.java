@@ -1,5 +1,6 @@
 package ehmsoft;
 
+import gui.Util;
 import gui.Listados.ListadoActuaciones;
 import gui.Listados.ListadoCampos;
 import gui.Listados.ListadoCategorias;
@@ -50,6 +51,8 @@ public class Prueba extends MainScreen {
 
 	public Prueba() {
 		super(MainScreen.VERTICAL_SCROLL | MainScreen.VERTICAL_SCROLLBAR);
+		
+		Util.verificarBD();
 
 		listadoActuaciones = new ButtonField("Listado de actuaciones");
 		listadoActuaciones.setChangeListener(listenerListadoActuaciones);

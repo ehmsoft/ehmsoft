@@ -23,8 +23,10 @@ import net.rim.device.api.ui.UiApplication;
 import net.rim.device.api.ui.UiEngine;
 import net.rim.device.api.ui.component.Dialog;
 import net.rim.device.api.ui.component.LabelField;
+import net.rim.device.api.ui.component.SeparatorField;
 import net.rim.device.api.ui.container.PopupScreen;
 import net.rim.device.api.ui.container.VerticalFieldManager;
+import persistence.ConnectionManager;
 import persistence.Persistence;
 import core.Actuacion;
 import core.CampoPersonalizado;
@@ -69,19 +71,43 @@ public class Util {
 	public static final int LLAMAR = 27;
 
 	public static PopupScreen WAIT_SCREEN;
+	
+	public static void verificarBD() {
+		pushWaitScreen();
+		WAIT_SCREEN.add(new SeparatorField());
+		WAIT_SCREEN.add(new LabelField("Creando la base de datos por primera vez, esto puede demorar algunos minutos"));
+		UiApplication.getUiApplication().invokeLater(new Runnable() {
+
+			public void run() {
+				try {
+					ConnectionManager c = new ConnectionManager();
+					c.prepararBD();
+					c = null;
+				} catch (NullPointerException e) {
+					noSd();
+				} catch (Exception e) {
+					alert(e.toString());
+				}
+				popWaitScreen();
+				WAIT_SCREEN.deleteRange(1, 2);
+			}
+		});
+	}
 
 	public static void popScreen(Screen screen) {
 		UiApplication.getUiApplication().popScreen(screen);
 	}
 
 	public static void pushWaitScreen() {
-		WAIT_SCREEN = new PopupScreen(new VerticalFieldManager());
-		WAIT_SCREEN.add(new LabelField("Procesando, espere porfavor..."));
+		if(WAIT_SCREEN == null) {
+			WAIT_SCREEN = new PopupScreen(new VerticalFieldManager());
+			WAIT_SCREEN.add(new LabelField("Procesando, espere porfavor..."));
+		}
 		UiApplication.getUiApplication().pushGlobalScreen(WAIT_SCREEN, 0,
 				UiEngine.GLOBAL_QUEUE);
 	}
 
-	public static void popModalScreen() {
+	public static void popWaitScreen() {
 		if (!WAIT_SCREEN.isDisplayed())
 			;
 		popScreen(WAIT_SCREEN);
