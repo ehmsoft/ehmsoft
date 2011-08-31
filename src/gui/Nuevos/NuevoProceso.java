@@ -13,6 +13,7 @@ import core.CampoPersonalizado;
 import core.Categoria;
 import core.Juzgado;
 import core.Persona;
+import core.Plantilla;
 import core.Proceso;
 
 public class NuevoProceso {
@@ -57,6 +58,29 @@ public class NuevoProceso {
 		_categorias.copyInto(categorias);
 		_screen.addCategorias(categorias);
 		_screen.setChangeListener(listener);
+	}
+	
+	public NuevoProceso(Plantilla plantilla) {
+		this();
+		_demandante = plantilla.getDemandante();
+		_demandado = plantilla.getDemandado();
+		_juzgado = plantilla.getJuzgado();
+		_campos = plantilla.getCampos();
+		_screen.setDemandante(_demandante.getNombre());
+		_screen.setDemandado(_demandado.getNombre());
+		_screen.setJuzgado(_juzgado.getNombre());
+		Enumeration e = _campos.elements();
+		while(e.hasMoreElements()) {
+			CampoPersonalizado campo = (CampoPersonalizado)e.nextElement();
+			_screen.addCampo(campo, campo.getNombre(), campo.getValor());
+		}
+		_screen.setRadicado(plantilla.getRadicado());
+		_screen.setRadicadoUnico(plantilla.getRadicadoUnico());
+		_screen.setEstado(plantilla.getEstado());
+		_screen.setCategoria(plantilla.getCategoria());
+		_screen.setTipo(plantilla.getTipo());
+		_screen.setNotas(plantilla.getNotas());
+		_screen.setPrioridad(plantilla.getPrioridad());
 	}
 
 	FieldChangeListener listener = new FieldChangeListener() {
@@ -174,11 +198,11 @@ public class NuevoProceso {
 	}
 
 	private void getValoresCampos() {
-		for (int i = 0; i < _campos.size(); i++) {
-			Object[] arrayCampo = _screen.getCampo(i);
-			CampoPersonalizado campo = (CampoPersonalizado) arrayCampo[0];
-			String valor = (String) arrayCampo[1];
+		Object[][] campos = _screen.getCampos();
 
+		for (int i = 0; i < campos[0].length; i++) {
+			CampoPersonalizado campo = (CampoPersonalizado) campos[0][i];
+			String valor = (String) campos[1][i];
 			((CampoPersonalizado) _campos.elementAt(_campos.indexOf(campo)))
 					.setValor(valor);
 		}

@@ -225,7 +225,7 @@ public class VerPlantillaScreen extends FondoNormal {
 		}
 	};
 
-	private final MenuItem menuEliminar = new MenuItem("Eliminar del proceso",
+	private final MenuItem menuEliminar = new MenuItem("Eliminar de la plantilla",
 			0, 0) {
 
 		public void run() {
@@ -304,7 +304,6 @@ public class VerPlantillaScreen extends FondoNormal {
 			}
 		}
 	};
-
 
 	public boolean onClose() {
 		fieldChangeNotify(Util.CERRAR);

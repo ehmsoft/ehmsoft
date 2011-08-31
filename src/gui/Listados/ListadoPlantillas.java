@@ -3,6 +3,7 @@ package gui.Listados;
 import gui.ListadosInterface;
 import gui.Util;
 import gui.Nuevos.NuevaPlantilla;
+import gui.Nuevos.NuevoProceso;
 
 import java.util.Vector;
 
@@ -83,9 +84,17 @@ public class ListadoPlantillas {
 				cerrarPantalla();
 			} else if (context == Util.ELIMINAR) {
 				eliminarPlantilla();
+			} else if (context == Util.NEW_PROCESO) {
+				nuevoProceso();
 			}
 		}
 	};
+	
+	private void nuevoProceso() {
+		NuevoProceso n = new NuevoProceso((Plantilla)_screen.getSelected());
+		Util.popScreen((Screen) _screen);
+		Util.pushModalScreen(n.getScreen());
+	}
 
 	private void addPlantillas() {
 		if (_vectorPlantillas != null) {

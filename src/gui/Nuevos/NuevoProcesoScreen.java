@@ -1,5 +1,6 @@
 package gui.Nuevos;
 
+import gui.EditableTextField;
 import gui.FondoNormal;
 import gui.Util;
 
@@ -12,12 +13,10 @@ import net.rim.device.api.ui.UiApplication;
 import net.rim.device.api.ui.component.BasicEditField;
 import net.rim.device.api.ui.component.DateField;
 import net.rim.device.api.ui.component.Dialog;
-import net.rim.device.api.ui.component.LabelField;
 import net.rim.device.api.ui.component.Menu;
 import net.rim.device.api.ui.component.NumericChoiceField;
 import net.rim.device.api.ui.component.ObjectChoiceField;
 import net.rim.device.api.ui.component.TextField;
-import net.rim.device.api.ui.container.HorizontalFieldManager;
 
 public class NuevoProcesoScreen extends FondoNormal {
 
@@ -26,9 +25,9 @@ public class NuevoProcesoScreen extends FondoNormal {
 	private ObjectChoiceField _chActuaciones;
 	private NumericChoiceField _chPrioridad;
 	private DateField _dtFecha;
-	private LabelField _lblDemandante;
-	private LabelField _lblDemandado;
-	private LabelField _lblJuzgado;
+	private EditableTextField _lblDemandante;
+	private EditableTextField _lblDemandado;
+	private EditableTextField _lblJuzgado;
 	private BasicEditField _txtTipo;
 	private BasicEditField _txtNotas;
 	private BasicEditField _txtRadicado;
@@ -44,23 +43,14 @@ public class NuevoProcesoScreen extends FondoNormal {
 		setTitle("Nuevo Proceso");
 		_txtCampos = new Vector();
 
-		HorizontalFieldManager fldDemandante = new HorizontalFieldManager();
-		_lblDemandante = new LabelField("*Ninguno*", Field.FOCUSABLE);
-		fldDemandante.add(new LabelField("Demandante: "));
-		fldDemandante.add(_lblDemandante);
-		add(fldDemandante);
-
-		HorizontalFieldManager fldDemandado = new HorizontalFieldManager();
-		_lblDemandado = new LabelField("*Ninguno*", Field.FOCUSABLE);
-		fldDemandado.add(new LabelField("Demandado: "));
-		fldDemandado.add(_lblDemandado);
-		add(fldDemandado);
-
-		HorizontalFieldManager fldJuzgado = new HorizontalFieldManager();
-		_lblJuzgado = new LabelField("*Ninguno*", Field.FOCUSABLE);
-		fldJuzgado.add(new LabelField("Juzgado: "));
-		fldJuzgado.add(_lblJuzgado);
-		add(fldJuzgado);
+		_lblDemandante = new EditableTextField("Demandante: ");
+		add(_lblDemandante);
+		
+		_lblDemandado = new EditableTextField("Demandado: ");
+		add(_lblDemandado);
+		
+		_lblJuzgado = new EditableTextField("Juzgado: ");
+		add(_lblJuzgado);
 
 		_txtRadicado = new BasicEditField(TextField.NO_NEWLINE);
 		_txtRadicado.setLabel("Radicado: ");
@@ -110,22 +100,26 @@ public class NuevoProcesoScreen extends FondoNormal {
 	}
 
 	public void addCampo(Object cookie, String nombre) {
+		addCampo(cookie, nombre, "");
+	}
+	
+	public void addCampo(Object cookie, String nombre, String valor) {
 		BasicEditField txt = new BasicEditField();
 		txt.setLabel(nombre + ": ");
+		txt.setText(valor);
 		txt.setCookie(cookie);
 		_txtCampos.addElement(txt);
 		add(txt);
 	}
 
-	public void eliminarCampo(int index) {
-		_txtCampos.removeElementAt(index);
-	}
-
-	public Object[] getCampo(int index) {
-		Object[] ret = new Object[2];
-		ret[0] = ((BasicEditField) _txtCampos.elementAt(index)).getCookie();
-		ret[1] = ((BasicEditField) _txtCampos.elementAt(index)).getText();
-		return ret;
+	public Object[][] getCampos() {
+		Object[][] campos = new Object[2][_txtCampos.size()];
+		for(int i = 0; i < _txtCampos.size(); i++) {
+			BasicEditField temp = (BasicEditField)_txtCampos.elementAt(i);
+			campos[0][i] = temp.getCookie();
+			campos[1][i] = temp.getText();
+		}
+		return campos;
 	}
 
 	public void addCategorias(Object[] categorias) {
@@ -248,6 +242,34 @@ public class NuevoProcesoScreen extends FondoNormal {
 
 	public void setJuzgado(String text) {
 		_lblJuzgado.setText(text);
+	}
+	
+	public void setCategoria(Object categoria) {
+		_chCategoria.setSelectedIndex(categoria);
+	}
+	
+	public void setPrioridad(int prioridad) {
+		_chPrioridad.setSelectedValue(prioridad);
+	}
+	
+	public void setEstado(String text) {
+		_txtEstado.setText(text);
+	}
+	
+	public void setNotas(String text) {
+		_txtNotas.setText(text);
+	}
+	
+	public void setRadicado(String text) {
+		_txtRadicado.setText(text);
+	}
+	
+	public void setRadicadoUnico(String text) {
+		_txtRadicadoUnico.setText(text);
+	}
+	
+	public void setTipo(String text) {
+		_txtTipo.setText(text);
 	}
 
 	/**

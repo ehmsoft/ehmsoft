@@ -73,8 +73,12 @@ public class Util {
 
 	public static final short CLICK = 24;
 	public static final int LLAMAR = 27;
+	
+	public static final short NEW_PROCESO = 28;
 
 	public static PopupScreen WAIT_SCREEN;
+	
+	public static UiApplication UI_Application;
 	
 	public static void verificarBD() {
 		pushWaitScreen();
@@ -99,7 +103,10 @@ public class Util {
 	}
 
 	public static void popScreen(Screen screen) {
-		UiApplication.getUiApplication().popScreen(screen);
+		if(UI_Application == null) {
+			UI_Application = UiApplication.getUiApplication();
+		}		
+		UI_Application.popScreen(screen);
 	}
 
 	public static void pushWaitScreen() {
@@ -380,5 +387,12 @@ public class Util {
 			string = string + ("PM");
 		}
 		return string;
+	}
+	
+	public static void pushModalScreen(Screen screen) {
+		if(UI_Application == null) {
+			UI_Application = UiApplication.getUiApplication();
+		}
+		UI_Application.pushModalScreen(screen);
 	}
 }
