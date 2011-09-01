@@ -1,6 +1,5 @@
 package core;
 
-import persistence.Persistence;
 import net.rim.device.api.ui.Font;
 
 public class Preferencias {
