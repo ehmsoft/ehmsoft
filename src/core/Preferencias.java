@@ -4,13 +4,7 @@ import persistence.Persistence;
 import net.rim.device.api.ui.Font;
 
 public class Preferencias {
-	private static boolean mostrarCampoBusqueda = true;
-	private static Font tipoFuente = Font.getDefault();
-	private static String nombreUsuario = "Usuario";
-	private static boolean mostrarTitulosPantallas = true;
-	private static boolean recodarUltimaCategoria = false;
-	private static int pantallaInicial = Persistence.LISTADO_PROCESOS;
-	private static int cantidadActuacionesCriticas = 10;
+	
 	
 	private static int LISTADO_ACTUACIONES_MAIN = 20111;
 	private static int LISTADO_ACTUACIONES_POP = 20112;
@@ -22,24 +16,34 @@ public class Preferencias {
 	private static int LISTADO_PERSONAS_POP = 20142;
 	private static int LISTADO_PROCESOS_MAIN = 20151;
 	private static int LISTADO_PROCESOS_POP = 20152;
-	private static int LISTADO_CATEGORÍAS_MAIN = 20171;
-	private static int LISTADO_CATEGORÍAS_POP = 20172;
-	private static int NUEVA_ACTUACIÓN_MAIN = 20211;
+	private static int LISTADO_CATEGORIAS_MAIN = 20171;
+	private static int LISTADO_CATEGORIAS_POP = 20172;
+	private static int NUEVA_ACTUACION_MAIN = 20211;
 	private static int NUEVO_CAMPO_MAIN = 20221;
 	private static int NUEVO_JUZGADO_MAIN = 20231;
 	private static int NUEVA_PERSONA_MAIN	= 20241;
 	private static int NUEVO_PROCESO_MAIN	= 20251;
 	private static int NUEVA_CITA_POPUP = 20262;
-	private static int NUEVA_CATEGORÍA_MAIN = 20271;
-	private static int NUEVA_CATEGORÍA_POP = 20272;
-	private static int VER_ACTUACIÓN_MAIN = 20211;	
+	private static int NUEVA_CATEGORIA_MAIN = 20271;
+	private static int NUEVA_CATEGORIA_POP = 20272;
+	private static int VER_ACTUACION_MAIN = 20211;	
 	private static int VER_CAMPO_MAIN	 = 20221;
 	private static int VER_JUZGADO_MAIN = 20231;
 	private static int VER_PERSONA_MAIN = 20241;
 	private static int VER_PROCESO_MAIN = 20251;
 	private static int VER_CITA_POP = 20262;
-	private static int VER_CATEGORÍA_MAIN = 20271;
-	private static int PANTALLA_INICIAL_MAIN = 20001;	
+	private static int VER_CATEGORIA_MAIN = 20271;
+	private static int PANTALLA_INICIAL_MAIN = 20001;
+	
+	private static boolean mostrarCampoBusqueda = true;
+	private static Font tipoFuente = Font.getDefault();
+	private static String nombreUsuario = "Usuario";
+	private static boolean mostrarTitulosPantallas = true;
+	private static boolean recodarUltimaCategoria = false;
+	private static int pantallaInicial = PANTALLA_INICIAL_MAIN;
+	private static int cantidadActuacionesCriticas = 10;
+	
+		
 
 	
 	
@@ -94,14 +98,14 @@ public class Preferencias {
 	public static int getLISTADO_PROCESOS_POP() {
 		return LISTADO_PROCESOS_POP;
 	}
-	public static int getLISTADO_CATEGORÍAS_MAIN() {
-		return LISTADO_CATEGORÍAS_MAIN;
+	public static int getLISTADO_CATEGORIAS_MAIN() {
+		return LISTADO_CATEGORIAS_MAIN;
 	}
-	public static int getLISTADO_CATEGORÍAS_POP() {
-		return LISTADO_CATEGORÍAS_POP;
+	public static int getLISTADO_CATEGORIAS_POP() {
+		return LISTADO_CATEGORIAS_POP;
 	}
-	public static int getNUEVA_ACTUACIÓN_MAIN() {
-		return NUEVA_ACTUACIÓN_MAIN;
+	public static int getNUEVA_ACTUACION_MAIN() {
+		return NUEVA_ACTUACION_MAIN;
 	}
 	public static int getNUEVO_CAMPO_MAIN() {
 		return NUEVO_CAMPO_MAIN;
@@ -118,14 +122,14 @@ public class Preferencias {
 	public static int getNUEVA_CITA_POPUP() {
 		return NUEVA_CITA_POPUP;
 	}
-	public static int getNUEVA_CATEGORÍA_MAIN() {
-		return NUEVA_CATEGORÍA_MAIN;
+	public static int getNUEVA_CATEGORIA_MAIN() {
+		return NUEVA_CATEGORIA_MAIN;
 	}
-	public static int getNUEVA_CATEGORÍA_POP() {
-		return NUEVA_CATEGORÍA_POP;
+	public static int getNUEVA_CATEGORIA_POP() {
+		return NUEVA_CATEGORIA_POP;
 	}
-	public static int getVER_ACTUACIÓN_MAIN() {
-		return VER_ACTUACIÓN_MAIN;
+	public static int getVER_ACTUACION_MAIN() {
+		return VER_ACTUACION_MAIN;
 	}
 	public static int getVER_CAMPO_MAIN() {
 		return VER_CAMPO_MAIN;
@@ -142,8 +146,8 @@ public class Preferencias {
 	public static int getVER_CITA_POP() {
 		return VER_CITA_POP;
 	}
-	public static int getVER_CATEGORÍA_MAIN() {
-		return VER_CATEGORÍA_MAIN;
+	public static int getVER_CATEGORIA_MAIN() {
+		return VER_CATEGORIA_MAIN;
 	}
 	public static int getPANTALLA_INICIAL_MAIN() {
 		return PANTALLA_INICIAL_MAIN;
@@ -178,14 +182,14 @@ public class Preferencias {
 	public static void setLISTADO_PROCESOS_POP(int lISTADO_PROCESOS_POP) {
 		LISTADO_PROCESOS_POP = lISTADO_PROCESOS_POP;
 	}
-	public static void setLISTADO_CATEGORÍAS_MAIN(int lISTADO_CATEGORÍAS_MAIN) {
-		LISTADO_CATEGORÍAS_MAIN = lISTADO_CATEGORÍAS_MAIN;
+	public static void setLISTADO_CATEGORIAS_MAIN(int lISTADO_CATEGORIAS_MAIN) {
+		LISTADO_CATEGORIAS_MAIN = lISTADO_CATEGORIAS_MAIN;
 	}
-	public static void setLISTADO_CATEGORÍAS_POP(int lISTADO_CATEGORÍAS_POP) {
-		LISTADO_CATEGORÍAS_POP = lISTADO_CATEGORÍAS_POP;
+	public static void setLISTADO_CATEGORIAS_POP(int lISTADO_CATEGORIAS_POP) {
+		LISTADO_CATEGORIAS_POP = lISTADO_CATEGORIAS_POP;
 	}
-	public static void setNUEVA_ACTUACIÓN_MAIN(int nUEVA_ACTUACIÓN_MAIN) {
-		NUEVA_ACTUACIÓN_MAIN = nUEVA_ACTUACIÓN_MAIN;
+	public static void setNUEVA_ACTUACION_MAIN(int nUEVA_ACTUACION_MAIN) {
+		NUEVA_ACTUACION_MAIN = nUEVA_ACTUACION_MAIN;
 	}
 	public static void setNUEVO_CAMPO_MAIN(int nUEVO_CAMPO_MAIN) {
 		NUEVO_CAMPO_MAIN = nUEVO_CAMPO_MAIN;
@@ -202,14 +206,14 @@ public class Preferencias {
 	public static void setNUEVA_CITA_POPUP(int nUEVA_CITA_POPUP) {
 		NUEVA_CITA_POPUP = nUEVA_CITA_POPUP;
 	}
-	public static void setNUEVA_CATEGORÍA_MAIN(int nUEVA_CATEGORÍA_MAIN) {
-		NUEVA_CATEGORÍA_MAIN = nUEVA_CATEGORÍA_MAIN;
+	public static void setNUEVA_CATEGORÍA_MAIN(int nUEVA_CATEGORIA_MAIN) {
+		NUEVA_CATEGORIA_MAIN = nUEVA_CATEGORIA_MAIN;
 	}
-	public static void setNUEVA_CATEGORÍA_POP(int nUEVA_CATEGORÍA_POP) {
-		NUEVA_CATEGORÍA_POP = nUEVA_CATEGORÍA_POP;
+	public static void setNUEVA_CATEGORIA_POP(int nUEVA_CATEGORIA_POP) {
+		NUEVA_CATEGORIA_POP = nUEVA_CATEGORIA_POP;
 	}
-	public static void setVER_ACTUACIÓN_MAIN(int vER_ACTUACIÓN_MAIN) {
-		VER_ACTUACIÓN_MAIN = vER_ACTUACIÓN_MAIN;
+	public static void setVER_ACTUACION_MAIN(int vER_ACTUACION_MAIN) {
+		VER_ACTUACION_MAIN = vER_ACTUACION_MAIN;
 	}
 	public static void setVER_CAMPO_MAIN(int vER_CAMPO_MAIN) {
 		VER_CAMPO_MAIN = vER_CAMPO_MAIN;
@@ -226,8 +230,8 @@ public class Preferencias {
 	public static void setVER_CITA_POP(int vER_CITA_POP) {
 		VER_CITA_POP = vER_CITA_POP;
 	}
-	public static void setVER_CATEGORÍA_MAIN(int vER_CATEGORÍA_MAIN) {
-		VER_CATEGORÍA_MAIN = vER_CATEGORÍA_MAIN;
+	public static void setVER_CATEGORIA_MAIN(int vER_CATEGORIA_MAIN) {
+		VER_CATEGORIA_MAIN = vER_CATEGORIA_MAIN;
 	}
 	public static void setPANTALLA_INICIAL_MAIN(int pANTALLA_INICIAL_MAIN) {
 		PANTALLA_INICIAL_MAIN = pANTALLA_INICIAL_MAIN;
