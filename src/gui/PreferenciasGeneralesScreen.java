@@ -1,5 +1,6 @@
 package gui;
 
+import core.Preferencias;
 import net.rim.device.api.ui.Field;
 import net.rim.device.api.ui.FieldChangeListener;
 import net.rim.device.api.ui.Font;
@@ -38,13 +39,28 @@ public class PreferenciasGeneralesScreen extends MainScreen {
 	private LabelField _lblRestaurarPrefs;
 	private ButtonField _btnRestaurarPrefs;
 	private int [] _significadoEstilos = {Font.PLAIN, Font.BOLD, Font.EXTRA_BOLD, Font.BOLD | Font.ITALIC, Font.ITALIC};
-	String [] _listaEstilos = {"Normal", "Negrita", "Extra negrita", "Negrita cursiva", "Cursiva"};
+	private String [] _listaEstilos = {"Normal", "Negrita", "Extra negrita", "Negrita cursiva", "Cursiva"};
+	private int [] _listaPantallas = {
+			 Preferencias.getLISTADO_CAMPOS_MAIN(),
+			 Preferencias.getLISTADO_JUZGADOS_MAIN(),	
+			 //Preferencias.getLISTADO_PERSONAS_MAIN(),	
+			 Preferencias.getLISTADO_PROCESOS_MAIN(),
+			 Preferencias.getLISTADO_CATEGORIAS_MAIN(),
+			 Preferencias.getLISTADO_DEMANDANTES_MAIN(),	
+			 Preferencias.getLISTADO_DEMANDADOS_MAIN(),
+			 Preferencias.getPANTALLA_INICIAL_MAIN()};
+	private String [] _nombresPantallas = {"Lista de Campos Personalizados", "Lista de Juzgados", "Lista de Procesos", 
+			"Lista de Categorías", "Lista de Categorías", "Lista de Demandantes", "Lista de Demandados", 
+			"Eventos próximos"};
 	public PreferenciasGeneralesScreen() {
 		super(MainScreen.VERTICAL_SCROLL | MainScreen.VERTICAL_SCROLLBAR);
 		_txtNombreUsuario = new BasicEditField("Nombre de Usuario: ", "");
 		_chkMostrarCampoBusqueda = new CheckboxField("Mostrar Búsqueda en todas las pantallas", false);
 		_chkMostrarTitulosPantalla = new CheckboxField("Mostrar los títulos de cada pantalla", false);
-		//TODO inicializar el campo chfPantallaInicial, de él depende txtCantidadActuaciones
+		//Pantalla Inicial
+		_chfPantallaInicial = new ObjectChoiceField("Pantalla Inicial: ", _nombresPantallas, _nombresPantallas.length -1);
+		_chfPantallaInicial.setChangeListener(listenerPantallaInicial);
+		
 		_chkRecordarUltimaCategoria = new CheckboxField("Recordar última categoría", false);
 		
 		//Fuentes
@@ -79,6 +95,8 @@ public class PreferenciasGeneralesScreen extends MainScreen {
 		add(_chkMostrarTitulosPantalla);
 		add(_chkRecordarUltimaCategoria);
 		add(new SeparatorField());
+		add(_chfPantallaInicial);
+		add(new SeparatorField());
 		add(_chfTipoFuente);
 		add(_chfTamanoFuente);
 		add(_chfEstiloFuente);
@@ -103,6 +121,16 @@ public class PreferenciasGeneralesScreen extends MainScreen {
 		_chkMostrarTitulosPantalla.setChecked(value);
 	}
 	
+	public void setPantallaInicial(int pantallaInicial){
+		int index = 0;
+		for(int i = 0; i<_listaPantallas.length; i++){
+			if(pantallaInicial == _listaPantallas[i]){
+				index = i;
+			}
+		}
+		_chfPantallaInicial.setSelectedIndex(index);
+	}
+	
 	public void setRecordarUltimaCategoria(boolean value) {
 		_chkRecordarUltimaCategoria.setChecked(value);
 	}
@@ -123,6 +151,10 @@ public class PreferenciasGeneralesScreen extends MainScreen {
 	
 	public boolean isMostrarTitulos() {
 		return _chkMostrarTitulosPantalla.getChecked();
+	}
+	
+	public int getPantallaInicial(){
+		return _listaPantallas[_chfPantallaInicial.getSelectedIndex()];
 	}
 	
 	public boolean isRecordarUltimaCategoria() {
