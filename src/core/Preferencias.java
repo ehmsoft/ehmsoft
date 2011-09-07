@@ -17,6 +17,10 @@ public class Preferencias {
 	private static int LISTADO_PROCESOS_POP = 20152;
 	private static int LISTADO_CATEGORIAS_MAIN = 20171;
 	private static int LISTADO_CATEGORIAS_POP = 20172;
+	private static int LISTADO_DEMANDANTES_MAIN = 20181;	
+	private static int LISTADO_DEMANDANTES_POP = 20182;
+	private static int LISTADO_DEMANDADOS_MAIN = 20191;	
+	private static int LISTADO_DEMANDADOS_POP = 20192;
 	private static int NUEVA_ACTUACION_MAIN = 20211;
 	private static int NUEVO_CAMPO_MAIN = 20221;
 	private static int NUEVO_JUZGADO_MAIN = 20231;
@@ -151,6 +155,30 @@ public class Preferencias {
 	public static int getPANTALLA_INICIAL_MAIN() {
 		return PANTALLA_INICIAL_MAIN;
 	}
+	public static int getLISTADO_DEMANDANTES_MAIN() {
+		return LISTADO_DEMANDANTES_MAIN;
+	}
+	public static int getLISTADO_DEMANDANTES_POP() {
+		return LISTADO_DEMANDANTES_POP;
+	}
+	public static int getLISTADO_DEMANDADOS_MAIN() {
+		return LISTADO_DEMANDADOS_MAIN;
+	}
+	public static int getLISTADO_DEMANDADOS_POP() {
+		return LISTADO_DEMANDADOS_POP;
+	}
+	public static void setLISTADO_DEMANDANTES_MAIN(int lISTADO_DEMANDANTES_MAIN) {
+		LISTADO_DEMANDANTES_MAIN = lISTADO_DEMANDANTES_MAIN;
+	}
+	public static void setLISTADO_DEMANDANTES_POP(int lISTADO_DEMANDANTES_POP) {
+		LISTADO_DEMANDANTES_POP = lISTADO_DEMANDANTES_POP;
+	}
+	public static void setLISTADO_DEMANDADOS_MAIN(int lISTADO_DEMANDADOS_MAIN) {
+		LISTADO_DEMANDADOS_MAIN = lISTADO_DEMANDADOS_MAIN;
+	}
+	public static void setLISTADO_DEMANDADOS_POP(int lISTADO_DEMANDADOS_POP) {
+		LISTADO_DEMANDADOS_POP = lISTADO_DEMANDADOS_POP;
+	}
 	public static void setLISTADO_ACTUACIONES_MAIN(int lISTADO_ACTUACIONES_MAIN) {
 		LISTADO_ACTUACIONES_MAIN = lISTADO_ACTUACIONES_MAIN;
 	}
@@ -205,7 +233,7 @@ public class Preferencias {
 	public static void setNUEVA_CITA_POPUP(int nUEVA_CITA_POPUP) {
 		NUEVA_CITA_POPUP = nUEVA_CITA_POPUP;
 	}
-	public static void setNUEVA_CATEGORÍA_MAIN(int nUEVA_CATEGORIA_MAIN) {
+	public static void setNUEVA_CATEGORIA_MAIN(int nUEVA_CATEGORIA_MAIN) {
 		NUEVA_CATEGORIA_MAIN = nUEVA_CATEGORIA_MAIN;
 	}
 	public static void setNUEVA_CATEGORIA_POP(int nUEVA_CATEGORIA_POP) {
