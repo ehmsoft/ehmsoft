@@ -47,10 +47,12 @@ public class PreferenciasGenerales {
 	}
 	
 	private void copiaDeSeguridad() {
+		//TODO Acciones para realizar copia de seguridad
 		Util.popScreen(_screen);
 	}
 	
 	private void restaurarPreferencias() {
+		//TODO Acciones para restaurar preferencias por defecto
 		Util.popScreen(_screen);
 	}
 }

@@ -59,7 +59,6 @@ public class PreferenciasGeneralesScreen extends MainScreen {
 		_chkMostrarTitulosPantalla = new CheckboxField("Mostrar los títulos de cada pantalla", false);
 		//Pantalla Inicial
 		_chfPantallaInicial = new ObjectChoiceField("Pantalla Inicial: ", _nombresPantallas, _nombresPantallas.length -1);
-		_chfPantallaInicial.setChangeListener(listenerPantallaInicial);
 		
 		_chkRecordarUltimaCategoria = new CheckboxField("Recordar última categoría", false);
 		
@@ -101,9 +100,10 @@ public class PreferenciasGeneralesScreen extends MainScreen {
 		add(_chfTamanoFuente);
 		add(_chfEstiloFuente);
 		add(_txtEjemploFuente);
-		add(new SeparatorField());
+
 		add(_lblCopiaSeguridad);
 		add(_btnCopiaSeguridad);
+		add(new SeparatorField());
 		add(_lblRestaurarPrefs);
 		add(_btnRestaurarPrefs);
 	
@@ -169,13 +169,6 @@ public class PreferenciasGeneralesScreen extends MainScreen {
 		return font;
 	}
 	
-	private FieldChangeListener listenerPantallaInicial = new FieldChangeListener() {
-		
-		public void fieldChanged(Field field, int context) {
-			// Listener Pantalla Inicial
-			
-		}
-	};
 	private FieldChangeListener listenerTipoFuente = new FieldChangeListener() {
 		
 		public void fieldChanged(Field field, int context) {
@@ -215,9 +208,9 @@ public class PreferenciasGeneralesScreen extends MainScreen {
 			String[] choices = {"Sí", "No"};
 			int eleccion = Dialog.ask("Está seguro que desea restaurar las preferencias por defecto?", choices, 1);
 			if(eleccion == 0){
-				// TODO Listener Preferencias por defecto
+				fieldChangeNotify(Util.RESTAURAR_PREFERENCIAS);
 			}
-			fieldChangeNotify(Util.RESTAURAR_PREFERENCIAS);
+			
 		}
 	};
 	
@@ -234,6 +227,6 @@ public class PreferenciasGeneralesScreen extends MainScreen {
 
 	protected boolean onSave(){
 		fieldChangeNotify(Util.GUARDAR);
-		return false;
+		return true;
 	}
 }
