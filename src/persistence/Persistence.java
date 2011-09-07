@@ -2123,40 +2123,7 @@ public void borrarPreferencias() throws Exception {
 
 	public Preferencias consultarPreferencias(Preferencias preferencia)
 			throws Exception {
-		Database d = null;
-		Vector campos = new Vector();
-		try {
-			connMgr.prepararBD();
-			d = DatabaseFactory.open(connMgr.getDbLocation());
-			Statement st = d
-					.createStatement("SELECT at.id_atributo_plantilla, at.id_atributo, at.valor, a.nombre,a.obligatorio,a.longitud_max, a.longitud_min FROM atributos_plantilla at, atributos a WHERE at.id_atributo = a.id_atributo AND at.id_plantilla = ?");
-			st.prepare();
-			st.bind(1, plantilla.getId_plantilla());
-			Cursor cursor = st.getCursor();
-			while (cursor.next()) {
-				Row row = cursor.getRow();
-				int id_atributo_plantilla = row.getInteger(0);
-				int id_atributo = row.getInteger(1);
-				String valor = row.getString(2);
-				String nombre = row.getString(3);
-				boolean obligatorio = row.getBoolean(4);
-				int longitud_max = row.getInteger(5);
-				int longitud_min = row.getInteger(6);
-				CampoPersonalizado campo = new CampoPersonalizado(Integer.toString(id_atributo_plantilla), Integer.toString(id_atributo), nombre, valor, new Boolean(obligatorio), longitud_max, longitud_min);
-				campos.addElement(campo);
-			}
-			st.close();
-			cursor.close();
-		} catch (Exception e) {
-			throw e;
-		} finally {
-			if (d != null) {
-				d.close();
-			}
-		}
-		return campos;
-		// TODO Auto-generated method stub
-		return null;
+				return preferencia;
 	}
 
 	
