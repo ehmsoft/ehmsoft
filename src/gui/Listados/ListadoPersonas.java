@@ -168,4 +168,14 @@ public class ListadoPersonas {
 		}
 		UiApplication.getUiApplication().popScreen((Screen)_screen);
 	}
+	
+	public String toString() {
+		if(_tipo == 1) {
+			return "Lista de demandantes";
+		} else if(_tipo == 2) {
+			return "Lista de demandados";
+		} else {
+			return "Lista de personas";
+		}
+	}
 }
