@@ -42,6 +42,7 @@ public class PreferenciasGenerales {
 		Preferencias.setMostrarTitulosPantallas(_screen.isMostrarTitulos());
 		Preferencias.setRecodarUltimaCategoria(_screen.isRecordarUltimaCategoria());
 		Preferencias.setTipoFuente(_screen.getFuente());
+		Preferencias.setPantallaInicial(_screen.getPantallaInicial());
 		Util.popScreen(_screen);
 	}
 	
