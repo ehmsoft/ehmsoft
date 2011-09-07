@@ -1,7 +1,7 @@
 package ehmsoft;
 
+import gui.About;
 import gui.PreferenciasGenerales;
-import gui.PreferenciasGeneralesScreen;
 import gui.Listados.ListadoActuaciones;
 import gui.Listados.ListadoCampos;
 import gui.Listados.ListadoCategorias;
@@ -19,7 +19,10 @@ import gui.Ver.VerPersona;
 import gui.Ver.VerProceso;
 import net.rim.device.api.ui.Field;
 import net.rim.device.api.ui.FieldChangeListener;
+import net.rim.device.api.ui.TransitionContext;
+import net.rim.device.api.ui.Ui;
 import net.rim.device.api.ui.UiApplication;
+import net.rim.device.api.ui.UiEngineInstance;
 import net.rim.device.api.ui.component.ButtonField;
 import net.rim.device.api.ui.component.Dialog;
 import net.rim.device.api.ui.container.MainScreen;
@@ -52,6 +55,7 @@ public class Prueba extends MainScreen {
 	ButtonField verDemandado;
 	ButtonField verProceso;
 
+	ButtonField acerca;
 	public Prueba() {
 		super(MainScreen.VERTICAL_SCROLL | MainScreen.VERTICAL_SCROLLBAR);
 		
@@ -131,6 +135,9 @@ public class Prueba extends MainScreen {
 		verProceso.setChangeListener(listenerVerProceso);
 		add(verProceso);
 		
+		acerca = new ButtonField("Acerca de");
+		acerca.setChangeListener(listenerAcerca);
+		add(acerca);
 
 	}
 	
@@ -362,6 +369,20 @@ public class Prueba extends MainScreen {
 			}
 			VerProceso ver = new VerProceso(proceso);
 			UiApplication.getUiApplication().pushModalScreen(ver.getScreen());
+		}
+	};
+	private FieldChangeListener listenerAcerca = new FieldChangeListener() {
+		
+		public void fieldChanged(Field field, int context) {
+			TransitionContext transition = new TransitionContext(TransitionContext.TRANSITION_SLIDE);
+		    transition.setIntAttribute(TransitionContext.ATTR_DURATION, 500);
+		    transition.setIntAttribute(TransitionContext.ATTR_DIRECTION, TransitionContext.DIRECTION_DOWN);
+		    transition.setIntAttribute(TransitionContext.ATTR_STYLE, TransitionContext.STYLE_OVER);
+		    About nextScreen = new About();
+		    UiEngineInstance engine = Ui.getUiEngineInstance();
+		    engine.setTransition(null, nextScreen, UiEngineInstance.TRIGGER_PUSH, transition);
+			UiApplication.getUiApplication().pushModalScreen(nextScreen);
+			
 		}
 	};
 	
