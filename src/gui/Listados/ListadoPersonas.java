@@ -72,6 +72,14 @@ public class ListadoPersonas {
 				_screen.addElement("Crear nuevo demandado", 0);
 			}
 		}
+		if ((_style & ON_CLICK_VER) != ON_CLICK_VER
+				&& (_style & ON_CLICK_SELECT) != ON_CLICK_SELECT) {
+			if (popup) {
+				_style = _style | ON_CLICK_SELECT;
+			} else {
+				_style = _style | ON_CLICK_VER;
+			}
+		}
 	}
 
 	private FieldChangeListener listener = new FieldChangeListener() {

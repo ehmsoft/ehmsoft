@@ -66,6 +66,14 @@ public class ListadoActuaciones {
 		if ((_style & NO_NUEVO) != NO_NUEVO) {
 			_screen.addElement("Crear nueva actuación", 0);
 		}
+		if ((_style & ON_CLICK_VER) != ON_CLICK_VER
+				&& (_style & ON_CLICK_SELECT) != ON_CLICK_SELECT) {
+			if (popup) {
+				_style = _style | ON_CLICK_SELECT;
+			} else {
+				_style = _style | ON_CLICK_VER;
+			}
+		}
 	}
 
 	FieldChangeListener listener = new FieldChangeListener() {
