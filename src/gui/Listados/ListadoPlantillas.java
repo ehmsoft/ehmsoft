@@ -89,9 +89,9 @@ public class ListadoPlantillas {
 			}
 		}
 	};
-	
+
 	private void nuevoProceso() {
-		NuevoProceso n = new NuevoProceso((Plantilla)_screen.getSelected());
+		NuevoProceso n = new NuevoProceso((Plantilla) _screen.getSelected());
 		Util.popScreen((Screen) _screen);
 		Util.pushModalScreen(n.getScreen());
 	}

@@ -45,10 +45,10 @@ public class NuevoProcesoScreen extends FondoNormal {
 
 		_lblDemandante = new EditableTextField("Demandante: ");
 		add(_lblDemandante);
-		
+
 		_lblDemandado = new EditableTextField("Demandado: ");
 		add(_lblDemandado);
-		
+
 		_lblJuzgado = new EditableTextField("Juzgado: ");
 		add(_lblJuzgado);
 
@@ -102,7 +102,7 @@ public class NuevoProcesoScreen extends FondoNormal {
 	public void addCampo(Object cookie, String nombre) {
 		addCampo(cookie, nombre, "");
 	}
-	
+
 	public void addCampo(Object cookie, String nombre, String valor) {
 		BasicEditField txt = new BasicEditField();
 		txt.setLabel(nombre + ": ");
@@ -114,8 +114,8 @@ public class NuevoProcesoScreen extends FondoNormal {
 
 	public Object[][] getCampos() {
 		Object[][] campos = new Object[2][_txtCampos.size()];
-		for(int i = 0; i < _txtCampos.size(); i++) {
-			BasicEditField temp = (BasicEditField)_txtCampos.elementAt(i);
+		for (int i = 0; i < _txtCampos.size(); i++) {
+			BasicEditField temp = (BasicEditField) _txtCampos.elementAt(i);
 			campos[0][i] = temp.getCookie();
 			campos[1][i] = temp.getText();
 		}
@@ -243,31 +243,31 @@ public class NuevoProcesoScreen extends FondoNormal {
 	public void setJuzgado(String text) {
 		_lblJuzgado.setText(text);
 	}
-	
+
 	public void setCategoria(Object categoria) {
 		_chCategoria.setSelectedIndex(categoria);
 	}
-	
+
 	public void setPrioridad(int prioridad) {
 		_chPrioridad.setSelectedValue(prioridad);
 	}
-	
+
 	public void setEstado(String text) {
 		_txtEstado.setText(text);
 	}
-	
+
 	public void setNotas(String text) {
 		_txtNotas.setText(text);
 	}
-	
+
 	public void setRadicado(String text) {
 		_txtRadicado.setText(text);
 	}
-	
+
 	public void setRadicadoUnico(String text) {
 		_txtRadicadoUnico.setText(text);
 	}
-	
+
 	public void setTipo(String text) {
 		_txtTipo.setText(text);
 	}

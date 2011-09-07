@@ -54,7 +54,7 @@ public class NuevaCategoria {
 			_categoria = new Categoria(descripcion);
 			Util.popWaitScreen();
 			UiApplication.getUiApplication().invokeLater(new Runnable() {
-				
+
 				public void run() {
 					try {
 						new Persistence().guardarCategoria(_categoria);

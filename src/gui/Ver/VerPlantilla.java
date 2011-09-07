@@ -44,7 +44,7 @@ public class VerPlantilla {
 		_demandado = _plantilla.getDemandado();
 		_juzgado = _plantilla.getJuzgado();
 		_categoria = _plantilla.getCategoria();
-		
+
 		try {
 			_campos = new Persistence().consultarCamposPlantilla(_plantilla);
 		} catch (NullPointerException e) {
@@ -52,7 +52,7 @@ public class VerPlantilla {
 		} catch (Exception e) {
 			Util.alert(e.toString());
 		}
-		if(_campos != null) {
+		if (_campos != null) {
 			_camposOriginales = CloneableVector.clone(_campos);
 		}
 		_plantilla.setCampos(_campos);
@@ -197,9 +197,8 @@ public class VerPlantilla {
 		Enumeration e = _camposEliminados.elements();
 		while (e.hasMoreElements()) {
 			try {
-				new Persistence()
-						.borrarCampoPlantilla((CampoPersonalizado) e
-								.nextElement());
+				new Persistence().borrarCampoPlantilla((CampoPersonalizado) e
+						.nextElement());
 			} catch (NullPointerException e1) {
 				Util.noSd();
 			} catch (Exception e1) {
@@ -244,8 +243,7 @@ public class VerPlantilla {
 				_camposNuevos.removeElement(old);
 			}
 			_screen.eliminarCampo();
-		}
-		else if (!old.equals(nw)) {
+		} else if (!old.equals(nw)) {
 			if (_campos.contains(old)) {
 				int index = _campos.indexOf(old);
 				_campos.removeElementAt(index);
@@ -334,8 +332,7 @@ public class VerPlantilla {
 			CampoPersonalizado campo = (CampoPersonalizado) e.nextElement();
 			if (campo.isObligatorio().booleanValue()
 					&& campo.getValor().length() == 0) {
-				Util.alert("El campo " + campo.getNombre()
-						+ " es obligatorio");
+				Util.alert("El campo " + campo.getNombre() + " es obligatorio");
 				ret = true;
 			}
 		}
@@ -345,8 +342,7 @@ public class VerPlantilla {
 			CampoPersonalizado campo = (CampoPersonalizado) e.nextElement();
 			if (campo.isObligatorio().booleanValue()
 					&& campo.getValor().length() == 0) {
-				Util.alert("El campo " + campo.getNombre()
-						+ " es obligatorio");
+				Util.alert("El campo " + campo.getNombre() + " es obligatorio");
 				ret = true;
 			}
 		}
@@ -543,10 +539,9 @@ public class VerPlantilla {
 	private void cerrarPantalla() {
 		Plantilla plantilla = new Plantilla(_screen.getNombre(),
 				_plantilla.getId_plantilla(), _demandante, _demandado,
-				_juzgado, _screen.getRadicado(),
-				_screen.getRadicadoUnico(), _screen.getEstado(),
-				_categoria, _screen.getTipo(), _screen.getNotas(), _campos,
-				_screen.getPrioridad());
+				_juzgado, _screen.getRadicado(), _screen.getRadicadoUnico(),
+				_screen.getEstado(), _categoria, _screen.getTipo(),
+				_screen.getNotas(), _campos, _screen.getPrioridad());
 		if (!plantilla.equals(_plantilla)) {
 			Object[] ask = { "Guardar", "Descartar", "Cancelar" };
 			int sel = _screen.ask(ask, "Se han detectado cambios", 2);

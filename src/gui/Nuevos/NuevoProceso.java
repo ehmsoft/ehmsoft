@@ -59,7 +59,7 @@ public class NuevoProceso {
 		_screen.addCategorias(categorias);
 		_screen.setChangeListener(listener);
 	}
-	
+
 	public NuevoProceso(Plantilla plantilla) {
 		this();
 		_demandante = plantilla.getDemandante();
@@ -70,8 +70,8 @@ public class NuevoProceso {
 		_screen.setDemandado(_demandado.getNombre());
 		_screen.setJuzgado(_juzgado.getNombre());
 		Enumeration e = _campos.elements();
-		while(e.hasMoreElements()) {
-			CampoPersonalizado campo = (CampoPersonalizado)e.nextElement();
+		while (e.hasMoreElements()) {
+			CampoPersonalizado campo = (CampoPersonalizado) e.nextElement();
 			_screen.addCampo(campo, campo.getNombre(), campo.getValor());
 		}
 		_screen.setRadicado(plantilla.getRadicado());

@@ -81,7 +81,7 @@ public class ListadoJuzgados {
 			}
 		}
 	};
-	
+
 	private void llamar() {
 		Object selected = _screen.getSelected();
 		if (!String.class.equals(selected)) {

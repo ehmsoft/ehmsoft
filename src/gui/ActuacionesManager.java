@@ -7,12 +7,9 @@ import java.util.Vector;
 import net.rim.device.api.ui.DrawStyle;
 import net.rim.device.api.ui.Field;
 import net.rim.device.api.ui.FocusChangeListener;
-import net.rim.device.api.ui.Font;
-import net.rim.device.api.ui.FontFamily;
 import net.rim.device.api.ui.component.BitmapField;
 import net.rim.device.api.ui.component.Dialog;
 import net.rim.device.api.ui.component.LabelField;
-import net.rim.device.api.ui.component.NullField;
 import net.rim.device.api.ui.component.SeparatorField;
 import net.rim.device.api.ui.container.HorizontalFieldManager;
 import net.rim.device.api.ui.container.VerticalFieldManager;
@@ -20,7 +17,7 @@ import persistence.Persistence;
 import core.Actuacion;
 
 public class ActuacionesManager {
-	
+
 	private VerticalFieldManager _vertical;
 	private ListadoActuacionesLista _lista;
 	private LabelField _juzgado;
@@ -32,12 +29,15 @@ public class ActuacionesManager {
 
 	public ActuacionesManager(int cant) {
 		_vertical = new VerticalFieldManager();
-		_vertical.setFont(_vertical.getFont().derive(_vertical.getFont().getStyle(), _vertical.getFont().getHeight() - 5));
+		_vertical.setFont(_vertical.getFont().derive(
+				_vertical.getFont().getStyle(),
+				_vertical.getFont().getHeight() - 5));
 		Persistence p;
 		_lista = new ListadoActuacionesLista();
-		_lista.setFont(_lista.getFont().derive(_lista.getFont().getStyle(), _lista.getFont().getHeight() - 8));
+		_lista.setFont(_lista.getFont().derive(_lista.getFont().getStyle(),
+				_lista.getFont().getHeight() - 8));
 		_lista.setRowHeight(_lista.getFont().getHeight() * 2);
-		
+
 		try {
 			p = new Persistence();
 			Vector v = p.consultarActuacionesCriticas(cant);
@@ -46,7 +46,7 @@ public class ActuacionesManager {
 			Dialog.alert(e.toString());
 		}
 		_lista.setFocusListener(listener);
-		
+
 		HorizontalFieldManager juzgado = new HorizontalFieldManager();
 		HorizontalFieldManager fecha = new HorizontalFieldManager();
 		VerticalFieldManager fechas = new VerticalFieldManager();
@@ -60,7 +60,7 @@ public class ActuacionesManager {
 		fechas.add(new LabelField("Fecha"));
 		fechas.add(new LabelField("próxima:"));
 		fechaP.add(fechas);
-		
+
 		_juzgado = new LabelField("", DrawStyle.RIGHT | Field.USE_ALL_WIDTH);
 		_fecha = new LabelField("", DrawStyle.RIGHT | Field.USE_ALL_WIDTH);
 		_fechaProxima = new LabelField("", DrawStyle.RIGHT
@@ -82,9 +82,9 @@ public class ActuacionesManager {
 		_vertical.add(new SeparatorField());
 		_vertical.add(alarma);
 	}
-	
+
 	private FocusChangeListener listener = new FocusChangeListener() {
-		
+
 		public void focusChanged(Field field, int context) {
 			try {
 				Actuacion a = (Actuacion) _lista.getSelectedElement();
@@ -105,12 +105,12 @@ public class ActuacionesManager {
 			} catch (NullPointerException e) {
 			}
 		}
-	};	
-	
+	};
+
 	public VerticalFieldManager getRight() {
 		return _vertical;
 	}
-	
+
 	public ListadoActuacionesLista getLeft() {
 		return _lista;
 	}

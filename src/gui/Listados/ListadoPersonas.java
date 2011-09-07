@@ -5,10 +5,8 @@ import gui.Util;
 
 import java.util.Vector;
 
-import net.rim.device.api.system.KeyListener;
 import net.rim.device.api.ui.Field;
 import net.rim.device.api.ui.FieldChangeListener;
-import net.rim.device.api.ui.Keypad;
 import net.rim.device.api.ui.Screen;
 import net.rim.device.api.ui.UiApplication;
 import persistence.Persistence;
@@ -92,7 +90,7 @@ public class ListadoPersonas {
 			}
 		}
 	};
-	
+
 	private void llamar() {
 		Object selected = _screen.getSelected();
 		if (!String.class.equals(selected)) {

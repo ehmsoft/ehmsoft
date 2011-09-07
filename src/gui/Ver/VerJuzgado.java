@@ -37,7 +37,7 @@ public class VerJuzgado {
 			}
 		}
 	};
-	
+
 	private void llamar() {
 		if (!_screen.getTelefono().equals("")) {
 			PhoneManager.call(_screen.getTelefono());

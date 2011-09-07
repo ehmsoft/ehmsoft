@@ -81,7 +81,7 @@ public class ListaCircular {
 			return temp;
 		}
 	}
-	
+
 	public class Nodo {
 		private Object _element;
 		private Nodo _siguiente;

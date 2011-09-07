@@ -13,24 +13,24 @@ public class ListadoJuzgadosScreen extends ListaScreen {
 		add(_lista);
 		addKeyListener(listener);
 	}
-	
+
 	private KeyListener listener = new KeyListener() {
-		
+
 		public boolean keyUp(int keycode, int time) {
 			// TODO Auto-generated method stub
 			return false;
 		}
-		
+
 		public boolean keyStatus(int keycode, int time) {
 			// TODO Auto-generated method stub
 			return false;
 		}
-		
+
 		public boolean keyRepeat(int keycode, int time) {
 			// TODO Auto-generated method stub
 			return false;
 		}
-		
+
 		public boolean keyDown(int keycode, int time) {
 			if (Keypad.key(keycode) == Keypad.KEY_SEND) {
 				fieldChangeNotify(Util.LLAMAR);
@@ -39,7 +39,7 @@ public class ListadoJuzgadosScreen extends ListaScreen {
 				return false;
 			}
 		}
-		
+
 		public boolean keyChar(char key, int status, int time) {
 			// TODO Auto-generated method stub
 			return false;

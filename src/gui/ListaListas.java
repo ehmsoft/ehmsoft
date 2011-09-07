@@ -12,7 +12,8 @@ import net.rim.device.api.ui.component.KeywordProvider;
 import net.rim.device.api.ui.component.ListField;
 import net.rim.device.api.ui.component.ListFieldCallback;
 
-public abstract class ListaListas extends KeywordFilterField implements ListFieldCallback{
+public abstract class ListaListas extends KeywordFilterField implements
+		ListFieldCallback {
 	private Unsorted _u;
 
 	public ListaListas() {
@@ -75,7 +76,7 @@ public abstract class ListaListas extends KeywordFilterField implements ListFiel
 		_u.delete(element);
 		updateList();
 	}
-	
+
 	public void drawListRow(ListField listField, Graphics graphics, int index,
 			int y, int width) {
 		ReadableList r = ((ListaListas) listField).getResultList();

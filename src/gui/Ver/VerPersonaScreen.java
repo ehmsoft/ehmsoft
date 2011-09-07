@@ -143,24 +143,24 @@ public class VerPersonaScreen extends FondoNormal {
 		fieldChangeNotify(Util.CERRAR);
 		return false;
 	}
-	
-private KeyListener listener = new KeyListener() {
-		
+
+	private KeyListener listener = new KeyListener() {
+
 		public boolean keyUp(int keycode, int time) {
 			// TODO Auto-generated method stub
 			return false;
 		}
-		
+
 		public boolean keyStatus(int keycode, int time) {
 			// TODO Auto-generated method stub
 			return false;
 		}
-		
+
 		public boolean keyRepeat(int keycode, int time) {
 			// TODO Auto-generated method stub
 			return false;
 		}
-		
+
 		public boolean keyDown(int keycode, int time) {
 			if (Keypad.key(keycode) == Keypad.KEY_SEND) {
 				fieldChangeNotify(Util.LLAMAR);
@@ -169,7 +169,7 @@ private KeyListener listener = new KeyListener() {
 				return false;
 			}
 		}
-		
+
 		public boolean keyChar(char key, int status, int time) {
 			// TODO Auto-generated method stub
 			return false;
