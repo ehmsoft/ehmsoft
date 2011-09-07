@@ -9,6 +9,7 @@ import net.rim.device.api.database.Database;
 import net.rim.device.api.database.DatabaseFactory;
 import net.rim.device.api.database.Row;
 import net.rim.device.api.database.Statement;
+import net.rim.device.api.ui.Font;
 
 import core.*;
 import ehmsoft.Cargado;
@@ -476,14 +477,19 @@ public class Persistence implements Cargado, Guardado {
 			d = DatabaseFactory.open(connMgr.getDbLocation());
 			Statement stDelAtributo = d.createStatement("DELETE FROM atributos WHERE id_atributo = ?");
 			Statement stDelCampoPersonalizado = d.createStatement("DELETE FROM atributos_proceso WHERE id_atributo = ?");
+			Statement stDelCampoPlantilla = d.createStatement("DELETE FROM atributos_plantilla WHERE id_atributo = ?");
 			stDelCampoPersonalizado.prepare();
 			stDelAtributo.prepare();
+			stDelCampoPlantilla.prepare();
 			stDelCampoPersonalizado.bind(1, campo.getId_atributo());
 			stDelAtributo.bind(1, campo.getId_atributo());
+			stDelCampoPlantilla.bind(1, campo.getId_atributo());
 			stDelCampoPersonalizado.execute();
 			stDelAtributo.execute();
+			stDelCampoPlantilla.execute();
 			stDelCampoPersonalizado.close();
 			stDelAtributo.close();
+			stDelCampoPlantilla.close();
 		} catch (Exception e) {
 			throw e;
 		} finally {
@@ -1105,51 +1111,41 @@ public void borrarPreferencias() throws Exception {
 		}
 		Statement stFuenteTipo = d.createStatement("UPDATE preferencias SET valor=? WHERE id_preferencia = 10001)");
 		stFuenteTipo.prepare();
-		stFuenteTipo.bind(1, Preferencias.getTipoFuente().toString());
+		stFuenteTipo.bind(1, Font.getDefault().toString());
 		stFuenteTipo.execute();
 		stFuenteTipo.close();  
 		Statement stFuenteTamano = d.createStatement("UPDATE preferencias SET valor=? WHERE id_preferencia = 10002)");
 		stFuenteTamano.prepare();
-		stFuenteTamano.bind(1, Integer.toString(Preferencias.getTipoFuente().getHeight()));
+		stFuenteTamano.bind(1, Integer.toString(Font.getDefault().getHeight()));
 		stFuenteTamano.execute();
 		stFuenteTamano.close();
 		Statement stFuenteEstilo = d.createStatement("UPDATE preferencias SET valor=? WHERE id_preferencia = 10003)");
 		stFuenteEstilo.prepare();
-		stFuenteEstilo.bind(1, Integer.toString(Preferencias.getTipoFuente().getStyle()));
+		stFuenteEstilo.bind(1, Integer.toString(Font.getDefault().getStyle()));
 		stFuenteEstilo.execute();
 		stFuenteEstilo.close();
-		Statement stPantallaInicial = d.createStatement("UPDATE preferencias SET valor=? WHERE id_preferencia = 10101)");
+		Statement stPantallaInicial = d.createStatement("UPDATE preferencias SET valor=20001 WHERE id_preferencia = 10101)");
 		stPantallaInicial.prepare();
-		stPantallaInicial.bind(1, Integer.toString(Preferencias.getPantallaInicial()));
 		stPantallaInicial.execute();
 		stPantallaInicial.close();
-		Statement stTituloPantalla = d.createStatement("UPDATE preferencias SET valor=? WHERE id_preferencia = 10102)");
+		Statement stTituloPantalla = d.createStatement("UPDATE preferencias SET valor=1 WHERE id_preferencia = 10102)");
 		stTituloPantalla.prepare();
-		stTituloPantalla.bind(1, Preferencias.getPantallaInicial());
 		stTituloPantalla.execute();
 		stTituloPantalla.close();
-		Statement stRecordarUltimaCategoria = d.createStatement("UPDATE preferencias SET valor=? WHERE id_preferencia =10201)");
+		Statement stRecordarUltimaCategoria = d.createStatement("UPDATE preferencias SET valor=0 WHERE id_preferencia =10201)");
 		stRecordarUltimaCategoria.prepare();
-		stRecordarUltimaCategoria.bind(1, recordarUltimaCategoria);
 		stRecordarUltimaCategoria.execute();
 		stRecordarUltimaCategoria.close();
-		int mostrarBusqueda = 0;
-		if (Preferencias.isMostrarCampoBusqueda()==true){
-			mostrarBusqueda=1;
-		}
-		Statement stMostrarBusqueda= d.createStatement("UPDATE preferencias SET valor=? WHERE id_preferencia = 10301)");
+		Statement stMostrarBusqueda= d.createStatement("UPDATE preferencias SET valor=1 WHERE id_preferencia = 10301)");
 		stMostrarBusqueda.prepare();
-		stMostrarBusqueda.bind(1,mostrarBusqueda);
 		stMostrarBusqueda.execute();
 		stMostrarBusqueda.close();
-		Statement stNombreUsuario= d.createStatement("UPDATE preferencias SET valor=? WHERE id_preferencia = 10401)");
+		Statement stNombreUsuario= d.createStatement("UPDATE preferencias SET valor= 'Usuario' WHERE id_preferencia = 10401)");
 		stNombreUsuario.prepare();
-		stNombreUsuario.bind(1,Preferencias.getNombreUsuario());
 		stNombreUsuario.execute();
 		stNombreUsuario.close();
-		Statement stCantidadActCriticas= d.createStatement("UPDATE preferencias SET valor=? WHERE id_preferencia = 10501)");
+		Statement stCantidadActCriticas= d.createStatement("UPDATE preferencias SET valor=10 WHERE id_preferencia = 10501)");
 		stCantidadActCriticas.prepare();
-		stCantidadActCriticas.bind(1, Integer.toString(Preferencias.getCantidadActuacionesCriticas()));
 		stCantidadActCriticas.execute();
 		stCantidadActCriticas.close();	
 		} catch (Exception e) {
@@ -2127,6 +2123,38 @@ public void borrarPreferencias() throws Exception {
 
 	public Preferencias consultarPreferencias(Preferencias preferencia)
 			throws Exception {
+		Database d = null;
+		Vector campos = new Vector();
+		try {
+			connMgr.prepararBD();
+			d = DatabaseFactory.open(connMgr.getDbLocation());
+			Statement st = d
+					.createStatement("SELECT at.id_atributo_plantilla, at.id_atributo, at.valor, a.nombre,a.obligatorio,a.longitud_max, a.longitud_min FROM atributos_plantilla at, atributos a WHERE at.id_atributo = a.id_atributo AND at.id_plantilla = ?");
+			st.prepare();
+			st.bind(1, plantilla.getId_plantilla());
+			Cursor cursor = st.getCursor();
+			while (cursor.next()) {
+				Row row = cursor.getRow();
+				int id_atributo_plantilla = row.getInteger(0);
+				int id_atributo = row.getInteger(1);
+				String valor = row.getString(2);
+				String nombre = row.getString(3);
+				boolean obligatorio = row.getBoolean(4);
+				int longitud_max = row.getInteger(5);
+				int longitud_min = row.getInteger(6);
+				CampoPersonalizado campo = new CampoPersonalizado(Integer.toString(id_atributo_plantilla), Integer.toString(id_atributo), nombre, valor, new Boolean(obligatorio), longitud_max, longitud_min);
+				campos.addElement(campo);
+			}
+			st.close();
+			cursor.close();
+		} catch (Exception e) {
+			throw e;
+		} finally {
+			if (d != null) {
+				d.close();
+			}
+		}
+		return campos;
 		// TODO Auto-generated method stub
 		return null;
 	}
