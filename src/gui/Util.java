@@ -4,10 +4,12 @@ import gui.Listados.ListadoCampos;
 import gui.Listados.ListadoCategorias;
 import gui.Listados.ListadoJuzgados;
 import gui.Listados.ListadoPersonas;
+import gui.Listados.ListadoPlantillas;
 import gui.Listados.ListadoProcesos;
 import gui.Nuevos.NuevaActuacion;
 import gui.Nuevos.NuevaCategoria;
 import gui.Nuevos.NuevaPersona;
+import gui.Nuevos.NuevaPlantilla;
 import gui.Nuevos.NuevoCampo;
 import gui.Nuevos.NuevoJuzgado;
 import gui.Nuevos.NuevoProceso;
@@ -306,6 +308,12 @@ public class Util {
 		UiApplication.getUiApplication().pushModalScreen(l.getScreen());
 		return l.getSelected();
 	}
+	
+	public static Plantilla listadoPlantillas(boolean popup, int style) {
+		ListadoPlantillas l = new ListadoPlantillas(popup, style);
+		pushModalScreen(l.getScreen());
+		return l.getSelected();
+	}
 
 	public static Actuacion nuevaActuacion(Proceso proceso) {
 		NuevaActuacion n = new NuevaActuacion(proceso);
@@ -347,6 +355,12 @@ public class Util {
 		NuevoProceso n = new NuevoProceso();
 		UiApplication.getUiApplication().pushModalScreen(n.getScreen());
 		return n.getProceso();
+	}
+	
+	public static Plantilla nuevaPlantilla() {
+		NuevaPlantilla n = new NuevaPlantilla();
+		pushModalScreen(n.getScreen());
+		return n.getPlantilla();
 	}
 
 	public static String calendarToString(Calendar calendar, boolean largo) {

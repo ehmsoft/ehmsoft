@@ -81,40 +81,40 @@ public class ListaCircular {
 			return temp;
 		}
 	}
-}
+	
+	public class Nodo {
+		private Object _element;
+		private Nodo _siguiente;
+		private Nodo _anterior;
 
-class Nodo {
-	private Object _element;
-	private Nodo _siguiente;
-	private Nodo _anterior;
+		public Nodo(Object element, Nodo siguiente, Nodo anterior) {
+			_element = element;
+			_siguiente = siguiente;
+			_anterior = anterior;
+		}
 
-	public Nodo(Object element, Nodo siguiente, Nodo anterior) {
-		_element = element;
-		_siguiente = siguiente;
-		_anterior = anterior;
-	}
+		public Nodo getAnterior() {
+			return _anterior;
+		}
 
-	public Nodo getAnterior() {
-		return _anterior;
-	}
+		public Nodo getSiguiente() {
+			return _siguiente;
+		}
 
-	public Nodo getSiguiente() {
-		return _siguiente;
-	}
+		public void setAnterior(Nodo anterior) {
+			_anterior = anterior;
+		}
 
-	public void setAnterior(Nodo anterior) {
-		_anterior = anterior;
-	}
+		public void setSiguiente(Nodo siguiente) {
+			_siguiente = siguiente;
+		}
 
-	public void setSiguiente(Nodo siguiente) {
-		_siguiente = siguiente;
-	}
+		public Object getElement() {
+			return _element;
+		}
 
-	public Object getElement() {
-		return _element;
-	}
-
-	public void setElement(Object element) {
-		_element = element;
+		public void setElement(Object element) {
+			_element = element;
+		}
 	}
 }
