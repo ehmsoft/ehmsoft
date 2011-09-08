@@ -85,8 +85,10 @@ public class NuevaActuacionScreen extends FondoNormal {
 	}
 
 	protected void makeMenu(Menu menu, int instance) {
-		menu.add(menuCambiar);
-		menu.addSeparator();
+		if(getFieldWithFocus().equals(_lblJuzgado)) {
+			menu.add(menuCambiar);
+			menu.addSeparator();
+		}
 		if (_hasAlarm) {
 			menu.add(menuVerCita);
 			menu.add(menuEliminarCita);
