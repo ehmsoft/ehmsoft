@@ -1,6 +1,5 @@
 package gui;
 
-import persistence.Persistence;
 import core.Preferencias;
 import net.rim.device.api.ui.Field;
 import net.rim.device.api.ui.FieldChangeListener;
@@ -40,8 +39,6 @@ public class PreferenciasGeneralesScreen extends MainScreen {
 	private ButtonField _btnCopiaSeguridad;
 	private LabelField _lblRestaurarPrefs;
 	private ButtonField _btnRestaurarPrefs;
-	private SeparatorField _s;
-	private SeparatorField _s2;
 	private HorizontalFieldManager _hfmCantidadActuaciones;
 	private int[] _significadoEstilos = { Font.PLAIN, Font.BOLD,
 			Font.EXTRA_BOLD, Font.BOLD | Font.ITALIC, Font.ITALIC };
@@ -127,7 +124,7 @@ public class PreferenciasGeneralesScreen extends MainScreen {
 		add(new SeparatorField());
 		add(_chfPantallaInicial);
 		add(_hfmCantidadActuaciones);
-		add(_s = new SeparatorField());
+		add(new SeparatorField());
 		add(_chfTipoFuente);
 		add(_chfTamanoFuente);
 		add(_chfEstiloFuente);
@@ -135,7 +132,7 @@ public class PreferenciasGeneralesScreen extends MainScreen {
 
 		add(_lblCopiaSeguridad);
 		add(_btnCopiaSeguridad);
-		add(_s2 = new SeparatorField());
+		add(new SeparatorField());
 		add(_lblRestaurarPrefs);
 		add(_btnRestaurarPrefs);
 
