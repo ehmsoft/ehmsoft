@@ -9,7 +9,6 @@ import gui.Listados.ListadoPersonas;
 import gui.Listados.ListadoProcesos;
 import gui.Listados.ListadoPlantillas;
 import net.rim.device.api.system.Display;
-import net.rim.device.api.ui.Font;
 import net.rim.device.api.ui.MenuItem;
 import net.rim.device.api.ui.UiApplication;
 import net.rim.device.api.ui.XYEdges;
@@ -18,8 +17,8 @@ import net.rim.device.api.ui.component.LabelField;
 import net.rim.device.api.ui.component.Menu;
 import net.rim.device.api.ui.component.ObjectListField;
 import net.rim.device.api.ui.component.SeparatorField;
+import net.rim.device.api.ui.container.FullScreen;
 import net.rim.device.api.ui.container.GridFieldManager;
-import net.rim.device.api.ui.container.MainScreen;
 import net.rim.device.api.ui.container.PopupScreen;
 import net.rim.device.api.ui.container.VerticalFieldManager;
 import net.rim.device.api.ui.decor.BorderFactory;
@@ -28,7 +27,7 @@ import net.rim.device.api.ui.decor.BorderFactory;
  * A class extending the MainScreen class, which provides default standard
  * behavior for BlackBerry GUI applications.
  */
-public class ScreenMain extends MainScreen {
+public class ScreenMain extends FullScreen {
 	/**
 	 * Creates a new screenMain object
 	 */
@@ -57,6 +56,7 @@ public class ScreenMain extends MainScreen {
 
 		add(g);
 		left.setFocus();
+		left.invalidate();
 	}
 
 	protected void makeMenu(Menu menu, int instance) {

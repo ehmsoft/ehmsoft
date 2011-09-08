@@ -7,8 +7,6 @@ import java.util.Vector;
 import net.rim.device.api.ui.DrawStyle;
 import net.rim.device.api.ui.Field;
 import net.rim.device.api.ui.FocusChangeListener;
-import net.rim.device.api.ui.component.BitmapField;
-import net.rim.device.api.ui.component.Dialog;
 import net.rim.device.api.ui.component.LabelField;
 import net.rim.device.api.ui.component.SeparatorField;
 import net.rim.device.api.ui.container.HorizontalFieldManager;
@@ -24,26 +22,24 @@ public class ActuacionesManager {
 	private LabelField _fecha;
 	private LabelField _fechaProxima;
 	private LabelField _descripcion;
-	private BitmapField _cita;
-	private BitmapField _alarma;
 
 	public ActuacionesManager(int cant) {
 		_vertical = new VerticalFieldManager();
 		_vertical.setFont(_vertical.getFont().derive(
 				_vertical.getFont().getStyle(),
 				_vertical.getFont().getHeight() - 5));
-		Persistence p;
 		_lista = new ListadoActuacionesLista();
 		_lista.setFont(_lista.getFont().derive(_lista.getFont().getStyle(),
 				_lista.getFont().getHeight() - 8));
 		_lista.setRowHeight(_lista.getFont().getHeight() * 2);
 
 		try {
-			p = new Persistence();
-			Vector v = p.consultarActuacionesCriticas(cant);
+			Vector v = new Persistence().consultarActuacionesCriticas(cant);
 			_lista.loadFrom(v);
+		} catch (NullPointerException e) {
+			Util.noSd();
 		} catch (Exception e) {
-			Dialog.alert(e.toString());
+			Util.alert(e.toString());
 		}
 		_lista.setFocusListener(listener);
 
@@ -99,8 +95,6 @@ public class ActuacionesManager {
 				fecha = Util.calendarToString(a.getFechaProxima(), true);
 				fecha = fecha.substring(0, 10) + "\n" + fecha.substring(11);
 				_fechaProxima.setText(fecha);
-				_cita.setBitmap(null);
-				_alarma.setBitmap(null);
 				_vertical.invalidate();
 			} catch (NullPointerException e) {
 			}
