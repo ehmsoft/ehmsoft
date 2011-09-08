@@ -10,6 +10,7 @@ import net.rim.device.api.database.DatabaseFactory;
 import net.rim.device.api.database.Row;
 import net.rim.device.api.database.Statement;
 import net.rim.device.api.ui.Font;
+import net.rim.device.api.ui.FontFamily;
 
 import core.*;
 import ehmsoft.Cargado;
@@ -1028,7 +1029,7 @@ public void borrarPreferencia(int id_preferencia) throws Exception {
 	}
 }
 
-public void actualizarPreferencias(Preferencias preferencia)
+public void actualizarPreferencias()
 throws Exception {
 	Database d = null;
 	try {
@@ -1037,31 +1038,31 @@ throws Exception {
 		
 		Statement stFuenteTipo = d.createStatement("UPDATE preferencias SET valor=? WHERE id_preferencia = 10001)");
 		stFuenteTipo.prepare();
-		stFuenteTipo.bind(1, preferencia.getTipoFuente().toString());
+		stFuenteTipo.bind(1, Preferencias.getTipoFuente().toString());
 		stFuenteTipo.execute();
 		stFuenteTipo.close();  
 		Statement stFuenteTamano = d.createStatement("UPDATE preferencias SET valor=? WHERE id_preferencia = 10002)");
 		stFuenteTamano.prepare();
-		stFuenteTamano.bind(1, Integer.toString(preferencia.getTipoFuente().getHeight()));
+		stFuenteTamano.bind(1, Integer.toString(Preferencias.getTipoFuente().getHeight()));
 		stFuenteTamano.execute();
 		stFuenteTamano.close();
 		Statement stFuenteEstilo = d.createStatement("UPDATE preferencias SET valor=? WHERE id_preferencia = 10003)");
 		stFuenteEstilo.prepare();
-		stFuenteEstilo.bind(1, Integer.toString(preferencia.getTipoFuente().getStyle()));
+		stFuenteEstilo.bind(1, Integer.toString(Preferencias.getTipoFuente().getStyle()));
 		stFuenteEstilo.execute();
 		stFuenteEstilo.close();
 		Statement stPantallaInicial = d.createStatement("UPDATE preferencias SET valor=? WHERE id_preferencia = 10101)");
 		stPantallaInicial.prepare();
-		stPantallaInicial.bind(1, Integer.toString(preferencia.getPantallaInicial()));
+		stPantallaInicial.bind(1, Integer.toString(Preferencias.getPantallaInicial()));
 		stPantallaInicial.execute();
 		stPantallaInicial.close();
 		Statement stTituloPantalla = d.createStatement("UPDATE preferencias SET valor=? WHERE id_preferencia = 10102)");
 		stTituloPantalla.prepare();
-		stTituloPantalla.bind(1, preferencia.getPantallaInicial());
+		stTituloPantalla.bind(1, Preferencias.getPantallaInicial());
 		stTituloPantalla.execute();
 		stTituloPantalla.close();
 		int recordarUltimaCategoria = 0;
-		if (preferencia.isRecodarUltimaCategoria()== true){
+		if (Preferencias.isRecodarUltimaCategoria()== true){
 			recordarUltimaCategoria = 1;
 		}
 		Statement stRecordarUltimaCategoria = d.createStatement("UPDATE preferencias SET valor=? WHERE id_preferencia =10201)");
@@ -1070,7 +1071,7 @@ throws Exception {
 		stRecordarUltimaCategoria.execute();
 		stRecordarUltimaCategoria.close();
 		int mostrarBusqueda = 0;
-		if (preferencia.isMostrarCampoBusqueda()==true){
+		if (Preferencias.isMostrarCampoBusqueda()==true){
 			mostrarBusqueda=1;
 		}
 		Statement stMostrarBusqueda= d.createStatement("UPDATE preferencias SET valor=? WHERE id_preferencia = 10301)");
@@ -1080,12 +1081,12 @@ throws Exception {
 		stMostrarBusqueda.close();
 		Statement stNombreUsuario= d.createStatement("UPDATE preferencias SET valor=? WHERE id_preferencia = 10401)");
 		stNombreUsuario.prepare();
-		stNombreUsuario.bind(1,preferencia.getNombreUsuario());
+		stNombreUsuario.bind(1,Preferencias.getNombreUsuario());
 		stNombreUsuario.execute();
 		stNombreUsuario.close();
 		Statement stCantidadActCriticas= d.createStatement("UPDATE preferencias SET valor=? WHERE id_preferencia = 10501)");
 		stCantidadActCriticas.prepare();
-		stCantidadActCriticas.bind(1, Integer.toString(preferencia.getCantidadActuacionesCriticas()));
+		stCantidadActCriticas.bind(1, Integer.toString(Preferencias.getCantidadActuacionesCriticas()));
 		stCantidadActCriticas.execute();
 		stCantidadActCriticas.close();	
 		} catch (Exception e) {
@@ -1102,7 +1103,7 @@ throws Exception {
 
 public void borrarPreferencias() throws Exception {
 	Database d = null;
-	try {
+	try { 
 		connMgr.prepararBD();
 		d = DatabaseFactory.open(connMgr.getDbLocation());
 		int recordarUltimaCategoria = 0;
@@ -2090,6 +2091,82 @@ public void borrarPreferencias() throws Exception {
 		}
 		return calendar_return;
 	}
+	
+public void consultarPreferencias()	throws Exception {
+	Database d = null;
+	String tipoFuente="", tamanoFuente="", estiloFuente="";
+
+	try {
+		connMgr.prepararBD();
+		d = DatabaseFactory.open(connMgr.getDbLocation());
+		Statement stPreferencias = d.createStatement("SELECT id_preferencia, valor FROM preferencias");
+		stPreferencias.prepare();
+		Cursor cursor = stPreferencias.getCursor();
+		while (cursor.next()) {
+			Row row = cursor.getRow();
+			int id_preferencia = row.getInteger(0);
+			String valor = row.getString(1);
+			switch (id_preferencia) {
+			case 10001: tipoFuente= valor;
+			case 10002: tamanoFuente= valor;
+			case 10003: estiloFuente = valor;
+			case 10101: Preferencias.setPantallaInicial(Integer.parseInt(valor));
+			case 10102: {	
+				if (valor.equals("1")){
+				
+					Preferencias.setMostrarTitulosPantallas(true);
+
+				}
+				else 
+				{
+					Preferencias.setMostrarTitulosPantallas(false);
+
+				}
+			}
+			case 10201: {	
+				if (valor.equals("1")){
+					Preferencias.setRecodarUltimaCategoria(true);
+
+				}
+				else 
+				{
+					Preferencias.setRecodarUltimaCategoria(false);
+
+				}
+			}
+			case 10202: 
+			case 10301: {	
+				if (valor.equals("1")){
+				
+					Preferencias.setMostrarCampoBusqueda(true);
+
+				}
+				else 
+				{
+					Preferencias.setMostrarCampoBusqueda(false);
+
+				}
+			}
+			case 10401: Preferencias.setNombreUsuario(valor);
+			case 10501: Preferencias.setCantidadActuacionesCriticas(Integer.parseInt(valor));
+
+			default:
+				break;
+			}
+		}
+		FontFamily fontF =FontFamily.forName(tipoFuente);
+		Font font = fontF.getFont(Integer.parseInt(estiloFuente), Integer.parseInt(tamanoFuente));
+		Preferencias.setTipoFuente(font);
+		stPreferencias.close();
+		cursor.close();
+	} catch (Exception e) {
+		throw e;
+	} finally {
+		if (d != null) {
+			d.close();
+			}
+		}
+	}	
 
 	private String calendarToString(Calendar fecha) {
 		String dia, mes, hora, minuto, nuevafecha;
@@ -2117,13 +2194,6 @@ public void borrarPreferencias() throws Exception {
 		nuevafecha = fecha.get(Calendar.YEAR) + "-" + mes + "-" + dia + " "
 				+ hora + ":" + minuto;
 		return nuevafecha;
-	}
-
-
-
-	public Preferencias consultarPreferencias(Preferencias preferencia)
-			throws Exception {
-				return preferencia;
 	}
 
 	
