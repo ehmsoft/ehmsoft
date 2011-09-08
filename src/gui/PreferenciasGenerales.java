@@ -15,6 +15,7 @@ public class PreferenciasGenerales {
 		_screen.setMostrarBusqueda(Preferencias.isMostrarCampoBusqueda());
 		_screen.setMostrarTitulos(Preferencias.isMostrarTitulosPantallas());
 		_screen.setPantallaInicial(Preferencias.getPantallaInicial());
+		_screen.setCantidadActuacionesCriticas(Preferencias.getCantidadActuacionesCriticas());
 		_screen.setRecordarUltimaCategoria(Preferencias.isRecodarUltimaCategoria());
 		_screen.setFuente(Preferencias.getTipoFuente());
 		_screen.setChangeListener(listener);
@@ -44,6 +45,7 @@ public class PreferenciasGenerales {
 		Preferencias.setRecodarUltimaCategoria(_screen.isRecordarUltimaCategoria());
 		Preferencias.setTipoFuente(_screen.getFuente());
 		Preferencias.setPantallaInicial(_screen.getPantallaInicial());
+		Preferencias.setCantidadActuacionesCriticas(_screen.getCantidadActuacionesCriticas());
 		Util.popScreen(_screen);
 	}
 	

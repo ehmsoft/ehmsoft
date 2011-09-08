@@ -170,6 +170,9 @@ public class PreferenciasGeneralesScreen extends MainScreen {
 		_chfTamanoFuente.setSelectedIndex(new Integer(font.getHeight()));
 	}
 
+	public void setCantidadActuacionesCriticas(int cant){
+		_txtCantidadActuaciones.setText(Integer.toString(cant));
+	}
 	public String getNombreUsuario() {
 		return _txtNombreUsuario.getText();
 	}
@@ -199,7 +202,10 @@ public class PreferenciasGeneralesScreen extends MainScreen {
 		Font font = fontFamily.getFont(style, height);
 		return font;
 	}
-
+	public int getCantidadActuacionesCriticas(){
+		return Integer.parseInt(_txtCantidadActuaciones.getText());
+	}
+	
 	private FieldChangeListener listenerPantallaInicial = new FieldChangeListener() {
 		public void fieldChanged(Field field, int context) {
 			if (_listaPantallas[_chfPantallaInicial.getSelectedIndex()] == Preferencias
