@@ -170,4 +170,8 @@ public class ListadoProcesos {
 		}
 		UiApplication.getUiApplication().popScreen((Screen)_screen);
 	}
+	
+	public String toString() {
+		return "Lista de procesos";
+	}
 }
