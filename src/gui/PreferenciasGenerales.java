@@ -14,6 +14,7 @@ public class PreferenciasGenerales {
 		_screen.setNombreUsuario(Preferencias.getNombreUsuario());
 		_screen.setMostrarBusqueda(Preferencias.isMostrarCampoBusqueda());
 		_screen.setMostrarTitulos(Preferencias.isMostrarTitulosPantallas());
+		_screen.setPantallaInicial(Preferencias.getPantallaInicial());
 		_screen.setRecordarUltimaCategoria(Preferencias.isRecodarUltimaCategoria());
 		_screen.setFuente(Preferencias.getTipoFuente());
 		_screen.setChangeListener(listener);
