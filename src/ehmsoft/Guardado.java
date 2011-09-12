@@ -42,7 +42,7 @@ public interface Guardado {
 	public void actualizarPreferencia(int id_preferencia,String valor) throws Exception;
 	public void borrarPreferencia(int id_preferencia) throws Exception;
 	
-	public void actualizarPreferencias(Preferencias preferencia) throws Exception;
+	public void actualizarPreferencias() throws Exception;
 	public void borrarPreferencias() throws Exception;
 	//Log
 	public void log(String descripcion) throws Exception;
