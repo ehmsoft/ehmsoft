@@ -53,7 +53,8 @@ public class PreferenciasGenerales {
 	private void copiaDeSeguridad() {
 		//String ruta = _screen.mostrarSeleccionArchivo();
 		//Util.popScreen(_screen);
-		UiApplication.getUiApplication().pushModalScreen(new BackupScreen());
+		Backup b = new Backup();
+		UiApplication.getUiApplication().pushModalScreen(b.getScreen());
 	}
 	
 	private void restaurarPreferencias() {
