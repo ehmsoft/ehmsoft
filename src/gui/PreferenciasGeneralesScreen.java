@@ -19,6 +19,7 @@ import net.rim.device.api.ui.component.SeparatorField;
 import net.rim.device.api.ui.container.HorizontalFieldManager;
 import net.rim.device.api.ui.container.MainScreen;
 import net.rim.device.api.ui.decor.BorderFactory;
+import net.rim.device.api.ui.picker.FilePicker;
 
 public class PreferenciasGeneralesScreen extends MainScreen {
 
@@ -40,6 +41,8 @@ public class PreferenciasGeneralesScreen extends MainScreen {
 	private LabelField _lblRestaurarPrefs;
 	private ButtonField _btnRestaurarPrefs;
 	private HorizontalFieldManager _hfmCantidadActuaciones;
+	private FilePicker fp;
+	
 	private int[] _significadoEstilos = { Font.PLAIN, Font.BOLD,
 			Font.EXTRA_BOLD, Font.BOLD | Font.ITALIC, Font.ITALIC };
 	private String[] _listaEstilos = { "Normal", "Negrita", "Extra negrita",
@@ -101,18 +104,20 @@ public class PreferenciasGeneralesScreen extends MainScreen {
 		_chfTipoFuente.setChangeListener(listenerTipoFuente);
 		_chfTamanoFuente.setChangeListener(listenerActualizarFuente);
 		_chfEstiloFuente.setChangeListener(listenerActualizarFuente);
-		// Botones
+		// Copia de Seguridad
 
 		_lblCopiaSeguridad = new LabelField(
 				"Realizar copia de seguridad de base de datos:",
 				LabelField.USE_ALL_WIDTH);
 		_btnCopiaSeguridad = new ButtonField("Copia de seguridad",
-				ButtonField.FIELD_RIGHT);
+				ButtonField.CONSUME_CLICK | ButtonField.FIELD_RIGHT);
+		fp = FilePicker.getInstance();
+		//Restaurar Preferencias
 		_lblRestaurarPrefs = new LabelField(
 				"Restaurar preferencias predeterminadas",
 				LabelField.USE_ALL_WIDTH);
 		_btnRestaurarPrefs = new ButtonField("Restaurar Preferencias",
-				ButtonField.FIELD_RIGHT);
+				ButtonField.CONSUME_CLICK | ButtonField.FIELD_RIGHT);
 		_btnCopiaSeguridad.setChangeListener(listenerCopiaSeguridad);
 		_btnRestaurarPrefs.setChangeListener(listenerRestaurarPrefs);
 
@@ -204,6 +209,12 @@ public class PreferenciasGeneralesScreen extends MainScreen {
 	}
 	public int getCantidadActuacionesCriticas(){
 		return Integer.parseInt(_txtCantidadActuaciones.getText());
+	}
+	
+	public String mostrarSeleccionArchivo(){
+		String hello = fp.show();
+		Dialog.alert(hello);
+		return hello;
 	}
 	
 	private FieldChangeListener listenerPantallaInicial = new FieldChangeListener() {

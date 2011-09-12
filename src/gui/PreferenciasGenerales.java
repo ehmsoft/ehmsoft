@@ -2,6 +2,7 @@ package gui;
 
 import net.rim.device.api.ui.Field;
 import net.rim.device.api.ui.FieldChangeListener;
+import net.rim.device.api.ui.UiApplication;
 import core.Preferencias;
 
 public class PreferenciasGenerales {
@@ -50,8 +51,9 @@ public class PreferenciasGenerales {
 	}
 	
 	private void copiaDeSeguridad() {
-		//TODO Acciones para realizar copia de seguridad
-		Util.popScreen(_screen);
+		//String ruta = _screen.mostrarSeleccionArchivo();
+		//Util.popScreen(_screen);
+		UiApplication.getUiApplication().pushModalScreen(new BackupScreen());
 	}
 	
 	private void restaurarPreferencias() {
