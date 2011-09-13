@@ -14,7 +14,6 @@ import net.rim.device.api.ui.component.DateField;
 import net.rim.device.api.ui.component.Dialog;
 import net.rim.device.api.ui.component.Menu;
 import net.rim.device.api.ui.component.NumericChoiceField;
-import net.rim.device.api.ui.component.ObjectChoiceField;
 import net.rim.device.api.ui.component.TextField;
 
 public class VerProcesoScreen extends FondoNormal {
@@ -30,7 +29,6 @@ public class VerProcesoScreen extends FondoNormal {
 	private EditableTextField _txtNotas;
 	private DateField _dfFecha;
 	private NumericChoiceField _nfPrioridad;
-	private ObjectChoiceField _ofActuaciones;
 
 	private Vector _txtCampos;
 
@@ -60,10 +58,6 @@ public class VerProcesoScreen extends FondoNormal {
 
 		_txtRadicadoUnico = new EditableTextField("Radicado unico: ");
 		add(_txtRadicadoUnico);
-
-		_ofActuaciones = new ObjectChoiceField();
-		_ofActuaciones.setLabel("Actuaciones: ");
-		add(_ofActuaciones);
 
 		_txtEstado = new EditableTextField("Estado: ");
 		add(_txtEstado);
@@ -164,10 +158,6 @@ public class VerProcesoScreen extends FondoNormal {
 		_nfPrioridad.setSelectedIndex(String.valueOf(element));
 	}
 
-	public void setActuaciones(Object[] choices) {
-		_ofActuaciones.setChoices(choices);
-	}
-
 	public String getEstado() {
 		return _txtEstado.getText();
 	}
@@ -202,14 +192,6 @@ public class VerProcesoScreen extends FondoNormal {
 		return _txtTipo.getText();
 	}
 
-	public Object getActuacion() {
-		if (_ofActuaciones.getSize() != 0) {
-			return _ofActuaciones.getChoice(_ofActuaciones.getSelectedIndex());
-		} else {
-			return null;
-		}
-	}
-
 	protected void makeMenu(Menu menu, int instance) {
 		Field f = getFieldWithFocus();
 
@@ -217,9 +199,7 @@ public class VerProcesoScreen extends FondoNormal {
 		menu.add(menuAddCampo);
 		menu.addSeparator();
 
-		if (f.equals(_ofActuaciones)) {
-			menu.add(menuVerActuaciones);
-		}
+		menu.add(menuVerActuaciones);
 
 		if (f.equals(_txtCategoria)) {
 			menu.add(menuCambiar);
@@ -246,7 +226,7 @@ public class VerProcesoScreen extends FondoNormal {
 		menu.add(menuGuardar);
 	}
 
-	private final MenuItem menuVerActuaciones = new MenuItem("Ver listado", 0,
+	private final MenuItem menuVerActuaciones = new MenuItem("Ver actuaciones", 0,
 			0) {
 		public void run() {
 			fieldChangeNotify(Util.VER_LISTADO_ACTUACIONES);
@@ -309,8 +289,6 @@ public class VerProcesoScreen extends FondoNormal {
 				fieldChangeNotify(Util.VER_JUZGADO);
 			} else if (f.equals(_txtCategoria)) {
 				fieldChangeNotify(Util.VER_CATEGORIA);
-			} else if (f.equals(_ofActuaciones)) {
-				fieldChangeNotify(Util.VER_ACTUACION);
 			} else {
 				f.setEditable(true);
 			}
@@ -323,7 +301,6 @@ public class VerProcesoScreen extends FondoNormal {
 			_dfFecha.setEditable(true);
 			_txtRadicado.setEditable();
 			_txtRadicadoUnico.setEditable();
-			_ofActuaciones.setEditable(true);
 			_txtEstado.setEditable();
 			_txtTipo.setEditable();
 			_txtNotas.setEditable();

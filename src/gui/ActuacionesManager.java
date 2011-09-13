@@ -7,6 +7,7 @@ import java.util.Vector;
 import net.rim.device.api.ui.DrawStyle;
 import net.rim.device.api.ui.Field;
 import net.rim.device.api.ui.FocusChangeListener;
+import net.rim.device.api.ui.Font;
 import net.rim.device.api.ui.component.LabelField;
 import net.rim.device.api.ui.component.SeparatorField;
 import net.rim.device.api.ui.container.HorizontalFieldManager;
@@ -42,41 +43,36 @@ public class ActuacionesManager {
 			Util.alert(e.toString());
 		}
 		_lista.setFocusListener(listener);
+		
+		LabelField lblDescripcion = new LabelField("Descripción: ");
+		LabelField lblJuzgado = new LabelField("Juzgado: ");
+		LabelField lblFecha = new LabelField("Fecha: ");
+		LabelField lblFechaProxima = new LabelField("Fecha próxima: ");
+		
+		Font bold = _vertical.getFont().derive(Font.BOLD);
+		
+		lblDescripcion.setFont(bold);
+		lblJuzgado.setFont(bold);
+		lblFecha.setFont(bold);
+		lblFechaProxima.setFont(bold);
 
-		HorizontalFieldManager juzgado = new HorizontalFieldManager();
-		HorizontalFieldManager fecha = new HorizontalFieldManager();
-		VerticalFieldManager fechas = new VerticalFieldManager();
-		HorizontalFieldManager fechaP = new HorizontalFieldManager();
-		HorizontalFieldManager descripcion = new HorizontalFieldManager();
-		HorizontalFieldManager alarma = new HorizontalFieldManager();
 
-		descripcion.add(new LabelField("Descripción: "));
-		juzgado.add(new LabelField("Juzgado: "));
-		fecha.add(new LabelField("Fecha: "));
-		fechas.add(new LabelField("Fecha"));
-		fechas.add(new LabelField("próxima:"));
-		fechaP.add(fechas);
-
-		_juzgado = new LabelField("", DrawStyle.RIGHT | Field.USE_ALL_WIDTH);
-		_fecha = new LabelField("", DrawStyle.RIGHT | Field.USE_ALL_WIDTH);
-		_fechaProxima = new LabelField("", DrawStyle.RIGHT
-				| Field.USE_ALL_WIDTH);
-		_descripcion = new LabelField("", DrawStyle.RIGHT | Field.USE_ALL_WIDTH);
-
-		juzgado.add(_juzgado);
-		fecha.add(_fecha);
-		fechaP.add(_fechaProxima);
-		descripcion.add(_descripcion);
-
-		_vertical.add(descripcion);
+		_juzgado = new LabelField();
+		_fecha = new LabelField();
+		_fechaProxima = new LabelField();
+		_descripcion = new LabelField();
+		
+		_vertical.add(lblDescripcion);
+		_vertical.add(_descripcion);
 		_vertical.add(new SeparatorField());
-		_vertical.add(juzgado);
+		_vertical.add(lblJuzgado);
+		_vertical.add(_juzgado);
 		_vertical.add(new SeparatorField());
-		_vertical.add(fecha);
+		_vertical.add(lblFecha);
+		_vertical.add(_fecha);
 		_vertical.add(new SeparatorField());
-		_vertical.add(fechaP);
-		_vertical.add(new SeparatorField());
-		_vertical.add(alarma);
+		_vertical.add(lblFechaProxima);
+		_vertical.add(_fechaProxima);
 	}
 
 	private FocusChangeListener listener = new FocusChangeListener() {
@@ -90,11 +86,10 @@ public class ActuacionesManager {
 				_descripcion.setText(a.getDescripcion());
 				_juzgado.setText(a.getJuzgado().getNombre());
 				String fecha = Util.calendarToString(a.getFecha(), true);
-				fecha = fecha.substring(0, 10) + "\n" + fecha.substring(11);
 				_fecha.setText(fecha);
 				fecha = Util.calendarToString(a.getFechaProxima(), true);
-				fecha = fecha.substring(0, 10) + "\n" + fecha.substring(11);
 				_fechaProxima.setText(fecha);
+				_lista.invalidate();
 				_vertical.invalidate();
 			} catch (NullPointerException e) {
 			}
