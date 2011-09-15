@@ -3,6 +3,7 @@ package gui;
 import persistence.Persistence;
 import net.rim.device.api.ui.Field;
 import net.rim.device.api.ui.FieldChangeListener;
+import net.rim.device.api.ui.UiApplication;
 import core.Preferencias;
 
 public class PreferenciasGenerales {
@@ -48,11 +49,13 @@ public class PreferenciasGenerales {
 		Preferencias.setPantallaInicial(_screen.getPantallaInicial());
 		Preferencias.setCantidadActuacionesCriticas(_screen.getCantidadActuacionesCriticas());
 		Util.popScreen(_screen);
+		//TODO poner los metodos de persistencia
 	}
 	
 	private void copiaDeSeguridad() {
-		//TODO Acciones para realizar copia de seguridad
-		Util.popScreen(_screen);
+		Backup b = new Backup();
+		UiApplication.getUiApplication().pushModalScreen(b.getScreen());
+		b = null;
 	}
 	
 	private void restaurarPreferencias() {
