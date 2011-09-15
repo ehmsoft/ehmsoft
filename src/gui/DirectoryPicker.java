@@ -26,7 +26,20 @@ public class DirectoryPicker {
 			switch (context) {
 			case Util.CLICK:
 				String path = _screen.getSelected();
-				_screen.alert(path);
+				if(ruta == null){
+					ruta = path;
+				}else if(path.endsWith("..")){
+					ruta = ruta.substring(0,ruta.lastIndexOf('/'));
+					ruta = ruta.substring(0,ruta.lastIndexOf('/')+1);
+				}
+				else{
+					ruta += path;
+				}
+				if(ruta.indexOf('/') == -1){
+					ruta = null;
+				}
+				_screen.alert(ruta);
+				actualizarLista(ruta);
 				break;
 			case Util.GUARDAR:
 				break;
@@ -55,8 +68,12 @@ public class DirectoryPicker {
 				while (fileEnum.hasMoreElements()) {
 					filesVector.addElement((String)fileEnum.nextElement());
 				}
+				String[] roots = new String[filesVector.size()];
+				filesVector.copyInto(roots);
+				_screen.setLista(roots);
 			} catch (Exception ex) {
 				_screen.alert("Directorio no encontrado");
+				ruta = null;
 			}
 		}
 	}
