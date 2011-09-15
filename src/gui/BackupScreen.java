@@ -1,10 +1,7 @@
 package gui;
 
-import java.util.Enumeration;
 import java.util.Vector;
-
 import javax.microedition.io.file.FileSystemRegistry;
-
 import net.rim.device.api.ui.Field;
 import net.rim.device.api.ui.FieldChangeListener;
 import net.rim.device.api.ui.UiApplication;
@@ -31,7 +28,6 @@ public class BackupScreen extends PopupScreen {
 	public BackupScreen() {
 		super(new VerticalFieldManager());
 		_txtNombreArchivo = new BasicEditField("Nombre: ", "copia.bk");
-		
 
 		_lsRoots = new ObjectChoiceField();
 		_lsRoots.setChangeListener(listenerRoots);
@@ -51,8 +47,9 @@ public class BackupScreen extends PopupScreen {
 		add(_btnfldOk);
 		add(_btnfldCancel);
 	}
+
 	private FieldChangeListener listenerGuardar = new FieldChangeListener() {
-		
+
 		public void fieldChanged(Field field, int context) {
 			fieldChangeNotify(Util.GUARDAR);
 		}
@@ -66,23 +63,29 @@ public class BackupScreen extends PopupScreen {
 	private FieldChangeListener listenerRoots = new FieldChangeListener() {
 
 		public void fieldChanged(Field field, int context) {
-			fieldChangeNotify(Util.ROOT_SELECCIONADO);
+				fieldChangeNotify(Util.ROOT_SELECCIONADO);
 		}
 	};
-	public String getChoice(){
+
+	public String getChoice() {
 		return (String) _lsRoots.getChoice(_lsRoots.getSelectedIndex());
 	}
-	
-	public int getIndexChoice(){
+
+	public int getIndexChoice() {
 		return _lsRoots.getSelectedIndex();
 	}
-	
-	public String getNombreArchivo(){
+
+	public String getNombreArchivo() {
 		return _txtNombreArchivo.getText();
 	}
-	
-	
+	public void setChoice(int choice){
+		_lsRoots.setSelectedIndex(choice);
+	}
 	public void setLsRoots(String[] roots) {
 		_lsRoots.setChoices(roots);
+	}
+	public boolean onClose(){
+		UiApplication.getUiApplication().popScreen(getScreen());
+		return true;
 	}
 }
