@@ -75,6 +75,7 @@ public class Backup {
 	}
 	private void guardar(){
 		_screen.alert("Se va a guardar en: " + _ruta + _nombreArchivo);
+		//TODO acciones para guardado
 	}
 	public BackupScreen getScreen() {
 		return _screen;

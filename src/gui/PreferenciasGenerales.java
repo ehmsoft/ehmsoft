@@ -48,13 +48,13 @@ public class PreferenciasGenerales {
 		Preferencias.setPantallaInicial(_screen.getPantallaInicial());
 		Preferencias.setCantidadActuacionesCriticas(_screen.getCantidadActuacionesCriticas());
 		Util.popScreen(_screen);
+		//TODO poner los metodos de persistencia
 	}
 	
 	private void copiaDeSeguridad() {
-		//String ruta = _screen.mostrarSeleccionArchivo();
-		//Util.popScreen(_screen);
 		Backup b = new Backup();
 		UiApplication.getUiApplication().pushModalScreen(b.getScreen());
+		b = null;
 	}
 	
 	private void restaurarPreferencias() {
