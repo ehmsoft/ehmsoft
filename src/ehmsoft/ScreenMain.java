@@ -1,6 +1,10 @@
 package ehmsoft;
 
-import gui.ActuacionesManager;
+import java.util.Enumeration;
+import java.util.Vector;
+
+import persistence.Persistence;
+import core.Actuacion;
 import gui.Util;
 import gui.Listados.ListadoCampos;
 import gui.Listados.ListadoCategorias;
@@ -9,11 +13,16 @@ import gui.Listados.ListadoPersonas;
 import gui.Listados.ListadoProcesos;
 import gui.Listados.ListadoPlantillas;
 import net.rim.device.api.system.Display;
+import net.rim.device.api.ui.Field;
+import net.rim.device.api.ui.FocusChangeListener;
+import net.rim.device.api.ui.Font;
+import net.rim.device.api.ui.Graphics;
 import net.rim.device.api.ui.MenuItem;
 import net.rim.device.api.ui.UiApplication;
 import net.rim.device.api.ui.XYEdges;
 import net.rim.device.api.ui.component.Dialog;
 import net.rim.device.api.ui.component.LabelField;
+import net.rim.device.api.ui.component.ListField;
 import net.rim.device.api.ui.component.Menu;
 import net.rim.device.api.ui.component.ObjectListField;
 import net.rim.device.api.ui.component.SeparatorField;
@@ -30,17 +39,22 @@ import net.rim.device.api.ui.decor.BorderFactory;
 public class ScreenMain extends MainScreen {
 
 	private GridFieldManager _grid;
+	private VerticalFieldManager _vertical;
+	private ObjectListField _lista;
+	private LabelField _juzgado;
+	private LabelField _fecha;
+	private LabelField _fechaProxima;
+	private LabelField _descripcion;
+	private static final int column1 = (Display.getWidth() / 2) - 32;
+	private static final int column2 = (Display.getWidth() / 2) + 16;
+	private static final int row = Display.getHeight() - 32;
 	
 	public ScreenMain() {
 		super();
 		
-		ActuacionesManager actuaciones = new ActuacionesManager(15);
+		actuacionesManager(15);
 		
-		int column1 = (Display.getWidth() / 2) - 32;
-		int column2 = (Display.getWidth() / 2) + 16;
-		int row = Display.getHeight() - 32;
-		
-		//Util.alert(column1 + " " +column2 + " "  +  " " + row + "");
+		//Util.alert(column1 + " " +column2 + " "  +  " " + row + "");		
 		
 		_grid = new GridFieldManager(1, 2,	GridFieldManager.FIXED_SIZE);
 		_grid.setColumnProperty(0, GridFieldManager.FIXED_SIZE, column1);
@@ -50,17 +64,100 @@ public class ScreenMain extends MainScreen {
 		//_grid.setPadding(16, 0, 0, 0);
 
 		VerticalFieldManager right = new VerticalFieldManager();
-		VerticalFieldManager left = new VerticalFieldManager();
+		VerticalFieldManager left = new VerticalFieldManager(VERTICAL_SCROLL);
 		left.setBorder(BorderFactory.createRoundedBorder(new XYEdges(5, 5, 5, 5)));
 
-		left.add(actuaciones.getLeft());
-		right.add(actuaciones.getRight());
+		left.add(_lista);
+		right.add(_vertical);
 
 		_grid.add(left);
 		_grid.add(right);
 
 		add(_grid);
 	}
+	
+	private void actuacionesManager(int cant) {
+		_vertical = new VerticalFieldManager();
+		_vertical.setFont(_vertical.getFont().derive(
+				_vertical.getFont().getStyle(),
+				_vertical.getFont().getHeight() - 5));
+		_lista = new ObjectListField() {
+			public void drawListRow(ListField listField, Graphics graphics, int index,
+					int y, int width) {
+				Actuacion objeto = (Actuacion) this.get(listField, index);
+				graphics.drawText(objeto.toString(), 0, y);
+				graphics.drawText(Util.calendarToString(objeto.getFechaProxima(), false), 15, y + getFont().getHeight());
+			}
+		};
+		_lista.setFont(_lista.getFont().derive(_lista.getFont().getStyle(),
+				_lista.getFont().getHeight() - 8));
+		_lista.setRowHeight(_lista.getFont().getHeight() * 2);
+
+		try {
+			Vector v = new Persistence().consultarActuacionesCriticas(cant);
+			Enumeration e = v.elements();
+			while(e.hasMoreElements()) {
+				_lista.insert(_lista.getSize(), e.nextElement());
+			}
+		} catch (NullPointerException e) {
+			Util.noSd();
+		} catch (Exception e) {
+			Util.alert(e.toString());
+		}
+		_lista.setFocusListener(listener);
+		
+		LabelField lblDescripcion = new LabelField("Descripción: ");
+		LabelField lblJuzgado = new LabelField("Juzgado: ");
+		LabelField lblFecha = new LabelField("Fecha: ");
+		LabelField lblFechaProxima = new LabelField("Fecha próxima: ");
+		
+		Font bold = _vertical.getFont().derive(Font.BOLD);
+		
+		lblDescripcion.setFont(bold);
+		lblJuzgado.setFont(bold);
+		lblFecha.setFont(bold);
+		lblFechaProxima.setFont(bold);
+
+
+		_juzgado = new LabelField();
+		_fecha = new LabelField();
+		_fechaProxima = new LabelField();
+		_descripcion = new LabelField();
+		
+		_vertical.add(lblDescripcion);
+		_vertical.add(_descripcion);
+		_vertical.add(new SeparatorField());
+		_vertical.add(lblJuzgado);
+		_vertical.add(_juzgado);
+		_vertical.add(new SeparatorField());
+		_vertical.add(lblFecha);
+		_vertical.add(_fecha);
+		_vertical.add(new SeparatorField());
+		_vertical.add(lblFechaProxima);
+		_vertical.add(_fechaProxima);
+	}
+	
+	private FocusChangeListener listener = new FocusChangeListener() {
+
+		public void focusChanged(Field field, int context) {
+			try {
+				Actuacion a = (Actuacion) _lista.get(_lista, _lista.getSelectedIndex());
+				if (a == null) {
+					a = (Actuacion) _lista.get(_lista, 0);
+				}
+				_descripcion.setText(a.getDescripcion());
+				_juzgado.setText(a.getJuzgado().getNombre());
+				String fecha = Util.calendarToString(a.getFecha(), true);
+				_fecha.setText(fecha);
+				fecha = Util.calendarToString(a.getFechaProxima(), true);
+				_fechaProxima.setText(fecha);
+				_grid.setColumnProperty(0, GridFieldManager.FIXED_SIZE, column1);
+				_grid.setColumnProperty(1, GridFieldManager.FIXED_SIZE, column2);
+				_grid.setRowProperty(0, GridFieldManager.FIXED_SIZE, row);
+				} catch (NullPointerException e) {
+			}
+		}
+	};
 
 	protected void makeMenu(Menu menu, int instance) {
 		menu.add(menuListas);
