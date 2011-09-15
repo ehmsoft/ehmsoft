@@ -6,6 +6,7 @@ import net.rim.device.api.ui.FieldChangeListener;
 import net.rim.device.api.ui.UiApplication;
 import net.rim.device.api.ui.component.BasicEditField;
 import net.rim.device.api.ui.component.ButtonField;
+import net.rim.device.api.ui.component.Dialog;
 import net.rim.device.api.ui.component.LabelField;
 import net.rim.device.api.ui.component.ObjectChoiceField;
 import net.rim.device.api.ui.container.PopupScreen;
@@ -80,6 +81,9 @@ public class BackupScreen extends PopupScreen {
 	}
 	public void setLsRoots(String[] roots) {
 		_lsRoots.setChoices(roots);
+	}
+	public void alert(String alert) {
+		Dialog.alert(alert);
 	}
 	public boolean onClose(){
 		UiApplication.getUiApplication().popScreen(getScreen());
