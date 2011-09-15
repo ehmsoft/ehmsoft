@@ -139,23 +139,30 @@ public class NuevoProcesoScreen extends FondoNormal {
 	}
 
 	protected void makeMenu(Menu menu, int instance) {
-		Field f = UiApplication.getUiApplication().getActiveScreen()
-				.getLeafFieldWithFocus();
+		Field f = getFieldWithFocus();
 		if (f.equals(_lblDemandante) || f.equals(_lblDemandado)
 				|| f.equals(_lblJuzgado)) {
 			menu.add(menuCambiar);
 			menu.addSeparator();
-		} else if (f.equals(_chCategoria)) {
-			menu.add(menuAddCategoria);
-			menu.add(menuVerListadoCategorias);
-			menu.addSeparator();
-		} else if (f.equals(_chActuaciones)) {
-			menu.add(menuAddActuacion);
-			menu.addSeparator();
-		} else if (BasicEditField.class.isInstance(f)) {
-			if (f.getCookie() != null) {
-				menu.add(menuEliminarCampo);
+		} else {
+			f = UiApplication.getUiApplication().getActiveScreen()
+					.getLeafFieldWithFocus();
+			if (f.equals(_lblDemandante) || f.equals(_lblDemandado)
+					|| f.equals(_lblJuzgado)) {
+				menu.add(menuCambiar);
 				menu.addSeparator();
+			} else if (f.equals(_chCategoria)) {
+				menu.add(menuAddCategoria);
+				menu.add(menuVerListadoCategorias);
+				menu.addSeparator();
+			} else if (f.equals(_chActuaciones)) {
+				menu.add(menuAddActuacion);
+				menu.addSeparator();
+			} else if (BasicEditField.class.isInstance(f)) {
+				if (f.getCookie() != null) {
+					menu.add(menuEliminarCampo);
+					menu.addSeparator();
+				}
 			}
 		}
 		menu.add(menuCampo);
@@ -166,13 +173,11 @@ public class NuevoProcesoScreen extends FondoNormal {
 	private final MenuItem menuAgregar = new MenuItem("Agregar", 0, 0) {
 
 		public void run() {
-			Field f = UiApplication.getUiApplication().getActiveScreen()
-					.getLeafFieldWithFocus();
+			Field f = getFieldWithFocus();
 			if (f.equals(_lblDemandante)) {
 				fieldChangeNotify(Util.ADD_DEMANDANTE);
 			} else if (f.equals(_lblDemandado)) {
 				fieldChangeNotify(Util.ADD_DEMANDADO);
-
 			} else if (f.equals(_lblJuzgado)) {
 				fieldChangeNotify(Util.ADD_JUZGADO);
 			}
