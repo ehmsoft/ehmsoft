@@ -11,7 +11,8 @@ import net.rim.device.api.ui.UiApplication;
 
 public class Backup {
 	private BackupScreen _screen;
-	private String ruta;
+	private String _ruta = null;
+	private String _nombreArchivo;
 	private String[] roots;
 	public Backup() {
 		_screen = new BackupScreen();
@@ -47,7 +48,8 @@ public class Backup {
 					_screen.setChoice(0);
 					examinar();
 				} else {
-					ruta = roots[_screen.getIndexChoice()] + _screen.getNombreArchivo();
+					_ruta = roots[_screen.getIndexChoice()];
+					_nombreArchivo = _screen.getNombreArchivo();
 				}
 				break;
 			case Util.GUARDAR:
@@ -61,9 +63,18 @@ public class Backup {
 	private void examinar() {
 		DirectoryPicker dp = new DirectoryPicker();
 		UiApplication.getUiApplication().pushModalScreen(dp.getScreen());
+		if(dp.isSelected()){
+			if(dp.getRuta() == null){
+				_ruta = roots[0];
+			}else{
+				_ruta = dp.getRuta();
+			}
+			_nombreArchivo = _screen.getNombreArchivo();
+		}
+		dp = null;
 	}
 	private void guardar(){
-		
+		_screen.alert("Se va a guardar en: " + _ruta + _nombreArchivo);
 	}
 	public BackupScreen getScreen() {
 		return _screen;
