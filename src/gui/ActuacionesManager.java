@@ -1,16 +1,14 @@
 package gui;
 
-import gui.Listados.ListadoActuacionesLista;
-
+import java.util.Enumeration;
 import java.util.Vector;
 
-import net.rim.device.api.ui.DrawStyle;
 import net.rim.device.api.ui.Field;
 import net.rim.device.api.ui.FocusChangeListener;
 import net.rim.device.api.ui.Font;
 import net.rim.device.api.ui.component.LabelField;
+import net.rim.device.api.ui.component.ObjectListField;
 import net.rim.device.api.ui.component.SeparatorField;
-import net.rim.device.api.ui.container.HorizontalFieldManager;
 import net.rim.device.api.ui.container.VerticalFieldManager;
 import persistence.Persistence;
 import core.Actuacion;
@@ -18,7 +16,7 @@ import core.Actuacion;
 public class ActuacionesManager {
 
 	private VerticalFieldManager _vertical;
-	private ListadoActuacionesLista _lista;
+	private ObjectListField _lista;
 	private LabelField _juzgado;
 	private LabelField _fecha;
 	private LabelField _fechaProxima;
@@ -29,20 +27,23 @@ public class ActuacionesManager {
 		_vertical.setFont(_vertical.getFont().derive(
 				_vertical.getFont().getStyle(),
 				_vertical.getFont().getHeight() - 5));
-		_lista = new ListadoActuacionesLista();
+		_lista = new ObjectListField();
 		_lista.setFont(_lista.getFont().derive(_lista.getFont().getStyle(),
 				_lista.getFont().getHeight() - 8));
 		_lista.setRowHeight(_lista.getFont().getHeight() * 2);
 
 		try {
 			Vector v = new Persistence().consultarActuacionesCriticas(cant);
-			_lista.loadFrom(v);
+			Enumeration e = v.elements();
+			while(e.hasMoreElements()) {
+				_lista.insert(_lista.getSize(), e.nextElement());
+			}
 		} catch (NullPointerException e) {
 			Util.noSd();
 		} catch (Exception e) {
 			Util.alert(e.toString());
 		}
-		_lista.setFocusListener(listener);
+		//_lista.setFocusListener(listener);
 		
 		LabelField lblDescripcion = new LabelField("Descripción: ");
 		LabelField lblJuzgado = new LabelField("Juzgado: ");
@@ -75,13 +76,13 @@ public class ActuacionesManager {
 		_vertical.add(_fechaProxima);
 	}
 
-	private FocusChangeListener listener = new FocusChangeListener() {
+/*	private FocusChangeListener listener = new FocusChangeListener() {
 
 		public void focusChanged(Field field, int context) {
 			try {
-				Actuacion a = (Actuacion) _lista.getSelectedElement();
+				Actuacion a = (Actuacion) _lista.get(_lista, _lista.getSelectedIndex());
 				if (a == null) {
-					a = (Actuacion) _lista.getElementAt(0);
+					a = (Actuacion) _lista.get(_lista, 0);
 				}
 				_descripcion.setText(a.getDescripcion());
 				_juzgado.setText(a.getJuzgado().getNombre());
@@ -89,18 +90,16 @@ public class ActuacionesManager {
 				_fecha.setText(fecha);
 				fecha = Util.calendarToString(a.getFechaProxima(), true);
 				_fechaProxima.setText(fecha);
-				_lista.invalidate();
-				_vertical.invalidate();
-			} catch (NullPointerException e) {
+				} catch (NullPointerException e) {
 			}
 		}
-	};
+	};*/
 
 	public VerticalFieldManager getRight() {
 		return _vertical;
 	}
 
-	public ListadoActuacionesLista getLeft() {
+	public ObjectListField getLeft() {
 		return _lista;
 	}
 }
