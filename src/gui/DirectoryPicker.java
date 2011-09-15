@@ -15,6 +15,7 @@ public class DirectoryPicker {
 	private DirectoryPickerScreen _screen;
 	private boolean _selected = false;
 	private String _ruta = null;
+
 	public DirectoryPicker() {
 		_screen = new DirectoryPickerScreen();
 		_screen.setChangeListener(listener);
@@ -27,17 +28,17 @@ public class DirectoryPicker {
 			switch (context) {
 			case Util.CLICK:
 				String path = _screen.getSelected();
-				//Hace las verificaciones necesarias para armar bien la direccion
-				if(_ruta == null){
+				// Hace las verificaciones necesarias para armar bien la
+				// direccion
+				if (_ruta == null) {
 					_ruta = path;
-				}else if(path.endsWith("..")){
-					_ruta = _ruta.substring(0,_ruta.lastIndexOf('/'));
-					_ruta = _ruta.substring(0,_ruta.lastIndexOf('/')+1);
-				}
-				else{
+				} else if (path.endsWith("..")) {
+					_ruta = _ruta.substring(0, _ruta.lastIndexOf('/'));
+					_ruta = _ruta.substring(0, _ruta.lastIndexOf('/') + 1);
+				} else {
 					_ruta += path;
 				}
-				if(_ruta.indexOf('/') == -1){
+				if (_ruta.indexOf('/') == -1) {
 					_ruta = null;
 				}
 				actualizarLista(_ruta);
@@ -51,7 +52,7 @@ public class DirectoryPicker {
 	};
 
 	private void actualizarLista(String _ruta) {
-		//Carga la lista de archivos y directorios, actualizando la pantalla
+		// Carga la lista de archivos y directorios, actualizando la pantalla
 		if (_ruta == null) {
 			Enumeration e = FileSystemRegistry.listRoots();
 			Vector v = new Vector();
@@ -70,7 +71,10 @@ public class DirectoryPicker {
 				fileEnum = fc.list();
 				filesVector.addElement("..");
 				while (fileEnum.hasMoreElements()) {
-					filesVector.addElement((String)fileEnum.nextElement());
+					String element = (String) fileEnum.nextElement();
+					if (element.endsWith("/")) {
+						filesVector.addElement(element);
+					}
 				}
 				String[] roots = new String[filesVector.size()];
 				filesVector.copyInto(roots);
@@ -81,13 +85,15 @@ public class DirectoryPicker {
 			}
 		}
 	}
-	
+
 	public DirectoryPickerScreen getScreen() {
 		return _screen;
 	}
-	public String getRuta(){
+
+	public String getRuta() {
 		return _ruta;
 	}
+
 	public boolean isSelected() {
 		return _selected;
 	}
