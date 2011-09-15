@@ -1,16 +1,13 @@
 package gui;
 
-import java.util.Vector;
-import javax.microedition.io.file.FileSystemRegistry;
+
 import net.rim.device.api.ui.Field;
 import net.rim.device.api.ui.FieldChangeListener;
 import net.rim.device.api.ui.UiApplication;
 import net.rim.device.api.ui.component.BasicEditField;
 import net.rim.device.api.ui.component.ButtonField;
-import net.rim.device.api.ui.component.Dialog;
 import net.rim.device.api.ui.component.LabelField;
 import net.rim.device.api.ui.component.ObjectChoiceField;
-import net.rim.device.api.ui.component.ObjectListField;
 import net.rim.device.api.ui.container.PopupScreen;
 import net.rim.device.api.ui.container.VerticalFieldManager;
 
@@ -26,7 +23,7 @@ public class BackupScreen extends PopupScreen {
 	private ButtonField _btnfldCancel;
 
 	public BackupScreen() {
-		super(new VerticalFieldManager());
+		super(new VerticalFieldManager(VERTICAL_SCROLL | VERTICAL_SCROLLBAR));
 		_txtNombreArchivo = new BasicEditField("Nombre: ", "copia.bk");
 
 		_lsRoots = new ObjectChoiceField();
