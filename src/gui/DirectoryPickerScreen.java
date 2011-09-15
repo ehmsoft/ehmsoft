@@ -3,7 +3,6 @@ package gui;
 import net.rim.device.api.ui.Field;
 import net.rim.device.api.ui.FieldChangeListener;
 import net.rim.device.api.ui.UiApplication;
-import net.rim.device.api.ui.component.BasicEditField;
 import net.rim.device.api.ui.component.ButtonField;
 import net.rim.device.api.ui.component.Dialog;
 import net.rim.device.api.ui.component.LabelField;
@@ -23,9 +22,9 @@ public class DirectoryPickerScreen extends PopupScreen {
 	private ButtonField _btnfldCancel;
 
 	public DirectoryPickerScreen() {
-		super(new VerticalFieldManager());
+		super(new VerticalFieldManager(VERTICAL_SCROLL | VERTICAL_SCROLLBAR));
 		_lblTitulo = new LabelField("Examinar", Field.FIELD_HCENTER);
-		_btnfldOk = new ButtonField("Seleccionar", ButtonField.CONSUME_CLICK
+		_btnfldOk = new ButtonField("Seleccionar Aquí", ButtonField.CONSUME_CLICK
 				| Field.FIELD_HCENTER);
 		_btnfldOk.setMinimalWidth(100);
 		_btnfldOk.setChangeListener(listenerSeleccionar);
