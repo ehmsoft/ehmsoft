@@ -40,7 +40,7 @@ public class ScreenMain extends MainScreen {
 
 	private GridFieldManager _grid;
 	private VerticalFieldManager _vertical;
-	private ObjectListField _lista;
+	private static ObjectListField _lista;
 	private LabelField _juzgado;
 	private LabelField _fecha;
 	private LabelField _fechaProxima;
@@ -53,15 +53,8 @@ public class ScreenMain extends MainScreen {
 		super();
 		
 		actuacionesManager(15);
-		
-		//Util.alert(column1 + " " +column2 + " "  +  " " + row + "");		
-		
+			
 		_grid = new GridFieldManager(1, 2,	GridFieldManager.FIXED_SIZE);
-		_grid.setColumnProperty(0, GridFieldManager.FIXED_SIZE, column1);
-		_grid.setColumnProperty(1, GridFieldManager.FIXED_SIZE, column2);
-
-		_grid.setRowProperty(0, GridFieldManager.FIXED_SIZE, row);
-		//_grid.setPadding(16, 0, 0, 0);
 
 		VerticalFieldManager right = new VerticalFieldManager();
 		VerticalFieldManager left = new VerticalFieldManager(VERTICAL_SCROLL);
@@ -74,6 +67,8 @@ public class ScreenMain extends MainScreen {
 		_grid.add(right);
 
 		add(_grid);
+		_lista.focusChangeNotify(0);
+		invalidate();
 	}
 	
 	private void actuacionesManager(int cant) {
@@ -151,13 +146,34 @@ public class ScreenMain extends MainScreen {
 				_fecha.setText(fecha);
 				fecha = Util.calendarToString(a.getFechaProxima(), true);
 				_fechaProxima.setText(fecha);
+				} catch (NullPointerException e) {
+			} finally {
 				_grid.setColumnProperty(0, GridFieldManager.FIXED_SIZE, column1);
 				_grid.setColumnProperty(1, GridFieldManager.FIXED_SIZE, column2);
 				_grid.setRowProperty(0, GridFieldManager.FIXED_SIZE, row);
-				} catch (NullPointerException e) {
 			}
 		}
 	};
+	
+	public static void recargarActuaciones() {
+		if (_lista != null) {
+			try {
+				while (_lista.getSize() != 0) {
+					_lista.delete(0);
+				}
+				Vector v = new Persistence().consultarActuacionesCriticas(15);
+				Enumeration e = v.elements();
+				while (e.hasMoreElements()) {
+					_lista.insert(_lista.getSize(), e.nextElement());
+				}
+				_lista.setSelectedIndex(_lista.getSelectedIndex());
+			} catch (NullPointerException e) {
+				Util.noSd();
+			} catch (Exception e) {
+				Util.alert(e.toString());
+			}
+		}
+	}
 
 	protected void makeMenu(Menu menu, int instance) {
 		menu.add(menuListas);
@@ -253,6 +269,7 @@ class Listados extends PopupScreen {
 			} else if ((_style & NUEVO) == NUEVO) {
 				Util.nuevoProceso();
 			}
+			ScreenMain.recargarActuaciones();
 		} else if (index == 6) {
 			if ((_style & LISTA) == LISTA) {
 				Util.listadoPlantillas(false, ListadoPlantillas.ON_CLICK_VER);
