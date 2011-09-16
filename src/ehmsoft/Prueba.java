@@ -144,6 +144,12 @@ public class Prueba extends MainScreen {
 	private FieldChangeListener listenerPreferencias = new FieldChangeListener() {
 		
 		public void fieldChanged(Field field, int context) {
+			try {
+				Persistence persistence = new Persistence();
+				persistence.consultarPreferencias();
+			} catch (Exception e) {
+				Dialog.alert(e.toString());
+			}
 			PreferenciasGenerales p = new PreferenciasGenerales();
 			UiApplication.getUiApplication().pushModalScreen(p.getScreen());
 		}
