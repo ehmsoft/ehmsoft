@@ -1,10 +1,14 @@
 package gui;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.Enumeration;
 import java.util.Vector;
-
+import javax.microedition.io.Connector;
+import javax.microedition.io.file.FileConnection;
 import javax.microedition.io.file.FileSystemRegistry;
-
+import persistence.ConnectionManager;
 import net.rim.device.api.ui.Field;
 import net.rim.device.api.ui.FieldChangeListener;
 import net.rim.device.api.ui.UiApplication;
@@ -74,8 +78,68 @@ public class Backup {
 		dp = null;
 	}
 	private void guardar(){
-		_screen.alert("Se va a guardar en: " + _ruta + _nombreArchivo);
-		//TODO acciones para guardado
+		FileConnection fconn = null;
+		 try {
+		     fconn = (FileConnection)Connector.open("file:///"+ _ruta + _nombreArchivo);//Archivo a escribir
+		     ConnectionManager connMgr = new ConnectionManager();
+		     connMgr.prepararBD();
+		     FileConnection fconnDB = (FileConnection)Connector.open(connMgr.getDbLocation().toString());
+		     if (!fconn.exists()){
+		         fconn.create(); 
+		     }
+		     OutputStream outputStream = null;
+		        InputStream inputStream = null;       
+		        inputStream = fconnDB.openInputStream();
+		        
+		        // Open an output stream to the newly created file
+		        outputStream = (OutputStream)fconn.openOutputStream();                                       
+		        
+		        // Read data from the input stream and write the data to the
+		        // output stream.            
+		        byte[] data = new byte[256];
+		        int length = 0;
+		        while (-1 != (length = inputStream.read(data)))
+		        {
+		            outputStream.write(data, 0, length);                
+		        }     
+		        
+		        // Close the connections
+		        
+		        if(fconn != null)
+		        {
+		            fconn.close();
+		        }
+		        if(fconnDB != null){
+		        	fconnDB.close();
+		        }
+		        if(outputStream != null)
+		        {
+		            outputStream.close();
+		        } 
+		        if(inputStream != null)
+		        {
+		            inputStream.close();
+		        }            
+		     _screen.alert("Archivo guardado!");
+		     UiApplication.getUiApplication().popScreen(_screen);
+		 }
+		 catch (IOException ioe) {
+			 _screen.alert("No se pudo guardar!");
+		 } catch (NullPointerException npe) {
+			_screen.alert(Util.noSDString());
+			System.exit(0);
+		} catch (Exception e) {
+			_screen.alert("Error desconocido. Código: Backup");
+		}finally{
+			 if (fconn != null){
+				 try {
+					fconn.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			 }
+		 }
+		
 	}
 	public BackupScreen getScreen() {
 		return _screen;
