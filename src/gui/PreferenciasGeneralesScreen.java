@@ -293,12 +293,11 @@ public class PreferenciasGeneralesScreen extends MainScreen {
 			fieldChangeNotify(Util.GUARDAR);
 		}
 	};
-
+	public void alert(String alert) {
+		Dialog.alert(alert);
+	}
 	protected boolean onSave() {
 		fieldChangeNotify(Util.GUARDAR);
 		return true;
-	};
-	public void alert(String alert) {
-		Dialog.alert(alert);
 	}
 }
