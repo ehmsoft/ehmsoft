@@ -1,5 +1,6 @@
 package gui;
 
+import persistence.Persistence;
 import net.rim.device.api.ui.Field;
 import net.rim.device.api.ui.FieldChangeListener;
 import net.rim.device.api.ui.UiApplication;
@@ -47,8 +48,19 @@ public class PreferenciasGenerales {
 		Preferencias.setTipoFuente(_screen.getFuente());
 		Preferencias.setPantallaInicial(_screen.getPantallaInicial());
 		Preferencias.setCantidadActuacionesCriticas(_screen.getCantidadActuacionesCriticas());
+		try {
+			Persistence per = new Persistence();
+			per.actualizarPreferencias();
+		} catch (NullPointerException npe){
+			_screen.alert(Util.noSDString());
+			System.exit(0);
+		}
+		catch (Exception e) {
+			//TODO Limpiar código aquí
+			//_screen.alert(e.toString() + "\n" + e.getMessage());
+			_screen.alert("No se han podido guardar las preferencias. Error Desconocido");
+		}
 		Util.popScreen(_screen);
-		//TODO poner los metodos de persistencia
 	}
 	
 	private void copiaDeSeguridad() {
@@ -58,7 +70,18 @@ public class PreferenciasGenerales {
 	}
 	
 	private void restaurarPreferencias() {
-		//TODO Acciones para restaurar preferencias por defecto
+		try {
+			Persistence per = new Persistence();
+			per.borrarPreferencias();
+		} catch (NullPointerException npe){
+			_screen.alert(Util.noSDString());
+			System.exit(0);
+		}
+		catch (Exception e) {
+			//TODO limpiar código aquí
+			_screen.alert(e.toString() + "\n" + e.getMessage());
+			//_screen.alert("No se han podido guardar las preferencias. Error Desconocido");
+		}
 		Util.popScreen(_screen);
 	}
 }
