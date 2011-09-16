@@ -1,5 +1,6 @@
 package gui;
 
+import persistence.Persistence;
 import net.rim.device.api.ui.Field;
 import net.rim.device.api.ui.FieldChangeListener;
 import net.rim.device.api.ui.UiApplication;
@@ -58,7 +59,17 @@ public class PreferenciasGenerales {
 	}
 	
 	private void restaurarPreferencias() {
-		//TODO Acciones para restaurar preferencias por defecto
-		Util.popScreen(_screen);
+		try {
+			Persistence preferencias = new Persistence();
+			preferencias.borrarPreferencias();
+		} catch(NullPointerException e) {
+			_screen.alert(Util.noSDString());
+			System.exit(0);
+		} catch (Exception e) {
+			_screen.alert(e.toString());
+		}
+		//Util.popScreen(_screen);
 	}
+	
 }
+
