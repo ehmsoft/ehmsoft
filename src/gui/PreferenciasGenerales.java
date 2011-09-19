@@ -56,8 +56,6 @@ public class PreferenciasGenerales {
 			System.exit(0);
 		}
 		catch (Exception e) {
-			//TODO Limpiar código aquí
-			//_screen.alert(e.toString() + "\n" + e.getMessage());
 			_screen.alert("No se han podido guardar las preferencias. Error Desconocido");
 		}
 		Util.popScreen(_screen);
@@ -78,9 +76,7 @@ public class PreferenciasGenerales {
 			System.exit(0);
 		}
 		catch (Exception e) {
-			//TODO limpiar código aquí
-			_screen.alert(e.toString() + "\n" + e.getMessage());
-			//_screen.alert("No se han podido guardar las preferencias. Error Desconocido");
+			_screen.alert("No se han podido guardar las preferencias. Error Desconocido");
 		}
 		Util.popScreen(_screen);
 	}
