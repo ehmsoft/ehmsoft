@@ -99,8 +99,10 @@ public class EditableTextField extends HorizontalFieldManager {
 	}
 
 	public void setEditable() {
-		this.replace(_lblField, _txtField);
-		_editable = true;
+		if (!_editable) {
+			this.replace(_lblField, _txtField);
+			_editable = true;
+		}
 	}
 
 	public void setMaxSize(int maxSize) {

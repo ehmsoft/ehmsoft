@@ -144,7 +144,7 @@ public class VerProceso {
 				eliminarCampos();
 			}
 			concatCampos();
-			Proceso proceso = new Proceso(_demandante, _demandado,
+			Proceso proceso = new Proceso(_proceso.getId_proceso(), _demandante, _demandado,
 					_screen.getFecha(), _juzgado, _screen.getRadicado(),
 					_screen.getRadicadoUnico(), _actuaciones,
 					_screen.getEstado(), _categoria, _screen.getTipo(),

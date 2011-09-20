@@ -6,6 +6,7 @@ import gui.Util;
 
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Enumeration;
 import java.util.Vector;
 
 import net.rim.device.api.ui.Field;
@@ -305,6 +306,10 @@ public class VerProcesoScreen extends FondoNormal {
 			_txtTipo.setEditable();
 			_txtNotas.setEditable();
 			_nfPrioridad.setEditable(true);
+			Enumeration e = _txtCampos.elements();
+			while(e.hasMoreElements()) {
+				((EditableTextField)e.nextElement()).setEditable();
+			}
 		}
 	};
 
