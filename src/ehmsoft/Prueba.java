@@ -1,6 +1,8 @@
 package ehmsoft;
 
 import gui.Util;
+import gui.About;
+import gui.PreferenciasGenerales;
 import gui.Listados.ListadoActuaciones;
 import gui.Listados.ListadoCampos;
 import gui.Listados.ListadoCategorias;
@@ -19,7 +21,10 @@ import gui.Ver.VerPersona;
 import gui.Ver.VerProceso;
 import net.rim.device.api.ui.Field;
 import net.rim.device.api.ui.FieldChangeListener;
+import net.rim.device.api.ui.TransitionContext;
+import net.rim.device.api.ui.Ui;
 import net.rim.device.api.ui.UiApplication;
+import net.rim.device.api.ui.UiEngineInstance;
 import net.rim.device.api.ui.component.ButtonField;
 import net.rim.device.api.ui.component.Dialog;
 import net.rim.device.api.ui.container.MainScreen;
@@ -30,6 +35,8 @@ import core.Persona;
 import core.Proceso;
 
 public class Prueba extends MainScreen {
+	
+	ButtonField preferencias;
 
 	ButtonField listadoActuaciones;
 	ButtonField listadoCategorias;
@@ -51,10 +58,14 @@ public class Prueba extends MainScreen {
 	ButtonField verDemandado;
 	ButtonField verProceso;
 
+	ButtonField acerca;
 	public Prueba() {
 		super(MainScreen.VERTICAL_SCROLL | MainScreen.VERTICAL_SCROLLBAR);
 		
 		Util.verificarBD();
+		preferencias = new ButtonField("Preferencias");
+		preferencias.setChangeListener(listenerPreferencias);
+		add(preferencias);
 
 		listadoActuaciones = new ButtonField("Listado de actuaciones");
 		listadoActuaciones.setChangeListener(listenerListadoActuaciones);
@@ -132,9 +143,25 @@ public class Prueba extends MainScreen {
 		verProceso.setChangeListener(listenerVerProceso);
 		add(verProceso);
 		
+		acerca = new ButtonField("Acerca de");
+		acerca.setChangeListener(listenerAcerca);
+		add(acerca);
 
 	}
 	
+	private FieldChangeListener listenerPreferencias = new FieldChangeListener() {
+		
+		public void fieldChanged(Field field, int context) {
+			try {
+				Persistence persistence = new Persistence();
+				persistence.consultarPreferencias();
+			} catch (Exception e) {
+				Dialog.alert(e.toString());
+			}
+			PreferenciasGenerales p = new PreferenciasGenerales();
+			UiApplication.getUiApplication().pushModalScreen(p.getScreen());
+		}
+	};	
 
 	private FieldChangeListener listenerListadoActuaciones = new FieldChangeListener() {
 
@@ -364,6 +391,20 @@ public class Prueba extends MainScreen {
 			}
 			VerProceso ver = new VerProceso(proceso);
 			UiApplication.getUiApplication().pushModalScreen(ver.getScreen());
+		}
+	};
+	private FieldChangeListener listenerAcerca = new FieldChangeListener() {
+		
+		public void fieldChanged(Field field, int context) {
+			TransitionContext transition = new TransitionContext(TransitionContext.TRANSITION_SLIDE);
+		    transition.setIntAttribute(TransitionContext.ATTR_DURATION, 500);
+		    transition.setIntAttribute(TransitionContext.ATTR_DIRECTION, TransitionContext.DIRECTION_DOWN);
+		    transition.setIntAttribute(TransitionContext.ATTR_STYLE, TransitionContext.STYLE_OVER);
+		    About nextScreen = new About();
+		    UiEngineInstance engine = Ui.getUiEngineInstance();
+		    engine.setTransition(null, nextScreen, UiEngineInstance.TRIGGER_PUSH, transition);
+			UiApplication.getUiApplication().pushModalScreen(nextScreen);
+			
 		}
 	};
 	

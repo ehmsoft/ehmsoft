@@ -55,26 +55,31 @@ public class Util {
 	public static final short VER_CITA = 11;
 	public static final short VER_CATEGORIA = 12;
 	public static final short VER_ACTUACION = 13;
-	public static final short VER_LISTADO_ACTUACIONES = 26;
-	public static final short VER_CAMPO = 25;
+	public static final short VER_LISTADO_ACTUACIONES = 14;
+	public static final short VER_CAMPO = 15;
 
-	public static final short NEW_ACTUACION = 14;
-	public static final short NEW_CATEGORIA = 15;
+	public static final short NEW_ACTUACION = 16;
+	public static final short NEW_CATEGORIA = 17;
 
-	public static final short ELIMINAR_DEMANDANTE = 16;
-	public static final short ELIMINAR_DEMANDADO = 17;
-	public static final short ELIMINAR_JUZGADO = 18;
-	public static final short ELIMINAR_CITA = 19;
-	public static final short ELIMINAR_CAMPO = 20;
+	public static final short ELIMINAR_DEMANDANTE = 18;
+	public static final short ELIMINAR_DEMANDADO = 19;
+	public static final short ELIMINAR_JUZGADO = 20;
+	public static final short ELIMINAR_CITA = 21;
+	public static final short ELIMINAR_CAMPO = 22;
 
-	public static final short GUARDAR = 21;
-	public static final short CERRAR = 22;
-	public static final short ELIMINAR = 23;
+	public static final short GUARDAR = 23;
+	public static final short CERRAR = 24;
+	public static final short ELIMINAR = 25;
 
-	public static final short CLICK = 24;
+	public static final short CLICK = 26;
 	public static final int LLAMAR = 27;
 	
 	public static final short NEW_PROCESO = 28;
+
+	public static final short COPIA_SEGURIDAD = 29;
+	public static final short RESTAURAR_PREFERENCIAS = 30;
+	
+	public static final short ROOT_SELECCIONADO = 31;
 
 	public static PopupScreen WAIT_SCREEN;
 	

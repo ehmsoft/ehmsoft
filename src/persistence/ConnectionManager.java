@@ -6,6 +6,7 @@ import javax.microedition.io.file.FileSystemRegistry;
 import java.lang.Exception;
 import net.rim.device.api.database.*;
 import net.rim.device.api.io.URI;
+import net.rim.device.api.ui.Font;
 
 public class ConnectionManager {
 
@@ -204,7 +205,14 @@ public class ConnectionManager {
 			//Crear Tabla Preferencias
 			st = d.createStatement("CREATE TABLE 'preferencias'("+
 					"'id_preferencia' INTEGER PRIMARY KEY,"+
-			"'valor' INTEGER)");
+			"'valor' TEXT)");
+			st.prepare();
+			st.execute();
+			st.close();
+			//Crear Tabla Log
+			st = d.createStatement("CREATE TABLE 'log'("+
+					"'fecha' DATE,"+
+			"'descripcion' TEXT)");
 			st.prepare();
 			st.execute();
 			st.close();
@@ -248,19 +256,56 @@ public class ConnectionManager {
 			st.prepare();
 			st.execute();
 			st.close();
-		//insertar preferencias de pantallas	
-			int[] pantallas = {Persistence.VER_PROCESO,Persistence.VER_PERSONA,Persistence.VER_JUZGADO,Persistence.VER_CITA,Persistence.VER_CATEGORIA,Persistence.VER_CAMPO,Persistence.VER_ACTUACION,Persistence.NUEVO_PROCESO,Persistence.NUEVO_JUZGADO,Persistence.NUEVO_CAMPO,Persistence.NUEVA_PERSONA,Persistence.NUEVA_CITA,Persistence.NUEVA_CATEGORIA,Persistence.NUEVA_ACTUACION,Persistence.LISTADO_PROCESOS,Persistence.LISTADO_PERSONAS,Persistence.LISTADO_JUZGADOS,Persistence.LISTADO_CATEGORIAS,Persistence.LISTADO_CAMPOS,Persistence.LISTADO_ACTUACIONES,Persistence.LISTA_LISTAS};
-			for(int i = 0; i < pantallas.length; i++){
-				st = d.createStatement("INSERT INTO 'preferencias' (id_preferencia,valor) VALUES(?,?)");
-				st.prepare();
-				st.bind(1, (i+1));
-				st.bind(2, pantallas[i]);
-				st.execute();
-				st.close();
-				
-			}
-			
-			
+		//Insertar en el log la fecha de creacion
+			st = d.createStatement("INSERT INTO 'log'(fecha, descripcion) VALUES(datetime()," + " 'Se crea BD')");
+			st.prepare();
+			st.execute();
+			st.close();
+		//insertar preferencias	
+			Statement stFuenteTipo = d.createStatement("INSERT INTO preferencias (id_preferencia, valor) VALUES( 10001,?)");
+			stFuenteTipo.prepare();
+			stFuenteTipo.bind(1, Font.getDefault().getFontFamily().getName());
+			stFuenteTipo.execute();
+			stFuenteTipo.close();
+			Statement stFuenteTamano = d.createStatement("INSERT INTO preferencias (id_preferencia, valor) VALUES( 10002,?)");
+			stFuenteTamano.prepare();
+			stFuenteTamano.bind(1,Integer.toString(Font.getDefault().getHeight()));
+			stFuenteTamano.execute();
+			stFuenteTamano.close();
+			Statement stFuenteEstilo = d.createStatement("INSERT INTO preferencias (id_preferencia, valor) VALUES( 10003,"+"'0000')");
+			stFuenteEstilo.prepare();
+			stFuenteEstilo.bind(1,Integer.toString(Font.getDefault().getStyle()));
+			stFuenteEstilo.execute();
+			stFuenteEstilo.close();
+			Statement stPantallaInicial = d.createStatement("INSERT INTO preferencias (id_preferencia, valor) VALUES( 10101,"+"'20001')");
+			stPantallaInicial.prepare();
+			stPantallaInicial.execute();
+			stPantallaInicial.close();
+			Statement stTituloPantalla = d.createStatement("INSERT INTO preferencias (id_preferencia, valor) VALUES( 10102,"+"'1')");
+			stTituloPantalla.prepare();
+			stTituloPantalla.execute();
+			stTituloPantalla.close();
+			Statement stRecordarUltimaCategoria = d.createStatement("INSERT INTO preferencias (id_preferencia, valor) VALUES( 10201,"+"'0')");
+			stRecordarUltimaCategoria.prepare();
+			stRecordarUltimaCategoria.execute();
+			stRecordarUltimaCategoria.close();
+			Statement stUltimaCategoria = d.createStatement("INSERT INTO preferencias (id_preferencia, valor) VALUES( 10202, Null)");
+			stUltimaCategoria.prepare();
+			stUltimaCategoria.execute();
+			stUltimaCategoria.close();
+			Statement stMostrarBusqueda= d.createStatement("INSERT INTO preferencias (id_preferencia, valor) VALUES( 10301,"+"'1')");
+			stMostrarBusqueda.prepare();
+			stMostrarBusqueda.execute();
+			stMostrarBusqueda.close();
+			Statement stNombreUsuario= d.createStatement("INSERT INTO preferencias (id_preferencia, valor) VALUES( 10401,"+"'Usuario')");
+			stNombreUsuario.prepare();
+			stNombreUsuario.execute();
+			stNombreUsuario.close();
+			Statement stCantidadActCriticas= d.createStatement("INSERT INTO preferencias (id_preferencia, valor) VALUES( 10501,"+"'10')");
+			stCantidadActCriticas.prepare();
+			stCantidadActCriticas.execute();	
+			stCantidadActCriticas.close();
+								
 		}catch(Exception e){
 			throw e;
 		}finally{

@@ -158,4 +158,8 @@ public class ListadoCategorias {
 		}
 		UiApplication.getUiApplication().popScreen((Screen) _screen);
 	}
+	
+	public String toString() {
+		return "Lista de categorías";
+	}
 }

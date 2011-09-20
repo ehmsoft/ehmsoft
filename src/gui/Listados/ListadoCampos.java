@@ -158,4 +158,8 @@ public class ListadoCampos {
 		}
 		UiApplication.getUiApplication().popScreen((Screen) _screen);
 	}
+	
+	public String toString() {
+		return "Lista de campos personalizados";
+	}
 }

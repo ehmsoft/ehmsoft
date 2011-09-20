@@ -39,7 +39,11 @@ public interface Guardado {
 	public void guardarCampoPlantilla(CampoPersonalizado campo, String id_proceso) throws Exception;
 	public void borrarCampoPlantilla(CampoPersonalizado campo) throws Exception;
 	//preferencias
-	public void actualizarPreferencia(int id_preferencia,long Valor) throws Exception;
+	public void actualizarPreferencia(int id_preferencia,String valor) throws Exception;
 	public void borrarPreferencia(int id_preferencia) throws Exception;
-
+	
+	public void actualizarPreferencias() throws Exception;
+	public void borrarPreferencias() throws Exception;
+	//Log
+	public void log(String descripcion) throws Exception;
 }
