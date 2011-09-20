@@ -13,6 +13,7 @@ import gui.Listados.ListadoPersonas;
 import gui.Listados.ListadoProcesos;
 import gui.Listados.ListadoPlantillas;
 import net.rim.device.api.system.Display;
+import net.rim.device.api.ui.Color;
 import net.rim.device.api.ui.Field;
 import net.rim.device.api.ui.FocusChangeListener;
 import net.rim.device.api.ui.Font;
@@ -30,6 +31,8 @@ import net.rim.device.api.ui.container.GridFieldManager;
 import net.rim.device.api.ui.container.MainScreen;
 import net.rim.device.api.ui.container.PopupScreen;
 import net.rim.device.api.ui.container.VerticalFieldManager;
+import net.rim.device.api.ui.decor.BackgroundFactory;
+import net.rim.device.api.ui.decor.Border;
 import net.rim.device.api.ui.decor.BorderFactory;
 
 /**
@@ -52,13 +55,15 @@ public class ScreenMain extends MainScreen {
 	public ScreenMain() {
 		super();
 		
+		this.getMainManager().setBackground(BackgroundFactory.createSolidBackground(Color.BLACK));
+		
 		actuacionesManager(15);
 			
 		_grid = new GridFieldManager(1, 2,	GridFieldManager.FIXED_SIZE);
 
 		VerticalFieldManager right = new VerticalFieldManager(VERTICAL_SCROLL | VERTICAL_SCROLLBAR);
 		VerticalFieldManager left = new VerticalFieldManager(VERTICAL_SCROLL | VERTICAL_SCROLLBAR);
-		left.setBorder(BorderFactory.createRoundedBorder(new XYEdges(5, 5, 5, 5)));
+		left.setBorder(BorderFactory.createRoundedBorder(new XYEdges(5, 5, 5, 5), Color.WHITE, Border.STYLE_SOLID));
 
 		left.add(_lista);
 		right.add(_vertical);
@@ -67,7 +72,8 @@ public class ScreenMain extends MainScreen {
 		_grid.add(right);
 
 		add(_grid);
-		invalidate();
+		left.setFocus();
+		left.invalidate();
 	}
 	
 	private void actuacionesManager(int cant) {
@@ -79,6 +85,7 @@ public class ScreenMain extends MainScreen {
 			public void drawListRow(ListField listField, Graphics graphics, int index,
 					int y, int width) {
 				Actuacion objeto = (Actuacion) this.get(listField, index);
+				graphics.setColor(Color.WHITE);
 				graphics.drawText(objeto.toString(), 0, y);
 				graphics.drawText(Util.calendarToString(objeto.getFechaProxima(), false), 15, y + getFont().getHeight());
 			}
@@ -100,10 +107,30 @@ public class ScreenMain extends MainScreen {
 		}
 		_lista.setFocusListener(listener);
 		
-		LabelField lblDescripcion = new LabelField("Descripción:", FOCUSABLE);
-		LabelField lblJuzgado = new LabelField("Juzgado:", FOCUSABLE);
-		LabelField lblFecha = new LabelField("Fecha:", FOCUSABLE);
-		LabelField lblFechaProxima = new LabelField("Fecha próxima:", FOCUSABLE);
+		LabelField lblDescripcion = new LabelField("Descripción:", FOCUSABLE) {
+			protected void paint(Graphics g) {
+				g.setColor(Color.WHITE);
+				super.paint(g);
+			}
+		};
+		LabelField lblJuzgado = new LabelField("Juzgado:", FOCUSABLE) {
+			protected void paint(Graphics g) {
+				g.setColor(Color.WHITE);
+				super.paint(g);
+			}
+		};
+		LabelField lblFecha = new LabelField("Fecha:", FOCUSABLE) {
+			protected void paint(Graphics g) {
+				g.setColor(Color.WHITE);
+				super.paint(g);
+			}
+		};
+		LabelField lblFechaProxima = new LabelField("Fecha próxima:", FOCUSABLE) {
+			protected void paint(Graphics g) {
+				g.setColor(Color.WHITE);
+				super.paint(g);
+			}
+		};
 		
 		Font bold = _vertical.getFont().derive(Font.BOLD);
 		
@@ -113,10 +140,30 @@ public class ScreenMain extends MainScreen {
 		lblFechaProxima.setFont(bold);
 
 
-		_juzgado = new LabelField("", FOCUSABLE);
-		_fecha = new LabelField("", FOCUSABLE);
-		_fechaProxima = new LabelField("", FOCUSABLE);
-		_descripcion = new LabelField("", FOCUSABLE);
+		_juzgado = new LabelField("", FOCUSABLE) {
+			protected void paint(Graphics g) {
+				g.setColor(Color.WHITE);
+				super.paint(g);
+			}
+		};
+		_fecha = new LabelField("", FOCUSABLE) {
+			protected void paint(Graphics g) {
+				g.setColor(Color.WHITE);
+				super.paint(g);
+			}
+		};
+		_fechaProxima = new LabelField("", FOCUSABLE) {
+			protected void paint(Graphics g) {
+				g.setColor(Color.WHITE);
+				super.paint(g);
+			}
+		};
+		_descripcion = new LabelField("", FOCUSABLE) {
+			protected void paint(Graphics g) {
+				g.setColor(Color.WHITE);
+				super.paint(g);
+			}
+		};
 		
 		_vertical.add(lblDescripcion);
 		_vertical.add(_descripcion);
@@ -145,7 +192,7 @@ public class ScreenMain extends MainScreen {
 				_fecha.setText(fecha);
 				fecha = Util.calendarToString(a.getFechaProxima(), true);
 				_fechaProxima.setText(fecha);
-				} catch (NullPointerException e) {
+				} catch (Exception e) {
 			} finally {
 				_grid.setColumnProperty(0, GridFieldManager.FIXED_SIZE, column1);
 				_grid.setColumnProperty(1, GridFieldManager.FIXED_SIZE, column2);
