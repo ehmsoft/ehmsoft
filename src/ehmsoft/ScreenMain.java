@@ -5,6 +5,7 @@ import java.util.Vector;
 
 import persistence.Persistence;
 import core.Actuacion;
+import gui.PreferenciasGenerales;
 import gui.Util;
 import gui.Listados.ListadoCampos;
 import gui.Listados.ListadoCategorias;
@@ -21,7 +22,6 @@ import net.rim.device.api.ui.Graphics;
 import net.rim.device.api.ui.MenuItem;
 import net.rim.device.api.ui.UiApplication;
 import net.rim.device.api.ui.XYEdges;
-import net.rim.device.api.ui.component.Dialog;
 import net.rim.device.api.ui.component.LabelField;
 import net.rim.device.api.ui.component.ListField;
 import net.rim.device.api.ui.component.Menu;
@@ -244,7 +244,15 @@ public class ScreenMain extends MainScreen {
 	private final MenuItem menuPreferencias = new MenuItem("Preferencias", 0, 0) {
 		
 		public void run() {
-			Dialog.alert("En desarrollo en la otra rama");
+			try {
+				new Persistence().consultarPreferencias();
+			} catch (NullPointerException e) {
+				Util.noSd();
+			} catch (Exception e) {
+				Util.alert(e.toString());
+			}
+			PreferenciasGenerales p = new PreferenciasGenerales();
+			Util.pushModalScreen(p.getScreen());
 		}
 	};
 }
