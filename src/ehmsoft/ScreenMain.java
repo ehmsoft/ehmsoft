@@ -56,8 +56,8 @@ public class ScreenMain extends MainScreen {
 			
 		_grid = new GridFieldManager(1, 2,	GridFieldManager.FIXED_SIZE);
 
-		VerticalFieldManager right = new VerticalFieldManager();
-		VerticalFieldManager left = new VerticalFieldManager(VERTICAL_SCROLL);
+		VerticalFieldManager right = new VerticalFieldManager(VERTICAL_SCROLL | VERTICAL_SCROLLBAR);
+		VerticalFieldManager left = new VerticalFieldManager(VERTICAL_SCROLL | VERTICAL_SCROLLBAR);
 		left.setBorder(BorderFactory.createRoundedBorder(new XYEdges(5, 5, 5, 5)));
 
 		left.add(_lista);
@@ -67,7 +67,6 @@ public class ScreenMain extends MainScreen {
 		_grid.add(right);
 
 		add(_grid);
-		_lista.focusChangeNotify(0);
 		invalidate();
 	}
 	
@@ -101,10 +100,10 @@ public class ScreenMain extends MainScreen {
 		}
 		_lista.setFocusListener(listener);
 		
-		LabelField lblDescripcion = new LabelField("Descripción: ");
-		LabelField lblJuzgado = new LabelField("Juzgado: ");
-		LabelField lblFecha = new LabelField("Fecha: ");
-		LabelField lblFechaProxima = new LabelField("Fecha próxima: ");
+		LabelField lblDescripcion = new LabelField("Descripción:", FOCUSABLE);
+		LabelField lblJuzgado = new LabelField("Juzgado:", FOCUSABLE);
+		LabelField lblFecha = new LabelField("Fecha:", FOCUSABLE);
+		LabelField lblFechaProxima = new LabelField("Fecha próxima:", FOCUSABLE);
 		
 		Font bold = _vertical.getFont().derive(Font.BOLD);
 		
@@ -114,10 +113,10 @@ public class ScreenMain extends MainScreen {
 		lblFechaProxima.setFont(bold);
 
 
-		_juzgado = new LabelField();
-		_fecha = new LabelField();
-		_fechaProxima = new LabelField();
-		_descripcion = new LabelField();
+		_juzgado = new LabelField("", FOCUSABLE);
+		_fecha = new LabelField("", FOCUSABLE);
+		_fechaProxima = new LabelField("", FOCUSABLE);
+		_descripcion = new LabelField("", FOCUSABLE);
 		
 		_vertical.add(lblDescripcion);
 		_vertical.add(_descripcion);
