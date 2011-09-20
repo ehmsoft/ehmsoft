@@ -272,7 +272,7 @@ public class ConnectionManager {
 			stFuenteTamano.bind(1,Integer.toString(Font.getDefault().getHeight()));
 			stFuenteTamano.execute();
 			stFuenteTamano.close();
-			Statement stFuenteEstilo = d.createStatement("INSERT INTO preferencias (id_preferencia, valor) VALUES( 10003,"+"'0000')");
+			Statement stFuenteEstilo = d.createStatement("INSERT INTO preferencias (id_preferencia, valor) VALUES( 10003,?)");
 			stFuenteEstilo.prepare();
 			stFuenteEstilo.bind(1,Integer.toString(Font.getDefault().getStyle()));
 			stFuenteEstilo.execute();
