@@ -1,6 +1,5 @@
 package ehmsoft;
 
-import gui.PreferenciasGeneralesScreen;
 import net.rim.device.api.ui.UiApplication;
 
 /**
