@@ -1072,10 +1072,14 @@ public class Persistence implements Cargado, Guardado {
 					Integer.toString(Preferencias.getPantallaInicial()));
 			stPantallaInicial.execute();
 			stPantallaInicial.close();
+			int tituloPantalla = 0;
+			if (Preferencias.isMostrarTitulosPantallas() == true) {
+				tituloPantalla = 1;
+			}
 			Statement stTituloPantalla = d
 					.createStatement("UPDATE preferencias SET valor=? WHERE id_preferencia = 10102");
 			stTituloPantalla.prepare();
-			stTituloPantalla.bind(1, Preferencias.getPantallaInicial());
+			stTituloPantalla.bind(1, Integer.toString(tituloPantalla));
 			stTituloPantalla.execute();
 			stTituloPantalla.close();
 			int recordarUltimaCategoria = 0;
@@ -1085,7 +1089,7 @@ public class Persistence implements Cargado, Guardado {
 			Statement stRecordarUltimaCategoria = d
 					.createStatement("UPDATE preferencias SET valor=? WHERE id_preferencia =10201");
 			stRecordarUltimaCategoria.prepare();
-			stRecordarUltimaCategoria.bind(1, recordarUltimaCategoria);
+			stRecordarUltimaCategoria.bind(1, Integer.toString(recordarUltimaCategoria));
 			stRecordarUltimaCategoria.execute();
 			stRecordarUltimaCategoria.close();
 			int mostrarBusqueda = 0;
@@ -1095,7 +1099,7 @@ public class Persistence implements Cargado, Guardado {
 			Statement stMostrarBusqueda = d
 					.createStatement("UPDATE preferencias SET valor=? WHERE id_preferencia = 10301");
 			stMostrarBusqueda.prepare();
-			stMostrarBusqueda.bind(1, mostrarBusqueda);
+			stMostrarBusqueda.bind(1, Integer.toString(mostrarBusqueda));
 			stMostrarBusqueda.execute();
 			stMostrarBusqueda.close();
 			Statement stNombreUsuario = d
@@ -1126,14 +1130,10 @@ public class Persistence implements Cargado, Guardado {
 		try {
 			connMgr.prepararBD();
 			d = DatabaseFactory.open(connMgr.getDbLocation());
-			int recordarUltimaCategoria = 0;
-			if (Preferencias.isRecodarUltimaCategoria() == true) {
-				recordarUltimaCategoria = 1;
-			}
 			Statement stFuenteTipo = d
 					.createStatement("UPDATE preferencias SET valor=? WHERE id_preferencia = 10001");
 			stFuenteTipo.prepare();
-			stFuenteTipo.bind(1, Font.getDefault().toString());
+			stFuenteTipo.bind(1, Font.getDefault().getFontFamily().getName());
 			stFuenteTipo.execute();
 			stFuenteTipo.close();
 			Statement stFuenteTamano = d
