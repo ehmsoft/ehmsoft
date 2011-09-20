@@ -78,6 +78,7 @@ public class Backup {
 		dp = null;
 	}
 	private void guardar(){
+		_nombreArchivo = _screen.getNombreArchivo();
 		FileConnection fconn = null;
 		 try {
 		     fconn = (FileConnection)Connector.open("file:///"+ _ruta + _nombreArchivo);//Archivo a escribir
