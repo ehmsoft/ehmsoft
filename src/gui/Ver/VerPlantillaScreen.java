@@ -34,7 +34,7 @@ public class VerPlantillaScreen extends FondoNormal {
 	public VerPlantillaScreen() {
 		_txtCampos = new Vector();
 		setTitle("Ver plantilla");
-		
+
 		_txtNombre = new EditableTextField("Nombre: ");
 		add(_txtNombre);
 
@@ -95,14 +95,15 @@ public class VerPlantillaScreen extends FondoNormal {
 
 	public Object[][] getCampos() {
 		Object[][] campos = new Object[2][_txtCampos.size()];
-		for(int i = 0; i < _txtCampos.size(); i++) {
-			EditableTextField temp = (EditableTextField)_txtCampos.elementAt(i);
+		for (int i = 0; i < _txtCampos.size(); i++) {
+			EditableTextField temp = (EditableTextField) _txtCampos
+					.elementAt(i);
 			campos[0][i] = temp.getCookie();
 			campos[1][i] = temp.getText();
 		}
 		return campos;
 	}
-	
+
 	public void setNombre(String text) {
 		_txtNombre.setText(text);
 	}
@@ -146,7 +147,7 @@ public class VerPlantillaScreen extends FondoNormal {
 	public void setPrioridad(int element) {
 		_nfPrioridad.setSelectedIndex(String.valueOf(element));
 	}
-	
+
 	public String getNombre() {
 		return _txtNombre.getText();
 	}
@@ -225,8 +226,8 @@ public class VerPlantillaScreen extends FondoNormal {
 		}
 	};
 
-	private final MenuItem menuEliminar = new MenuItem("Eliminar de la plantilla",
-			0, 0) {
+	private final MenuItem menuEliminar = new MenuItem(
+			"Eliminar de la plantilla", 0, 0) {
 
 		public void run() {
 			EditableTextField f = (EditableTextField) getFieldWithFocus();
@@ -283,8 +284,8 @@ public class VerPlantillaScreen extends FondoNormal {
 			_txtNotas.setEditable();
 			_nfPrioridad.setEditable(true);
 			Enumeration e = _txtCampos.elements();
-			while(e.hasMoreElements()) {
-				((EditableTextField)e.nextElement()).setEditable();
+			while (e.hasMoreElements()) {
+				((EditableTextField) e.nextElement()).setEditable();
 			}
 		}
 	};

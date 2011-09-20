@@ -89,7 +89,7 @@ public class NuevaPlantilla {
 				eliminarCampo();
 			} else if (context == Util.CERRAR) {
 				cerrarPantalla();
-			}  else if (context == Util.VER_CAMPO) {
+			} else if (context == Util.VER_CAMPO) {
 				verCampo();
 			}
 		}
@@ -112,18 +112,18 @@ public class NuevaPlantilla {
 	 */
 	private void guardarProceso() {
 		getValoresCampos();
-		if(_screen.getNombre().equals("")) {
+		if (_screen.getNombre().equals("")) {
 			Util.alert("El campo Nombre es obligatorio");
 		} else if (isCampoObligatorio()) {
 		} else if (checkLonMin()) {
 		} else {
-			if(_demandante == null) {
+			if (_demandante == null) {
 				_demandante = _demandanteVacio;
 			}
-			if(_demandado == null) {
+			if (_demandado == null) {
 				_demandado = _demandadoVacio;
 			}
-			if(_juzgado == null) {
+			if (_juzgado == null) {
 				_juzgado = _juzgadoVacio;
 			}
 			_plantilla = new Plantilla(_screen.getNombre(), _demandante,
@@ -176,8 +176,7 @@ public class NuevaPlantilla {
 			CampoPersonalizado campo = (CampoPersonalizado) e.nextElement();
 			if (campo.isObligatorio().booleanValue()
 					&& campo.getValor().length() == 0) {
-				Util.alert("El campo " + campo.getNombre()
-						+ " es obligatorio");
+				Util.alert("El campo " + campo.getNombre() + " es obligatorio");
 				ret = true;
 				break;
 			}
@@ -220,7 +219,7 @@ public class NuevaPlantilla {
 			_screen.setJuzgado(_juzgado.getNombre());
 		}
 	}
-	
+
 	private void eliminarDemandante() {
 		_demandante = null;
 		_screen.setDemandante(_demandanteVacio.getNombre());
@@ -270,15 +269,14 @@ public class NuevaPlantilla {
 			_screen.selectCategoria(_categorias.indexOf(categoria));
 		}
 	}
-	
+
 	private void verCampo() {
 		CampoPersonalizado nw;
 		CampoPersonalizado old = (CampoPersonalizado) _screen.getFocused();
 		nw = Util.verCampo(old);
 		if (nw == null) {
 			eliminarCampo();
-		}
-		else if (!old.equals(nw)) {
+		} else if (!old.equals(nw)) {
 			if (_campos.contains(old)) {
 				int index = _campos.indexOf(old);
 				_campos.removeElementAt(index);
@@ -289,8 +287,7 @@ public class NuevaPlantilla {
 	}
 
 	private void cerrarPantalla() {
-		if (_campos.size() != 0
-				|| _demandante != null || _demandado != null
+		if (_campos.size() != 0 || _demandante != null || _demandado != null
 				|| _juzgado != null) {
 			Object[] ask = { "Guardar", "Descartar", "Cancelar" };
 			int sel = _screen.ask(ask, "Se han detectado cambios", 2);

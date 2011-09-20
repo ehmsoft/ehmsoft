@@ -33,12 +33,12 @@ public class VerPersona {
 				eliminarPersona();
 			} else if (context == Util.CERRAR) {
 				cerrarPantalla();
-			} else if(context == Util.LLAMAR) {
+			} else if (context == Util.LLAMAR) {
 				llamar();
 			}
 		}
 	};
-	
+
 	private void llamar() {
 		if (!_screen.getTelefono().equals("")) {
 			PhoneManager.call(_screen.getTelefono());

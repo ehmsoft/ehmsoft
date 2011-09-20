@@ -45,10 +45,10 @@ public class NuevoProcesoScreen extends FondoNormal {
 
 		_lblDemandante = new EditableTextField("Demandante: ");
 		add(_lblDemandante);
-		
+
 		_lblDemandado = new EditableTextField("Demandado: ");
 		add(_lblDemandado);
-		
+
 		_lblJuzgado = new EditableTextField("Juzgado: ");
 		add(_lblJuzgado);
 
@@ -102,7 +102,7 @@ public class NuevoProcesoScreen extends FondoNormal {
 	public void addCampo(Object cookie, String nombre) {
 		addCampo(cookie, nombre, "");
 	}
-	
+
 	public void addCampo(Object cookie, String nombre, String valor) {
 		BasicEditField txt = new BasicEditField();
 		txt.setLabel(nombre + ": ");
@@ -114,8 +114,8 @@ public class NuevoProcesoScreen extends FondoNormal {
 
 	public Object[][] getCampos() {
 		Object[][] campos = new Object[2][_txtCampos.size()];
-		for(int i = 0; i < _txtCampos.size(); i++) {
-			BasicEditField temp = (BasicEditField)_txtCampos.elementAt(i);
+		for (int i = 0; i < _txtCampos.size(); i++) {
+			BasicEditField temp = (BasicEditField) _txtCampos.elementAt(i);
 			campos[0][i] = temp.getCookie();
 			campos[1][i] = temp.getText();
 		}
@@ -139,23 +139,30 @@ public class NuevoProcesoScreen extends FondoNormal {
 	}
 
 	protected void makeMenu(Menu menu, int instance) {
-		Field f = UiApplication.getUiApplication().getActiveScreen()
-				.getLeafFieldWithFocus();
+		Field f = getFieldWithFocus();
 		if (f.equals(_lblDemandante) || f.equals(_lblDemandado)
 				|| f.equals(_lblJuzgado)) {
 			menu.add(menuCambiar);
 			menu.addSeparator();
-		} else if (f.equals(_chCategoria)) {
-			menu.add(menuAddCategoria);
-			menu.add(menuVerListadoCategorias);
-			menu.addSeparator();
-		} else if (f.equals(_chActuaciones)) {
-			menu.add(menuAddActuacion);
-			menu.addSeparator();
-		} else if (BasicEditField.class.isInstance(f)) {
-			if (f.getCookie() != null) {
-				menu.add(menuEliminarCampo);
+		} else {
+			f = UiApplication.getUiApplication().getActiveScreen()
+					.getLeafFieldWithFocus();
+			if (f.equals(_lblDemandante) || f.equals(_lblDemandado)
+					|| f.equals(_lblJuzgado)) {
+				menu.add(menuCambiar);
 				menu.addSeparator();
+			} else if (f.equals(_chCategoria)) {
+				menu.add(menuAddCategoria);
+				menu.add(menuVerListadoCategorias);
+				menu.addSeparator();
+			} else if (f.equals(_chActuaciones)) {
+				menu.add(menuAddActuacion);
+				menu.addSeparator();
+			} else if (BasicEditField.class.isInstance(f)) {
+				if (f.getCookie() != null) {
+					menu.add(menuEliminarCampo);
+					menu.addSeparator();
+				}
 			}
 		}
 		menu.add(menuCampo);
@@ -166,13 +173,11 @@ public class NuevoProcesoScreen extends FondoNormal {
 	private final MenuItem menuAgregar = new MenuItem("Agregar", 0, 0) {
 
 		public void run() {
-			Field f = UiApplication.getUiApplication().getActiveScreen()
-					.getLeafFieldWithFocus();
+			Field f = getFieldWithFocus();
 			if (f.equals(_lblDemandante)) {
 				fieldChangeNotify(Util.ADD_DEMANDANTE);
 			} else if (f.equals(_lblDemandado)) {
 				fieldChangeNotify(Util.ADD_DEMANDADO);
-
 			} else if (f.equals(_lblJuzgado)) {
 				fieldChangeNotify(Util.ADD_JUZGADO);
 			}
@@ -243,31 +248,31 @@ public class NuevoProcesoScreen extends FondoNormal {
 	public void setJuzgado(String text) {
 		_lblJuzgado.setText(text);
 	}
-	
+
 	public void setCategoria(Object categoria) {
 		_chCategoria.setSelectedIndex(categoria);
 	}
-	
+
 	public void setPrioridad(int prioridad) {
 		_chPrioridad.setSelectedValue(prioridad);
 	}
-	
+
 	public void setEstado(String text) {
 		_txtEstado.setText(text);
 	}
-	
+
 	public void setNotas(String text) {
 		_txtNotas.setText(text);
 	}
-	
+
 	public void setRadicado(String text) {
 		_txtRadicado.setText(text);
 	}
-	
+
 	public void setRadicadoUnico(String text) {
 		_txtRadicadoUnico.setText(text);
 	}
-	
+
 	public void setTipo(String text) {
 		_txtTipo.setText(text);
 	}

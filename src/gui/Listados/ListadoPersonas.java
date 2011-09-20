@@ -5,10 +5,8 @@ import gui.Util;
 
 import java.util.Vector;
 
-import net.rim.device.api.system.KeyListener;
 import net.rim.device.api.ui.Field;
 import net.rim.device.api.ui.FieldChangeListener;
-import net.rim.device.api.ui.Keypad;
 import net.rim.device.api.ui.Screen;
 import net.rim.device.api.ui.UiApplication;
 import persistence.Persistence;
@@ -74,6 +72,14 @@ public class ListadoPersonas {
 				_screen.addElement("Crear nuevo demandado", 0);
 			}
 		}
+		if ((_style & ON_CLICK_VER) != ON_CLICK_VER
+				&& (_style & ON_CLICK_SELECT) != ON_CLICK_SELECT) {
+			if (popup) {
+				_style = _style | ON_CLICK_SELECT;
+			} else {
+				_style = _style | ON_CLICK_VER;
+			}
+		}
 	}
 
 	private FieldChangeListener listener = new FieldChangeListener() {
@@ -92,7 +98,7 @@ public class ListadoPersonas {
 			}
 		}
 	};
-	
+
 	private void llamar() {
 		Object selected = _screen.getSelected();
 		if (!String.class.equals(selected)) {

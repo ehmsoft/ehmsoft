@@ -71,6 +71,14 @@ public class ListadoPlantillas {
 		if ((_style & SEARCH) == SEARCH) {
 			_screen.setSearchField();
 		}
+		if ((_style & ON_CLICK_VER) != ON_CLICK_VER
+				&& (_style & ON_CLICK_SELECT) != ON_CLICK_SELECT) {
+			if (popup) {
+				_style = _style | ON_CLICK_SELECT;
+			} else {
+				_style = _style | ON_CLICK_VER;
+			}
+		}
 	}
 
 	private FieldChangeListener listener = new FieldChangeListener() {
@@ -89,9 +97,9 @@ public class ListadoPlantillas {
 			}
 		}
 	};
-	
+
 	private void nuevoProceso() {
-		NuevoProceso n = new NuevoProceso((Plantilla)_screen.getSelected());
+		NuevoProceso n = new NuevoProceso((Plantilla) _screen.getSelected());
 		Util.popScreen((Screen) _screen);
 		Util.pushModalScreen(n.getScreen());
 	}

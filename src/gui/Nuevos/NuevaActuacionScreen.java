@@ -1,5 +1,6 @@
 package gui.Nuevos;
 
+import gui.EditableTextField;
 import gui.FondoNormal;
 import gui.Util;
 
@@ -19,7 +20,7 @@ import net.rim.device.api.ui.container.HorizontalFieldManager;
 
 public class NuevaActuacionScreen extends FondoNormal {
 
-	private LabelField _lblJuzgado;
+	private EditableTextField _lblJuzgado;
 	private DateField _dfFecha;
 	private DateField _dfFechaProxima;
 	private BasicEditField _txtDescripcion;
@@ -45,12 +46,9 @@ public class NuevaActuacionScreen extends FondoNormal {
 
 		setTitle(titleContainer);
 
-		HorizontalFieldManager fldJuzgado = new HorizontalFieldManager();
 
-		_lblJuzgado = new LabelField("*Ninguno*", Field.FOCUSABLE);
-		fldJuzgado.add(new LabelField("Juzgado: "));
-		fldJuzgado.add(_lblJuzgado);
-		add(fldJuzgado);
+		_lblJuzgado = new EditableTextField("Juzgado: ");
+		add(_lblJuzgado);
 
 		_dfFecha = new DateField("Fecha: ", System.currentTimeMillis(),
 				DateField.DATE_TIME);
@@ -85,8 +83,10 @@ public class NuevaActuacionScreen extends FondoNormal {
 	}
 
 	protected void makeMenu(Menu menu, int instance) {
-		menu.add(menuCambiar);
-		menu.addSeparator();
+		if(getFieldWithFocus().equals(_lblJuzgado)) {
+			menu.add(menuCambiar);
+			menu.addSeparator();
+		}
 		if (_hasAlarm) {
 			menu.add(menuVerCita);
 			menu.add(menuEliminarCita);

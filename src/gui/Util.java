@@ -4,10 +4,12 @@ import gui.Listados.ListadoCampos;
 import gui.Listados.ListadoCategorias;
 import gui.Listados.ListadoJuzgados;
 import gui.Listados.ListadoPersonas;
+import gui.Listados.ListadoPlantillas;
 import gui.Listados.ListadoProcesos;
 import gui.Nuevos.NuevaActuacion;
 import gui.Nuevos.NuevaCategoria;
 import gui.Nuevos.NuevaPersona;
+import gui.Nuevos.NuevaPlantilla;
 import gui.Nuevos.NuevoCampo;
 import gui.Nuevos.NuevoJuzgado;
 import gui.Nuevos.NuevoProceso;
@@ -73,7 +75,7 @@ public class Util {
 
 	public static final short CLICK = 26;
 	public static final int LLAMAR = 27;
-	
+
 	public static final short NEW_PROCESO = 28;
 
 	public static final short COPIA_SEGURIDAD = 29;
@@ -82,13 +84,15 @@ public class Util {
 	public static final short ROOT_SELECCIONADO = 31;
 
 	public static PopupScreen WAIT_SCREEN;
-	
+
 	public static UiApplication UI_Application;
-	
+
 	public static void verificarBD() {
 		pushWaitScreen();
 		WAIT_SCREEN.add(new SeparatorField());
-		WAIT_SCREEN.add(new LabelField("Creando la base de datos por primera vez, esto puede demorar algunos minutos"));
+		WAIT_SCREEN
+				.add(new LabelField(
+						"Creando la base de datos por primera vez, esto puede demorar algunos minutos"));
 		UiApplication.getUiApplication().invokeLater(new Runnable() {
 
 			public void run() {
@@ -108,14 +112,14 @@ public class Util {
 	}
 
 	public static void popScreen(Screen screen) {
-		if(UI_Application == null) {
+		if (UI_Application == null) {
 			UI_Application = UiApplication.getUiApplication();
-		}		
+		}
 		UI_Application.popScreen(screen);
 	}
 
 	public static void pushWaitScreen() {
-		if(WAIT_SCREEN == null) {
+		if (WAIT_SCREEN == null) {
 			WAIT_SCREEN = new PopupScreen(new VerticalFieldManager());
 			WAIT_SCREEN.add(new LabelField("Procesando, espere porfavor..."));
 		}
@@ -179,7 +183,7 @@ public class Util {
 	public static String delBDProceso() {
 		return "¿Desea eliminar el proceso?. Se eliminará definitivamente y las actuaciones ligadas a este";
 	}
-	
+
 	public static String delBDPlantilla() {
 		return "¿Desea eliminar la plantilla?. Se eliminará definitivamente";
 	}
@@ -275,7 +279,7 @@ public class Util {
 		UiApplication.getUiApplication().pushModalScreen(v.getScreen());
 		return v.getProceso();
 	}
-	
+
 	public static Plantilla verPlantilla(Plantilla plantilla) {
 		VerPlantilla v = new VerPlantilla(plantilla);
 		UiApplication.getUiApplication().pushModalScreen(v.getScreen());
@@ -305,10 +309,16 @@ public class Util {
 		UiApplication.getUiApplication().pushModalScreen(l.getScreen());
 		return l.getSelected();
 	}
-	
+
 	public static Proceso listadoProcesos(boolean popup, int style) {
 		ListadoProcesos l = new ListadoProcesos(popup, style);
 		UiApplication.getUiApplication().pushModalScreen(l.getScreen());
+		return l.getSelected();
+	}
+
+	public static Plantilla listadoPlantillas(boolean popup, int style) {
+		ListadoPlantillas l = new ListadoPlantillas(popup, style);
+		pushModalScreen(l.getScreen());
 		return l.getSelected();
 	}
 
@@ -347,11 +357,17 @@ public class Util {
 		UiApplication.getUiApplication().pushModalScreen(n.getScreen());
 		return n.getPersona();
 	}
-	
+
 	public static Proceso nuevoProceso() {
 		NuevoProceso n = new NuevoProceso();
 		UiApplication.getUiApplication().pushModalScreen(n.getScreen());
 		return n.getProceso();
+	}
+
+	public static Plantilla nuevaPlantilla() {
+		NuevaPlantilla n = new NuevaPlantilla();
+		pushModalScreen(n.getScreen());
+		return n.getPlantilla();
 	}
 
 	public static String calendarToString(Calendar calendar, boolean largo) {
@@ -393,9 +409,9 @@ public class Util {
 		}
 		return string;
 	}
-	
+
 	public static void pushModalScreen(Screen screen) {
-		if(UI_Application == null) {
+		if (UI_Application == null) {
 			UI_Application = UiApplication.getUiApplication();
 		}
 		UI_Application.pushModalScreen(screen);

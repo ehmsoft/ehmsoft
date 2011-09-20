@@ -39,17 +39,17 @@ public class NuevaPlantillaScreen extends FondoNormal {
 	public NuevaPlantillaScreen() {
 		setTitle("Nueva Plantilla");
 		_txtCampos = new Vector();
-		
-		_txtNombre = new BasicEditField(BasicEditField.NO_NEWLINE);
+
+		_txtNombre = new BasicEditField(TextField.NO_NEWLINE);
 		_txtNombre.setLabel("Nombre: ");
 		add(_txtNombre);
 
 		_lblDemandante = new EditableTextField("Demandante: ");
 		add(_lblDemandante);
-		
+
 		_lblDemandado = new EditableTextField("Demandado: ");
 		add(_lblDemandado);
-		
+
 		_lblJuzgado = new EditableTextField("Juzgado: ");
 		add(_lblJuzgado);
 
@@ -98,20 +98,20 @@ public class NuevaPlantillaScreen extends FondoNormal {
 		_txtCampos.removeElement(_focused);
 		delete(_focused);
 	}
-	
+
 	public void modificarCampo(Object cookie, String text) {
 		_focused.setCookie(cookie);
 		((BasicEditField) _focused).setLabel(text + ": ");
 	}
-	
+
 	public Object getFocused() {
 		return _focused.getCookie();
 	}
 
 	public Object[][] getCampos() {
 		Object[][] campos = new Object[2][_txtCampos.size()];
-		for(int i = 0; i < _txtCampos.size(); i++) {
-			BasicEditField temp = (BasicEditField)_txtCampos.elementAt(i);
+		for (int i = 0; i < _txtCampos.size(); i++) {
+			BasicEditField temp = (BasicEditField) _txtCampos.elementAt(i);
 			campos[0][i] = temp.getCookie();
 			campos[1][i] = temp.getText();
 		}
@@ -149,7 +149,7 @@ public class NuevaPlantillaScreen extends FondoNormal {
 		menu.addSeparator();
 		menu.add(menuGuardar);
 	}
-	
+
 	private final MenuItem menuModificarCampo = new MenuItem("Modificar", 0, 0) {
 
 		public void run() {
@@ -234,7 +234,7 @@ public class NuevaPlantillaScreen extends FondoNormal {
 	public void setJuzgado(String text) {
 		_lblJuzgado.setText(text);
 	}
-	
+
 	public String getNombre() {
 		return _txtNombre.getText();
 	}

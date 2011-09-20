@@ -170,7 +170,7 @@ public class Prueba extends MainScreen {
 			Proceso proceso = null;
 			UiApplication.getUiApplication().pushModalScreen(
 					listadoP.getScreen());
-			proceso = listadoP.getSelected();
+			proceso = (Proceso) listadoP.getSelected();
 			if (proceso != null) {
 				ListadoActuaciones listadoA = new ListadoActuaciones(proceso);
 				UiApplication.getUiApplication().pushModalScreen(
@@ -249,7 +249,7 @@ public class Prueba extends MainScreen {
 			ListadoProcesos listado = new ListadoProcesos();
 			UiApplication.getUiApplication().pushModalScreen(
 					listado.getScreen());
-			nueva.setProceso(listado.getSelected());
+			nueva.setProceso((Proceso) listado.getSelected());
 			UiApplication.getUiApplication().pushModalScreen(nueva.getScreen());
 		}
 	};

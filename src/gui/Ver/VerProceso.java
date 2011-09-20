@@ -62,9 +62,6 @@ public class VerProceso {
 		_screen.setDemandante(_demandante.getNombre());
 		_screen.setDemandado(_demandado.getNombre());
 		_screen.setJuzgado(_juzgado.getNombre());
-		Object[] actuaciones = new Object[_actuaciones.size()];
-		_actuaciones.copyInto(actuaciones);
-		_screen.setActuaciones(actuaciones);
 		_screen.setCategoria(_categoria.getDescripcion());
 		if (_campos != null) {
 			Enumeration e = _campos.elements();
@@ -97,8 +94,6 @@ public class VerProceso {
 				verJuzgado();
 			} else if (context == Util.VER_CATEGORIA) {
 				verCategoria();
-			} else if (context == Util.VER_ACTUACION) {
-				verActuacion();
 			} else if (context == Util.ADD_DEMANDANTE) {
 				addDemandante();
 			} else if (context == Util.ADD_DEMANDADO) {
@@ -149,7 +144,7 @@ public class VerProceso {
 				eliminarCampos();
 			}
 			concatCampos();
-			Proceso proceso = new Proceso(_demandante, _demandado,
+			Proceso proceso = new Proceso(_proceso.getId_proceso(), _demandante, _demandado,
 					_screen.getFecha(), _juzgado, _screen.getRadicado(),
 					_screen.getRadicadoUnico(), _actuaciones,
 					_screen.getEstado(), _categoria, _screen.getTipo(),
@@ -492,23 +487,6 @@ public class VerProceso {
 		}
 	}
 
-	private void verActuacion() {
-		Actuacion old = (Actuacion) _screen.getActuacion();
-		Actuacion nw;
-		if (old != null) {
-			nw = Util.verActuacion(old);
-			if (nw != null) {
-				_actuaciones.removeElement(old);
-				_actuaciones.addElement(nw);
-			} else {
-				_actuaciones.removeElement(old);
-			}
-			Object[] actuaciones = new Object[_actuaciones.size()];
-			_actuaciones.copyInto(actuaciones);
-			_screen.setActuaciones(actuaciones);
-		}
-	}
-
 	private void addDemandante() {
 		_demandante = Util.listadoPersonas(1, true, 0);
 		if (_demandante != null) {
@@ -561,9 +539,6 @@ public class VerProceso {
 		Actuacion actuacion = Util.nuevaActuacion(_proceso);
 		if (actuacion != null) {
 			_actuaciones.addElement(actuacion);
-			Object[] actuaciones = new Object[_actuaciones.size()];
-			_actuaciones.copyInto(actuaciones);
-			_screen.setActuaciones(actuaciones);
 		}
 	}
 
