@@ -289,7 +289,7 @@ public class ConnectionManager {
 			stRecordarUltimaCategoria.prepare();
 			stRecordarUltimaCategoria.execute();
 			stRecordarUltimaCategoria.close();
-			Statement stUltimaCategoria = d.createStatement("INSERT INTO preferencias (id_preferencia, valor) VALUES( 10202, None)");
+			Statement stUltimaCategoria = d.createStatement("INSERT INTO preferencias (id_preferencia, valor) VALUES( 10202, Null)");
 			stUltimaCategoria.prepare();
 			stUltimaCategoria.execute();
 			stUltimaCategoria.close();
