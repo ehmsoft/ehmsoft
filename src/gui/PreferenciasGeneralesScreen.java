@@ -6,6 +6,8 @@ import net.rim.device.api.ui.FieldChangeListener;
 import net.rim.device.api.ui.Font;
 import net.rim.device.api.ui.FontFamily;
 import net.rim.device.api.ui.MenuItem;
+import net.rim.device.api.ui.Ui;
+import net.rim.device.api.ui.UiApplication;
 import net.rim.device.api.ui.XYEdges;
 import net.rim.device.api.ui.component.BasicEditField;
 import net.rim.device.api.ui.component.ButtonField;
@@ -42,7 +44,7 @@ public class PreferenciasGeneralesScreen extends MainScreen {
 	private ButtonField _btnRestaurarPrefs;
 	private HorizontalFieldManager _hfmCantidadActuaciones;
 	private FilePicker fp;
-	
+
 	private int[] _significadoEstilos = { Font.PLAIN, Font.BOLD,
 			Font.EXTRA_BOLD, Font.BOLD | Font.ITALIC, Font.ITALIC };
 	private String[] _listaEstilos = { "Normal", "Negrita", "Extra negrita",
@@ -112,7 +114,7 @@ public class PreferenciasGeneralesScreen extends MainScreen {
 		_btnCopiaSeguridad = new ButtonField("Copia de seguridad",
 				ButtonField.CONSUME_CLICK | ButtonField.FIELD_RIGHT);
 		fp = FilePicker.getInstance();
-		//Restaurar Preferencias
+		// Restaurar Preferencias
 		_lblRestaurarPrefs = new LabelField(
 				"Restaurar preferencias predeterminadas",
 				LabelField.USE_ALL_WIDTH);
@@ -175,9 +177,10 @@ public class PreferenciasGeneralesScreen extends MainScreen {
 		_chfTamanoFuente.setSelectedIndex(new Integer(font.getHeight()));
 	}
 
-	public void setCantidadActuacionesCriticas(int cant){
+	public void setCantidadActuacionesCriticas(int cant) {
 		_txtCantidadActuaciones.setText(Integer.toString(cant));
 	}
+
 	public String getNombreUsuario() {
 		return _txtNombreUsuario.getText();
 	}
@@ -207,16 +210,17 @@ public class PreferenciasGeneralesScreen extends MainScreen {
 		Font font = fontFamily.getFont(style, height);
 		return font;
 	}
-	public int getCantidadActuacionesCriticas(){
+
+	public int getCantidadActuacionesCriticas() {
 		return Integer.parseInt(_txtCantidadActuaciones.getText());
 	}
-	
-	public String mostrarSeleccionArchivo(){
+
+	public String mostrarSeleccionArchivo() {
 		String hello = fp.show();
 		Dialog.alert(hello);
 		return hello;
 	}
-	
+
 	private FieldChangeListener listenerPantallaInicial = new FieldChangeListener() {
 		public void fieldChanged(Field field, int context) {
 			if (_listaPantallas[_chfPantallaInicial.getSelectedIndex()] == Preferencias
@@ -285,6 +289,8 @@ public class PreferenciasGeneralesScreen extends MainScreen {
 
 	protected void makeMenu(Menu menu, int instance) {
 		menu.add(menuGuardar);
+		menu.add(menuCancelar);
+		menu.add(menuCerrar);
 	}
 
 	private MenuItem menuGuardar = new MenuItem("Guardar", 0, 0) {
@@ -293,9 +299,28 @@ public class PreferenciasGeneralesScreen extends MainScreen {
 			fieldChangeNotify(Util.GUARDAR);
 		}
 	};
+	private MenuItem menuCancelar = new MenuItem("Cancelar", 1, 1) {
+
+		public void run() {
+			if (Dialog.ask(Dialog.D_YES_NO,
+					"Seguro que desea salir y descartar cambios?") == Dialog.YES) {
+				UiApplication.getUiApplication().popScreen(getScreen());
+			}
+		}
+	};
+	private MenuItem menuCerrar = new MenuItem("Salir de Aplicación", 100000, 3) {
+
+		public void run() {
+			if(onSavePrompt()){
+			System.exit(0);
+			}
+		}
+	};
+
 	public void alert(String alert) {
 		Dialog.alert(alert);
 	}
+
 	protected boolean onSave() {
 		fieldChangeNotify(Util.GUARDAR);
 		return true;
