@@ -64,24 +64,6 @@ public class EditableTextField extends HorizontalFieldManager {
 		}
 	}
 
-	public void setEditableColor(int color) {
-		if (_color != color) {
-			_color = color;
-			long style = _txtField.getStyle();
-			String text = _txtField.getText();
-			this.delete(_txtField);
-			_txtField = new BasicEditField(style) {
-				protected void paint(Graphics g) {
-					g.setColor(_color);
-					super.paint(g);
-				}
-			};
-			_txtField.setText(text);
-			_txtField.setEditable(false);
-			this.add(_txtField);
-		}
-	}
-
 	public String getText() {
 		if (_editable) {
 			return _txtField.getText();
