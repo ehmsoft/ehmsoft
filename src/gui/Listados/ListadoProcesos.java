@@ -79,8 +79,12 @@ public class ListadoProcesos {
 			}
 		}
 	}
+	
+	public void setTitle(String text) {
+		_screen.setTitle(text);
+	}
 
-	FieldChangeListener listener = new FieldChangeListener() {
+	private FieldChangeListener listener = new FieldChangeListener() {
 
 		public void fieldChanged(Field field, int context) {
 			if (context == Util.CLICK) {
@@ -99,11 +103,6 @@ public class ListadoProcesos {
 		if (_vectorProcesos != null) {
 			_screen.loadFrom(_vectorProcesos);
 		}
-	}
-
-	public void setVectorProcesos(Vector procesos) {
-		_vectorProcesos = procesos;
-		addProcesos();
 	}
 
 	public Proceso getSelected() {
@@ -170,11 +169,7 @@ public class ListadoProcesos {
 	}
 
 	private void cerrarPantalla() {
-		if (String.class.isInstance(_screen.getSelected())) {
-			_selected = null;
-		} else {
-			_selected = (Proceso) _screen.getSelected();
-		}
+		_selected = null;
 		UiApplication.getUiApplication().popScreen((Screen) _screen);
 	}
 	

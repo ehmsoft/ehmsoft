@@ -71,7 +71,7 @@ public class ListadoCampos {
 		}
 	}
 
-	FieldChangeListener listener = new FieldChangeListener() {
+	private FieldChangeListener listener = new FieldChangeListener() {
 
 		public void fieldChanged(Field field, int context) {
 			if (context == Util.CLICK) {
@@ -85,6 +85,10 @@ public class ListadoCampos {
 			}
 		}
 	};
+	
+	public void setTitle(String text) {
+		_screen.setTitle(text);
+	}
 
 	private void addCampos() {
 		if (_vectorCampos != null) {
@@ -159,11 +163,7 @@ public class ListadoCampos {
 	}
 
 	private void cerrarPantalla() {
-		if (String.class.isInstance(_screen.getSelected())) {
-			_selected = null;
-		} else {
-			_selected = (CampoPersonalizado) _screen.getSelected();
-		}
+		_selected = null;
 		UiApplication.getUiApplication().popScreen((Screen) _screen);
 	}
 	

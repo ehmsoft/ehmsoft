@@ -72,7 +72,7 @@ public class ListadoCategorias {
 		}
 	}
 
-	FieldChangeListener listener = new FieldChangeListener() {
+	private FieldChangeListener listener = new FieldChangeListener() {
 
 		public void fieldChanged(Field field, int context) {
 			if (context == Util.CLICK) {
@@ -86,6 +86,10 @@ public class ListadoCategorias {
 			}
 		}
 	};
+	
+	public void setTitle(String text) {
+		_screen.setTitle(text);
+	}
 
 	private void addCategorias() {
 		if (_vectorCategorias != null) {
@@ -159,11 +163,7 @@ public class ListadoCategorias {
 	}
 
 	private void cerrarPantalla() {
-		if (String.class.isInstance(_screen.getSelected())) {
-			_selected = null;
-		} else {
-			_selected = (Categoria) _screen.getSelected();
-		}
+		_selected = null;
 		UiApplication.getUiApplication().popScreen((Screen) _screen);
 	}
 	

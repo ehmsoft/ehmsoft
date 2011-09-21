@@ -97,6 +97,10 @@ public class ListadoPlantillas {
 			}
 		}
 	};
+	
+	public void setTitle(String text) {
+		_screen.setTitle(text);
+	}
 
 	private void nuevoProceso() {
 		NuevoProceso n = new NuevoProceso((Plantilla) _screen.getSelected());

@@ -98,6 +98,10 @@ public class ListadoPersonas {
 			}
 		}
 	};
+	
+	public void setTitle(String text) {
+		_screen.setTitle(text);
+	}
 
 	private void llamar() {
 		Object selected = _screen.getSelected();
@@ -182,11 +186,7 @@ public class ListadoPersonas {
 	}
 
 	private void cerrarPantalla() {
-		if (String.class.isInstance(_screen.getSelected())) {
-			_selected = null;
-		} else {
-			_selected = (Persona) _screen.getSelected();
-		}
+		_selected = null;
 		UiApplication.getUiApplication().popScreen((Screen) _screen);
 	}
 	

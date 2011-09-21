@@ -73,7 +73,7 @@ public class ListadoJuzgados {
 		}
 	}
 
-	FieldChangeListener listener = new FieldChangeListener() {
+	private FieldChangeListener listener = new FieldChangeListener() {
 
 		public void fieldChanged(Field field, int context) {
 			if (context == Util.CLICK) {
@@ -89,6 +89,10 @@ public class ListadoJuzgados {
 			}
 		}
 	};
+	
+	public void setTitle(String text) {
+		_screen.setTitle(text);
+	}
 
 	private void llamar() {
 		Object selected = _screen.getSelected();
@@ -173,11 +177,7 @@ public class ListadoJuzgados {
 	}
 
 	private void cerrarPantalla() {
-		if (String.class.isInstance(_screen.getSelected())) {
-			_selected = null;
-		} else {
-			_selected = (Juzgado) _screen.getSelected();
-		}
+		_selected = null;
 		UiApplication.getUiApplication().popScreen((Screen) _screen);
 	}
 	

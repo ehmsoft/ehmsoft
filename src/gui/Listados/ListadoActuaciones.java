@@ -76,7 +76,7 @@ public class ListadoActuaciones {
 		}
 	}
 
-	FieldChangeListener listener = new FieldChangeListener() {
+	private FieldChangeListener listener = new FieldChangeListener() {
 
 		public void fieldChanged(Field field, int context) {
 			if (context == Util.CLICK) {
@@ -90,6 +90,10 @@ public class ListadoActuaciones {
 			}
 		}
 	};
+	
+	public void setTitle(String text) {
+		_screen.setTitle(text);
+	}
 
 	private void addActuaciones() {
 		if (_vectorActuaciones != null) {
@@ -162,11 +166,7 @@ public class ListadoActuaciones {
 	}
 
 	private void cerrarPantalla() {
-		if (String.class.isInstance(_screen.getSelected())) {
-			_selected = null;
-		} else {
-			_selected = (Actuacion) _screen.getSelected();
-		}
+		_selected = null;
 		UiApplication.getUiApplication().popScreen((Screen) _screen);
 	}
 	
