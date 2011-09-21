@@ -27,12 +27,18 @@ public abstract class ListaScreen extends MainScreen implements
 	}
 
 	protected void makeMenu(Menu menu, int instance) {
+		menu.add(menuCerrar);
 		if (!String.class.isInstance(_lista.getSelectedElement())) {
 			menu.add(menuVer);
 			menu.add(menuDelete);
 		}
 	}
+	private MenuItem menuCerrar = new MenuItem("Salir de Aplicación", 1000000000, 3) {
 
+		public void run() {
+			System.exit(0);
+		}
+	};
 	private final MenuItem menuVer = new MenuItem("Ver", 0, 0) {
 
 		public void run() {
@@ -40,7 +46,7 @@ public abstract class ListaScreen extends MainScreen implements
 		}
 	};
 
-	private final MenuItem menuDelete = new MenuItem("Eliminar", 0, 0) {
+	private final MenuItem menuDelete = new MenuItem("Eliminar", 1, 1) {
 
 		public void run() {
 			fieldChangeNotify(Util.ELIMINAR);
