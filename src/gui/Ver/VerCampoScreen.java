@@ -35,29 +35,24 @@ public class VerCampoScreen extends FondoNormal {
 		_txtLongMin = new EditableTextField("Longitud minima: ",
 				BasicEditField.FILTER_INTEGER);
 		add(_txtLongMin);
-
-		addMenuItem(menuGuardar);
-		addMenuItem(menuEditar);
-		addMenuItem(menuEditarTodo);
-		addMenuItem(menuEliminar);
 	}
 
 	protected void makeMenu(Menu menu, int instance) {
 		menu.add(menuEditar);
 		menu.add(menuEditarTodo);
-		menu.addSeparator();
 		menu.add(menuEliminar);
 		menu.add(menuGuardar);
+		menu.add(menuCerrar);
 	}
 
-	private final MenuItem menuGuardar = new MenuItem("Guardar", 0, 0) {
+	private final MenuItem menuGuardar = new MenuItem("Guardar", 65537, 0) {
 
 		public void run() {
 			fieldChangeNotify(Util.GUARDAR);
 		}
 	};
 
-	private final MenuItem menuEditar = new MenuItem("Editar", 0, 0) {
+	private final MenuItem menuEditar = new MenuItem("Editar", 131075, 1) {
 
 		public void run() {
 			Field f = getFieldWithFocus();
@@ -81,7 +76,7 @@ public class VerCampoScreen extends FondoNormal {
 		}
 	};
 
-	private final MenuItem menuEditarTodo = new MenuItem("Editar todo", 0, 0) {
+	private final MenuItem menuEditarTodo = new MenuItem("Editar todo", 131075, 2) {
 
 		public void run() {
 			_txtNombre.setEditable();
@@ -91,10 +86,21 @@ public class VerCampoScreen extends FondoNormal {
 		}
 	};
 
-	private final MenuItem menuEliminar = new MenuItem("Eliminar", 0, 0) {
+	private final MenuItem menuEliminar = new MenuItem("Eliminar", 131075, 3) {
 
 		public void run() {
 			fieldChangeNotify(Util.ELIMINAR);
+		}
+	};
+
+	private MenuItem menuCerrar = new MenuItem("Salir de Aplicación",
+			1000000000, 3) {
+
+		public void run() {
+			fieldChangeNotify(Util.CERRAR);
+			if (!getScreen().isVisible()) {
+				System.exit(0);
+			}
 		}
 	};
 

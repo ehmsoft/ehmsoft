@@ -195,46 +195,40 @@ public class VerProcesoScreen extends FondoNormal {
 
 	protected void makeMenu(Menu menu, int instance) {
 		Field f = getFieldWithFocus();
-
+		menu.add(menuCerrar);
 		menu.add(menuAddActuacion);
 		menu.add(menuAddCampo);
-		menu.addSeparator();
-
 		menu.add(menuVerActuaciones);
 
 		if (f.equals(_txtCategoria)) {
 			menu.add(menuCambiar);
-			menu.addSeparator();
 		} else if (f.equals(_txtDemandante) || f.equals(_txtDemandado)
 				|| f.equals(_txtJuzgado)) {
 			menu.add(menuCambiar);
 			menu.add(menuEliminar);
-			menu.addSeparator();
 		}
 
 		menu.add(menuEditar);
 		menu.add(menuEditarTodo);
-		menu.addSeparator();
 
 		if (EditableTextField.class.isInstance(f)) {
 			if (f.getCookie() != null) {
 				_focused = f;
 				menu.add(menuModificarCampo);
 				menu.add(menuEliminarCampo);
-				menu.addSeparator();
 			}
 		}
 		menu.add(menuGuardar);
 	}
 
-	private final MenuItem menuVerActuaciones = new MenuItem("Ver actuaciones", 0,
-			0) {
+	private final MenuItem menuVerActuaciones = new MenuItem("Ver actuaciones",
+			327682, 6) {
 		public void run() {
 			fieldChangeNotify(Util.VER_LISTADO_ACTUACIONES);
 		}
 	};
 
-	private final MenuItem menuModificarCampo = new MenuItem("Modificar", 0, 0) {
+	private final MenuItem menuModificarCampo = new MenuItem("Modificar", 393216, 8) {
 
 		public void run() {
 			fieldChangeNotify(Util.VER_CAMPO);
@@ -242,7 +236,7 @@ public class VerProcesoScreen extends FondoNormal {
 	};
 
 	private final MenuItem menuAddCampo = new MenuItem(
-			"Agregar campo personalizado", 0, 0) {
+			"Agregar campo personalizado", 393216, 7) {
 
 		public void run() {
 			fieldChangeNotify(Util.ADD_CAMPO);
@@ -250,7 +244,7 @@ public class VerProcesoScreen extends FondoNormal {
 	};
 
 	private final MenuItem menuEliminar = new MenuItem("Eliminar del proceso",
-			0, 0) {
+			131075, 2) {
 
 		public void run() {
 			EditableTextField f = (EditableTextField) getFieldWithFocus();
@@ -265,20 +259,20 @@ public class VerProcesoScreen extends FondoNormal {
 	};
 
 	private final MenuItem menuEliminarCampo = new MenuItem(
-			"Eliminar del proceso", 0, 0) {
+			"Eliminar del proceso", 262147, 2) {
 		public void run() {
 			fieldChangeNotify(Util.ELIMINAR_CAMPO);
 		}
 	};
 
-	private final MenuItem menuGuardar = new MenuItem("Guardar", 0, 0) {
+	private final MenuItem menuGuardar = new MenuItem("Guardar", 65537, 0) {
 
 		public void run() {
 			fieldChangeNotify(Util.GUARDAR);
 		}
 	};
 
-	private final MenuItem menuEditar = new MenuItem("Editar", 0, 0) {
+	private final MenuItem menuEditar = new MenuItem("Editar", 262147, 3) {
 
 		public void run() {
 			Field f = getFieldWithFocus();
@@ -296,7 +290,7 @@ public class VerProcesoScreen extends FondoNormal {
 		}
 	};
 
-	private final MenuItem menuEditarTodo = new MenuItem("Editar todo", 0, 0) {
+	private final MenuItem menuEditarTodo = new MenuItem("Editar todo", 262147, 4) {
 
 		public void run() {
 			_dfFecha.setEditable(true);
@@ -307,13 +301,13 @@ public class VerProcesoScreen extends FondoNormal {
 			_txtNotas.setEditable();
 			_nfPrioridad.setEditable(true);
 			Enumeration e = _txtCampos.elements();
-			while(e.hasMoreElements()) {
-				((EditableTextField)e.nextElement()).setEditable();
+			while (e.hasMoreElements()) {
+				((EditableTextField) e.nextElement()).setEditable();
 			}
 		}
 	};
 
-	private final MenuItem menuCambiar = new MenuItem("Cambiar", 0, 0) {
+	private final MenuItem menuCambiar = new MenuItem("Cambiar", 131075, 1) {
 
 		public void run() {
 			EditableTextField f = (EditableTextField) getFieldWithFocus();
@@ -330,10 +324,20 @@ public class VerProcesoScreen extends FondoNormal {
 	};
 
 	private final MenuItem menuAddActuacion = new MenuItem("Agregar actuación",
-			0, 0) {
+			327682, 5) {
 
 		public void run() {
 			fieldChangeNotify(Util.NEW_ACTUACION);
+		}
+	};
+	private MenuItem menuCerrar = new MenuItem("Salir de Aplicación",
+			1000000000, 9) {
+
+		public void run() {
+			fieldChangeNotify(Util.CERRAR);
+			if (!getScreen().isVisible()) {
+				System.exit(0);
+			}
 		}
 	};
 

@@ -229,6 +229,7 @@ public class ScreenMain extends MainScreen {
 		menu.add(menuListas);
 		menu.add(menuNuevos);
 		menu.add(menuPreferencias);
+		menu.add(menuCerrar);
 	}
 	
 	private final MenuItem menuListas = new MenuItem("Listado",0, 0) {
@@ -238,18 +239,24 @@ public class ScreenMain extends MainScreen {
 		}
 	};
 	
-	private final MenuItem menuNuevos = new MenuItem("Nuevo", 0, 0) {
+	private final MenuItem menuNuevos = new MenuItem("Nuevo", 1, 1) {
 		
 		public void run() {
 			UiApplication.getUiApplication().pushModalScreen(new Listados(Listados.NUEVO));
 		}
 	};
 	
-	private final MenuItem menuPreferencias = new MenuItem("Preferencias", 0, 0) {
+	private final MenuItem menuPreferencias = new MenuItem("Preferencias", 100000, 2) {
 		
 		public void run() {
 			PreferenciasGenerales p = new PreferenciasGenerales();
 			Util.pushModalScreen(p.getScreen());
+		}
+	};
+	private MenuItem menuCerrar = new MenuItem("Salir de Aplicación", 1000000000, 3) {
+
+		public void run() {
+			System.exit(0);
 		}
 	};
 }

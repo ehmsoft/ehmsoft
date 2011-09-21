@@ -100,53 +100,50 @@ public class VerActuacionScreen extends FondoNormal {
 				.getFieldWithFocus();
 		if (focus.equals(_txtJuzgado)) {
 			menu.add(menuCambiar);
-			menu.addSeparator();
 		}
 		if (_hasAlarm) {
 			menu.add(menuVerCita);
 			menu.add(menuEliminarCita);
-			menu.addSeparator();
 		} else {
 			menu.add(menuAddCita);
-			menu.addSeparator();
 		}
 		menu.add(menuEditar);
 		menu.add(menuEditarTodo);
-		menu.addSeparator();
 		menu.add(menuEliminarActuacion);
 		menu.add(menuGuardar);
+		menu.add(menuCerrar);
 	}
 
-	private final MenuItem menuVerCita = new MenuItem("Ver cita", 0, 0) {
+	private final MenuItem menuVerCita = new MenuItem("Ver cita", 131075, 1) {
 
 		public void run() {
 			fieldChangeNotify(Util.VER_CITA);
 		}
 	};
 
-	private final MenuItem menuAddCita = new MenuItem("Agregar cita", 0, 0) {
+	private final MenuItem menuAddCita = new MenuItem("Agregar cita", 131075, 1) {
 
 		public void run() {
 			fieldChangeNotify(Util.ADD_CITA);
 		}
 	};
 
-	private final MenuItem menuEliminarCita = new MenuItem("Eliminar cita", 0,
-			0) {
+	private final MenuItem menuEliminarCita = new MenuItem("Eliminar cita", 131075,
+			2) {
 
 		public void run() {
 			fieldChangeNotify(Util.ELIMINAR_CITA);
 		}
 	};
 
-	private final MenuItem menuGuardar = new MenuItem("Guardar", 0, 0) {
+	private final MenuItem menuGuardar = new MenuItem("Guardar", 65537, 0) {
 
 		public void run() {
 			fieldChangeNotify(Util.GUARDAR);
 		}
 	};
 
-	private final MenuItem menuEditar = new MenuItem("Editar", 0, 0) {
+	private final MenuItem menuEditar = new MenuItem("Editar", 262147, 4) {
 
 		public void run() {
 			Field f = getFieldWithFocus();
@@ -168,7 +165,7 @@ public class VerActuacionScreen extends FondoNormal {
 		}
 	};
 
-	private final MenuItem menuEditarTodo = new MenuItem("Editar todo", 0, 0) {
+	private final MenuItem menuEditarTodo = new MenuItem("Editar todo", 262147, 5) {
 
 		public void run() {
 			_dfFecha.setEditable(true);
@@ -177,7 +174,7 @@ public class VerActuacionScreen extends FondoNormal {
 		}
 	};
 
-	private final MenuItem menuCambiar = new MenuItem("Cambiar", 0, 0) {
+	private final MenuItem menuCambiar = new MenuItem("Cambiar", 262147, 3) {
 
 		public void run() {
 			fieldChangeNotify(Util.ADD_JUZGADO);
@@ -185,13 +182,23 @@ public class VerActuacionScreen extends FondoNormal {
 	};
 
 	private final MenuItem menuEliminarActuacion = new MenuItem(
-			"Eliminar actuación", 0, 0) {
+			"Eliminar actuación", 327682, 6) {
 
 		public void run() {
 			fieldChangeNotify(Util.ELIMINAR);
 		}
 	};
+	
+	private MenuItem menuCerrar = new MenuItem("Salir de Aplicación",
+			1000000000, 8) {
 
+		public void run() {
+			fieldChangeNotify(Util.CERRAR);
+			if (!getScreen().isVisible()) {
+				System.exit(0);
+			}
+		}
+	};
 	public void alert(String alert) {
 		Dialog.alert(alert);
 	}
