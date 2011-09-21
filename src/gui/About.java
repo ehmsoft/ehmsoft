@@ -23,7 +23,7 @@ public class About extends FullScreen {
 	private final String CONTACTO = "soporte@ehmsoft.com";
 	public About() {
 		super(FullScreen.VERTICAL_SCROLL | FullScreen.VERTICAL_SCROLLBAR);
-		this.setBackground(BackgroundFactory.createSolidTransparentBackground(Color.BLACK, 150));
+		this.setBackground(BackgroundFactory.createSolidBackground(Color.BLACK));
 		_logo = new BitmapField(Bitmap.getBitmapResource("logo.png"), FIELD_HCENTER);
 		add(new WhiteLabelField("\n\n\n", LabelField.FIELD_HCENTER));
 		add(_logo);
