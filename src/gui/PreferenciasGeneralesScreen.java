@@ -20,7 +20,6 @@ import net.rim.device.api.ui.component.SeparatorField;
 import net.rim.device.api.ui.container.HorizontalFieldManager;
 import net.rim.device.api.ui.container.MainScreen;
 import net.rim.device.api.ui.decor.BorderFactory;
-import net.rim.device.api.ui.picker.FilePicker;
 
 public class PreferenciasGeneralesScreen extends MainScreen {
 
@@ -42,7 +41,6 @@ public class PreferenciasGeneralesScreen extends MainScreen {
 	private LabelField _lblRestaurarPrefs;
 	private ButtonField _btnRestaurarPrefs;
 	private HorizontalFieldManager _hfmCantidadActuaciones;
-	private FilePicker fp;
 
 	private int[] _significadoEstilos = { Font.PLAIN, Font.BOLD,
 			Font.EXTRA_BOLD, Font.BOLD | Font.ITALIC, Font.ITALIC };
@@ -112,7 +110,6 @@ public class PreferenciasGeneralesScreen extends MainScreen {
 				LabelField.USE_ALL_WIDTH);
 		_btnCopiaSeguridad = new ButtonField("Copia de seguridad",
 				ButtonField.CONSUME_CLICK | ButtonField.FIELD_RIGHT);
-		fp = FilePicker.getInstance();
 		// Restaurar Preferencias
 		_lblRestaurarPrefs = new LabelField(
 				"Restaurar preferencias predeterminadas",
@@ -212,12 +209,6 @@ public class PreferenciasGeneralesScreen extends MainScreen {
 
 	public int getCantidadActuacionesCriticas() {
 		return Integer.parseInt(_txtCantidadActuaciones.getText());
-	}
-
-	public String mostrarSeleccionArchivo() {
-		String hello = fp.show();
-		Dialog.alert(hello);
-		return hello;
 	}
 
 	private FieldChangeListener listenerPantallaInicial = new FieldChangeListener() {
