@@ -18,7 +18,7 @@ public class NuevaCategoriaScreen extends FondoNormal implements
 		setTitle("Nueva categoría");
 
 		_txtDescripcion = new BasicEditField(TextField.NO_NEWLINE);
-		_txtDescripcion.setLabel("Descripcion: ");
+		_txtDescripcion.setLabel("Descripción: ");
 
 		add(_txtDescripcion);
 		addMenuItem(menuGuardar);
