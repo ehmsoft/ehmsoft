@@ -35,10 +35,6 @@ import net.rim.device.api.ui.decor.BackgroundFactory;
 import net.rim.device.api.ui.decor.Border;
 import net.rim.device.api.ui.decor.BorderFactory;
 
-/**
- * A class extending the MainScreen class, which provides default standard
- * behavior for BlackBerry GUI applications.
- */
 public class ScreenMain extends MainScreen {
 
 	private GridFieldManager _grid;
@@ -55,6 +51,14 @@ public class ScreenMain extends MainScreen {
 	public ScreenMain() {
 		super();
 		
+		try {
+			new Persistence().consultarPreferencias();
+		} catch (NullPointerException e) {
+			Util.noSd();
+		} catch (Exception e) {
+			Util.alert(e.toString());
+		}
+				
 		this.getMainManager().setBackground(BackgroundFactory.createSolidBackground(Color.BLACK));
 		
 		actuacionesManager(15);
@@ -245,13 +249,6 @@ public class ScreenMain extends MainScreen {
 	private final MenuItem menuPreferencias = new MenuItem("Preferencias", 100000, 2) {
 		
 		public void run() {
-			try {
-				new Persistence().consultarPreferencias();
-			} catch (NullPointerException e) {
-				Util.noSd();
-			} catch (Exception e) {
-				Util.alert(e.toString());
-			}
 			PreferenciasGenerales p = new PreferenciasGenerales();
 			Util.pushModalScreen(p.getScreen());
 		}

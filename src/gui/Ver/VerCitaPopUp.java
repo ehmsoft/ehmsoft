@@ -29,7 +29,7 @@ public class VerCitaPopUp extends PopupScreen {
 	public final int CERRAR = 3;
 
 	public VerCitaPopUp() {
-		super(new VerticalFieldManager());
+		super(new VerticalFieldManager(VERTICAL_SCROLL | VERTICAL_SCROLLBAR));
 
 		LabelField labelField = new LabelField("Ver cita", Field.FIELD_HCENTER);
 		add(labelField);

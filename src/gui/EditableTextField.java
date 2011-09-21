@@ -72,23 +72,11 @@ public class EditableTextField extends HorizontalFieldManager {
 		}
 	}
 
-	public int getTextLength() {
-		if (_editable) {
-			return _txtField.getTextLength();
-		} else {
-			return _lblField.getText().length();
-		}
-	}
-
 	public void setEditable() {
 		if (!_editable) {
 			this.replace(_lblField, _txtField);
 			_editable = true;
 		}
-	}
-
-	public void setMaxSize(int maxSize) {
-		_txtField.setMaxSize(maxSize);
 	}
 
 	public void setEditable(boolean editable) {
