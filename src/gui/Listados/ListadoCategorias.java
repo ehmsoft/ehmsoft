@@ -125,7 +125,7 @@ public class ListadoCategorias {
 	}
 
 	private void nuevoCategoria() {
-		Categoria categoria = Util.nuevaCategoria(false);
+		Categoria categoria = Util.nuevaCategoria(true);
 		if (categoria != null) {
 			if ((_style & NO_NUEVO) == NO_NUEVO) {
 				_screen.addElement(categoria, 0);

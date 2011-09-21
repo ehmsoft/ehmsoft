@@ -527,11 +527,6 @@ public class VerProceso {
 		_categoria = Util.listadoCategorias(true, 0);
 		if (_categoria != null) {
 			_screen.setCategoria(_categoria.getDescripcion());
-		} else {
-			if (_categoriaVacia == null) {
-				_categoriaVacia = Util.consultarCategoriaVacio();
-			}
-			_screen.setCategoria(_categoriaVacia.getDescripcion());
 		}
 	}
 

@@ -94,10 +94,6 @@ public class VerProcesoScreen extends FondoNormal {
 		add(txt);
 	}
 
-	public void eliminarCampo(int index) {
-		_txtCampos.removeElementAt(index);
-	}
-
 	public void eliminarCampo() {
 		delete(_focused);
 		_txtCampos.removeElement(_focused);

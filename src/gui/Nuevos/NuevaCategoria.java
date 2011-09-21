@@ -25,9 +25,9 @@ public class NuevaCategoria {
 	FieldChangeListener listener = new FieldChangeListener() {
 
 		public void fieldChanged(Field field, int context) {
-			if (context == NuevaCategoriaScreen.GUARDAR) {
+			if (context == Util.GUARDAR) {
 				guardarCategoria();
-			} else if (context == NuevaCategoriaScreen.CERRAR) {
+			} else if (context == Util.CERRAR) {
 				cerrarPantalla();
 			}
 		}
@@ -49,10 +49,10 @@ public class NuevaCategoria {
 		String descripcion = _screen.getDescripcion();
 
 		if (descripcion.length() == 0) {
-			_screen.alert("El campo Descripción es obligatorio");
+			_screen.alert("No puede crearse una categoría vacía");
 		} else {
 			_categoria = new Categoria(descripcion);
-			Util.popWaitScreen();
+			Util.pushWaitScreen();
 			UiApplication.getUiApplication().invokeLater(new Runnable() {
 
 				public void run() {

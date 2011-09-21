@@ -1,6 +1,7 @@
 package gui.Nuevos;
 
 import gui.FondoNormal;
+import gui.Util;
 import net.rim.device.api.ui.MenuItem;
 import net.rim.device.api.ui.component.BasicEditField;
 import net.rim.device.api.ui.component.Dialog;
@@ -10,9 +11,6 @@ public class NuevaCategoriaScreen extends FondoNormal implements
 		NuevaCategoriaInterface {
 
 	private BasicEditField _txtDescripcion;
-
-	public static final int GUARDAR = 1;
-	public static final int CERRAR = 2;
 
 	public NuevaCategoriaScreen() {
 		setTitle("Nueva categoría");
@@ -27,7 +25,7 @@ public class NuevaCategoriaScreen extends FondoNormal implements
 	private final MenuItem menuGuardar = new MenuItem("Guardar", 0, 0) {
 
 		public void run() {
-			fieldChangeNotify(GUARDAR);
+			fieldChangeNotify(Util.GUARDAR);
 		}
 	};
 
@@ -44,7 +42,7 @@ public class NuevaCategoriaScreen extends FondoNormal implements
 	}
 
 	public boolean onClose() {
-		fieldChangeNotify(CERRAR);
+		fieldChangeNotify(Util.CERRAR);
 		return false;
 	}
 }

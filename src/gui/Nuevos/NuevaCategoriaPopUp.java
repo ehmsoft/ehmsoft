@@ -1,6 +1,6 @@
 package gui.Nuevos;
 
-import net.rim.device.api.system.KeyListener;
+import gui.Util;
 import net.rim.device.api.ui.Field;
 import net.rim.device.api.ui.FieldChangeListener;
 import net.rim.device.api.ui.component.BasicEditField;
@@ -16,9 +16,6 @@ public class NuevaCategoriaPopUp extends PopupScreen implements
 		NuevaCategoriaInterface {
 
 	private BasicEditField _txtDescripcion;
-
-	public final int GUARDAR = 1;
-	public final int CERRAR = 2;
 
 	public NuevaCategoriaPopUp() {
 		super(new VerticalFieldManager());
@@ -37,7 +34,6 @@ public class NuevaCategoriaPopUp extends PopupScreen implements
 		btnfldOk.setMinimalWidth(100);
 		btnfldOk.setChangeListener(listenetAceptar);
 		add(btnfldOk);
-		addKeyListener(new ListenerKey());
 	}
 
 	public void alert(String string) {
@@ -51,38 +47,16 @@ public class NuevaCategoriaPopUp extends PopupScreen implements
 	private FieldChangeListener listenetAceptar = new FieldChangeListener() {
 
 		public void fieldChanged(Field field, int context) {
-			fieldChangeNotify(GUARDAR);
+			fieldChangeNotify(Util.GUARDAR);
 		}
 	};
 
 	public String getDescripcion() {
 		return _txtDescripcion.getText();
 	}
-
-	public class ListenerKey implements KeyListener {
-		public boolean keyChar(char key, int status, int time) {
-			return false;
-		}
-
-		public boolean keyDown(int keycode, int time) {
-			if (keycode == 1769472) {
-				fieldChangeNotify(CERRAR);
-				return true;
-			} else {
-				return false;
-			}
-		}
-
-		public boolean keyRepeat(int keycode, int time) {
-			return false;
-		}
-
-		public boolean keyStatus(int keycode, int time) {
-			return false;
-		}
-
-		public boolean keyUp(int keycode, int time) {
-			return false;
-		}
+	
+	public boolean onClose() {
+		fieldChangeNotify(Util.CERRAR);
+		return false;
 	}
 }
