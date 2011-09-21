@@ -87,30 +87,6 @@ public class Util {
 
 	public static UiApplication UI_Application;
 
-	public static void verificarBD() {
-		pushWaitScreen();
-		WAIT_SCREEN.add(new SeparatorField());
-		WAIT_SCREEN
-				.add(new LabelField(
-						"Creando la base de datos por primera vez, esto puede demorar algunos minutos"));
-		UiApplication.getUiApplication().invokeLater(new Runnable() {
-
-			public void run() {
-				try {
-					ConnectionManager c = new ConnectionManager();
-					c.prepararBD();
-					c = null;
-				} catch (NullPointerException e) {
-					noSd();
-				} catch (Exception e) {
-					alert(e.toString());
-				}
-				popWaitScreen();
-				WAIT_SCREEN.deleteRange(1, 2);
-			}
-		});
-	}
-
 	public static void popScreen(Screen screen) {
 		if (UI_Application == null) {
 			UI_Application = UiApplication.getUiApplication();
@@ -124,13 +100,12 @@ public class Util {
 			WAIT_SCREEN.add(new LabelField("Procesando, espere porfavor..."));
 		}
 		UiApplication.getUiApplication().pushGlobalScreen(WAIT_SCREEN, 0,
-				UiEngine.GLOBAL_QUEUE);
+				UiEngine.GLOBAL_SHOW_LOWER);
 	}
 
 	public static void popWaitScreen() {
-		if (!WAIT_SCREEN.isDisplayed())
-			;
-		popScreen(WAIT_SCREEN);
+		while(!WAIT_SCREEN.isGlobal());
+			popScreen(WAIT_SCREEN);
 	}
 
 	public static String noSDString() {
@@ -196,16 +171,8 @@ public class Util {
 		return "¿Desea eliminar la persona?";
 	}
 
-	public static String delCategoria() {
-		return "¿Desea eliminar la categoría?";
-	}
-
 	public static String delCampo() {
 		return "¿Desea eliminar el campo personalizado?";
-	}
-
-	public static String delActuacion() {
-		return "¿Desea eliminar la actuación?";
 	}
 
 	public static Persona consultarPersonaVacia(int tipo) {
