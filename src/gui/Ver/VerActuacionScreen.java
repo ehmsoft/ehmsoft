@@ -114,36 +114,36 @@ public class VerActuacionScreen extends FondoNormal {
 		menu.add(menuCerrar);
 	}
 
-	private final MenuItem menuVerCita = new MenuItem("Ver cita", 65537, 0) {
+	private final MenuItem menuVerCita = new MenuItem("Ver cita", 131075, 1) {
 
 		public void run() {
 			fieldChangeNotify(Util.VER_CITA);
 		}
 	};
 
-	private final MenuItem menuAddCita = new MenuItem("Agregar cita", 65537, 0) {
+	private final MenuItem menuAddCita = new MenuItem("Agregar cita", 131075, 1) {
 
 		public void run() {
 			fieldChangeNotify(Util.ADD_CITA);
 		}
 	};
 
-	private final MenuItem menuEliminarCita = new MenuItem("Eliminar cita", 65537,
-			1) {
+	private final MenuItem menuEliminarCita = new MenuItem("Eliminar cita", 131075,
+			2) {
 
 		public void run() {
 			fieldChangeNotify(Util.ELIMINAR_CITA);
 		}
 	};
 
-	private final MenuItem menuGuardar = new MenuItem("Guardar", 0, 0) {
+	private final MenuItem menuGuardar = new MenuItem("Guardar", 65537, 0) {
 
 		public void run() {
 			fieldChangeNotify(Util.GUARDAR);
 		}
 	};
 
-	private final MenuItem menuEditar = new MenuItem("Editar", 131075, 1) {
+	private final MenuItem menuEditar = new MenuItem("Editar", 262147, 4) {
 
 		public void run() {
 			Field f = getFieldWithFocus();
@@ -165,7 +165,7 @@ public class VerActuacionScreen extends FondoNormal {
 		}
 	};
 
-	private final MenuItem menuEditarTodo = new MenuItem("Editar todo", 131075, 2) {
+	private final MenuItem menuEditarTodo = new MenuItem("Editar todo", 262147, 5) {
 
 		public void run() {
 			_dfFecha.setEditable(true);
@@ -174,7 +174,7 @@ public class VerActuacionScreen extends FondoNormal {
 		}
 	};
 
-	private final MenuItem menuCambiar = new MenuItem("Cambiar", 131075, 0) {
+	private final MenuItem menuCambiar = new MenuItem("Cambiar", 262147, 3) {
 
 		public void run() {
 			fieldChangeNotify(Util.ADD_JUZGADO);
@@ -182,7 +182,7 @@ public class VerActuacionScreen extends FondoNormal {
 	};
 
 	private final MenuItem menuEliminarActuacion = new MenuItem(
-			"Eliminar actuación", 196611, 0) {
+			"Eliminar actuación", 327682, 6) {
 
 		public void run() {
 			fieldChangeNotify(Util.ELIMINAR);
@@ -190,7 +190,7 @@ public class VerActuacionScreen extends FondoNormal {
 	};
 	
 	private MenuItem menuCerrar = new MenuItem("Salir de Aplicación",
-			1000000000, 3) {
+			1000000000, 8) {
 
 		public void run() {
 			fieldChangeNotify(Util.CERRAR);

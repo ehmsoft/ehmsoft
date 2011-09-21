@@ -222,13 +222,13 @@ public class VerProcesoScreen extends FondoNormal {
 	}
 
 	private final MenuItem menuVerActuaciones = new MenuItem("Ver actuaciones",
-			196611, 1) {
+			327682, 6) {
 		public void run() {
 			fieldChangeNotify(Util.VER_LISTADO_ACTUACIONES);
 		}
 	};
 
-	private final MenuItem menuModificarCampo = new MenuItem("Modificar", 262147, 1) {
+	private final MenuItem menuModificarCampo = new MenuItem("Modificar", 393216, 8) {
 
 		public void run() {
 			fieldChangeNotify(Util.VER_CAMPO);
@@ -236,7 +236,7 @@ public class VerProcesoScreen extends FondoNormal {
 	};
 
 	private final MenuItem menuAddCampo = new MenuItem(
-			"Agregar campo personalizado", 262147, 0) {
+			"Agregar campo personalizado", 393216, 7) {
 
 		public void run() {
 			fieldChangeNotify(Util.ADD_CAMPO);
@@ -244,7 +244,7 @@ public class VerProcesoScreen extends FondoNormal {
 	};
 
 	private final MenuItem menuEliminar = new MenuItem("Eliminar del proceso",
-			65537, 1) {
+			131075, 2) {
 
 		public void run() {
 			EditableTextField f = (EditableTextField) getFieldWithFocus();
@@ -265,14 +265,14 @@ public class VerProcesoScreen extends FondoNormal {
 		}
 	};
 
-	private final MenuItem menuGuardar = new MenuItem("Guardar", 0, 0) {
+	private final MenuItem menuGuardar = new MenuItem("Guardar", 65537, 0) {
 
 		public void run() {
 			fieldChangeNotify(Util.GUARDAR);
 		}
 	};
 
-	private final MenuItem menuEditar = new MenuItem("Editar", 131075, 0) {
+	private final MenuItem menuEditar = new MenuItem("Editar", 262147, 3) {
 
 		public void run() {
 			Field f = getFieldWithFocus();
@@ -290,7 +290,7 @@ public class VerProcesoScreen extends FondoNormal {
 		}
 	};
 
-	private final MenuItem menuEditarTodo = new MenuItem("Editar todo", 131075, 1) {
+	private final MenuItem menuEditarTodo = new MenuItem("Editar todo", 262147, 4) {
 
 		public void run() {
 			_dfFecha.setEditable(true);
@@ -307,7 +307,7 @@ public class VerProcesoScreen extends FondoNormal {
 		}
 	};
 
-	private final MenuItem menuCambiar = new MenuItem("Cambiar", 65537, 0) {
+	private final MenuItem menuCambiar = new MenuItem("Cambiar", 131075, 1) {
 
 		public void run() {
 			EditableTextField f = (EditableTextField) getFieldWithFocus();
@@ -324,14 +324,14 @@ public class VerProcesoScreen extends FondoNormal {
 	};
 
 	private final MenuItem menuAddActuacion = new MenuItem("Agregar actuación",
-			196611, 0) {
+			327682, 5) {
 
 		public void run() {
 			fieldChangeNotify(Util.NEW_ACTUACION);
 		}
 	};
 	private MenuItem menuCerrar = new MenuItem("Salir de Aplicación",
-			1000000000, 3) {
+			1000000000, 9) {
 
 		public void run() {
 			fieldChangeNotify(Util.CERRAR);
