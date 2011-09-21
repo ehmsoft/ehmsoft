@@ -214,6 +214,7 @@ public class ScreenMain extends MainScreen {
 				_grid.setColumnProperty(0, GridFieldManager.FIXED_SIZE, column1);
 				_grid.setColumnProperty(1, GridFieldManager.FIXED_SIZE, column2);
 				_grid.setRowProperty(0, GridFieldManager.FIXED_SIZE, row);
+				invalidate();
 			}
 		}
 	};
