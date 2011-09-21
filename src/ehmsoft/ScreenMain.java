@@ -5,15 +5,18 @@ import java.util.Vector;
 
 import persistence.Persistence;
 import core.Actuacion;
+import core.Proceso;
 import gui.PreferenciasGenerales;
 import gui.Util;
 import gui.About;
+import gui.Listados.ListadoActuaciones;
 import gui.Listados.ListadoCampos;
 import gui.Listados.ListadoCategorias;
 import gui.Listados.ListadoJuzgados;
 import gui.Listados.ListadoPersonas;
 import gui.Listados.ListadoProcesos;
 import gui.Listados.ListadoPlantillas;
+import gui.Nuevos.NuevaActuacion;
 import net.rim.device.api.system.Display;
 import net.rim.device.api.ui.Color;
 import net.rim.device.api.ui.Field;
@@ -306,13 +309,13 @@ class Listados extends PopupScreen {
 			add(new LabelField("Ver listado de:", FIELD_HCENTER));
 			Object[] o = { "Demandantes", "Demandados", "Juzgados",
 					"Campos personalizados", "Categorías", "Procesos",
-					"Plantillas" };
+					"Plantillas", "Actuaciones"};
 			_lista.set(o);
 		} else if ((_style & NUEVO) == NUEVO) {
 			add(new LabelField("Crear:", FIELD_HCENTER));
 			Object[] o = { "Demandante", "Demandado", "Juzgado",
 					"Campos personalizado", "Categoría", "Proceso",
-					"Plantillas" };
+					"Plantilla", "Actuación"};
 			_lista.set(o);
 		}
 		add(new SeparatorField());
@@ -364,6 +367,21 @@ class Listados extends PopupScreen {
 				Util.listadoPlantillas(false, ListadoPlantillas.ON_CLICK_VER);
 			} else if ((_style & NUEVO) == NUEVO) {
 				Util.nuevaPlantilla();
+			}
+		} else if (index == 7) {
+			ListadoProcesos procesos = new ListadoProcesos(true, ListadoProcesos.NO_NUEVO);
+			procesos.setTitle("Seleccione un proceso");
+			Util.pushModalScreen(procesos.getScreen());
+			Proceso proceso = procesos.getSelected();
+			if (proceso != null) {
+				if ((_style & LISTA) == LISTA) {
+					ListadoActuaciones actuaciones = new ListadoActuaciones(
+							proceso);
+					Util.pushModalScreen(actuaciones.getScreen());
+				} else if ((_style & NUEVO) == NUEVO) {
+					NuevaActuacion actuacion = new NuevaActuacion(proceso);
+					Util.pushModalScreen(actuacion.getScreen());
+				}
 			}
 		}
 		return true;
