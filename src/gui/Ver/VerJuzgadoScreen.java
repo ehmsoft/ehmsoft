@@ -40,26 +40,26 @@ public class VerJuzgadoScreen extends FondoNormal {
 	protected void makeMenu(Menu menu, int instance) {
 		menu.add(menuEditar);
 		menu.add(menuEditarTodo);
-		menu.addSeparator();
 		menu.add(menuEliminar);
 		menu.add(menuGuardar);
+		menu.add(menuCerrar);
 	}
 
-	private final MenuItem menuGuardar = new MenuItem("Guardar", 0, 0) {
+	private final MenuItem menuGuardar = new MenuItem("Guardar", 65537, 0) {
 
 		public void run() {
 			fieldChangeNotify(Util.GUARDAR);
 		}
 	};
 
-	private final MenuItem menuEliminar = new MenuItem("Eliminar", 0, 0) {
+	private final MenuItem menuEliminar = new MenuItem("Eliminar", 131075, 3) {
 
 		public void run() {
 			fieldChangeNotify(Util.ELIMINAR);
 		}
 	};
 
-	private final MenuItem menuEditar = new MenuItem("Editar", 0, 0) {
+	private final MenuItem menuEditar = new MenuItem("Editar", 131075, 1) {
 
 		public void run() {
 			EditableTextField f = (EditableTextField) getFieldWithFocus();
@@ -70,7 +70,7 @@ public class VerJuzgadoScreen extends FondoNormal {
 		}
 	};
 
-	private final MenuItem menuEditarTodo = new MenuItem("Editar todo", 0, 0) {
+	private final MenuItem menuEditarTodo = new MenuItem("Editar todo", 131075, 2) {
 
 		public void run() {
 			_txtNombre.setEditable();
@@ -80,7 +80,16 @@ public class VerJuzgadoScreen extends FondoNormal {
 			_txtTipo.setEditable();
 		}
 	};
+	private MenuItem menuCerrar = new MenuItem("Salir de Aplicación",
+			1000000000, 9) {
 
+		public void run() {
+			fieldChangeNotify(Util.CERRAR);
+			if (!getScreen().isVisible()) {
+				System.exit(0);
+			}
+		}
+	};
 	public void alert(String alert) {
 		Dialog.alert(alert);
 	}
@@ -137,17 +146,14 @@ public class VerJuzgadoScreen extends FondoNormal {
 	private KeyListener listener = new KeyListener() {
 
 		public boolean keyUp(int keycode, int time) {
-			// TODO Auto-generated method stub
 			return false;
 		}
 
 		public boolean keyStatus(int keycode, int time) {
-			// TODO Auto-generated method stub
 			return false;
 		}
 
 		public boolean keyRepeat(int keycode, int time) {
-			// TODO Auto-generated method stub
 			return false;
 		}
 
@@ -161,7 +167,6 @@ public class VerJuzgadoScreen extends FondoNormal {
 		}
 
 		public boolean keyChar(char key, int status, int time) {
-			// TODO Auto-generated method stub
 			return false;
 		}
 	};
