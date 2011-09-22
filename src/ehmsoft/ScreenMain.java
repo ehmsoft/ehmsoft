@@ -98,10 +98,6 @@ public class ScreenMain extends MainScreen {
 	}
 
 	private void initLista() {
-		int index = 0;
-		if(_lista != null) {
-			index = _lista.getSelectedIndex();
-		}
 		_lista = new ObjectListField() {
 			public void drawListRow(ListField listField, Graphics graphics,
 					int index, int y, int width) {
@@ -129,9 +125,6 @@ public class ScreenMain extends MainScreen {
 			Util.alert(e.toString());
 		}
 		_lista.setFocusListener(listener);
-		_lista.setSelectedIndex(index);
-		_lista.invalidate();
-		_vertical.invalidate();
 	}
 	
 	private void initRight() {
@@ -298,7 +291,7 @@ class Listados extends PopupScreen {
 	public static final short NUEVO = 2;
 
 	public Listados(int style) {
-		super(new VerticalFieldManager());
+		super(new VerticalFieldManager(VERTICAL_SCROLL | VERTICAL_SCROLLBAR));
 		_style = style;
 		_lista = new ObjectListField();
 		if ((_style & LISTA) == LISTA) {
