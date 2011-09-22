@@ -132,32 +132,29 @@ public class NuevaPlantillaScreen extends FondoNormal {
 				|| f.equals(_lblJuzgado)) {
 			menu.add(menuCambiar);
 			menu.add(menuEliminar);
-			menu.addSeparator();
 		} else if (f.equals(_chCategoria)) {
 			menu.add(menuAddCategoria);
 			menu.add(menuVerListadoCategorias);
-			menu.addSeparator();
 		} else if (BasicEditField.class.isInstance(f)) {
 			if (f.getCookie() != null) {
 				_focused = f;
 				menu.add(menuModificarCampo);
 				menu.add(menuEliminarCampo);
-				menu.addSeparator();
 			}
 		}
 		menu.add(menuCampo);
-		menu.addSeparator();
 		menu.add(menuGuardar);
+		menu.add(menuCerrar);
 	}
 
-	private final MenuItem menuModificarCampo = new MenuItem("Modificar", 0, 0) {
+	private final MenuItem menuModificarCampo = new MenuItem("Modificar", 393216, 8) {
 
 		public void run() {
 			fieldChangeNotify(Util.VER_CAMPO);
 		}
 	};
 
-	private final MenuItem menuCambiar = new MenuItem("Cambiar", 0, 0) {
+	private final MenuItem menuCambiar = new MenuItem("Cambiar", 131075, 1) {
 
 		public void run() {
 			Field f = getFieldWithFocus();
@@ -171,7 +168,7 @@ public class NuevaPlantillaScreen extends FondoNormal {
 		}
 	};
 
-	private final MenuItem menuEliminar = new MenuItem("Eliminar", 0, 0) {
+	private final MenuItem menuEliminar = new MenuItem("Eliminar", 131075, 2) {
 
 		public void run() {
 			Field f = getFieldWithFocus();
@@ -186,7 +183,7 @@ public class NuevaPlantillaScreen extends FondoNormal {
 	};
 
 	private final MenuItem menuAddCategoria = new MenuItem("Nueva categoría",
-			0, 0) {
+			262147, 4) {
 
 		public void run() {
 			fieldChangeNotify(Util.NEW_CATEGORIA);
@@ -194,14 +191,14 @@ public class NuevaPlantillaScreen extends FondoNormal {
 	};
 
 	private final MenuItem menuVerListadoCategorias = new MenuItem(
-			"Ver listado", 0, 0) {
+			"Ver listado", 262147, 3) {
 
 		public void run() {
 			fieldChangeNotify(Util.ADD_CATEGORIA);
 		}
 	};
 
-	private final MenuItem menuGuardar = new MenuItem("Guardar", 0, 0) {
+	private final MenuItem menuGuardar = new MenuItem("Guardar", 65537, 0) {
 
 		public void run() {
 			fieldChangeNotify(Util.GUARDAR);
@@ -209,20 +206,31 @@ public class NuevaPlantillaScreen extends FondoNormal {
 	};
 
 	private final MenuItem menuCampo = new MenuItem(
-			"Agregar campo personalizado", 0, 0) {
+			"Agregar campo personalizado", 393216, 7) {
 
 		public void run() {
 			fieldChangeNotify(Util.ADD_CAMPO);
 		}
 	};
 
-	private final MenuItem menuEliminarCampo = new MenuItem("Eliminar", 0, 0) {
+	private final MenuItem menuEliminarCampo = new MenuItem("Eliminar", 393216, 7) {
 
 		public void run() {
 			fieldChangeNotify(Util.ELIMINAR_CAMPO);
 		}
 	};
 
+	private MenuItem menuCerrar = new MenuItem("Salir de Aplicación",
+			1000000000, 15) {
+
+		public void run() {
+			fieldChangeNotify(Util.CERRAR);
+			if (!getScreen().isVisible()) {
+				System.exit(0);
+			}
+		}
+	};
+	
 	public void setDemandante(String text) {
 		_lblDemandante.setText(text);
 	}
