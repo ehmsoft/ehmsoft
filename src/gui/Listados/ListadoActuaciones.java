@@ -47,17 +47,19 @@ public class ListadoActuaciones {
 			_screen = new ListadoActuacionesScreen();
 		}
 
-		try {
-			_vectorActuaciones = new Persistence()
-					.consultarActuaciones(_proceso);
-		} catch (NullPointerException e) {
-			_screen.alert(Util.noSDString());
-			System.exit(0);
-		} catch (Exception e) {
-			_screen.alert(e.toString());
-		}
+		if (_proceso != null) {
+			try {
+				_vectorActuaciones = new Persistence()
+						.consultarActuaciones(_proceso);
+			} catch (NullPointerException e) {
+				_screen.alert(Util.noSDString());
+				System.exit(0);
+			} catch (Exception e) {
+				_screen.alert(e.toString());
+			}
 
-		addActuaciones();
+			addActuaciones();
+		}
 		((Screen) _screen).setChangeListener(listener);
 
 		if ((_style & SEARCH) == SEARCH) {

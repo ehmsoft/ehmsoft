@@ -1,6 +1,7 @@
 package gui.Nuevos;
 
 import gui.Util;
+import gui.Listados.ListadoActuaciones;
 
 import java.util.Enumeration;
 import java.util.Vector;
@@ -106,6 +107,8 @@ public class NuevoProceso {
 				eliminarCampo();
 			} else if (context == Util.CERRAR) {
 				cerrarPantalla();
+			} else if(context == Util.VER_LISTADO_ACTUACIONES) {
+				verActuaciones();
 			}
 		}
 	};
@@ -236,10 +239,23 @@ public class NuevoProceso {
 		Actuacion actuacion = Util.nuevaActuacion();
 		if (actuacion != null) {
 			_actuaciones.addElement(actuacion);
-			Object[] actuaciones = new Object[_actuaciones.size()];
-			_actuaciones.copyInto(actuaciones);
-			_screen.addActuaciones(actuaciones);
-			_screen.selectActuacion(_actuaciones.indexOf(actuacion));
+		}
+	}
+	
+	private void verActuaciones() {
+		ListadoActuaciones l = new ListadoActuaciones(null, true);
+		l.setVectorActuaciones(_actuaciones);
+		Util.pushModalScreen(l.getScreen());
+		Actuacion old = l.getSelected();
+		if(old != null) {
+			Actuacion nw = Util.verActuacion(old);
+			if(nw != null) {
+				int index = _actuaciones.indexOf(old);
+				_actuaciones.removeElementAt(index);
+				_actuaciones.insertElementAt(nw, index);
+			} else {
+				_actuaciones.removeElement(old);
+			}
 		}
 	}
 

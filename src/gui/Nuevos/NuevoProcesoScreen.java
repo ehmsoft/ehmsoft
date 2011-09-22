@@ -22,7 +22,6 @@ public class NuevoProcesoScreen extends FondoNormal {
 
 	private BasicEditField _txtEstado;
 	private ObjectChoiceField _chCategoria;
-	private ObjectChoiceField _chActuaciones;
 	private NumericChoiceField _chPrioridad;
 	private DateField _dtFecha;
 	private EditableTextField _lblDemandante;
@@ -73,10 +72,6 @@ public class NuevoProcesoScreen extends FondoNormal {
 
 		add(_chCategoria);
 
-		_chActuaciones = new ObjectChoiceField();
-		_chActuaciones.setLabel("Actuaciones:");
-		add(_chActuaciones);
-
 		_chPrioridad = new NumericChoiceField("Prioridad", 1, 10, 1);
 		_chPrioridad.setSelectedIndex(4);
 		add(_chPrioridad);
@@ -126,20 +121,15 @@ public class NuevoProcesoScreen extends FondoNormal {
 		_chCategoria.setChoices(categorias);
 	}
 
-	public void addActuaciones(Object[] actuaciones) {
-		_chActuaciones.setChoices(actuaciones);
-	}
-
 	public void selectCategoria(int index) {
 		_chCategoria.setSelectedIndex(index);
 	}
 
-	public void selectActuacion(int index) {
-		_chActuaciones.setSelectedIndex(index);
-	}
-
 	protected void makeMenu(Menu menu, int instance) {
 		Field f = getFieldWithFocus();
+		menu.add(menuAddActuacion);
+		menu.add(menuVerActuaciones);
+		menu.addSeparator();
 		if (f.equals(_lblDemandante) || f.equals(_lblDemandado)
 				|| f.equals(_lblJuzgado)) {
 			menu.add(menuCambiar);
@@ -154,9 +144,6 @@ public class NuevoProcesoScreen extends FondoNormal {
 			} else if (f.equals(_chCategoria)) {
 				menu.add(menuAddCategoria);
 				menu.add(menuVerListadoCategorias);
-				menu.addSeparator();
-			} else if (f.equals(_chActuaciones)) {
-				menu.add(menuAddActuacion);
 				menu.addSeparator();
 			} else if (BasicEditField.class.isInstance(f)) {
 				if (f.getCookie() != null) {
@@ -199,6 +186,14 @@ public class NuevoProcesoScreen extends FondoNormal {
 		}
 	};
 
+	private final MenuItem menuVerActuaciones = new MenuItem("Ver actuaciones",
+			0, 0) {
+
+		public void run() {
+			fieldChangeNotify(Util.VER_LISTADO_ACTUACIONES);
+		}
+	};
+	
 	private final MenuItem menuAddCategoria = new MenuItem("Nueva categoría",
 			0, 0) {
 

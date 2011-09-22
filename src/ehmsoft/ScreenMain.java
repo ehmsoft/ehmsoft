@@ -303,7 +303,7 @@ class Listados extends PopupScreen {
 		} else if ((_style & NUEVO) == NUEVO) {
 			add(new LabelField("Crear:", FIELD_HCENTER));
 			Object[] o = { "Demandante", "Demandado", "Juzgado",
-					"Campos personalizado", "Categoría", "Proceso",
+					"Campo personalizado", "Categoría", "Proceso",
 					"Plantilla", "Actuación"};
 			_lista.set(o);
 		}
