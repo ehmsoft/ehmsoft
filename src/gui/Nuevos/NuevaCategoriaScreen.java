@@ -20,15 +20,27 @@ public class NuevaCategoriaScreen extends FondoNormal implements
 
 		add(_txtDescripcion);
 		addMenuItem(menuGuardar);
+		addMenuItem(menuCerrar);
 	}
 
-	private final MenuItem menuGuardar = new MenuItem("Guardar", 0, 0) {
+	private final MenuItem menuGuardar = new MenuItem("Guardar", 65537, 0) {
 
 		public void run() {
 			fieldChangeNotify(Util.GUARDAR);
 		}
 	};
+	
+	private MenuItem menuCerrar = new MenuItem("Salir de Aplicación",
+			1000000000, 15) {
 
+		public void run() {
+			fieldChangeNotify(Util.CERRAR);
+			if (!getScreen().isVisible()) {
+				System.exit(0);
+			}
+		}
+	};
+	
 	public void alert(String string) {
 		Dialog.alert(string);
 	}

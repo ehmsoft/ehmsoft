@@ -43,15 +43,27 @@ public class NuevaPersonaScreen extends FondoNormal {
 		add(_txtCorreo);
 		add(_txtNotas);
 		addMenuItem(menuGuardar);
+		addMenuItem(menuCerrar);
 	}
 
-	private final MenuItem menuGuardar = new MenuItem("Guardar", 0, 0) {
+	private final MenuItem menuGuardar = new MenuItem("Guardar", 65537, 0) {
 
 		public void run() {
 			fieldChangeNotify(GUARDAR);
 		}
 	};
+	
+	private MenuItem menuCerrar = new MenuItem("Salir de Aplicación",
+			1000000000, 15) {
 
+		public void run() {
+			fieldChangeNotify(CERRAR);
+			if (!getScreen().isVisible()) {
+				System.exit(0);
+			}
+		}
+	};
+	
 	public void alert(String alert) {
 		Dialog.alert(alert);
 	}

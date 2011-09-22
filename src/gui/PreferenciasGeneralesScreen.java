@@ -298,7 +298,7 @@ public class PreferenciasGeneralesScreen extends MainScreen {
 			}
 		}
 	};
-	private MenuItem menuCerrar = new MenuItem("Salir de Aplicación", 100000, 3) {
+	private MenuItem menuCerrar = new MenuItem("Salir de Aplicación", 1000000000, 3) {
 
 		public void run() {
 			if(onSavePrompt()){

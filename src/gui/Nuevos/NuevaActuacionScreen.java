@@ -85,56 +85,64 @@ public class NuevaActuacionScreen extends FondoNormal {
 	protected void makeMenu(Menu menu, int instance) {
 		if(getFieldWithFocus().equals(_lblJuzgado)) {
 			menu.add(menuCambiar);
-			menu.addSeparator();
 		}
 		if (_hasAlarm) {
 			menu.add(menuVerCita);
 			menu.add(menuEliminarCita);
-			menu.addSeparator();
 		} else {
 			menu.add(menuAddCita);
-			menu.addSeparator();
 		}
-		menu.addSeparator();
 		menu.add(menuGuardar);
+		menu.add(menuCerrar);
 	}
 
-	private final MenuItem menuVerCita = new MenuItem("Ver cita", 0, 0) {
+	private final MenuItem menuVerCita = new MenuItem("Ver cita", 262147, 2) {
 
 		public void run() {
 			fieldChangeNotify(Util.VER_CITA);
 		}
 	};
 
-	private final MenuItem menuAddCita = new MenuItem("Agregar cita", 0, 0) {
+	private final MenuItem menuAddCita = new MenuItem("Agregar cita", 262147, 3) {
 
 		public void run() {
 			fieldChangeNotify(Util.ADD_CITA);
 		}
 	};
 
-	private final MenuItem menuEliminarCita = new MenuItem("Eliminar cita", 0,
-			0) {
+	private final MenuItem menuEliminarCita = new MenuItem("Eliminar cita", 262147,
+			4) {
 
 		public void run() {
 			fieldChangeNotify(Util.ELIMINAR_CITA);
 		}
 	};
 
-	private final MenuItem menuCambiar = new MenuItem("Cambiar", 0, 0) {
+	private final MenuItem menuCambiar = new MenuItem("Cambiar", 131075, 1) {
 
 		public void run() {
 			fieldChangeNotify(Util.ADD_JUZGADO);
 		}
 	};
 
-	private final MenuItem menuGuardar = new MenuItem("Guardar", 0, 0) {
+	private final MenuItem menuGuardar = new MenuItem("Guardar", 65537, 0) {
 
 		public void run() {
 			fieldChangeNotify(Util.GUARDAR);
 		}
 	};
+	
+	private MenuItem menuCerrar = new MenuItem("Salir de Aplicación",
+			1000000000, 9) {
 
+		public void run() {
+			fieldChangeNotify(Util.CERRAR);
+			if (!getScreen().isVisible()) {
+				System.exit(0);
+			}
+		}
+	};
+	
 	public void alert(String alert) {
 		Dialog.alert(alert);
 	}
