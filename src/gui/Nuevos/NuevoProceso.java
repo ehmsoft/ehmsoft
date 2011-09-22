@@ -283,9 +283,9 @@ public class NuevoProceso {
 				|| _juzgado != null) {
 			Object[] ask = { "Guardar", "Descartar", "Cancelar" };
 			int sel = _screen.ask(ask, "Se han detectado cambios", 2);
-			if (sel == 1) {
+			if (sel == 0) {
 				guardarProceso();
-			} else if (sel == 2) {
+			} else if (sel == 1) {
 				Util.popScreen(_screen);
 			}
 		} else {
