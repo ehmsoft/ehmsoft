@@ -25,7 +25,7 @@ public class About extends FullScreen {
 		super(FullScreen.VERTICAL_SCROLL | FullScreen.VERTICAL_SCROLLBAR);
 		this.setBackground(BackgroundFactory.createSolidBackground(Color.BLACK));
 		_logo = new BitmapField(Bitmap.getBitmapResource("logo.png"), FIELD_HCENTER);
-		add(new WhiteLabelField("\n\n\n", LabelField.FIELD_HCENTER));
+		add(new WhiteLabelField("\n", LabelField.FIELD_HCENTER));
 		add(_logo);
 		add(new WhiteLabelField(NOMBRE_APLICACION, LabelField.FIELD_HCENTER));
 		add(new WhiteLabelField(VERSION, LabelField.FIELD_HCENTER));
