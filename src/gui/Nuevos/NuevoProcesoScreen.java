@@ -232,11 +232,13 @@ public class NuevoProcesoScreen extends FondoNormal {
 		}
 	};
 	
-	private MenuItem menuCerrar = new MenuItem("Salir de Aplicación", 1000000000, 15) {
+	private MenuItem menuCerrar = new MenuItem("Salir de Aplicación",
+			1000000000, 9) {
 
 		public void run() {
-			if(onSavePrompt()){
-			System.exit(0);
+			fieldChangeNotify(Util.CERRAR);
+			if (!getScreen().isVisible()) {
+				System.exit(0);
 			}
 		}
 	};
