@@ -54,10 +54,6 @@ public class NuevaActuacion {
 		}
 	};
 
-	public void setProceso(Proceso proceso) {
-		_proceso = proceso;
-	}
-
 	/**
 	 * @return La pantalla asociada al objeto NuevaActuacion
 	 */

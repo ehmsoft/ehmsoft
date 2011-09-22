@@ -40,10 +40,6 @@ public class NuevaCita {
 		return _cita;
 	}
 
-	public boolean hasAlarma() {
-		return _screen.hasAlarma();
-	}
-
 	private void guardarCita() {
 		if (_screen.hasAlarma()) {
 			_cita.setAlarma(_screen.getAlarma());

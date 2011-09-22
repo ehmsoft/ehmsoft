@@ -143,10 +143,6 @@ public class NuevaActuacionScreen extends FondoNormal {
 		return Dialog.ask(string, options, index);
 	}
 
-	public boolean hasAlarma() {
-		return _hasAlarm;
-	}
-
 	public void setJuzgado(String text) {
 		_lblJuzgado.setText(text);
 	}

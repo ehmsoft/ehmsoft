@@ -10,7 +10,6 @@ import net.rim.device.api.ui.component.BasicEditField;
 import net.rim.device.api.ui.component.ButtonField;
 import net.rim.device.api.ui.component.CheckboxField;
 import net.rim.device.api.ui.component.DateField;
-import net.rim.device.api.ui.component.Dialog;
 import net.rim.device.api.ui.component.LabelField;
 import net.rim.device.api.ui.component.ObjectChoiceField;
 import net.rim.device.api.ui.component.SeparatorField;
@@ -106,14 +105,6 @@ public class NuevaCitaPopUp extends PopupScreen {
 
 	public void setFecha(Date date) {
 		_dfFecha.setDate(date);
-	}
-
-	public void setAlarma(boolean alarma) {
-		_cbAlarma.setChecked(alarma);
-	}
-
-	public void alert(String string) {
-		Dialog.alert(string);
 	}
 
 	public String getDescripcion() {
