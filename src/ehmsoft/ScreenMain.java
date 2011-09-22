@@ -5,6 +5,7 @@ import java.util.Vector;
 
 import persistence.Persistence;
 import core.Actuacion;
+import core.Preferencias;
 import core.Proceso;
 import gui.PreferenciasGenerales;
 import gui.Util;
@@ -44,16 +45,16 @@ import net.rim.device.api.ui.decor.BorderFactory;
 
 public class ScreenMain extends MainScreen {
 
-	private GridFieldManager _grid;
-	private VerticalFieldManager _vertical;
-	private static ObjectListField _lista;
-	private LabelField _juzgado;
-	private LabelField _fecha;
-	private LabelField _fechaProxima;
-	private LabelField _descripcion;
-	private static final int column1 = (Display.getWidth() / 2) - 32;
-	private static final int column2 = (Display.getWidth() / 2) + 16;
-	private static final int row = Display.getHeight() - 32;
+	private  GridFieldManager _grid;
+	private  VerticalFieldManager _vertical;
+	private  ObjectListField _lista;
+	private  LabelField _juzgado;
+	private  LabelField _fecha;
+	private  LabelField _fechaProxima;
+	private  LabelField _descripcion;
+	private  final int column1 = (Display.getWidth() / 2) - 32;
+	private  final int column2 = (Display.getWidth() / 2) + 16;
+	private  final int row = Display.getHeight() - 32;
 
 	public ScreenMain() {
 		super();
@@ -69,7 +70,7 @@ public class ScreenMain extends MainScreen {
 		this.getMainManager().setBackground(
 				BackgroundFactory.createSolidBackground(Color.BLACK));
 
-		actuacionesManager(15);
+		actuacionesManager();
 
 		_grid = new GridFieldManager(1, 2, GridFieldManager.FIXED_SIZE);
 
@@ -91,11 +92,16 @@ public class ScreenMain extends MainScreen {
 		left.invalidate();
 	}
 
-	private void actuacionesManager(int cant) {
-		_vertical = new VerticalFieldManager();
-		_vertical.setFont(_vertical.getFont().derive(
-				_vertical.getFont().getStyle(),
-				_vertical.getFont().getHeight() - 5));
+	private void actuacionesManager() {
+		initRight();
+		initLista();
+	}
+
+	private void initLista() {
+		int index = 0;
+		if(_lista != null) {
+			index = _lista.getSelectedIndex();
+		}
 		_lista = new ObjectListField() {
 			public void drawListRow(ListField listField, Graphics graphics,
 					int index, int y, int width) {
@@ -112,7 +118,7 @@ public class ScreenMain extends MainScreen {
 		_lista.setRowHeight(_lista.getFont().getHeight() * 2);
 
 		try {
-			Vector v = new Persistence().consultarActuacionesCriticas(cant);
+			Vector v = new Persistence().consultarActuacionesCriticas(Preferencias.getCantidadActuacionesCriticas());
 			Enumeration e = v.elements();
 			while (e.hasMoreElements()) {
 				_lista.insert(_lista.getSize(), e.nextElement());
@@ -123,6 +129,16 @@ public class ScreenMain extends MainScreen {
 			Util.alert(e.toString());
 		}
 		_lista.setFocusListener(listener);
+		_lista.setSelectedIndex(index);
+		_lista.invalidate();
+		_vertical.invalidate();
+	}
+	
+	private void initRight() {
+		_vertical = new VerticalFieldManager();
+		_vertical.setFont(_vertical.getFont().derive(
+				_vertical.getFont().getStyle(),
+				_vertical.getFont().getHeight() - 5));
 
 		LabelField lblDescripcion = new LabelField("Descripción:", FOCUSABLE) {
 			protected void paint(Graphics g) {
@@ -193,7 +209,7 @@ public class ScreenMain extends MainScreen {
 		_vertical.add(lblFechaProxima);
 		_vertical.add(_fechaProxima);
 	}
-
+	
 	private FocusChangeListener listener = new FocusChangeListener() {
 
 		public void focusChanged(Field field, int context) {
@@ -214,30 +230,9 @@ public class ScreenMain extends MainScreen {
 				_grid.setColumnProperty(0, GridFieldManager.FIXED_SIZE, column1);
 				_grid.setColumnProperty(1, GridFieldManager.FIXED_SIZE, column2);
 				_grid.setRowProperty(0, GridFieldManager.FIXED_SIZE, row);
-				invalidate();
 			}
 		}
 	};
-
-	public static void recargarActuaciones() {
-		if (_lista != null) {
-			try {
-				while (_lista.getSize() != 0) {
-					_lista.delete(0);
-				}
-				Vector v = new Persistence().consultarActuacionesCriticas(15);
-				Enumeration e = v.elements();
-				while (e.hasMoreElements()) {
-					_lista.insert(_lista.getSize(), e.nextElement());
-				}
-				_lista.setSelectedIndex(_lista.getSelectedIndex());
-			} catch (NullPointerException e) {
-				Util.noSd();
-			} catch (Exception e) {
-				Util.alert(e.toString());
-			}
-		}
-	}
 
 	protected void makeMenu(Menu menu, int instance) {
 		menu.add(menuListas);
@@ -362,7 +357,6 @@ class Listados extends PopupScreen {
 			} else if ((_style & NUEVO) == NUEVO) {
 				Util.nuevoProceso();
 			}
-			ScreenMain.recargarActuaciones();
 		} else if (index == 6) {
 			if ((_style & LISTA) == LISTA) {
 				Util.listadoPlantillas(false, ListadoPlantillas.ON_CLICK_VER);
