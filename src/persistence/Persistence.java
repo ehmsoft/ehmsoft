@@ -1636,6 +1636,7 @@ public class Persistence implements Cargado, Guardado {
 			while (cursor.next()) {
 				Row row = cursor.getRow();
 				int id_actuacion = row.getInteger(0);
+				String id_proceso = row.getString(1);
 				int id_juzgado = row.getInteger(2);
 				Calendar fecha_creacion = stringToCalendar(row.getString(3));
 				Calendar fecha_proxima = stringToCalendar(row.getString(4));
@@ -1643,9 +1644,9 @@ public class Persistence implements Cargado, Guardado {
 				String uid = row.getString(6);
 				Juzgado juzgado = new Juzgado();
 				juzgado.setId_juzgado(Integer.toString(id_juzgado));
-				Actuacion actuacion = new Actuacion(juzgado, fecha_creacion,
+				ActuacionCritica actuacion = new ActuacionCritica(juzgado, fecha_creacion,
 						fecha_proxima, descripcion,
-						Integer.toString(id_actuacion), uid);
+						Integer.toString(id_actuacion), uid, id_proceso);
 				actuaciones.addElement(actuacion);
 			}
 			st.close();
