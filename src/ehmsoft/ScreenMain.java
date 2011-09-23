@@ -5,6 +5,7 @@ import java.util.Vector;
 
 import persistence.Persistence;
 import core.Actuacion;
+import core.ActuacionCritica;
 import core.Preferencias;
 import core.Proceso;
 import gui.PreferenciasGenerales;
@@ -228,12 +229,31 @@ public class ScreenMain extends MainScreen {
 	};
 
 	protected void makeMenu(Menu menu, int instance) {
+		menu.add(menuVerProceso);
 		menu.add(menuListas);
 		menu.add(menuNuevos);
 		menu.add(menuPreferencias);
 		menu.add(menuCerrar);
 		menu.add(menuAcerca);
 	}
+	
+	private final MenuItem menuVerProceso = new MenuItem("Ver proceso", 0, 0) {
+		
+		public void run() {
+			ActuacionCritica a = (ActuacionCritica) _lista.get(_lista, _lista.getSelectedIndex());
+			Proceso p = null;
+			try {
+				p = new Persistence().consultarProceso(a.getId_proceso());
+			} catch (NullPointerException e) {
+				Util.noSd();
+			} catch (Exception e) {
+				Util.alert(e.toString());
+			}
+			if(p != null) {
+				Util.verProceso(p);
+			}			
+		}
+	};
 
 	private final MenuItem menuListas = new MenuItem("Listado", 65537, 0) {
 
