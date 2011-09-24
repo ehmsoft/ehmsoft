@@ -201,10 +201,10 @@ public class VerPlantillaScreen extends FondoNormal {
 				_focused = f;
 				menu.add(menuModificarCampo);
 				menu.add(menuEliminarCampo);
-				menu.addSeparator();
 			}
 		}
 		menu.add(menuGuardar);
+		menu.add(menuNuevo);
 	}
 
 	private final MenuItem menuModificarCampo = new MenuItem("Modificar", 393216, 8) {
@@ -250,7 +250,12 @@ public class VerPlantillaScreen extends FondoNormal {
 			fieldChangeNotify(Util.GUARDAR);
 		}
 	};
+	private final MenuItem menuNuevo = new MenuItem("Crear proceso a partir de plantilla", 65537, 1) {
 
+		public void run() {
+			fieldChangeNotify(Util.NEW_PROCESO);
+		}
+	};
 	private final MenuItem menuEditar = new MenuItem("Editar", 262147, 3) {
 
 		public void run() {

@@ -5,6 +5,7 @@ import java.util.Vector;
 
 import persistence.Persistence;
 import core.Actuacion;
+import core.Plantilla;
 import core.Preferencias;
 import core.Proceso;
 import gui.PreferenciasGenerales;
@@ -18,6 +19,7 @@ import gui.Listados.ListadoPersonas;
 import gui.Listados.ListadoProcesos;
 import gui.Listados.ListadoPlantillas;
 import gui.Nuevos.NuevaActuacion;
+import gui.Nuevos.NuevoProceso;
 import net.rim.device.api.system.Display;
 import net.rim.device.api.ui.Color;
 import net.rim.device.api.ui.Field;
@@ -304,7 +306,7 @@ class Listados extends PopupScreen {
 			add(new LabelField("Crear:", FIELD_HCENTER));
 			Object[] o = { "Demandante", "Demandado", "Juzgado",
 					"Campo personalizado", "Categoría", "Proceso",
-					"Plantilla", "Actuación"};
+					"Plantilla", "Actuación", "Proceso a partir de plantilla"};
 			_lista.set(o);
 		}
 		add(new SeparatorField());
@@ -370,6 +372,15 @@ class Listados extends PopupScreen {
 					NuevaActuacion actuacion = new NuevaActuacion(proceso);
 					Util.pushModalScreen(actuacion.getScreen());
 				}
+			}
+		} else if (index == 8){
+			ListadoPlantillas plantillas = new ListadoPlantillas(true, ListadoPlantillas.ON_CLICK_SELECT | ListadoPlantillas.NO_NUEVO);
+			plantillas.setTitle("Seleccione una plantilla");
+			Util.pushModalScreen(plantillas.getScreen());
+			Plantilla plantilla = plantillas.getSelected();
+			if(plantilla != null){
+				NuevoProceso n = new NuevoProceso(plantilla);
+				UiApplication.getUiApplication().pushModalScreen(n.getScreen());
 			}
 		}
 		return true;
