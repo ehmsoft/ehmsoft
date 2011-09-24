@@ -58,7 +58,7 @@ public class NuevaPlantillaScreen extends FondoNormal {
 		add(_txtRadicado);
 
 		_txtRadicadoUnico = new BasicEditField(TextField.NO_NEWLINE);
-		_txtRadicadoUnico.setLabel("Radicado unico: ");
+		_txtRadicadoUnico.setLabel("Radicado único: ");
 		add(_txtRadicadoUnico);
 
 		_txtTipo = new BasicEditField(TextField.NO_NEWLINE);
@@ -70,7 +70,7 @@ public class NuevaPlantillaScreen extends FondoNormal {
 		add(_txtEstado);
 
 		_chCategoria = new ObjectChoiceField();
-		_chCategoria.setLabel("Categoria:");
+		_chCategoria.setLabel("Categoría:");
 		add(_chCategoria);
 
 		_chPrioridad = new NumericChoiceField("Prioridad", 1, 10, 1);

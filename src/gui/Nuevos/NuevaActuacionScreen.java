@@ -36,7 +36,7 @@ public class NuevaActuacionScreen extends FondoNormal {
 	 */
 	public NuevaActuacionScreen() {
 		HorizontalFieldManager titleContainer = new HorizontalFieldManager();
-		titleContainer.add(new LabelField("Nueva actuacion"));
+		titleContainer.add(new LabelField("Nueva actuación"));
 
 		_cita = new BitmapField(null, Field.FIELD_VCENTER);
 		_alarm = new BitmapField(null, Field.FIELD_VCENTER);

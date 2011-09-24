@@ -24,7 +24,7 @@ public class VerJuzgadoScreen extends FondoNormal {
 
 		_txtNombre = new EditableTextField("Nombre: ", TextField.NO_NEWLINE);
 		_txtCiudad = new EditableTextField("Ciudad: ", TextField.NO_NEWLINE);
-		_txtDireccion = new EditableTextField("Direccion: ",
+		_txtDireccion = new EditableTextField("Dirección: ",
 				TextField.NO_NEWLINE);
 		_txtTelefono = new EditableTextField("Teléfono: ", TextField.NO_NEWLINE);
 		_txtTipo = new EditableTextField("Tipo: ", TextField.NO_NEWLINE);

@@ -47,17 +47,17 @@ public class VerProcesoScreen extends FondoNormal {
 				TextField.NO_NEWLINE);
 		add(_txtDemandado);
 
-		_txtJuzgado = new EditableTextField("juzgado: ", TextField.NO_NEWLINE);
+		_txtJuzgado = new EditableTextField("Juzgado: ", TextField.NO_NEWLINE);
 		add(_txtJuzgado);
 
-		_dfFecha = new DateField("Fecha: ", 0, DateField.DATE_TIME);
+		_dfFecha = new DateField("Fecha Creación: ", 0, DateField.DATE_TIME);
 		_dfFecha.setEditable(false);
 		add(_dfFecha);
 
 		_txtRadicado = new EditableTextField("Radicado: ");
 		add(_txtRadicado);
 
-		_txtRadicadoUnico = new EditableTextField("Radicado unico: ");
+		_txtRadicadoUnico = new EditableTextField("Radicado único: ");
 		add(_txtRadicadoUnico);
 
 		_txtEstado = new EditableTextField("Estado: ");

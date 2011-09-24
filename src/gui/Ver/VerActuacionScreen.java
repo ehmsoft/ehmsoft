@@ -33,7 +33,7 @@ public class VerActuacionScreen extends FondoNormal {
 
 	public VerActuacionScreen() {
 		HorizontalFieldManager titleContainer = new HorizontalFieldManager();
-		titleContainer.add(new LabelField("Actuacion"));
+		titleContainer.add(new LabelField("Actuación"));
 
 		_cita = new BitmapField(null, Field.FIELD_VCENTER);
 		_alarm = new BitmapField(null, Field.FIELD_VCENTER);

@@ -32,7 +32,7 @@ public class VerCampoScreen extends FondoNormal {
 				BasicEditField.FILTER_INTEGER);
 		add(_txtLongMax);
 
-		_txtLongMin = new EditableTextField("Longitud minima: ",
+		_txtLongMin = new EditableTextField("Longitud mínima: ",
 				BasicEditField.FILTER_INTEGER);
 		add(_txtLongMin);
 	}

@@ -95,7 +95,7 @@ public class Util {
 	public static void pushWaitScreen() {
 		if (WAIT_SCREEN == null) {
 			WAIT_SCREEN = new PopupScreen(new VerticalFieldManager());
-			WAIT_SCREEN.add(new LabelField("Procesando, espere porfavor..."));
+			WAIT_SCREEN.add(new LabelField("Procesando, espere por favor..."));
 		}
 		UiApplication.getUiApplication().pushGlobalScreen(WAIT_SCREEN, 0,
 				UiEngine.GLOBAL_SHOW_LOWER);
@@ -111,7 +111,7 @@ public class Util {
 	}
 
 	public static void citaErrorMessage() {
-		alert("No se pudo agregar la cita al calendario, intentelo nuevamente");
+		alert("No se pudo agregar la cita al calendario, inténtelo nuevamente");
 	}
 
 	public static void noSd() {
@@ -142,7 +142,7 @@ public class Util {
 	}
 
 	public static String delBDCategoria() {
-		return "¿Desea eliminar la categoría?. Se eliminará de definitivamente y cada proceso ligado a esta";
+		return "¿Desea eliminar la categoría?. Se eliminará de definitivamente y cada proceso ligado a ésta";
 	}
 
 	public static String delBDCampo() {
@@ -154,7 +154,7 @@ public class Util {
 	}
 
 	public static String delBDProceso() {
-		return "¿Desea eliminar el proceso?. Se eliminará definitivamente y las actuaciones ligadas a este";
+		return "¿Desea eliminar el proceso?. Se eliminará definitivamente, incluyendo sus actuaciones.";
 	}
 
 	public static String delBDPlantilla() {
@@ -162,15 +162,15 @@ public class Util {
 	}
 
 	public static String delJuzgado() {
-		return "¿Desea eliminar el juzgado?";
+		return "¿Desea quitar el juzgado?";
 	}
 
 	public static String delPersona() {
-		return "¿Desea eliminar la persona?";
+		return "¿Desea quitar la persona?";
 	}
 
 	public static String delCampo() {
-		return "¿Desea eliminar el campo personalizado?";
+		return "¿Desea quitar el campo personalizado?";
 	}
 
 	public static Persona consultarPersonaVacia(int tipo) {

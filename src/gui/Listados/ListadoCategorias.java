@@ -60,7 +60,7 @@ public class ListadoCategorias {
 			_screen.setSearchField();
 		}
 		if ((_style & NO_NUEVO) != NO_NUEVO) {
-			_screen.addElement("Crear nueva categoria", 0);
+			_screen.addElement("Crear nueva categoría", 0);
 		}
 		if ((_style & ON_CLICK_VER) != ON_CLICK_VER
 				&& (_style & ON_CLICK_SELECT) != ON_CLICK_SELECT) {

@@ -44,13 +44,13 @@ public class VerPlantillaScreen extends FondoNormal {
 		_lblDemandado = new EditableTextField("Demandado: ");
 		add(_lblDemandado);
 
-		_lblJuzgado = new EditableTextField("juzgado: ");
+		_lblJuzgado = new EditableTextField("Juzgado: ");
 		add(_lblJuzgado);
 
 		_txtRadicado = new EditableTextField("Radicado: ");
 		add(_txtRadicado);
 
-		_txtRadicadoUnico = new EditableTextField("Radicado unico: ");
+		_txtRadicadoUnico = new EditableTextField("Radicado único: ");
 		add(_txtRadicadoUnico);
 
 		_txtEstado = new EditableTextField("Estado: ");
