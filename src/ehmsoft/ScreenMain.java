@@ -237,7 +237,7 @@ public class ScreenMain extends MainScreen {
 		menu.add(menuAcerca);
 	}
 	
-	private final MenuItem menuVerProceso = new MenuItem("Ver proceso", 0, 0) {
+	private final MenuItem menuVerProceso = new MenuItem("Ver proceso", 65537, 0) {
 		
 		public void run() {
 			ActuacionCritica a = (ActuacionCritica) _lista.get(_lista, _lista.getSelectedIndex());
@@ -255,7 +255,7 @@ public class ScreenMain extends MainScreen {
 		}
 	};
 
-	private final MenuItem menuListas = new MenuItem("Listado", 65537, 0) {
+	private final MenuItem menuListas = new MenuItem("Listado", 65537, 1) {
 
 		public void run() {
 			UiApplication.getUiApplication().pushModalScreen(
@@ -263,7 +263,7 @@ public class ScreenMain extends MainScreen {
 		}
 	};
 
-	private final MenuItem menuNuevos = new MenuItem("Nuevo", 65537, 1) {
+	private final MenuItem menuNuevos = new MenuItem("Nuevo", 65537, 2) {
 
 		public void run() {
 			UiApplication.getUiApplication().pushModalScreen(
