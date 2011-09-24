@@ -41,15 +41,19 @@ public class NuevaCita {
 	}
 
 	private void guardarCita() {
-		if (_screen.hasAlarma()) {
-			_cita.setAlarma(_screen.getAlarma());
+		if (_screen.getDescripcion().equals("")) {
+			Util.alert("La descripción está vacía!. Por favor ingrese algo");
 		} else {
-			_cita.setAlarma(0);
+			if (_screen.hasAlarma()) {
+				_cita.setAlarma(_screen.getAlarma());
+			} else {
+				_cita.setAlarma(0);
+			}
+			_cita.setDescripcion(_screen.getDescripcion());
+			_cita.setFecha(_screen.getFecha());
+			_cita.guardarCita();
+			Util.popScreen(_screen);
 		}
-		_cita.setDescripcion(_screen.getDescripcion());
-		_cita.setFecha(_screen.getFecha());
-		_cita.guardarCita();
-		Util.popScreen(_screen);
 	}
 
 	private void cerrarPantalla() {
