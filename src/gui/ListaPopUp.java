@@ -25,8 +25,12 @@ public abstract class ListaPopUp extends PopupScreen implements
 	}
 	
 	public void setTitle(String text) {
-		if (_title.getField(0).getClass().equals(HorizontalFieldManager.class)) {
-			((LabelField) ((HorizontalFieldManager)_title.getField(0)).getField(0)).setText(text);
+		if (_title.getFieldCount() != 0) {
+			if (_title.getField(0).getClass()
+					.equals(HorizontalFieldManager.class)) {
+				((LabelField) ((HorizontalFieldManager) _title.getField(0))
+						.getField(0)).setText(text);
+			}
 		} else {
 			_title.add(new LabelField(text, FIELD_HCENTER));
 			_title.add(new SeparatorField());
@@ -38,6 +42,9 @@ public abstract class ListaPopUp extends PopupScreen implements
 	}
 	
 	public void setTitle(Field field) {
+		if(_title.getFieldCount() != 0) {
+			_title.deleteAll();
+		}
 		_title.add(field);
 		_title.add(new SeparatorField());
 	}
