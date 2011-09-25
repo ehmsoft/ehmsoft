@@ -252,12 +252,12 @@ public class ConnectionManager {
             st.execute();
             st.close();
          //Insertar la versión de la base de datos Llave 999
-			st = d.createStatement("INSERT INTO 'preferencias' VALUES(999,2)");
+			st = d.createStatement("INSERT INTO 'preferencias' VALUES(999," + "'2')");
 			st.prepare();
 			st.execute();
 			st.close();
 		//Insertar la llave
-			st = d.createStatement("INSERT INTO 'preferencias' VALUES(998,0)");
+			st = d.createStatement("INSERT INTO 'preferencias' VALUES(998," + "'0')");
 			st.prepare();
 			st.execute();
 			st.close();
