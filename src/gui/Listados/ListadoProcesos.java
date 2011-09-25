@@ -106,6 +106,8 @@ public class ListadoProcesos {
 				cerrarPantalla();
 			} else if (context == Util.ELIMINAR) {
 				eliminarProceso();
+			} else if(context == Util.NEW) {
+				nuevoProceso();
 			}
 		}
 	};

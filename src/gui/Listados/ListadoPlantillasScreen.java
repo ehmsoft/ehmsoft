@@ -20,7 +20,7 @@ public class ListadoPlantillasScreen extends ListaScreen {
 
 	protected void makeMenu(Menu menu, int instance) {
 		super.makeMenu(menu, instance);
-		if (!String.class.equals(_lista.getSelectedElement())) {
+		if (!String.class.isInstance(_lista.getSelectedElement())) {
 			menu.add(menuCrearProceso);
 		}
 	}

@@ -82,6 +82,8 @@ public class ListadoCampos {
 				cerrarPantalla();
 			} else if (context == Util.ELIMINAR) {
 				eliminarCampo();
+			} else if(context == Util.NEW) {
+				nuevoCampo();
 			}
 		}
 	};

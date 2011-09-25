@@ -81,6 +81,8 @@ public class Util {
 	public static final short RESTAURAR_PREFERENCIAS = 30;
 	
 	public static final short ROOT_SELECCIONADO = 31;
+	
+	public static final short NEW = 32;
 
 	public static PopupScreen WAIT_SCREEN;
 

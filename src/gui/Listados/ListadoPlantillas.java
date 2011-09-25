@@ -94,6 +94,8 @@ public class ListadoPlantillas {
 				eliminarPlantilla();
 			} else if (context == Util.NEW_PROCESO) {
 				nuevoProceso();
+			}  else if(context == Util.NEW) {
+				nuevaPlantilla();
 			}
 		}
 	};

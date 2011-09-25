@@ -89,6 +89,8 @@ public class ListadoActuaciones {
 				cerrarPantalla();
 			} else if (context == Util.ELIMINAR) {
 				eliminarActuacion();
+			} else if(context == Util.NEW) {
+				nuevaActuacion();
 			}
 		}
 	};

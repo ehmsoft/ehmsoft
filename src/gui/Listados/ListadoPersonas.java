@@ -95,6 +95,8 @@ public class ListadoPersonas {
 				eliminarPersona();
 			} else if (context == Util.LLAMAR) {
 				llamar();
+			} else if(context == Util.NEW) {
+				nuevaPersona();
 			}
 		}
 	};

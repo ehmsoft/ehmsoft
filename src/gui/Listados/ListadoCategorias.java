@@ -83,6 +83,8 @@ public class ListadoCategorias {
 				cerrarPantalla();
 			} else if (context == Util.ELIMINAR) {
 				eliminarCategoria();
+			} else if(context == Util.NEW) {
+				nuevoCategoria();
 			}
 		}
 	};

@@ -86,6 +86,8 @@ public class ListadoJuzgados {
 				eliminarJuzgado();
 			} else if (context == Util.LLAMAR) {
 				llamar();
+			} else if(context == Util.NEW) {
+				nuevoJuzgado();
 			}
 		}
 	};
