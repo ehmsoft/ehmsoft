@@ -9,7 +9,12 @@ public class ListadoPersonasScreen extends ListaScreen {
 
 	public ListadoPersonasScreen() {
 		super();
-		_lista = new ListadoPersonasLista();
+		_lista = new ListadoPersonasLista(){
+			protected boolean navigationClick(int status, int time) {
+				click();
+				return true;
+			}
+		};
 		add(_lista);
 		addKeyListener(listener);
 	}

@@ -21,11 +21,6 @@ public abstract class ListaScreen extends MainScreen implements
 		add(_searchField);
 	}
 
-	protected boolean navigationClick(int status, int time) {
-		fieldChangeNotify(Util.CLICK);
-		return true;
-	}
-
 	protected void makeMenu(Menu menu, int instance) {
 		menu.add(menuCerrar);
 		if (!String.class.isInstance(_lista.getSelectedElement())) {
@@ -52,6 +47,10 @@ public abstract class ListaScreen extends MainScreen implements
 			fieldChangeNotify(Util.ELIMINAR);
 		}
 	};
+	
+	protected void click() {
+		fieldChangeNotify(Util.CLICK);
+	}
 
 	public void setSearchField() {
 		_searchField.add(_lista.getKeywordField());
