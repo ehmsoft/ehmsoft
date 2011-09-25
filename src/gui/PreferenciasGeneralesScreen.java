@@ -41,6 +41,8 @@ public class PreferenciasGeneralesScreen extends MainScreen {
 	private LabelField _lblRestaurarPrefs;
 	private ButtonField _btnRestaurarPrefs;
 	private HorizontalFieldManager _hfmCantidadActuaciones;
+	private LabelField _lblLlaves;
+	private ButtonField _btnLlaves;
 
 	private int[] _significadoEstilos = { Font.PLAIN, Font.BOLD,
 			Font.EXTRA_BOLD, Font.BOLD | Font.ITALIC, Font.ITALIC };
@@ -118,7 +120,10 @@ public class PreferenciasGeneralesScreen extends MainScreen {
 				ButtonField.CONSUME_CLICK | ButtonField.FIELD_RIGHT);
 		_btnCopiaSeguridad.setChangeListener(listenerCopiaSeguridad);
 		_btnRestaurarPrefs.setChangeListener(listenerRestaurarPrefs);
-
+		//Llaves
+		_lblLlaves = new LabelField("Activación", LabelField.USE_ALL_WIDTH);
+		_btnLlaves = new ButtonField("Cambiar Llave de activación", ButtonField.CONSUME_CLICK | ButtonField.FIELD_RIGHT);
+		_btnLlaves.setChangeListener(listenerLlaves);
 		// Agregar componentes
 		add(_txtNombreUsuario);
 		add(_chkMostrarCampoBusqueda);
@@ -138,7 +143,9 @@ public class PreferenciasGeneralesScreen extends MainScreen {
 		add(new SeparatorField());
 		add(_lblRestaurarPrefs);
 		add(_btnRestaurarPrefs);
-
+		add(new SeparatorField());
+		add(_lblLlaves);
+		add(_btnLlaves);
 	}
 
 	public void setNombreUsuario(String text) {
@@ -276,7 +283,13 @@ public class PreferenciasGeneralesScreen extends MainScreen {
 
 		}
 	};
-
+	
+	private FieldChangeListener listenerLlaves = new FieldChangeListener() {
+		
+		public void fieldChanged(Field field, int context) {
+			fieldChangeNotify(Util.LLAVES);
+		}
+	};
 	protected void makeMenu(Menu menu, int instance) {
 		menu.add(menuGuardar);
 		menu.add(menuCancelar);

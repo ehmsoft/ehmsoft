@@ -81,6 +81,8 @@ public class Util {
 	
 	public static final short ROOT_SELECCIONADO = 31;
 
+	public static final short LLAVES = 32;
+	
 	public static PopupScreen WAIT_SCREEN;
 
 	public static UiApplication UI_Application;
