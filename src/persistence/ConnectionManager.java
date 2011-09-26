@@ -24,7 +24,19 @@ public class ConnectionManager {
 
 		}
 	}
-
+	
+	public boolean existeBD(){//Método que verifica si la SD está presente, luego verifica si la base de datos existe, sino la crea
+		try{
+		verificarSD();
+		if(DatabaseFactory.exists(dbLocation)){
+			return true;
+		}else{
+			return false;
+		}
+		} catch(Exception e){
+			return false;
+		}
+	}
 
 	private void verificarSD() throws NullPointerException  {//Verifica si la SD está presente y popula la información de raíces
 		boolean sdCardPresent = false;

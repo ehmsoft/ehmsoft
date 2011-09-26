@@ -154,7 +154,7 @@ public class NuevoProcesoScreen extends FondoNormal {
 		menu.add(menuCerrar);
 	}
 
-	private final MenuItem menuAgregar = new MenuItem("Agregar", 131075, 1) {
+	private final MenuItem menuAgregar = new MenuItem("Agregar", 131075, 0) {
 
 		public void run() {
 			Field f = getFieldWithFocus();
@@ -168,7 +168,7 @@ public class NuevoProcesoScreen extends FondoNormal {
 		}
 	};
 
-	private final MenuItem menuCambiar = new MenuItem("Cambiar", 131075, 1) {
+	private final MenuItem menuCambiar = new MenuItem("Cambiar", 131075, 0) {
 
 		public void run() {
 			menuAgregar.run();
@@ -184,7 +184,7 @@ public class NuevoProcesoScreen extends FondoNormal {
 	};
 
 	private final MenuItem menuVerActuaciones = new MenuItem("Ver actuaciones",
-			0, 0) {
+			327682, 4) {
 
 		public void run() {
 			fieldChangeNotify(Util.VER_LISTADO_ACTUACIONES);
@@ -207,7 +207,7 @@ public class NuevoProcesoScreen extends FondoNormal {
 		}
 	};
 
-	private final MenuItem menuGuardar = new MenuItem("Guardar", 65537, 0) {
+	private final MenuItem menuGuardar = new MenuItem("Guardar", 65537, 1) {
 
 		public void run() {
 			fieldChangeNotify(Util.GUARDAR);
