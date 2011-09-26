@@ -30,7 +30,7 @@ public abstract class FondoNormal extends MainScreen {
 
 		_vertical.setBorder(BorderFactory.createBitmapBorder(new XYEdges(12,
 				12, 12, 12), borderBitmap));
-		_vertical.setFont(Preferencias.getTipoFuente());
+		setFont(Preferencias.getTipoFuente());
 		super.add(_vertical);
 	}
 
