@@ -80,6 +80,13 @@ public class ListadoPersonas {
 				_style = _style | ON_CLICK_VER;
 			}
 		}
+		if(Preferencias.isMostrarTitulosPantallas() && !popup) {
+			if(tipo == 1) {
+				_screen.setTitle("Demandanes");
+			} else {
+				_screen.setTitle("Demandados");
+			}
+		}
 	}
 
 	private FieldChangeListener listener = new FieldChangeListener() {

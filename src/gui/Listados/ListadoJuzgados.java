@@ -72,6 +72,9 @@ public class ListadoJuzgados {
 				_style = _style | ON_CLICK_VER;
 			}
 		}
+		if(Preferencias.isMostrarTitulosPantallas() && !popup) {
+			_screen.setTitle("Juzgados");
+		}
 	}
 
 	private FieldChangeListener listener = new FieldChangeListener() {

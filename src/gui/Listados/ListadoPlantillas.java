@@ -80,6 +80,9 @@ public class ListadoPlantillas {
 				_style = _style | ON_CLICK_VER;
 			}
 		}
+		if(Preferencias.isMostrarTitulosPantallas() && !popup) {
+			_screen.setTitle("Plantillas");
+		}
 	}
 
 	private FieldChangeListener listener = new FieldChangeListener() {

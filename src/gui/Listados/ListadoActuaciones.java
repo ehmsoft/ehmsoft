@@ -76,6 +76,9 @@ public class ListadoActuaciones {
 				_style = _style | ON_CLICK_VER;
 			}
 		}
+		if(Preferencias.isMostrarTitulosPantallas() && !popup) {
+			_screen.setTitle("Actuaciones");
+		}
 	}
 
 	private FieldChangeListener listener = new FieldChangeListener() {

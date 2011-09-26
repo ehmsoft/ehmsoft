@@ -69,6 +69,9 @@ public class ListadoCampos {
 				_style = _style | ON_CLICK_VER;
 			}
 		}
+		if(Preferencias.isMostrarTitulosPantallas() && !popup) {
+			_screen.setTitle("Campos personalizados");
+		}
 	}
 
 	private FieldChangeListener listener = new FieldChangeListener() {

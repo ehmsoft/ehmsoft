@@ -70,6 +70,9 @@ public class ListadoCategorias {
 				_style = _style | ON_CLICK_VER;
 			}
 		}
+		if(Preferencias.isMostrarTitulosPantallas() && !popup) {
+			_screen.setTitle("Categorías");
+		}
 	}
 
 	private FieldChangeListener listener = new FieldChangeListener() {
