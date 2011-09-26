@@ -13,6 +13,7 @@ import persistence.Persistence;
 import core.Juzgado;
 import core.Persona;
 import core.PhoneManager;
+import core.Preferencias;
 
 public class ListadoJuzgados {
 
@@ -57,7 +58,7 @@ public class ListadoJuzgados {
 		addJuzgados();
 		((Screen) _screen).setChangeListener(listener);
 
-		if ((_style & SEARCH) == SEARCH) {
+		if (Preferencias.isMostrarCampoBusqueda()) {
 			_screen.setSearchField();
 		}
 		if ((_style & NO_NUEVO) != NO_NUEVO) {

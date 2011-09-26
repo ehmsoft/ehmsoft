@@ -10,6 +10,7 @@ import net.rim.device.api.ui.FieldChangeListener;
 import net.rim.device.api.ui.Screen;
 import net.rim.device.api.ui.UiApplication;
 import persistence.Persistence;
+import core.Preferencias;
 import core.Proceso;
 
 public class ListadoProcesos {
@@ -20,7 +21,6 @@ public class ListadoProcesos {
 	private Proceso _selected;
 	private Vector _categorias;
 
-	public static final int SEARCH = 1;
 	public static final int ON_CLICK_VER = 2;
 	public static final int ON_CLICK_SELECT = 4;
 	public static final int NO_NUEVO = 8;
@@ -67,7 +67,7 @@ public class ListadoProcesos {
 
 		((Screen) _screen).setChangeListener(listener);
 
-		if ((_style & SEARCH) == SEARCH) {
+		if (Preferencias.isMostrarCampoBusqueda()) {
 			_screen.setSearchField();
 		}
 		if ((_style & ON_CLICK_VER) != ON_CLICK_VER

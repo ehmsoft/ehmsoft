@@ -13,6 +13,7 @@ import net.rim.device.api.ui.Screen;
 import net.rim.device.api.ui.UiApplication;
 import persistence.Persistence;
 import core.Plantilla;
+import core.Preferencias;
 
 public class ListadoPlantillas {
 
@@ -68,7 +69,7 @@ public class ListadoPlantillas {
 
 		((Screen) _screen).setChangeListener(listener);
 
-		if ((_style & SEARCH) == SEARCH) {
+		if (Preferencias.isMostrarCampoBusqueda()) {
 			_screen.setSearchField();
 		}
 		if ((_style & ON_CLICK_VER) != ON_CLICK_VER

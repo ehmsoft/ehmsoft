@@ -11,6 +11,7 @@ import net.rim.device.api.ui.Screen;
 import net.rim.device.api.ui.UiApplication;
 import persistence.Persistence;
 import core.Categoria;
+import core.Preferencias;
 
 public class ListadoCategorias {
 
@@ -19,7 +20,6 @@ public class ListadoCategorias {
 	private long _style;
 	private Categoria _selected;
 
-	public static final int SEARCH = 1;
 	public static final int ON_CLICK_VER = 2;
 	public static final int ON_CLICK_SELECT = 4;
 	public static final int NO_NUEVO = 8;
@@ -56,7 +56,7 @@ public class ListadoCategorias {
 		addCategorias();
 		((Screen) _screen).setChangeListener(listener);
 
-		if ((_style & SEARCH) == SEARCH) {
+		if (Preferencias.isMostrarCampoBusqueda()) {
 			_screen.setSearchField();
 		}
 		if ((_style & NO_NUEVO) != NO_NUEVO) {
