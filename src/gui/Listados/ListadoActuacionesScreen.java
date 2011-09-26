@@ -12,6 +12,6 @@ public class ListadoActuacionesScreen extends ListaScreen {
 				return true;
 			}
 		};
-		add(_lista);
+		add(_lista, false);
 	}
 }

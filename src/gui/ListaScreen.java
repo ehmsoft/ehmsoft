@@ -9,7 +9,7 @@ import net.rim.device.api.ui.component.Menu;
 import net.rim.device.api.ui.container.HorizontalFieldManager;
 import net.rim.device.api.ui.container.MainScreen;
 
-public abstract class ListaScreen extends MainScreen implements
+public abstract class ListaScreen extends FondoNormal implements
 		ListadosInterface {
 
 	protected ListaListas _lista;
@@ -17,8 +17,8 @@ public abstract class ListaScreen extends MainScreen implements
 			USE_ALL_WIDTH);
 
 	public ListaScreen() {
-		super(Manager.VERTICAL_SCROLL | Manager.VERTICAL_SCROLLBAR);
-		add(_searchField);
+		super();
+		add(_searchField, false);
 	}
 
 	protected void makeMenu(Menu menu, int instance) {

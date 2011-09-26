@@ -15,7 +15,7 @@ public class ListadoPlantillasScreen extends ListaScreen {
 				return true;
 			}
 		};
-		add(_lista);
+		add(_lista, false);
 	}
 
 	protected void makeMenu(Menu menu, int instance) {

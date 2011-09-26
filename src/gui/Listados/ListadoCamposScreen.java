@@ -12,6 +12,6 @@ public class ListadoCamposScreen extends ListaScreen {
 				return true;
 			}
 		};
-		add(_lista);
+		add(_lista, false);
 	}
 }

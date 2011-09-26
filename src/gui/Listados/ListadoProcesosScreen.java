@@ -29,7 +29,7 @@ public class ListadoProcesosScreen extends ListaScreen implements ListadoProceso
 				return true;
 			}
 		};
-		add(_lista);
+		add(_lista, false);
 	}
 	
 	public void setCategorias(Object[] choices) {

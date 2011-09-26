@@ -15,7 +15,7 @@ public class ListadoJuzgadosScreen extends ListaScreen {
 				return true;
 			}
 		};
-		add(_lista);
+		add(_lista, false);
 		addKeyListener(listener);
 	}
 
