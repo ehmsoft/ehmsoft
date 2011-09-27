@@ -19,9 +19,9 @@ import net.rim.device.api.ui.component.TextField;
 
 public class VerProcesoScreen extends FondoNormal {
 
-	private EditableTextField _txtDemandante;
-	private EditableTextField _txtDemandado;
-	private EditableTextField _txtJuzgado;
+	private EditableTextField _lblDemandante;
+	private EditableTextField _lblDemandado;
+	private EditableTextField _lblJuzgado;
 	private EditableTextField _txtRadicado;
 	private EditableTextField _txtRadicadoUnico;
 	private EditableTextField _txtEstado;
@@ -39,16 +39,16 @@ public class VerProcesoScreen extends FondoNormal {
 		_txtCampos = new Vector();
 		setTitle("Ver proceso");
 
-		_txtDemandante = new EditableTextField("Demandante: ",
+		_lblDemandante = new EditableTextField("Demandante: ",
 				TextField.NO_NEWLINE);
-		add(_txtDemandante);
+		add(_lblDemandante);
 
-		_txtDemandado = new EditableTextField("Demandado: ",
+		_lblDemandado = new EditableTextField("Demandado: ",
 				TextField.NO_NEWLINE);
-		add(_txtDemandado);
+		add(_lblDemandado);
 
-		_txtJuzgado = new EditableTextField("Juzgado: ", TextField.NO_NEWLINE);
-		add(_txtJuzgado);
+		_lblJuzgado = new EditableTextField("Juzgado: ", TextField.NO_NEWLINE);
+		add(_lblJuzgado);
 
 		_dfFecha = new DateField("Fecha Creación: ", 0, DateField.DATE_TIME);
 		_dfFecha.setEditable(false);
@@ -75,6 +75,22 @@ public class VerProcesoScreen extends FondoNormal {
 		_nfPrioridad = new NumericChoiceField("Prioridad: ", 0, 10, 1);
 		_nfPrioridad.setEditable(false);
 		add(_nfPrioridad);
+	}
+	
+	protected boolean navigationClick(int status, int time) {
+		Field f = getFieldWithFocus();
+		if(f.equals(_lblDemandante)) {
+			fieldChangeNotify(Util.ADD_DEMANDANTE);
+			return true;
+		} else if(f.equals(_lblDemandado)) {
+			fieldChangeNotify(Util.ADD_DEMANDADO);
+			return true;
+		} else if(f.equals(_lblJuzgado)) {
+			fieldChangeNotify(Util.ADD_JUZGADO);
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 	public void alert(String alert) {
@@ -112,15 +128,15 @@ public class VerProcesoScreen extends FondoNormal {
 	}
 
 	public void setDemandante(String text) {
-		_txtDemandante.setText(text);
+		_lblDemandante.setText(text);
 	}
 
 	public void setDemandado(String text) {
-		_txtDemandado.setText(text);
+		_lblDemandado.setText(text);
 	}
 
 	public void setJuzgado(String text) {
-		_txtJuzgado.setText(text);
+		_lblJuzgado.setText(text);
 	}
 
 	public void setRadicado(String text) {
@@ -198,8 +214,8 @@ public class VerProcesoScreen extends FondoNormal {
 
 		if (f.equals(_txtCategoria)) {
 			menu.add(menuCambiar);
-		} else if (f.equals(_txtDemandante) || f.equals(_txtDemandado)
-				|| f.equals(_txtJuzgado)) {
+		} else if (f.equals(_lblDemandante) || f.equals(_lblDemandado)
+				|| f.equals(_lblJuzgado)) {
 			menu.add(menuCambiar);
 			menu.add(menuEliminar);
 		}
@@ -245,11 +261,11 @@ public class VerProcesoScreen extends FondoNormal {
 
 		public void run() {
 			EditableTextField f = (EditableTextField) getFieldWithFocus();
-			if (f.equals(_txtDemandante)) {
+			if (f.equals(_lblDemandante)) {
 				fieldChangeNotify(Util.ELIMINAR_DEMANDANTE);
-			} else if (f.equals(_txtDemandado)) {
+			} else if (f.equals(_lblDemandado)) {
 				fieldChangeNotify(Util.ELIMINAR_DEMANDADO);
-			} else if (f.equals(_txtJuzgado)) {
+			} else if (f.equals(_lblJuzgado)) {
 				fieldChangeNotify(Util.ELIMINAR_JUZGADO);
 			}
 		}
@@ -273,11 +289,11 @@ public class VerProcesoScreen extends FondoNormal {
 
 		public void run() {
 			Field f = getFieldWithFocus();
-			if (f.equals(_txtDemandante)) {
+			if (f.equals(_lblDemandante)) {
 				fieldChangeNotify(Util.VER_DEMANDANTE);
-			} else if (f.equals(_txtDemandado)) {
+			} else if (f.equals(_lblDemandado)) {
 				fieldChangeNotify(Util.VER_DEMANDADO);
-			} else if (f.equals(_txtJuzgado)) {
+			} else if (f.equals(_lblJuzgado)) {
 				fieldChangeNotify(Util.VER_JUZGADO);
 			} else if (f.equals(_txtCategoria)) {
 				fieldChangeNotify(Util.VER_CATEGORIA);
@@ -309,11 +325,11 @@ public class VerProcesoScreen extends FondoNormal {
 
 		public void run() {
 			EditableTextField f = (EditableTextField) getFieldWithFocus();
-			if (f.equals(_txtDemandante)) {
+			if (f.equals(_lblDemandante)) {
 				fieldChangeNotify(Util.ADD_DEMANDANTE);
-			} else if (f.equals(_txtDemandado)) {
+			} else if (f.equals(_lblDemandado)) {
 				fieldChangeNotify(Util.ADD_DEMANDADO);
-			} else if (f.equals(_txtJuzgado)) {
+			} else if (f.equals(_lblJuzgado)) {
 				fieldChangeNotify(Util.ADD_JUZGADO);
 			} else if (f.equals(_txtCategoria)) {
 				fieldChangeNotify(Util.ADD_CATEGORIA);

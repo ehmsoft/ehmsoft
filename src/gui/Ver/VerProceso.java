@@ -492,11 +492,6 @@ public class VerProceso {
 		_demandante = Util.listadoPersonas(1, true, 0);
 		if (_demandante != null) {
 			_screen.setDemandante(_demandante.getNombre());
-		} else {
-			if (_demandanteVacio == null) {
-				_demandanteVacio = Util.consultarPersonaVacia(1);
-			}
-			_screen.setDemandante(_demandanteVacio.getNombre());
 		}
 	}
 
@@ -504,11 +499,6 @@ public class VerProceso {
 		_demandado = Util.listadoPersonas(2, true, 0);
 		if (_demandado != null) {
 			_screen.setDemandado(_demandado.getNombre());
-		} else {
-			if (_demandadoVacio == null) {
-				_demandadoVacio = Util.consultarPersonaVacia(2);
-			}
-			_screen.setDemandado(_demandadoVacio.getNombre());
 		}
 	}
 
@@ -516,11 +506,6 @@ public class VerProceso {
 		_juzgado = Util.listadoJuzgados(true, 0);
 		if (_juzgado != null) {
 			_screen.setJuzgado(_juzgado.getNombre());
-		} else {
-			if (_juzgadoVacio == null) {
-				_juzgadoVacio = Util.consultarJuzgadoVacio();
-			}
-			_screen.setJuzgado(_juzgadoVacio.getNombre());
 		}
 	}
 

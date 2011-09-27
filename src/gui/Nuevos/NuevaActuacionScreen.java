@@ -61,6 +61,15 @@ public class NuevaActuacionScreen extends FondoNormal {
 		_txtDescripcion.setLabel("Descripción: ");
 		add(_txtDescripcion);
 	}
+	
+	protected boolean navigationClick(int status, int time) {
+		if(getFieldWithFocus().equals(_lblJuzgado)) {
+			fieldChangeNotify(Util.ADD_JUZGADO);
+			return true;
+		} else {
+			return false;
+		}
+	}
 
 	public void setClock() {
 		_cita.setBitmap(_clock);

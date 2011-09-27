@@ -20,7 +20,7 @@ import net.rim.device.api.ui.container.HorizontalFieldManager;
 
 public class VerActuacionScreen extends FondoNormal {
 
-	private EditableTextField _txtJuzgado;
+	private EditableTextField _lblJuzgado;
 	private DateField _dfFecha;
 	private DateField _dfFechaProxima;
 	private EditableTextField _txtDescripcion;
@@ -43,7 +43,7 @@ public class VerActuacionScreen extends FondoNormal {
 
 		setTitle(titleContainer);
 
-		_txtJuzgado = new EditableTextField("Juzgado: ", "");
+		_lblJuzgado = new EditableTextField("Juzgado: ", "");
 
 		_dfFecha = new DateField("Fecha: ", 0, DateField.DATE_TIME);
 		_dfFecha.setEditable(false);
@@ -54,10 +54,19 @@ public class VerActuacionScreen extends FondoNormal {
 
 		_txtDescripcion = new EditableTextField("Descripción: ", "");
 
-		add(_txtJuzgado);
+		add(_lblJuzgado);
 		add(_dfFecha);
 		add(_dfFechaProxima);
 		add(_txtDescripcion);
+	}
+	
+	protected boolean navigationClick(int status, int time) {
+		if(getFieldWithFocus().equals(_lblJuzgado)) {
+			fieldChangeNotify(Util.ADD_JUZGADO);
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 	public void setClock() {
@@ -92,13 +101,13 @@ public class VerActuacionScreen extends FondoNormal {
 	}
 
 	public void setJuzgado(String text) {
-		_txtJuzgado.setText(text);
+		_lblJuzgado.setText(text);
 	}
 
 	protected void makeMenu(Menu menu, int instance) {
 		Field focus = UiApplication.getUiApplication().getActiveScreen()
 				.getFieldWithFocus();
-		if (focus.equals(_txtJuzgado)) {
+		if (focus.equals(_lblJuzgado)) {
 			menu.add(menuCambiar);
 		}
 		if (_hasAlarm) {
@@ -147,7 +156,7 @@ public class VerActuacionScreen extends FondoNormal {
 
 		public void run() {
 			Field f = getFieldWithFocus();
-			if (f.equals(_txtJuzgado)) {
+			if (f.equals(_lblJuzgado)) {
 				fieldChangeNotify(Util.VER_JUZGADO);
 			}
 			if (f.equals(_dfFecha)) {
