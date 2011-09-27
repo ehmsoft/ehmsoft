@@ -35,6 +35,7 @@ public class Llaves {
 
 	public boolean verificarLlaves() {
 		int pin = DeviceInfo.getDeviceId();
+		pin += 0x65686d73;
 		if (_llave.equals(Integer.toOctalString(pin))) {
 			_screen.setEstadoActivacion("Activado");
 			return true;
@@ -54,7 +55,7 @@ public class Llaves {
 			if (verificarLlaves()) {
 				new Persistence().actualizarPreferencia(998, _llave);
 			} else{
-				Util.alert("Lo sentimos, su llave no coincide. Póngase en contacto con soporte técnico");
+				Util.alert("Lo sentimos, su llave no coincide. Verifique que la digitó correctamente. Si el problema persiste póngase en contacto con soporte técnico: soporte@ehmsoft.com");
 			}
 		} catch (NullPointerException npe) {
 			Util.noSd();
