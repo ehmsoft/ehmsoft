@@ -274,6 +274,11 @@ public class ScreenMain extends MainScreen {
 			System.exit(0);
 		}
 	};
+	
+	public boolean onClose() {
+		System.exit(0);
+		return true;
+	}
 }
 
 class Listados extends PopupScreen {
@@ -379,7 +384,7 @@ class Listados extends PopupScreen {
 	}
 
 	public boolean onClose() {
-		System.exit(0);
+		UiApplication.getUiApplication().popScreen(this);
 		return true;
 	}
 }

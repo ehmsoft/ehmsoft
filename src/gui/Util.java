@@ -108,8 +108,6 @@ public class Util {
 			public void run() {
 				try {
 					new Persistence().consultarPreferencias();
-					for (int i = 0; i < 999999999; i++)
-						;
 					new ConnectionManager().prepararBD();
 					WAIT_SCREEN.deleteRange(1, 2);
 				} catch (NullPointerException e) {
