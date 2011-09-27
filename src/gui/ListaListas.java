@@ -44,11 +44,6 @@ public abstract class ListaListas extends KeywordFilterField implements
 		updateList();
 	}
 
-	public void insert(Object element) {
-		_u.insert(element);
-		updateList();
-	}
-
 	public void update(Object old, Object nw) {
 		_u.update(old, nw);
 		updateList();
@@ -65,15 +60,6 @@ public abstract class ListaListas extends KeywordFilterField implements
 		getKeywordField().setText(text);
 		updateList();
 		invalidate();
-	}
-
-	public int getIndex(Object element) {
-		return _u.getIndex(element);
-	}
-
-	public void remove(int index) {
-		_u.delete(index);
-		updateList();
 	}
 
 	public void remove(Object element) {
@@ -113,20 +99,12 @@ class Unsorted extends UnsortedReadableList {
 		insertAt(index, element);
 	}
 
-	public void insert(Object element) {
-		doAdd(element);
-	}
-
 	public Object getAt(int index) {
 		try {
 			return super.getAt(index);
 		} catch (Exception e) {
 			return super.getAt(index - 1);
 		}
-	}
-
-	public void delete(int index) {
-		doRemove(getAt(index));
 	}
 
 	public void delete(Object element) {

@@ -62,10 +62,6 @@ public abstract class ListaPopUp extends PopupScreen implements
 		return Dialog.ask(string, options, index);
 	}
 
-	public void addElement(Object juzgado) {
-		_lista.insert(juzgado);
-	}
-
 	public void addElement(Object element, int index) {
 		_lista.insert(index, element);
 		_lista.setSelectedIndex(index);
@@ -77,10 +73,6 @@ public abstract class ListaPopUp extends PopupScreen implements
 
 	public void remove(Object element) {
 		_lista.remove(element);
-	}
-
-	public void remove(int index) {
-		_lista.remove(index);
 	}
 
 	public void replace(Object old, Object nw) {
