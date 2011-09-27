@@ -60,15 +60,7 @@ public class ScreenMain extends MainScreen {
 
 	public ScreenMain() {
 		super();
-
-		try {
-			new Persistence().consultarPreferencias();
-		} catch (NullPointerException e) {
-			Util.noSd();
-		} catch (Exception e) {
-			Util.alert(e.toString());
-		}
-
+		Util.initBD();
 		this.getMainManager().setBackground(
 				BackgroundFactory.createSolidBackground(Color.BLACK));
 
@@ -387,7 +379,7 @@ class Listados extends PopupScreen {
 	}
 
 	public boolean onClose() {
-		UiApplication.getUiApplication().popScreen(this);
+		System.exit(0);
 		return true;
 	}
 }

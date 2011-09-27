@@ -29,8 +29,10 @@ import net.rim.device.api.ui.UiApplication;
 import net.rim.device.api.ui.UiEngine;
 import net.rim.device.api.ui.component.Dialog;
 import net.rim.device.api.ui.component.LabelField;
+import net.rim.device.api.ui.component.SeparatorField;
 import net.rim.device.api.ui.container.PopupScreen;
 import net.rim.device.api.ui.container.VerticalFieldManager;
+import persistence.ConnectionManager;
 import persistence.Persistence;
 import core.Actuacion;
 import core.CampoPersonalizado;
@@ -93,6 +95,31 @@ public class Util {
 			UI_Application = UiApplication.getUiApplication();
 		}
 		UI_Application.popScreen(screen);
+	}
+	
+	public static void initBD() {
+		pushWaitScreen();
+		WAIT_SCREEN.add(new SeparatorField());
+		WAIT_SCREEN.add(new LabelField("Creando base de datos..."));
+		WAIT_SCREEN.add(new LabelField("Cargando preferencias..."));
+
+		UiApplication.getUiApplication().invokeLater(new Runnable() {
+
+			public void run() {
+				try {
+					new Persistence().consultarPreferencias();
+					for (int i = 0; i < 999999999; i++)
+						;
+					new ConnectionManager().prepararBD();
+					WAIT_SCREEN.deleteRange(1, 2);
+				} catch (NullPointerException e) {
+					Util.noSd();
+				} catch (Exception e) {
+					Util.alert(e.toString());
+				}
+				popWaitScreen();
+			}
+		});
 	}
 
 	public static void pushWaitScreen() {

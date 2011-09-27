@@ -12,6 +12,7 @@ public class Main extends UiApplication
      * Entry point for application
      * @param args Command line arguments (not used)
      */ 
+	private static WhiteScreen _screen;
     public static void main(String[] args)
     {
         // Create a new instance of the application and make the currently
@@ -26,7 +27,7 @@ public class Main extends UiApplication
      */
     public Main()
     {        
-        // Push a screen onto the UI stack for rendering.
-        pushScreen(new ScreenMain());
+    	_screen = new WhiteScreen();
+        pushScreen(_screen);
     }
 }
