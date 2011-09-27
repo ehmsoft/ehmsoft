@@ -7,6 +7,7 @@ import persistence.ConnectionManager;
 import persistence.Persistence;
 import core.Actuacion;
 import core.Plantilla;
+import core.ActuacionCritica;
 import core.Preferencias;
 import core.Proceso;
 import gui.PreferenciasGenerales;
@@ -251,14 +252,33 @@ public class ScreenMain extends MainScreen {
 	};
 
 	protected void makeMenu(Menu menu, int instance) {
+		menu.add(menuVerProceso);
 		menu.add(menuListas);
 		menu.add(menuNuevos);
 		menu.add(menuPreferencias);
 		menu.add(menuCerrar);
 		menu.add(menuAcerca);
 	}
+	
+	private final MenuItem menuVerProceso = new MenuItem("Ver proceso", 65537, 0) {
+		
+		public void run() {
+			ActuacionCritica a = (ActuacionCritica) _lista.get(_lista, _lista.getSelectedIndex());
+			Proceso p = null;
+			try {
+				p = new Persistence().consultarProceso(a.getId_proceso());
+			} catch (NullPointerException e) {
+				Util.noSd();
+			} catch (Exception e) {
+				Util.alert(e.toString());
+			}
+			if(p != null) {
+				Util.verProceso(p);
+			}			
+		}
+	};
 
-	private final MenuItem menuListas = new MenuItem("Listado", 65537, 0) {
+	private final MenuItem menuListas = new MenuItem("Listado", 65537, 1) {
 
 		public void run() {
 			UiApplication.getUiApplication().pushModalScreen(
@@ -266,7 +286,7 @@ public class ScreenMain extends MainScreen {
 		}
 	};
 
-	private final MenuItem menuNuevos = new MenuItem("Nuevo", 65537, 1) {
+	private final MenuItem menuNuevos = new MenuItem("Nuevo", 65537, 2) {
 
 		public void run() {
 			UiApplication.getUiApplication().pushModalScreen(
