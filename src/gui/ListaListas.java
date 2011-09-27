@@ -4,13 +4,17 @@ import java.util.Vector;
 
 import net.rim.device.api.collection.ReadableList;
 import net.rim.device.api.collection.util.UnsortedReadableList;
+import net.rim.device.api.system.Characters;
 import net.rim.device.api.ui.Color;
 import net.rim.device.api.ui.Font;
 import net.rim.device.api.ui.Graphics;
+import net.rim.device.api.ui.XYRect;
+import net.rim.device.api.ui.component.BasicEditField;
 import net.rim.device.api.ui.component.KeywordFilterField;
 import net.rim.device.api.ui.component.KeywordProvider;
 import net.rim.device.api.ui.component.ListField;
 import net.rim.device.api.ui.component.ListFieldCallback;
+import net.rim.device.api.ui.decor.BackgroundFactory;
 
 public abstract class ListaListas extends KeywordFilterField implements
 		ListFieldCallback {
@@ -20,7 +24,7 @@ public abstract class ListaListas extends KeywordFilterField implements
 		super();
 		setCallback(this);
 		_u = new Unsorted();
-		setLabel("Buscar: ");
+		setKeywordField(new CustomKeywordField());
 	}
 
 	public void setSelectedIndex(int index) {
@@ -132,4 +136,49 @@ class Unsorted extends UnsortedReadableList {
 	public void update(Object old, Object nw) {
 		doUpdate(old, nw);
 	}
+}
+
+final class CustomKeywordField extends BasicEditField
+{   
+    // Contructor
+    CustomKeywordField()
+    {
+        // Custom style.
+        super(USE_ALL_WIDTH|NON_FOCUSABLE|NO_LEARNING|NO_NEWLINE); 
+        setBackground(BackgroundFactory.createSolidBackground(Color.BLACK));
+        setLabel("Buscar: ");
+    } 
+    
+    /**
+     * Intercepts ESCAPE key.
+     * @see net.rim.device.api.ui.component.TextField#keyChar(char,int,int)
+     */
+    protected boolean keyChar(char ch, int status, int time)
+    {
+        switch(ch)
+        {
+            case Characters.ESCAPE:
+                // Clear keyword.
+                if(super.getTextLength() > 0)
+                {
+                    setText("");                        
+                    return true;
+                }
+        }                
+        return super.keyChar(ch, status, time);
+    }                     
+    
+    /**
+     * Overriding super to add custom painting to our class.
+     * @see net.rim.device.api.ui.Field#paint(Graphics)
+     */
+    protected void paint(Graphics graphics)
+    { 
+        graphics.setColor(Color.WHITE);
+        super.paint(graphics);
+        
+        // Draw caret.
+        getFocusRect(new XYRect());
+        drawFocus(graphics, true);                          
+    }
 }

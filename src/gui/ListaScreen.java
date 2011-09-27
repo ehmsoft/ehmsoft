@@ -16,7 +16,7 @@ public abstract class ListaScreen extends FondoNormal implements
 
 	public ListaScreen() {
 		super();
-		add(_searchField, false);
+		setStatus(_searchField);
 	}
 
 	protected void makeMenu(Menu menu, int instance) {
