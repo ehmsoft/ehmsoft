@@ -9,8 +9,13 @@ public class ListadoJuzgadosScreen extends ListaScreen {
 
 	public ListadoJuzgadosScreen() {
 		super();
-		_lista = new ListadoJuzgadosLista();
-		add(_lista);
+		_lista = new ListadoJuzgadosLista(){
+			protected boolean navigationClick(int status, int time) {
+				click();
+				return true;
+			}
+		};
+		add(_lista, false);
 		addKeyListener(listener);
 	}
 

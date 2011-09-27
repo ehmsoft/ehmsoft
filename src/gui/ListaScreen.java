@@ -9,7 +9,7 @@ import net.rim.device.api.ui.component.Menu;
 import net.rim.device.api.ui.container.HorizontalFieldManager;
 import net.rim.device.api.ui.container.MainScreen;
 
-public abstract class ListaScreen extends MainScreen implements
+public abstract class ListaScreen extends FondoNormal implements
 		ListadosInterface {
 
 	protected ListaListas _lista;
@@ -17,22 +17,26 @@ public abstract class ListaScreen extends MainScreen implements
 			USE_ALL_WIDTH);
 
 	public ListaScreen() {
-		super(Manager.VERTICAL_SCROLL | Manager.VERTICAL_SCROLLBAR);
-		add(_searchField);
-	}
-
-	protected boolean navigationClick(int status, int time) {
-		fieldChangeNotify(Util.CLICK);
-		return true;
+		super();
+		add(_searchField, false);
 	}
 
 	protected void makeMenu(Menu menu, int instance) {
+		menu.add(menuNuevo);
 		menu.add(menuCerrar);
 		if (!String.class.isInstance(_lista.getSelectedElement())) {
 			menu.add(menuVer);
 			menu.add(menuDelete);
 		}
 	}
+	
+	private MenuItem menuNuevo = new MenuItem("Nuevo", 0, 0) {
+
+		public void run() {
+			fieldChangeNotify(Util.NEW);
+		}
+	};
+	
 	private MenuItem menuCerrar = new MenuItem("Salir de Aplicación", 1000000000, 3) {
 
 		public void run() {
@@ -52,6 +56,10 @@ public abstract class ListaScreen extends MainScreen implements
 			fieldChangeNotify(Util.ELIMINAR);
 		}
 	};
+	
+	protected void click() {
+		fieldChangeNotify(Util.CLICK);
+	}
 
 	public void setSearchField() {
 		_searchField.add(_lista.getKeywordField());

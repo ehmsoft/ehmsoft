@@ -1,9 +1,11 @@
 package gui;
 
+import core.Preferencias;
 import net.rim.device.api.system.Bitmap;
 import net.rim.device.api.ui.Field;
 import net.rim.device.api.ui.XYEdges;
 import net.rim.device.api.ui.component.SeparatorField;
+import net.rim.device.api.ui.container.HorizontalFieldManager;
 import net.rim.device.api.ui.container.MainScreen;
 import net.rim.device.api.ui.container.VerticalFieldManager;
 import net.rim.device.api.ui.decor.BackgroundFactory;
@@ -28,6 +30,7 @@ public abstract class FondoNormal extends MainScreen {
 
 		_vertical.setBorder(BorderFactory.createBitmapBorder(new XYEdges(12,
 				12, 12, 12), borderBitmap));
+		_vertical.setFont(Preferencias.getTipoFuente());
 		super.add(_vertical);
 	}
 

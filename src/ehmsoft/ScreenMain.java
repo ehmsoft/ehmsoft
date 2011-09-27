@@ -360,7 +360,7 @@ class Listados extends PopupScreen {
 			}
 		} else if (index == 7) {
 			ListadoProcesos procesos = new ListadoProcesos(true, ListadoProcesos.NO_NUEVO);
-			procesos.setTitle("Seleccione un proceso");
+			procesos.setTitle("Procesos ");
 			Util.pushModalScreen(procesos.getScreen());
 			Proceso proceso = procesos.getSelected();
 			if (proceso != null) {

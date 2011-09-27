@@ -9,13 +9,18 @@ public class ListadoPlantillasScreen extends ListaScreen {
 
 	public ListadoPlantillasScreen() {
 		super();
-		_lista = new ListadoPlantillasLista();
-		add(_lista);
+		_lista = new ListadoPlantillasLista() {
+			protected boolean navigationClick(int status, int time) {
+				click();
+				return true;
+			}
+		};
+		add(_lista, false);
 	}
 
 	protected void makeMenu(Menu menu, int instance) {
 		super.makeMenu(menu, instance);
-		if (!String.class.equals(_lista.getSelectedElement())) {
+		if (!String.class.isInstance(_lista.getSelectedElement())) {
 			menu.add(menuCrearProceso);
 		}
 	}

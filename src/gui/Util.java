@@ -22,6 +22,7 @@ import gui.Ver.VerPlantilla;
 import gui.Ver.VerProceso;
 
 import java.util.Calendar;
+import java.util.Vector;
 
 import net.rim.device.api.ui.Screen;
 import net.rim.device.api.ui.UiApplication;
@@ -80,6 +81,8 @@ public class Util {
 	public static final short RESTAURAR_PREFERENCIAS = 30;
 	
 	public static final short ROOT_SELECCIONADO = 31;
+	
+	public static final short NEW = 32;
 
 	public static PopupScreen WAIT_SCREEN;
 
@@ -207,6 +210,18 @@ public class Util {
 			alert(e.toString());
 		}
 		return categoria;
+	}
+	
+	public static Vector consultarCategorias() {
+		Vector v = null;
+		try {
+			v = new Persistence().consultarCategorias();
+		} catch (NullPointerException e) {
+			noSd();
+		} catch (Exception e) {
+			alert(e.toString());
+		}
+		return v;
 	}
 
 	public static Persona verPersona(Persona persona) {

@@ -2,6 +2,7 @@ package gui;
 
 import java.util.Vector;
 
+import net.rim.device.api.ui.Field;
 import net.rim.device.api.ui.component.Dialog;
 import net.rim.device.api.ui.component.LabelField;
 import net.rim.device.api.ui.component.SeparatorField;
@@ -24,7 +25,27 @@ public abstract class ListaPopUp extends PopupScreen implements
 	}
 	
 	public void setTitle(String text) {
-		_title.add(new LabelField(text, FIELD_HCENTER));
+		if (_title.getFieldCount() != 0) {
+			if (_title.getField(0).getClass()
+					.equals(HorizontalFieldManager.class)) {
+				((LabelField) ((HorizontalFieldManager) _title.getField(0))
+						.getField(0)).setText(text);
+			}
+		} else {
+			_title.add(new LabelField(text, FIELD_HCENTER));
+			_title.add(new SeparatorField());
+		}
+	}
+	
+	protected void click() {
+		fieldChangeNotify(Util.CLICK);
+	}
+	
+	public void setTitle(Field field) {
+		if(_title.getFieldCount() != 0) {
+			_title.deleteAll();
+		}
+		_title.add(field);
 		_title.add(new SeparatorField());
 	}
 
@@ -38,11 +59,6 @@ public abstract class ListaPopUp extends PopupScreen implements
 
 	public int ask(Object[] options, String string, int index) {
 		return Dialog.ask(string, options, index);
-	}
-
-	protected boolean navigationClick(int status, int time) {
-		fieldChangeNotify(Util.CLICK);
-		return true;
 	}
 
 	public void addElement(Object juzgado) {

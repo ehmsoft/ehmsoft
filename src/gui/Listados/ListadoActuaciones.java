@@ -11,6 +11,7 @@ import net.rim.device.api.ui.Screen;
 import net.rim.device.api.ui.UiApplication;
 import persistence.Persistence;
 import core.Actuacion;
+import core.Preferencias;
 import core.Proceso;
 
 public class ListadoActuaciones {
@@ -21,7 +22,6 @@ public class ListadoActuaciones {
 	private Actuacion _selected;
 	private Proceso _proceso;
 
-	public static final int SEARCH = 1;
 	public static final int ON_CLICK_VER = 2;
 	public static final int ON_CLICK_SELECT = 4;
 	public static final int NO_NUEVO = 8;
@@ -62,7 +62,7 @@ public class ListadoActuaciones {
 		}
 		((Screen) _screen).setChangeListener(listener);
 
-		if ((_style & SEARCH) == SEARCH) {
+		if (Preferencias.isMostrarCampoBusqueda()) {
 			_screen.setSearchField();
 		}
 		if ((_style & NO_NUEVO) != NO_NUEVO) {
@@ -89,6 +89,8 @@ public class ListadoActuaciones {
 				cerrarPantalla();
 			} else if (context == Util.ELIMINAR) {
 				eliminarActuacion();
+			} else if(context == Util.NEW) {
+				nuevaActuacion();
 			}
 		}
 	};

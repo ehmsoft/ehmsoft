@@ -1,6 +1,5 @@
 package gui.Listados;
 
-import gui.ListadosInterface;
 import gui.Util;
 import gui.Nuevos.NuevoProceso;
 
@@ -11,16 +10,17 @@ import net.rim.device.api.ui.FieldChangeListener;
 import net.rim.device.api.ui.Screen;
 import net.rim.device.api.ui.UiApplication;
 import persistence.Persistence;
+import core.Preferencias;
 import core.Proceso;
 
 public class ListadoProcesos {
 
 	private Vector _vectorProcesos;
-	private ListadosInterface _screen;
+	private ListadoProcesosInterface _screen;
 	private long _style;
 	private Proceso _selected;
+	private Vector _categorias;
 
-	public static final int SEARCH = 1;
 	public static final int ON_CLICK_VER = 2;
 	public static final int ON_CLICK_SELECT = 4;
 	public static final int NO_NUEVO = 8;
@@ -67,7 +67,7 @@ public class ListadoProcesos {
 
 		((Screen) _screen).setChangeListener(listener);
 
-		if ((_style & SEARCH) == SEARCH) {
+		if (Preferencias.isMostrarCampoBusqueda()) {
 			_screen.setSearchField();
 		}
 		if ((_style & ON_CLICK_VER) != ON_CLICK_VER
@@ -77,6 +77,17 @@ public class ListadoProcesos {
 			} else {
 				_style = _style | ON_CLICK_VER;
 			}
+		}
+		
+		_categorias = Util.consultarCategorias();
+		
+		if (_categorias != null) {
+			Object[] o = new Object[_categorias.size() + 1];
+			_categorias.copyInto(o);
+			String todas = "Todas";
+			o[_categorias.size()] = todas;
+			_screen.setCategorias(o);
+			_screen.setSelectedCategoria(todas);
 		}
 	}
 	
@@ -95,6 +106,8 @@ public class ListadoProcesos {
 				cerrarPantalla();
 			} else if (context == Util.ELIMINAR) {
 				eliminarProceso();
+			} else if(context == Util.NEW) {
+				nuevoProceso();
 			}
 		}
 	};
