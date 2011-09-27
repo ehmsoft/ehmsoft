@@ -84,6 +84,8 @@ public class Util {
 	
 	public static final short NEW = 32;
 
+	public static final short LLAVES = 33;
+
 	public static PopupScreen WAIT_SCREEN;
 
 	public static UiApplication UI_Application;

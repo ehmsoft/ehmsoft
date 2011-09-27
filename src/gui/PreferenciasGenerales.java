@@ -26,12 +26,19 @@ public class PreferenciasGenerales {
 	private FieldChangeListener listener = new FieldChangeListener() {
 		
 		public void fieldChanged(Field field, int context) {
-			if(context == Util.GUARDAR) {
+			switch (context) {
+			case Util.GUARDAR:
 				guardarPreferencias();
-			} else if(context == Util.COPIA_SEGURIDAD) {
+				break;
+			case Util.COPIA_SEGURIDAD:
 				copiaDeSeguridad();
-			} else if(context == Util.RESTAURAR_PREFERENCIAS) {
+				break;
+			case Util.RESTAURAR_PREFERENCIAS:
 				restaurarPreferencias();
+				break;
+			case Util.LLAVES:
+				activacion();
+				break;
 			}
 		}
 	};
@@ -79,5 +86,9 @@ public class PreferenciasGenerales {
 			_screen.alert("No se han podido guardar las preferencias. Error Desconocido");
 		}
 		Util.popScreen(_screen);
+	}
+	private void activacion(){
+		Llaves llaves = new Llaves();
+		Util.pushModalScreen(llaves.getScreen());
 	}
 }
