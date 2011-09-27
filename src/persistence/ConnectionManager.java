@@ -25,11 +25,15 @@ public class ConnectionManager {
 		}
 	}
 	
-	public boolean existeBD() throws Exception{//Método que verifica si la SD está presente, luego verifica si la base de datos existe, sino la crea
+	public boolean existeBD(){//Método que verifica si la SD está presente, luego verifica si la base de datos existe, sino la crea
+		try{
 		verificarSD();
 		if(DatabaseFactory.exists(dbLocation)){
 			return true;
 		}else{
+			return false;
+		}
+		} catch(Exception e){
 			return false;
 		}
 	}
