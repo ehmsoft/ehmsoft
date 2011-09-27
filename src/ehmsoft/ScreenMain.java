@@ -10,6 +10,7 @@ import core.Plantilla;
 import core.ActuacionCritica;
 import core.Preferencias;
 import core.Proceso;
+import gui.Llaves;
 import gui.PreferenciasGenerales;
 import gui.Util;
 import gui.About;
@@ -63,6 +64,14 @@ public class ScreenMain extends MainScreen {
 
 	public ScreenMain() {
 		super();
+		
+		Llaves llaves = new Llaves();
+		if(!llaves.verificarLlaves()) {
+			UiApplication.getUiApplication().pushModalScreen(llaves.getScreen());
+			if(!llaves.verificarLlaves()) {
+				System.exit(0);
+			}
+		}
 		
 		actuacionesManager();
 		

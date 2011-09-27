@@ -4,6 +4,7 @@ import net.rim.device.api.ui.Field;
 import net.rim.device.api.ui.FieldChangeListener;
 import net.rim.device.api.ui.component.BasicEditField;
 import net.rim.device.api.ui.component.ButtonField;
+import net.rim.device.api.ui.component.Dialog;
 import net.rim.device.api.ui.component.LabelField;
 import net.rim.device.api.ui.container.PopupScreen;
 import net.rim.device.api.ui.container.VerticalFieldManager;
@@ -49,6 +50,11 @@ public class LlavesScreen extends PopupScreen {
 			fieldChangeNotify(Util.GUARDAR);
 		}
 	};
+	
+	public void alert(String text) {
+		Dialog.alert(text);
+	}
+	
 	private FieldChangeListener listenerCancel = new FieldChangeListener() {
 
 		public void fieldChanged(Field field, int context) {

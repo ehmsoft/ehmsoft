@@ -55,7 +55,7 @@ public class Llaves {
 			if (verificarLlaves()) {
 				new Persistence().actualizarPreferencia(998, _llave);
 			} else{
-				Util.alert("Lo sentimos, su llave no coincide. Verifique que la digitó correctamente. Si el problema persiste póngase en contacto con soporte técnico: soporte@ehmsoft.com");
+				_screen.alert("Lo sentimos, su llave no coincide. Verifique que la digitó correctamente. Si el problema persiste póngase en contacto con soporte técnico: soporte@ehmsoft.com");
 			}
 		} catch (NullPointerException npe) {
 			Util.noSd();
