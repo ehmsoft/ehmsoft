@@ -31,6 +31,7 @@ public class ListadoProcesosScreen extends ListaScreen implements
 			}
 		};
 		add(_lista, false);
+		_lista.setFocus();
 	}
 
 	public void setCategorias(Object[] choices) {
