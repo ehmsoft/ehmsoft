@@ -190,7 +190,7 @@ public class NuevoProcesoScreen extends FondoNormal {
 			fieldChangeNotify(Util.VER_LISTADO_ACTUACIONES);
 		}
 	};
-	
+
 	private final MenuItem menuAddCategoria = new MenuItem("Nueva categoría",
 			262147, 4) {
 
@@ -222,13 +222,14 @@ public class NuevoProcesoScreen extends FondoNormal {
 		}
 	};
 
-	private final MenuItem menuEliminarCampo = new MenuItem("Eliminar", 393216, 7) {
+	private final MenuItem menuEliminarCampo = new MenuItem("Eliminar", 393216,
+			7) {
 
 		public void run() {
 			fieldChangeNotify(Util.ELIMINAR_CAMPO);
 		}
 	};
-	
+
 	private MenuItem menuCerrar = new MenuItem("Salir de Aplicación",
 			1000000000, 9) {
 
@@ -239,7 +240,7 @@ public class NuevoProcesoScreen extends FondoNormal {
 			}
 		}
 	};
-	
+
 	public void setDemandante(String text) {
 		_lblDemandante.setText(text);
 	}

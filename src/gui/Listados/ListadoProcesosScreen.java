@@ -7,22 +7,23 @@ import net.rim.device.api.ui.component.ObjectChoiceField;
 import net.rim.device.api.ui.container.HorizontalFieldManager;
 import gui.ListaScreen;
 
-public class ListadoProcesosScreen extends ListaScreen implements ListadoProcesosInterface{
-	
+public class ListadoProcesosScreen extends ListaScreen implements
+		ListadoProcesosInterface {
+
 	private ObjectChoiceField _cfCategorias;
-	
+
 	public ListadoProcesosScreen() {
 		super();
-		
+
 		_cfCategorias = new ObjectChoiceField();
 		_cfCategorias.setChangeListener(listener);
-		
+
 		HorizontalFieldManager title = new HorizontalFieldManager(USE_ALL_WIDTH);
 		title.add(new LabelField("Procesos"));
 		title.add(_cfCategorias);
-		
+
 		setTitle(title);
-		
+
 		_lista = new ListadoProcesosLista() {
 			protected boolean navigationClick(int status, int time) {
 				click();
@@ -31,17 +32,17 @@ public class ListadoProcesosScreen extends ListaScreen implements ListadoProceso
 		};
 		add(_lista, false);
 	}
-	
+
 	public void setCategorias(Object[] choices) {
 		_cfCategorias.setChoices(choices);
 		invalidate();
 	}
-	
+
 	public void setSelectedCategoria(Object object) {
 		_cfCategorias.setSelectedIndex(object);
 		invalidate();
 	}
-	
+
 	private FieldChangeListener listener = new FieldChangeListener() {
 
 		public void fieldChanged(Field field, int context) {

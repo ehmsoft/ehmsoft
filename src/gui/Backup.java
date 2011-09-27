@@ -18,6 +18,7 @@ public class Backup {
 	private String _ruta = null;
 	private String _nombreArchivo;
 	private String[] roots;
+
 	public Backup() {
 		_screen = new BackupScreen();
 		_screen.setChangeListener(listener);
@@ -29,13 +30,13 @@ public class Backup {
 		roots = new String[v.size()];
 		String[] strRoots = new String[v.size() + 1];
 		v.copyInto(roots);
-		
-		for(int i=0;i<roots.length;i++){
-			if(roots[i].equalsIgnoreCase("sdcard/")){
+
+		for (int i = 0; i < roots.length; i++) {
+			if (roots[i].equalsIgnoreCase("sdcard/")) {
 				strRoots[i] = "Tarjeta de Almacenamiento";
-			} else if(roots[i].toString().equalsIgnoreCase("store/")){
+			} else if (roots[i].toString().equalsIgnoreCase("store/")) {
 				strRoots[i] = "Memoria Interna";
-			} else{
+			} else {
 				strRoots[i] = roots[i];
 			}
 		}
@@ -60,88 +61,87 @@ public class Backup {
 				guardar();
 			default:
 				break;
-			} 
+			}
 		}
 	};
 
 	private void examinar() {
 		DirectoryPicker dp = new DirectoryPicker();
 		UiApplication.getUiApplication().pushModalScreen(dp.getScreen());
-		if(dp.isSelected()){
-			if(dp.getRuta() == null){
+		if (dp.isSelected()) {
+			if (dp.getRuta() == null) {
 				_ruta = roots[0];
-			}else{
+			} else {
 				_ruta = dp.getRuta();
 			}
 			_nombreArchivo = _screen.getNombreArchivo();
 		}
 		dp = null;
 	}
-	private void guardar(){
+
+	private void guardar() {
 		_nombreArchivo = _screen.getNombreArchivo();
 		FileConnection fconn = null;
-		 try {
-		     fconn = (FileConnection)Connector.open("file:///"+ _ruta + _nombreArchivo);//Archivo a escribir
-		     ConnectionManager connMgr = new ConnectionManager();
-		     connMgr.prepararBD();
-		     FileConnection fconnDB = (FileConnection)Connector.open(connMgr.getDbLocation().toString());
-		     if (!fconn.exists()){
-		         fconn.create(); 
-		     }
-		     OutputStream outputStream = null;
-		        InputStream inputStream = null;       
-		        inputStream = fconnDB.openInputStream();
-		        
-		        // Open an output stream to the newly created file
-		        outputStream = (OutputStream)fconn.openOutputStream();                                       
-		        
-		        // Read data from the input stream and write the data to the
-		        // output stream.            
-		        byte[] data = new byte[256];
-		        int length = 0;
-		        while (-1 != (length = inputStream.read(data)))
-		        {
-		            outputStream.write(data, 0, length);                
-		        }     
-		        
-		        // Close the connections
-		        
-		        if(fconn != null)
-		        {
-		            fconn.close();
-		        }
-		        if(fconnDB != null){
-		        	fconnDB.close();
-		        }
-		        if(outputStream != null)
-		        {
-		            outputStream.close();
-		        } 
-		        if(inputStream != null)
-		        {
-		            inputStream.close();
-		        }            
-		     _screen.alert("Archivo guardado!");
-		     UiApplication.getUiApplication().popScreen(_screen);
-		 }
-		 catch (IOException ioe) {
-			 _screen.alert("No se pudo guardar!");
-		 } catch (NullPointerException npe) {
+		try {
+			fconn = (FileConnection) Connector.open("file:///" + _ruta
+					+ _nombreArchivo);// Archivo a escribir
+			ConnectionManager connMgr = new ConnectionManager();
+			connMgr.prepararBD();
+			FileConnection fconnDB = (FileConnection) Connector.open(connMgr
+					.getDbLocation().toString());
+			if (!fconn.exists()) {
+				fconn.create();
+			}
+			OutputStream outputStream = null;
+			InputStream inputStream = null;
+			inputStream = fconnDB.openInputStream();
+
+			// Open an output stream to the newly created file
+			outputStream = fconn.openOutputStream();
+
+			// Read data from the input stream and write the data to the
+			// output stream.
+			byte[] data = new byte[256];
+			int length = 0;
+			while (-1 != (length = inputStream.read(data))) {
+				outputStream.write(data, 0, length);
+			}
+
+			// Close the connections
+
+			if (fconn != null) {
+				fconn.close();
+			}
+			if (fconnDB != null) {
+				fconnDB.close();
+			}
+			if (outputStream != null) {
+				outputStream.close();
+			}
+			if (inputStream != null) {
+				inputStream.close();
+			}
+			_screen.alert("Archivo guardado!");
+			UiApplication.getUiApplication().popScreen(_screen);
+		} catch (IOException ioe) {
+			_screen.alert("No se pudo guardar!");
+		} catch (NullPointerException npe) {
 			_screen.alert(Util.noSDString());
 			System.exit(0);
 		} catch (Exception e) {
 			_screen.alert("Error desconocido. Código: Backup");
-		}finally{
-			 if (fconn != null){
-				 try {
+		} finally {
+			if (fconn != null) {
+				try {
 					fconn.close();
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
-			 }
-		 }
-		
+			}
+		}
+
 	}
+
 	public BackupScreen getScreen() {
 		return _screen;
 	}

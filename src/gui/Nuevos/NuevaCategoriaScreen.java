@@ -29,7 +29,7 @@ public class NuevaCategoriaScreen extends FondoNormal implements
 			fieldChangeNotify(Util.GUARDAR);
 		}
 	};
-	
+
 	private MenuItem menuCerrar = new MenuItem("Salir de Aplicación",
 			1000000000, 15) {
 
@@ -40,7 +40,7 @@ public class NuevaCategoriaScreen extends FondoNormal implements
 			}
 		}
 	};
-	
+
 	public void alert(String string) {
 		Dialog.alert(string);
 	}

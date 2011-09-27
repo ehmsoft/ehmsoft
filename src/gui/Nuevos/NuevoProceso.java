@@ -107,7 +107,7 @@ public class NuevoProceso {
 				eliminarCampo();
 			} else if (context == Util.CERRAR) {
 				cerrarPantalla();
-			} else if(context == Util.VER_LISTADO_ACTUACIONES) {
+			} else if (context == Util.VER_LISTADO_ACTUACIONES) {
 				verActuaciones();
 			}
 		}
@@ -241,15 +241,15 @@ public class NuevoProceso {
 			_actuaciones.addElement(actuacion);
 		}
 	}
-	
+
 	private void verActuaciones() {
 		ListadoActuaciones l = new ListadoActuaciones(null, true);
 		l.setVectorActuaciones(_actuaciones);
 		Util.pushModalScreen(l.getScreen());
 		Actuacion old = l.getSelected();
-		if(old != null) {
+		if (old != null) {
 			Actuacion nw = Util.verActuacion(old);
-			if(nw != null) {
+			if (nw != null) {
 				int index = _actuaciones.indexOf(old);
 				_actuaciones.removeElementAt(index);
 				_actuaciones.insertElementAt(nw, index);

@@ -52,7 +52,7 @@ public class NuevoCampoScreen extends FondoNormal {
 			fieldChangeNotify(GUARDAR);
 		}
 	};
-	
+
 	private MenuItem menuCerrar = new MenuItem("Salir de Aplicación",
 			1000000000, 15) {
 
@@ -63,7 +63,7 @@ public class NuevoCampoScreen extends FondoNormal {
 			}
 		}
 	};
-	
+
 	public void alert(String alert) {
 		Dialog.alert(alert);
 	}

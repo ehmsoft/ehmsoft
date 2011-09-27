@@ -54,7 +54,7 @@ public class NuevaCategoriaPopUp extends PopupScreen implements
 	public String getDescripcion() {
 		return _txtDescripcion.getText();
 	}
-	
+
 	public boolean onClose() {
 		fieldChangeNotify(Util.CERRAR);
 		return false;

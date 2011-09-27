@@ -207,7 +207,8 @@ public class VerPlantillaScreen extends FondoNormal {
 		menu.add(menuNuevo);
 	}
 
-	private final MenuItem menuModificarCampo = new MenuItem("Modificar", 393216, 8) {
+	private final MenuItem menuModificarCampo = new MenuItem("Modificar",
+			393216, 8) {
 
 		public void run() {
 			fieldChangeNotify(Util.VER_CAMPO);
@@ -250,7 +251,8 @@ public class VerPlantillaScreen extends FondoNormal {
 			fieldChangeNotify(Util.GUARDAR);
 		}
 	};
-	private final MenuItem menuNuevo = new MenuItem("Crear proceso a partir de plantilla", 65537, 1) {
+	private final MenuItem menuNuevo = new MenuItem(
+			"Crear proceso a partir de plantilla", 65537, 1) {
 
 		public void run() {
 			fieldChangeNotify(Util.NEW_PROCESO);
@@ -274,7 +276,8 @@ public class VerPlantillaScreen extends FondoNormal {
 		}
 	};
 
-	private final MenuItem menuEditarTodo = new MenuItem("Editar todo", 262147, 4) {
+	private final MenuItem menuEditarTodo = new MenuItem("Editar todo", 262147,
+			4) {
 
 		public void run() {
 			_txtNombre.setEditable();
@@ -316,6 +319,7 @@ public class VerPlantillaScreen extends FondoNormal {
 			}
 		}
 	};
+
 	public boolean onClose() {
 		fieldChangeNotify(Util.CERRAR);
 		return false;

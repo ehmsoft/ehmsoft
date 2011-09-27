@@ -128,8 +128,8 @@ public class VerActuacionScreen extends FondoNormal {
 		}
 	};
 
-	private final MenuItem menuEliminarCita = new MenuItem("Eliminar cita", 131075,
-			2) {
+	private final MenuItem menuEliminarCita = new MenuItem("Eliminar cita",
+			131075, 2) {
 
 		public void run() {
 			fieldChangeNotify(Util.ELIMINAR_CITA);
@@ -165,7 +165,8 @@ public class VerActuacionScreen extends FondoNormal {
 		}
 	};
 
-	private final MenuItem menuEditarTodo = new MenuItem("Editar todo", 262147, 5) {
+	private final MenuItem menuEditarTodo = new MenuItem("Editar todo", 262147,
+			5) {
 
 		public void run() {
 			_dfFecha.setEditable(true);
@@ -188,7 +189,7 @@ public class VerActuacionScreen extends FondoNormal {
 			fieldChangeNotify(Util.ELIMINAR);
 		}
 	};
-	
+
 	private MenuItem menuCerrar = new MenuItem("Salir de Aplicación",
 			1000000000, 8) {
 
@@ -199,6 +200,7 @@ public class VerActuacionScreen extends FondoNormal {
 			}
 		}
 	};
+
 	public void alert(String alert) {
 		Dialog.alert(alert);
 	}

@@ -69,7 +69,7 @@ public class ListadoCampos {
 				_style = _style | ON_CLICK_VER;
 			}
 		}
-		if(Preferencias.isMostrarTitulosPantallas() && !popup) {
+		if (Preferencias.isMostrarTitulosPantallas() && !popup) {
 			_screen.setTitle("Campos personalizados");
 		}
 	}
@@ -85,12 +85,12 @@ public class ListadoCampos {
 				cerrarPantalla();
 			} else if (context == Util.ELIMINAR) {
 				eliminarCampo();
-			} else if(context == Util.NEW) {
+			} else if (context == Util.NEW) {
 				nuevoCampo();
 			}
 		}
 	};
-	
+
 	public void setTitle(String text) {
 		_screen.setTitle(text);
 	}
@@ -171,7 +171,7 @@ public class ListadoCampos {
 		_selected = null;
 		UiApplication.getUiApplication().popScreen((Screen) _screen);
 	}
-	
+
 	public String toString() {
 		return "Lista de campos personalizados";
 	}

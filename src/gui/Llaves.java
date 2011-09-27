@@ -54,7 +54,7 @@ public class Llaves {
 			_llave = _screen.getLlave();
 			if (verificarLlaves()) {
 				new Persistence().actualizarPreferencia(998, _llave);
-			} else{
+			} else {
 				_screen.alert("Lo sentimos, su llave no coincide. Verifique que la digitó correctamente. Si el problema persiste póngase en contacto con soporte técnico: soporte@ehmsoft.com");
 			}
 		} catch (NullPointerException npe) {

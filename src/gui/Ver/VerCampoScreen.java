@@ -76,7 +76,8 @@ public class VerCampoScreen extends FondoNormal {
 		}
 	};
 
-	private final MenuItem menuEditarTodo = new MenuItem("Editar todo", 131075, 2) {
+	private final MenuItem menuEditarTodo = new MenuItem("Editar todo", 131075,
+			2) {
 
 		public void run() {
 			_txtNombre.setEditable();

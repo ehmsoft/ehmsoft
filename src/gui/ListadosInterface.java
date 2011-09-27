@@ -22,6 +22,6 @@ public interface ListadosInterface {
 	public int ask(Object[] options, String string, int index);
 
 	public void setSearchField();
-	
+
 	public void setTitle(String text);
 }

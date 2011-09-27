@@ -79,9 +79,9 @@ public class Util {
 
 	public static final short COPIA_SEGURIDAD = 29;
 	public static final short RESTAURAR_PREFERENCIAS = 30;
-	
+
 	public static final short ROOT_SELECCIONADO = 31;
-	
+
 	public static final short NEW = 32;
 
 	public static final short LLAVES = 33;
@@ -107,8 +107,9 @@ public class Util {
 	}
 
 	public static void popWaitScreen() {
-		while(!WAIT_SCREEN.isGlobal());
-			popScreen(WAIT_SCREEN);
+		while (!WAIT_SCREEN.isGlobal())
+			;
+		popScreen(WAIT_SCREEN);
 	}
 
 	public static String noSDString() {
@@ -213,7 +214,7 @@ public class Util {
 		}
 		return categoria;
 	}
-	
+
 	public static Vector consultarCategorias() {
 		Vector v = null;
 		try {

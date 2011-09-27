@@ -70,7 +70,7 @@ public class ListadoCategorias {
 				_style = _style | ON_CLICK_VER;
 			}
 		}
-		if(Preferencias.isMostrarTitulosPantallas() && !popup) {
+		if (Preferencias.isMostrarTitulosPantallas() && !popup) {
 			_screen.setTitle("Categorías");
 		}
 	}
@@ -86,12 +86,12 @@ public class ListadoCategorias {
 				cerrarPantalla();
 			} else if (context == Util.ELIMINAR) {
 				eliminarCategoria();
-			} else if(context == Util.NEW) {
+			} else if (context == Util.NEW) {
 				nuevoCategoria();
 			}
 		}
 	};
-	
+
 	public void setTitle(String text) {
 		_screen.setTitle(text);
 	}
@@ -171,7 +171,7 @@ public class ListadoCategorias {
 		_selected = null;
 		UiApplication.getUiApplication().popScreen((Screen) _screen);
 	}
-	
+
 	public String toString() {
 		return "Lista de categorías";
 	}

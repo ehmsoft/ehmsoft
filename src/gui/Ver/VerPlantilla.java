@@ -117,7 +117,7 @@ public class VerPlantilla {
 				eliminarCampo();
 			} else if (context == Util.ELIMINAR) {
 				eliminarPlantilla();
-			} else if (context == Util.NEW_PROCESO){
+			} else if (context == Util.NEW_PROCESO) {
 				nuevoProceso();
 			}
 		}
@@ -538,18 +538,17 @@ public class VerPlantilla {
 			Util.popScreen(_screen);
 		}
 	}
-	
-	private void nuevoProceso(){
+
+	private void nuevoProceso() {
 		Plantilla plantilla = new Plantilla(_screen.getNombre(),
 				_plantilla.getId_plantilla(), _demandante, _demandado,
-				_juzgado, _screen.getRadicado(),
-				_screen.getRadicadoUnico(), _screen.getEstado(),
-				_categoria, _screen.getTipo(), _screen.getNotas(), _campos,
-				_screen.getPrioridad());
+				_juzgado, _screen.getRadicado(), _screen.getRadicadoUnico(),
+				_screen.getEstado(), _categoria, _screen.getTipo(),
+				_screen.getNotas(), _campos, _screen.getPrioridad());
 		NuevoProceso n = new NuevoProceso(plantilla);
 		UiApplication.getUiApplication().pushModalScreen(n.getScreen());
 	}
-	
+
 	private void cerrarPantalla() {
 		Plantilla plantilla = new Plantilla(_screen.getNombre(),
 				_plantilla.getId_plantilla(), _demandante, _demandado,

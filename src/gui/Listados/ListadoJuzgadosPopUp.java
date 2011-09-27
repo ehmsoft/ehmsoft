@@ -9,7 +9,7 @@ public class ListadoJuzgadosPopUp extends ListaPopUp {
 
 	public ListadoJuzgadosPopUp() {
 		super();
-		_lista = new ListadoJuzgadosLista(){
+		_lista = new ListadoJuzgadosLista() {
 			protected boolean navigationClick(int status, int time) {
 				click();
 				return true;

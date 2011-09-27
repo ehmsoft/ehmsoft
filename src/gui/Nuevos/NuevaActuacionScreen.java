@@ -46,7 +46,6 @@ public class NuevaActuacionScreen extends FondoNormal {
 
 		setTitle(titleContainer);
 
-
 		_lblJuzgado = new EditableTextField("Juzgado: ");
 		add(_lblJuzgado);
 
@@ -83,7 +82,7 @@ public class NuevaActuacionScreen extends FondoNormal {
 	}
 
 	protected void makeMenu(Menu menu, int instance) {
-		if(getFieldWithFocus().equals(_lblJuzgado)) {
+		if (getFieldWithFocus().equals(_lblJuzgado)) {
 			menu.add(menuCambiar);
 		}
 		if (_hasAlarm) {
@@ -110,8 +109,8 @@ public class NuevaActuacionScreen extends FondoNormal {
 		}
 	};
 
-	private final MenuItem menuEliminarCita = new MenuItem("Eliminar cita", 262147,
-			4) {
+	private final MenuItem menuEliminarCita = new MenuItem("Eliminar cita",
+			262147, 4) {
 
 		public void run() {
 			fieldChangeNotify(Util.ELIMINAR_CITA);
@@ -131,7 +130,7 @@ public class NuevaActuacionScreen extends FondoNormal {
 			fieldChangeNotify(Util.GUARDAR);
 		}
 	};
-	
+
 	private MenuItem menuCerrar = new MenuItem("Salir de Aplicación",
 			1000000000, 9) {
 
@@ -142,7 +141,7 @@ public class NuevaActuacionScreen extends FondoNormal {
 			}
 		}
 	};
-	
+
 	public void alert(String alert) {
 		Dialog.alert(alert);
 	}

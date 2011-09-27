@@ -147,7 +147,8 @@ public class NuevaPlantillaScreen extends FondoNormal {
 		menu.add(menuCerrar);
 	}
 
-	private final MenuItem menuModificarCampo = new MenuItem("Modificar", 393216, 8) {
+	private final MenuItem menuModificarCampo = new MenuItem("Modificar",
+			393216, 8) {
 
 		public void run() {
 			fieldChangeNotify(Util.VER_CAMPO);
@@ -213,7 +214,8 @@ public class NuevaPlantillaScreen extends FondoNormal {
 		}
 	};
 
-	private final MenuItem menuEliminarCampo = new MenuItem("Eliminar", 393216, 7) {
+	private final MenuItem menuEliminarCampo = new MenuItem("Eliminar", 393216,
+			7) {
 
 		public void run() {
 			fieldChangeNotify(Util.ELIMINAR_CAMPO);
@@ -230,7 +232,7 @@ public class NuevaPlantillaScreen extends FondoNormal {
 			}
 		}
 	};
-	
+
 	public void setDemandante(String text) {
 		_lblDemandante.setText(text);
 	}

@@ -144,11 +144,12 @@ public class VerProceso {
 				eliminarCampos();
 			}
 			concatCampos();
-			Proceso proceso = new Proceso(_proceso.getId_proceso(), _demandante, _demandado,
-					_screen.getFecha(), _juzgado, _screen.getRadicado(),
-					_screen.getRadicadoUnico(), _actuaciones,
-					_screen.getEstado(), _categoria, _screen.getTipo(),
-					_screen.getNotas(), _campos, _screen.getPrioridad());
+			Proceso proceso = new Proceso(_proceso.getId_proceso(),
+					_demandante, _demandado, _screen.getFecha(), _juzgado,
+					_screen.getRadicado(), _screen.getRadicadoUnico(),
+					_actuaciones, _screen.getEstado(), _categoria,
+					_screen.getTipo(), _screen.getNotas(), _campos,
+					_screen.getPrioridad());
 			if (!proceso.equals(_proceso)) {
 				_proceso = proceso;
 				UiApplication.getUiApplication().invokeLater(new Runnable() {

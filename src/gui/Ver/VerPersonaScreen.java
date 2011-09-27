@@ -71,7 +71,8 @@ public class VerPersonaScreen extends FondoNormal {
 		}
 	};
 
-	private final MenuItem menuEditarTodo = new MenuItem("Editar todo", 131075, 2) {
+	private final MenuItem menuEditarTodo = new MenuItem("Editar todo", 131075,
+			2) {
 
 		public void run() {
 			_txtNombre.setEditable();
@@ -82,7 +83,7 @@ public class VerPersonaScreen extends FondoNormal {
 			_txtNotas.setEditable();
 		}
 	};
-	
+
 	private MenuItem menuCerrar = new MenuItem("Salir de Aplicación",
 			1000000000, 9) {
 
@@ -93,7 +94,7 @@ public class VerPersonaScreen extends FondoNormal {
 			}
 		}
 	};
-	
+
 	public void alert(String alert) {
 		Dialog.alert(alert);
 	}

@@ -224,7 +224,8 @@ public class VerProcesoScreen extends FondoNormal {
 		}
 	};
 
-	private final MenuItem menuModificarCampo = new MenuItem("Modificar", 393216, 8) {
+	private final MenuItem menuModificarCampo = new MenuItem("Modificar",
+			393216, 8) {
 
 		public void run() {
 			fieldChangeNotify(Util.VER_CAMPO);
@@ -286,7 +287,8 @@ public class VerProcesoScreen extends FondoNormal {
 		}
 	};
 
-	private final MenuItem menuEditarTodo = new MenuItem("Editar todo", 262147, 4) {
+	private final MenuItem menuEditarTodo = new MenuItem("Editar todo", 262147,
+			4) {
 
 		public void run() {
 			_dfFecha.setEditable(true);

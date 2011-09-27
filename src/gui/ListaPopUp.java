@@ -23,7 +23,7 @@ public abstract class ListaPopUp extends PopupScreen implements
 		add(_title);
 		add(_searchField);
 	}
-	
+
 	public void setTitle(String text) {
 		if (_title.getFieldCount() != 0) {
 			if (_title.getField(0).getClass()
@@ -36,13 +36,13 @@ public abstract class ListaPopUp extends PopupScreen implements
 			_title.add(new SeparatorField());
 		}
 	}
-	
+
 	protected void click() {
 		fieldChangeNotify(Util.CLICK);
 	}
-	
+
 	public void setTitle(Field field) {
-		if(_title.getFieldCount() != 0) {
+		if (_title.getFieldCount() != 0) {
 			_title.deleteAll();
 		}
 		_title.add(field);

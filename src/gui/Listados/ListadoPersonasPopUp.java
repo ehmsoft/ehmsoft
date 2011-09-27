@@ -9,7 +9,7 @@ public class ListadoPersonasPopUp extends ListaPopUp {
 
 	public ListadoPersonasPopUp() {
 		super();
-		_lista = new ListadoPersonasLista(){
+		_lista = new ListadoPersonasLista() {
 			protected boolean navigationClick(int status, int time) {
 				click();
 				return true;

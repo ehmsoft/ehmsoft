@@ -65,7 +65,7 @@ public class NuevoJuzgadoScreen extends FondoNormal {
 			}
 		}
 	};
-	
+
 	public void showAlert(String alert) {
 		Dialog.alert(alert);
 	}

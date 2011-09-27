@@ -6,7 +6,7 @@ public class ListadoActuacionesScreen extends ListaScreen {
 
 	public ListadoActuacionesScreen() {
 		super();
-		_lista = new ListadoActuacionesLista(){
+		_lista = new ListadoActuacionesLista() {
 			protected boolean navigationClick(int status, int time) {
 				click();
 				return true;

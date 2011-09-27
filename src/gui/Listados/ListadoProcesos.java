@@ -78,9 +78,9 @@ public class ListadoProcesos {
 				_style = _style | ON_CLICK_VER;
 			}
 		}
-		
+
 		_categorias = Util.consultarCategorias();
-		
+
 		if (_categorias != null) {
 			Object[] o = new Object[_categorias.size() + 1];
 			_categorias.copyInto(o);
@@ -90,7 +90,7 @@ public class ListadoProcesos {
 			_screen.setSelectedCategoria(todas);
 		}
 	}
-	
+
 	public void setTitle(String text) {
 		_screen.setTitle(text);
 	}
@@ -106,7 +106,7 @@ public class ListadoProcesos {
 				cerrarPantalla();
 			} else if (context == Util.ELIMINAR) {
 				eliminarProceso();
-			} else if(context == Util.NEW) {
+			} else if (context == Util.NEW) {
 				nuevoProceso();
 			}
 		}
@@ -185,7 +185,7 @@ public class ListadoProcesos {
 		_selected = null;
 		UiApplication.getUiApplication().popScreen((Screen) _screen);
 	}
-	
+
 	public String toString() {
 		return "Lista de procesos";
 	}

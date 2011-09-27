@@ -58,6 +58,7 @@ public class VerCategoriaScreen extends FondoNormal {
 			}
 		}
 	};
+
 	public void alert(String alert) {
 		Dialog.alert(alert);
 	}

@@ -80,7 +80,7 @@ public class ListadoPlantillas {
 				_style = _style | ON_CLICK_VER;
 			}
 		}
-		if(Preferencias.isMostrarTitulosPantallas() && !popup) {
+		if (Preferencias.isMostrarTitulosPantallas() && !popup) {
 			_screen.setTitle("Plantillas");
 		}
 	}
@@ -98,12 +98,12 @@ public class ListadoPlantillas {
 				eliminarPlantilla();
 			} else if (context == Util.NEW_PROCESO) {
 				nuevoProceso();
-			}  else if(context == Util.NEW) {
+			} else if (context == Util.NEW) {
 				nuevaPlantilla();
 			}
 		}
 	};
-	
+
 	public void setTitle(String text) {
 		_screen.setTitle(text);
 	}

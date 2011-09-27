@@ -2,12 +2,10 @@ package gui;
 
 import java.util.Vector;
 
-import net.rim.device.api.ui.Manager;
 import net.rim.device.api.ui.MenuItem;
 import net.rim.device.api.ui.component.Dialog;
 import net.rim.device.api.ui.component.Menu;
 import net.rim.device.api.ui.container.HorizontalFieldManager;
-import net.rim.device.api.ui.container.MainScreen;
 
 public abstract class ListaScreen extends FondoNormal implements
 		ListadosInterface {
@@ -29,15 +27,16 @@ public abstract class ListaScreen extends FondoNormal implements
 			menu.add(menuDelete);
 		}
 	}
-	
+
 	private MenuItem menuNuevo = new MenuItem("Nuevo", 0, 0) {
 
 		public void run() {
 			fieldChangeNotify(Util.NEW);
 		}
 	};
-	
-	private MenuItem menuCerrar = new MenuItem("Salir de Aplicación", 1000000000, 3) {
+
+	private MenuItem menuCerrar = new MenuItem("Salir de Aplicación",
+			1000000000, 3) {
 
 		public void run() {
 			System.exit(0);
@@ -56,7 +55,7 @@ public abstract class ListaScreen extends FondoNormal implements
 			fieldChangeNotify(Util.ELIMINAR);
 		}
 	};
-	
+
 	protected void click() {
 		fieldChangeNotify(Util.CLICK);
 	}

@@ -5,6 +5,7 @@ import net.rim.device.api.ui.Field;
 import net.rim.device.api.ui.FieldChangeListener;
 import net.rim.device.api.ui.Font;
 import net.rim.device.api.ui.FontFamily;
+import net.rim.device.api.ui.Manager;
 import net.rim.device.api.ui.MenuItem;
 import net.rim.device.api.ui.UiApplication;
 import net.rim.device.api.ui.XYEdges;
@@ -62,7 +63,7 @@ public class PreferenciasGeneralesScreen extends MainScreen {
 			"Lista de Demandantes", "Lista de Demandados", "Eventos próximos" };
 
 	public PreferenciasGeneralesScreen() {
-		super(MainScreen.VERTICAL_SCROLL | MainScreen.VERTICAL_SCROLLBAR);
+		super(Manager.VERTICAL_SCROLL | Manager.VERTICAL_SCROLLBAR);
 		_txtNombreUsuario = new BasicEditField("Nombre de Usuario: ", "");
 		_chkMostrarCampoBusqueda = new CheckboxField(
 				"Mostrar Búsqueda en todas las pantallas", false);
@@ -109,20 +110,21 @@ public class PreferenciasGeneralesScreen extends MainScreen {
 
 		_lblCopiaSeguridad = new LabelField(
 				"Realizar copia de seguridad de base de datos:",
-				LabelField.USE_ALL_WIDTH);
+				Field.USE_ALL_WIDTH);
 		_btnCopiaSeguridad = new ButtonField("Copia de seguridad",
-				ButtonField.CONSUME_CLICK | ButtonField.FIELD_RIGHT);
+				ButtonField.CONSUME_CLICK | Field.FIELD_RIGHT);
 		// Restaurar Preferencias
 		_lblRestaurarPrefs = new LabelField(
 				"Restaurar preferencias predeterminadas",
-				LabelField.USE_ALL_WIDTH);
+				Field.USE_ALL_WIDTH);
 		_btnRestaurarPrefs = new ButtonField("Restaurar Preferencias",
-				ButtonField.CONSUME_CLICK | ButtonField.FIELD_RIGHT);
+				ButtonField.CONSUME_CLICK | Field.FIELD_RIGHT);
 		_btnCopiaSeguridad.setChangeListener(listenerCopiaSeguridad);
 		_btnRestaurarPrefs.setChangeListener(listenerRestaurarPrefs);
-		//Llaves
-		_lblLlaves = new LabelField("Activación", LabelField.USE_ALL_WIDTH);
-		_btnLlaves = new ButtonField("Cambiar Llave de activación", ButtonField.CONSUME_CLICK | ButtonField.FIELD_RIGHT);
+		// Llaves
+		_lblLlaves = new LabelField("Activación", Field.USE_ALL_WIDTH);
+		_btnLlaves = new ButtonField("Cambiar Llave de activación",
+				ButtonField.CONSUME_CLICK | Field.FIELD_RIGHT);
 		_btnLlaves.setChangeListener(listenerLlaves);
 		// Agregar componentes
 		add(_txtNombreUsuario);
@@ -283,13 +285,14 @@ public class PreferenciasGeneralesScreen extends MainScreen {
 
 		}
 	};
-	
+
 	private FieldChangeListener listenerLlaves = new FieldChangeListener() {
-		
+
 		public void fieldChanged(Field field, int context) {
 			fieldChangeNotify(Util.LLAVES);
 		}
 	};
+
 	protected void makeMenu(Menu menu, int instance) {
 		menu.add(menuGuardar);
 		menu.add(menuCancelar);
@@ -311,11 +314,12 @@ public class PreferenciasGeneralesScreen extends MainScreen {
 			}
 		}
 	};
-	private MenuItem menuCerrar = new MenuItem("Salir de Aplicación", 1000000000, 3) {
+	private MenuItem menuCerrar = new MenuItem("Salir de Aplicación",
+			1000000000, 3) {
 
 		public void run() {
-			if(onSavePrompt()){
-			System.exit(0);
+			if (onSavePrompt()) {
+				System.exit(0);
 			}
 		}
 	};

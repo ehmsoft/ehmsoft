@@ -80,8 +80,8 @@ public class ListadoPersonas {
 				_style = _style | ON_CLICK_VER;
 			}
 		}
-		if(Preferencias.isMostrarTitulosPantallas() && !popup) {
-			if(tipo == 1) {
+		if (Preferencias.isMostrarTitulosPantallas() && !popup) {
+			if (tipo == 1) {
 				_screen.setTitle("Demandanes");
 			} else {
 				_screen.setTitle("Demandados");
@@ -102,12 +102,12 @@ public class ListadoPersonas {
 				eliminarPersona();
 			} else if (context == Util.LLAMAR) {
 				llamar();
-			} else if(context == Util.NEW) {
+			} else if (context == Util.NEW) {
 				nuevaPersona();
 			}
 		}
 	};
-	
+
 	public void setTitle(String text) {
 		_screen.setTitle(text);
 	}
@@ -198,11 +198,11 @@ public class ListadoPersonas {
 		_selected = null;
 		UiApplication.getUiApplication().popScreen((Screen) _screen);
 	}
-	
+
 	public String toString() {
-		if(_tipo == 1) {
+		if (_tipo == 1) {
 			return "Lista de demandantes";
-		} else if(_tipo == 2) {
+		} else if (_tipo == 2) {
 			return "Lista de demandados";
 		} else {
 			return "Lista de personas";

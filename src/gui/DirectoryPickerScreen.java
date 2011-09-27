@@ -24,8 +24,8 @@ public class DirectoryPickerScreen extends PopupScreen {
 	public DirectoryPickerScreen() {
 		super(new VerticalFieldManager(VERTICAL_SCROLL | VERTICAL_SCROLLBAR));
 		_lblTitulo = new LabelField("Examinar", Field.FIELD_HCENTER);
-		_btnfldOk = new ButtonField("Seleccionar Aquí", ButtonField.CONSUME_CLICK
-				| Field.FIELD_HCENTER);
+		_btnfldOk = new ButtonField("Seleccionar Aquí",
+				ButtonField.CONSUME_CLICK | Field.FIELD_HCENTER);
 		_btnfldOk.setMinimalWidth(100);
 		_btnfldOk.setChangeListener(listenerSeleccionar);
 		_btnfldCancel = new ButtonField("Cancelar", ButtonField.CONSUME_CLICK
@@ -79,7 +79,8 @@ public class DirectoryPickerScreen extends PopupScreen {
 	public void alert(String alert) {
 		Dialog.alert(alert);
 	}
-	public boolean onClose(){
+
+	public boolean onClose() {
 		UiApplication.getUiApplication().popScreen(getScreen());
 		return true;
 	}

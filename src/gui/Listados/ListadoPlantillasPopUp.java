@@ -6,7 +6,7 @@ public class ListadoPlantillasPopUp extends ListaPopUp {
 
 	public ListadoPlantillasPopUp() {
 		super();
-		_lista = new ListadoPlantillasLista(){
+		_lista = new ListadoPlantillasLista() {
 			protected boolean navigationClick(int status, int time) {
 				click();
 				return true;

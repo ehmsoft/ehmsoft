@@ -6,7 +6,7 @@ public class ListadoCamposScreen extends ListaScreen {
 
 	public ListadoCamposScreen() {
 		super();
-		_lista = new ListadoCamposLista(){
+		_lista = new ListadoCamposLista() {
 			protected boolean navigationClick(int status, int time) {
 				click();
 				return true;

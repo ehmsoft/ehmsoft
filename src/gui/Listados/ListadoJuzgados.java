@@ -72,7 +72,7 @@ public class ListadoJuzgados {
 				_style = _style | ON_CLICK_VER;
 			}
 		}
-		if(Preferencias.isMostrarTitulosPantallas() && !popup) {
+		if (Preferencias.isMostrarTitulosPantallas() && !popup) {
 			_screen.setTitle("Juzgados");
 		}
 	}
@@ -90,12 +90,12 @@ public class ListadoJuzgados {
 				eliminarJuzgado();
 			} else if (context == Util.LLAMAR) {
 				llamar();
-			} else if(context == Util.NEW) {
+			} else if (context == Util.NEW) {
 				nuevoJuzgado();
 			}
 		}
 	};
-	
+
 	public void setTitle(String text) {
 		_screen.setTitle(text);
 	}
@@ -186,7 +186,7 @@ public class ListadoJuzgados {
 		_selected = null;
 		UiApplication.getUiApplication().popScreen((Screen) _screen);
 	}
-	
+
 	public String toString() {
 		return "Lista de juzgados";
 	}
