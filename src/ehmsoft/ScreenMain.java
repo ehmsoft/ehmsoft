@@ -3,6 +3,7 @@ package ehmsoft;
 import java.util.Enumeration;
 import java.util.Vector;
 
+import persistence.ConnectionManager;
 import persistence.Persistence;
 import core.Actuacion;
 import core.Plantilla;
@@ -30,6 +31,7 @@ import net.rim.device.api.ui.MenuItem;
 import net.rim.device.api.ui.TransitionContext;
 import net.rim.device.api.ui.Ui;
 import net.rim.device.api.ui.UiApplication;
+import net.rim.device.api.ui.UiEngine;
 import net.rim.device.api.ui.UiEngineInstance;
 import net.rim.device.api.ui.XYEdges;
 import net.rim.device.api.ui.component.LabelField;
@@ -60,11 +62,11 @@ public class ScreenMain extends MainScreen {
 
 	public ScreenMain() {
 		super();
-		Util.initBD();
-		this.getMainManager().setBackground(
-				BackgroundFactory.createSolidBackground(Color.BLACK));
-
+		
 		actuacionesManager();
+		
+		getMainManager().setBackground(
+				BackgroundFactory.createSolidBackground(Color.BLACK));
 
 		_grid = new GridFieldManager(1, 2, GridFieldManager.FIXED_SIZE);
 
@@ -84,11 +86,49 @@ public class ScreenMain extends MainScreen {
 		add(_grid);
 		left.setFocus();
 		left.invalidate();
+		
+		final PopupScreen wait = new PopupScreen(new VerticalFieldManager());
+		wait.add(new LabelField("Porfavor espere..."));
+		wait.add(new LabelField(
+				"Verificando la base de datos y cargando las preferencias, esto puede tomar unos minutos"));
+		UiApplication.getUiApplication().pushGlobalScreen(wait, 0,
+				UiEngine.GLOBAL_SHOW_LOWER);
+
+		UiApplication.getUiApplication().invokeLater(new Runnable() {
+
+			public void run() {
+				try {
+					new ConnectionManager().prepararBD();
+					new Persistence().consultarPreferencias();
+				} catch (NullPointerException e) {
+					Util.noSd();
+				} catch (Exception e) {
+					Util.alert(e.toString());
+				}
+				cargarActuaciones();
+				UiApplication.getUiApplication().popScreen(wait);
+			}
+		});
+	}
+	
+	private void cargarActuaciones() {
+		try {
+			Vector v = new Persistence().consultarActuacionesCriticas(Preferencias.getCantidadActuacionesCriticas());
+			Enumeration e = v.elements();
+			while (e.hasMoreElements()) {
+				_lista.insert(_lista.getSize(), e.nextElement());
+			}
+		} catch (NullPointerException e) {
+			Util.noSd();
+		} catch (Exception e) {
+			Util.alert(e.toString());
+		}
+		_lista.focusChangeNotify(0);
 	}
 
 	private void actuacionesManager() {
-		initRight();
 		initLista();
+		initRight();
 	}
 
 	private void initLista() {
@@ -107,17 +147,6 @@ public class ScreenMain extends MainScreen {
 				_lista.getFont().getHeight() - 8));
 		_lista.setRowHeight(_lista.getFont().getHeight() * 2);
 
-		try {
-			Vector v = new Persistence().consultarActuacionesCriticas(Preferencias.getCantidadActuacionesCriticas());
-			Enumeration e = v.elements();
-			while (e.hasMoreElements()) {
-				_lista.insert(_lista.getSize(), e.nextElement());
-			}
-		} catch (NullPointerException e) {
-			Util.noSd();
-		} catch (Exception e) {
-			Util.alert(e.toString());
-		}
 		_lista.setFocusListener(listener);
 	}
 	
