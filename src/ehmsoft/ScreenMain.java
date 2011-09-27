@@ -146,11 +146,14 @@ public class ScreenMain extends MainScreen {
 			public void drawListRow(ListField listField, Graphics graphics,
 					int index, int y, int width) {
 				Actuacion objeto = (Actuacion) this.get(listField, index);
-				graphics.setColor(Color.WHITE);
 				graphics.drawText(objeto.toString(), 0, y);
 				graphics.drawText(
 						Util.calendarToString(objeto.getFechaProxima(), false),
 						15, y + getFont().getHeight());
+			};
+			protected void paint(Graphics g) {
+				g.setColor(Color.WHITE);
+				super.paint(g);
 			}
 		};
 		_lista.setFont(_lista.getFont().derive(_lista.getFont().getStyle(),
@@ -261,7 +264,9 @@ public class ScreenMain extends MainScreen {
 	};
 
 	protected void makeMenu(Menu menu, int instance) {
-		menu.add(menuVerProceso);
+		if(_lista.getSize() != 0) {
+			menu.add(menuVerProceso);
+		}
 		menu.add(menuListas);
 		menu.add(menuNuevos);
 		menu.add(menuPreferencias);
