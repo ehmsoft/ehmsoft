@@ -8,6 +8,7 @@ import net.rim.device.api.ui.Graphics;
 import net.rim.device.api.ui.component.KeywordProvider;
 import net.rim.device.api.ui.component.ListField;
 import net.rim.device.api.ui.component.ListFieldCallback;
+import core.Preferencias;
 import core.Proceso;
 
 public class ListadoProcesosLista extends ListaListas implements
@@ -15,7 +16,7 @@ public class ListadoProcesosLista extends ListaListas implements
 
 	public ListadoProcesosLista() {
 		super();
-		setRowHeight(getFont().getHeight() * 4);
+		setRowHeight(Preferencias.getTipoFuente().getHeight() * 4);
 		setSourceList(this);
 		setCallback(this);
 	}
