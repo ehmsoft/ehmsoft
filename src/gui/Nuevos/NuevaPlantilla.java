@@ -114,7 +114,6 @@ public class NuevaPlantilla {
 		getValoresCampos();
 		if (_screen.getNombre().equals("")) {
 			Util.alert("El campo Nombre es obligatorio");
-		} else if (isCampoObligatorio()) {
 		} else if (checkLonMin()) {
 		} else {
 			if (_demandante == null) {
@@ -164,21 +163,6 @@ public class NuevaPlantilla {
 						+ " caracteres, y usted ingresó "
 						+ campo.getValor().length());
 				ret = true;
-			}
-		}
-		return ret;
-	}
-
-	private boolean isCampoObligatorio() {
-		boolean ret = false;
-		Enumeration e = _campos.elements();
-		while (e.hasMoreElements()) {
-			CampoPersonalizado campo = (CampoPersonalizado) e.nextElement();
-			if (campo.isObligatorio().booleanValue()
-					&& campo.getValor().length() == 0) {
-				Util.alert("El campo " + campo.getNombre() + " es obligatorio");
-				ret = true;
-				break;
 			}
 		}
 		return ret;
