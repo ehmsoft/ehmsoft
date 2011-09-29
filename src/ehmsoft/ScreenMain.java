@@ -36,6 +36,7 @@ import net.rim.device.api.ui.UiApplication;
 import net.rim.device.api.ui.UiEngine;
 import net.rim.device.api.ui.UiEngineInstance;
 import net.rim.device.api.ui.XYEdges;
+import net.rim.device.api.ui.component.Dialog;
 import net.rim.device.api.ui.component.LabelField;
 import net.rim.device.api.ui.component.ListField;
 import net.rim.device.api.ui.component.Menu;
@@ -101,22 +102,24 @@ public class ScreenMain extends MainScreen {
 			public void run() {
 				try {
 					new ConnectionManager().prepararBD();
-					new Persistence().consultarPreferencias();
-					Llaves llaves = new Llaves();
-					if(!llaves.verificarLlaves()) {
-						UiApplication.getUiApplication().pushModalScreen(llaves.getScreen());
-						if(!llaves.verificarLlaves()) {
-							System.exit(0);
-						}
-					}					
-					cargarActuaciones();
+					new Persistence().consultarPreferencias();				
 				} catch (NullPointerException e) {
-					Util.noSd();
-				} catch (Exception e) {
-					Util.alert(e.toString());
-				} finally {
 					UiApplication.getUiApplication().popScreen(wait);
+					Dialog.alert(Util.noSDString());
+					System.exit(0);
+				} catch (Exception e) {
+					UiApplication.getUiApplication().popScreen(wait);
+					Util.alert(e.toString());
 				}
+				UiApplication.getUiApplication().popScreen(wait);
+				Llaves llaves = new Llaves();
+				if(!llaves.verificarLlaves()) {
+					UiApplication.getUiApplication().pushModalScreen(llaves.getScreen());
+					if(!llaves.verificarLlaves()) {
+						System.exit(0);
+					}
+				}
+				cargarActuaciones();
 			}
 		});
 	}
