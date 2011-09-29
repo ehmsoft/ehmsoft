@@ -1,6 +1,5 @@
 package gui.Listados;
 
-import gui.ListadosInterface;
 import gui.Util;
 import gui.Nuevos.NuevaPlantilla;
 import gui.Nuevos.NuevoProceso;
@@ -18,9 +17,10 @@ import core.Preferencias;
 public class ListadoPlantillas {
 
 	private Vector _vectorPlantillas;
-	private ListadosInterface _screen;
+	private ListadoProcesosInterface _screen;
 	private long _style;
 	private Plantilla _selected;
+	private Vector _categorias;
 
 	public static final int SEARCH = 1;
 	public static final int ON_CLICK_VER = 2;
@@ -80,8 +80,16 @@ public class ListadoPlantillas {
 				_style = _style | ON_CLICK_VER;
 			}
 		}
-		if (Preferencias.isMostrarTitulosPantallas() && !popup) {
-			_screen.setTitle("Plantillas");
+		
+		_categorias = Util.consultarCategorias();
+
+		if (_categorias != null) {
+			Object[] o = new Object[_categorias.size() + 1];
+			_categorias.copyInto(o);
+			String todas = "Todas";
+			o[_categorias.size()] = todas;
+			_screen.setCategorias(o);
+			_screen.setSelectedCategoria(todas);
 		}
 	}
 
