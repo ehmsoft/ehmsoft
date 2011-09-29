@@ -128,8 +128,12 @@ public class ScreenMain extends MainScreen {
 		try {
 			Vector v = new Persistence().consultarActuacionesCriticas(Preferencias.getCantidadActuacionesCriticas());
 			Enumeration e = v.elements();
+			while(_lista.getSize() != 0){
+				_lista.delete(0);
+			}
 			while (e.hasMoreElements()) {
 				_lista.insert(_lista.getSize(), e.nextElement());
+				
 			}
 		} catch (NullPointerException e) {
 			Util.noSd();
@@ -291,6 +295,7 @@ public class ScreenMain extends MainScreen {
 			}
 			if(p != null) {
 				Util.verProceso(p);
+				cargarActuaciones();
 			}			
 		}
 	};
@@ -300,6 +305,7 @@ public class ScreenMain extends MainScreen {
 		public void run() {
 			UiApplication.getUiApplication().pushModalScreen(
 					new Listados(Listados.LISTA));
+			cargarActuaciones();
 		}
 	};
 
@@ -308,6 +314,7 @@ public class ScreenMain extends MainScreen {
 		public void run() {
 			UiApplication.getUiApplication().pushModalScreen(
 					new Listados(Listados.NUEVO));
+			cargarActuaciones();
 		}
 	};
 
@@ -322,6 +329,7 @@ public class ScreenMain extends MainScreen {
 		    UiEngineInstance engine = Ui.getUiEngineInstance();
 		    engine.setTransition(null, nextScreen, UiEngineInstance.TRIGGER_PUSH, transition);
 		    Util.pushModalScreen(nextScreen);
+		    cargarActuaciones();
 		}
 	};
 
@@ -331,6 +339,7 @@ public class ScreenMain extends MainScreen {
 		public void run() {
 			PreferenciasGenerales p = new PreferenciasGenerales();
 			Util.pushModalScreen(p.getScreen());
+			cargarActuaciones();
 		}
 	};
 	private MenuItem menuCerrar = new MenuItem("Salir de Aplicación",
