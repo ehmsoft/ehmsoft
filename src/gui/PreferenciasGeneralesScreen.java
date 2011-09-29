@@ -131,8 +131,8 @@ public class PreferenciasGeneralesScreen extends MainScreen {
 		add(_chkMostrarCampoBusqueda);
 		add(_chkMostrarTitulosPantalla);
 		add(_chkRecordarUltimaCategoria);
-		add(new SeparatorField());
-		add(_chfPantallaInicial);
+		//add(new SeparatorField());
+		//add(_chfPantallaInicial);
 		add(_hfmCantidadActuaciones);
 		add(new SeparatorField());
 		add(_chfTipoFuente);
