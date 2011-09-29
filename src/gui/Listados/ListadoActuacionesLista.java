@@ -18,6 +18,7 @@ import net.rim.device.api.ui.component.ListField;
 import net.rim.device.api.ui.component.ListFieldCallback;
 import core.Actuacion;
 import core.CalendarManager;
+import core.Preferencias;
 
 public class ListadoActuacionesLista extends ListaListas implements
 		KeywordProvider, ListFieldCallback {
@@ -27,7 +28,7 @@ public class ListadoActuacionesLista extends ListaListas implements
 
 	public ListadoActuacionesLista() {
 		super();
-		setRowHeight(getFont().getHeight() * 2);
+		setRowHeight(Preferencias.getTipoFuente().getHeight() * 2);
 		setSourceList(this);
 		setCallback(this);
 	}

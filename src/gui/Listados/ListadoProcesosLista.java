@@ -8,6 +8,7 @@ import net.rim.device.api.ui.Graphics;
 import net.rim.device.api.ui.component.KeywordProvider;
 import net.rim.device.api.ui.component.ListField;
 import net.rim.device.api.ui.component.ListFieldCallback;
+import core.Preferencias;
 import core.Proceso;
 
 public class ListadoProcesosLista extends ListaListas implements
@@ -15,7 +16,7 @@ public class ListadoProcesosLista extends ListaListas implements
 
 	public ListadoProcesosLista() {
 		super();
-		setRowHeight(getFont().getHeight() * 4);
+		setRowHeight(Preferencias.getTipoFuente().getHeight() * 4);
 		setSourceList(this);
 		setCallback(this);
 	}
@@ -42,31 +43,34 @@ public class ListadoProcesosLista extends ListaListas implements
 	public void drawListRow(ListField listField, Graphics graphics, int index,
 			int y, int w) {
 		ReadableList r = ((ListaListas) listField).getResultList();
-		if (String.class.isInstance(r.getAt(index))) {
-			graphics.setFont(graphics.getFont().derive(Font.BOLD));
-			int color = graphics.getColor();
-			graphics.setColor(Color.LIGHTGRAY);
-			graphics.drawLine(5, listField.getRowHeight() + y - 1,
-					listField.getWidth() - 5, listField.getRowHeight() + y - 1);
-			graphics.setColor(color);
-			graphics.drawText(r.getAt(index).toString(), 0, y);
-		} else {
-			Proceso objeto = (Proceso) r.getAt(index);
-			String demandante = objeto.getDemandante().getNombre();
-			String demandado = objeto.getDemandado().getNombre();
-			String radicado = objeto.getRadicado();
-			String juzgado = objeto.getJuzgado().getNombre();
+		if (r.size() != 0) {
+			if (String.class.isInstance(r.getAt(index))) {
+				graphics.setFont(graphics.getFont().derive(Font.BOLD));
+				int color = graphics.getColor();
+				graphics.setColor(Color.LIGHTGRAY);
+				graphics.drawLine(5, listField.getRowHeight() + y - 1,
+						listField.getWidth() - 5, listField.getRowHeight() + y
+								- 1);
+				graphics.setColor(color);
+				graphics.drawText(r.getAt(index).toString(), 0, y);
+			} else {
+				Proceso objeto = (Proceso) r.getAt(index);
+				String demandante = objeto.getDemandante().getNombre();
+				String demandado = objeto.getDemandado().getNombre();
+				String radicado = objeto.getRadicado();
+				String juzgado = objeto.getJuzgado().getNombre();
 
-			Font temp = getFont();
-			graphics.setFont(getFont().derive(Font.BOLD));
-			graphics.drawText("Radicado: " + radicado, 0, y);
-			graphics.setFont(temp);
-			graphics.drawText("Demandante: " + demandante, 20, y
-					+ getFont().getHeight());
-			graphics.drawText("Demandado: " + demandado, 20, y
-					+ getFont().getHeight() * 2);
-			graphics.drawText("Juzgado: " + juzgado, 20, y
-					+ getFont().getHeight() * 3);
+				Font temp = getFont();
+				graphics.setFont(getFont().derive(Font.BOLD));
+				graphics.drawText("Radicado: " + radicado, 0, y);
+				graphics.setFont(temp);
+				graphics.drawText("Demandante: " + demandante, 20, y
+						+ getFont().getHeight());
+				graphics.drawText("Demandado: " + demandado, 20, y
+						+ getFont().getHeight() * 2);
+				graphics.drawText("Juzgado: " + juzgado, 20, y
+						+ getFont().getHeight() * 3);
+			}
 		}
 	}
 
