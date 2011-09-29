@@ -278,7 +278,7 @@ public class VerProcesoScreen extends FondoNormal {
 		}
 	};
 
-	private final MenuItem menuGuardar = new MenuItem("Guardar", 65537, 0) {
+	private final MenuItem menuGuardar = new MenuItem("Guardar", 65537, 1) {
 
 		public void run() {
 			fieldChangeNotify(Util.GUARDAR);
@@ -321,7 +321,7 @@ public class VerProcesoScreen extends FondoNormal {
 		}
 	};
 
-	private final MenuItem menuCambiar = new MenuItem("Cambiar", 131075, 1) {
+	private final MenuItem menuCambiar = new MenuItem("Cambiar", 131075, 0) {
 
 		public void run() {
 			EditableTextField f = (EditableTextField) getFieldWithFocus();
