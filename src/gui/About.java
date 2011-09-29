@@ -17,11 +17,11 @@ public class About extends FullScreen {
 	 * Pantalla Acerca de
 	 */
 	private BitmapField _logo;
-	private final String NOMBRE_APLICACION = "ehmSoftware Mobile";
+	private final String NOMBRE_APLICACION = "Procesos Judiciales";
 	private final String VERSION = "Versión 1.0";
 	private final String LICENCIA = "Licencia GNU GPL V3";
 	private final String EMPRESA = "ehmSoft";
-	private final String URL = "www.ehmSoft.com";
+	private final String URL = "www.ehmsoft.com";
 	private final String CONTACTO = "soporte@ehmsoft.com";
 
 	public About() {
