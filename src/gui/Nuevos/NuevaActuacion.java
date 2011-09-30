@@ -61,10 +61,6 @@ public class NuevaActuacion {
 		return _screen;
 	}
 
-	/**
-	 * @return La nueva actuacion creada, sí esta no ha sido guardada
-	 *         previamente con guardarActuacion(); se invoca dicho metodo
-	 */
 	public Actuacion getActuacion() {
 		return _actuacion;
 	}
@@ -95,6 +91,8 @@ public class NuevaActuacion {
 					}
 				});
 
+			} else {
+				Util.popScreen(_screen);
 			}
 			borrarCitaActuacion();
 		}
