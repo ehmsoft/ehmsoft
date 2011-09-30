@@ -191,8 +191,7 @@ public class VerProceso {
 	}
 
 	private void verListadoActuaciones() {
-		ListadoActuaciones l = new ListadoActuaciones(_proceso, true,
-				ListadoActuaciones.ON_CLICK_VER | ListadoActuaciones.NO_NUEVO);
+		ListadoActuaciones l = new ListadoActuaciones(_proceso);
 		UiApplication.getUiApplication().pushModalScreen(l.getScreen());
 	}
 
