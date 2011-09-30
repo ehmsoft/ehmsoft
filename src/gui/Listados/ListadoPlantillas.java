@@ -143,15 +143,19 @@ public class ListadoPlantillas {
 	}
 
 	public void onClick() {
-		if (String.class.isInstance(_screen.getSelected())) {
-			nuevaPlantilla();
-		} else {
-			if ((_style & ON_CLICK_VER) == ON_CLICK_VER) {
-				verPlantilla();
+		try {
+			if (String.class.isInstance(_screen.getSelected())) {
+				nuevaPlantilla();
 			} else {
-				_selected = (Plantilla) _screen.getSelected();
-				UiApplication.getUiApplication().popScreen((Screen) _screen);
+				if ((_style & ON_CLICK_VER) == ON_CLICK_VER) {
+					verPlantilla();
+				} else {
+					_selected = (Plantilla) _screen.getSelected();
+					UiApplication.getUiApplication()
+							.popScreen((Screen) _screen);
+				}
 			}
+		} catch (Exception e) {
 		}
 	}
 

@@ -116,15 +116,19 @@ public class ListadoCampos {
 	}
 
 	public void onClick() {
-		if (String.class.isInstance(_screen.getSelected())) {
-			nuevoCampo();
-		} else {
-			if ((_style & ON_CLICK_VER) == ON_CLICK_VER) {
-				verCampo();
+		try {
+			if (String.class.isInstance(_screen.getSelected())) {
+				nuevoCampo();
 			} else {
-				_selected = (CampoPersonalizado) _screen.getSelected();
-				UiApplication.getUiApplication().popScreen((Screen) _screen);
+				if ((_style & ON_CLICK_VER) == ON_CLICK_VER) {
+					verCampo();
+				} else {
+					_selected = (CampoPersonalizado) _screen.getSelected();
+					UiApplication.getUiApplication()
+							.popScreen((Screen) _screen);
+				}
 			}
+		} catch (Exception e) {
 		}
 	}
 

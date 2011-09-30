@@ -132,15 +132,19 @@ public class ListadoJuzgados {
 	}
 
 	public void onClick() {
-		if (String.class.isInstance(_screen.getSelected())) {
-			nuevoJuzgado();
-		} else {
-			if ((_style & ON_CLICK_VER) == ON_CLICK_VER) {
-				verJuzgado();
+		try {
+			if (String.class.isInstance(_screen.getSelected())) {
+				nuevoJuzgado();
 			} else {
-				_selected = (Juzgado) _screen.getSelected();
-				UiApplication.getUiApplication().popScreen((Screen) _screen);
+				if ((_style & ON_CLICK_VER) == ON_CLICK_VER) {
+					verJuzgado();
+				} else {
+					_selected = (Juzgado) _screen.getSelected();
+					UiApplication.getUiApplication()
+							.popScreen((Screen) _screen);
+				}
 			}
+		} catch (Exception e) {
 		}
 	}
 

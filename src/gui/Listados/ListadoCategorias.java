@@ -117,15 +117,19 @@ public class ListadoCategorias {
 	}
 
 	public void onClick() {
-		if (String.class.isInstance(_screen.getSelected())) {
-			nuevoCategoria();
-		} else {
-			if ((_style & ON_CLICK_VER) == ON_CLICK_VER) {
-				verCategoria();
+		try {
+			if (String.class.isInstance(_screen.getSelected())) {
+				nuevoCategoria();
 			} else {
-				_selected = (Categoria) _screen.getSelected();
-				UiApplication.getUiApplication().popScreen((Screen) _screen);
+				if ((_style & ON_CLICK_VER) == ON_CLICK_VER) {
+					verCategoria();
+				} else {
+					_selected = (Categoria) _screen.getSelected();
+					UiApplication.getUiApplication()
+							.popScreen((Screen) _screen);
+				}
 			}
+		} catch (Exception e) {
 		}
 	}
 

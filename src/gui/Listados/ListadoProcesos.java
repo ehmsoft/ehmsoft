@@ -128,15 +128,19 @@ public class ListadoProcesos {
 	}
 
 	public void onClick() {
-		if (String.class.isInstance(_screen.getSelected())) {
-			nuevoProceso();
-		} else {
-			if ((_style & ON_CLICK_VER) == ON_CLICK_VER) {
-				verProceso();
+		try {
+			if (String.class.isInstance(_screen.getSelected())) {
+				nuevoProceso();
 			} else {
-				_selected = (Proceso) _screen.getSelected();
-				UiApplication.getUiApplication().popScreen((Screen) _screen);
+				if ((_style & ON_CLICK_VER) == ON_CLICK_VER) {
+					verProceso();
+				} else {
+					_selected = (Proceso) _screen.getSelected();
+					UiApplication.getUiApplication()
+							.popScreen((Screen) _screen);
+				}
 			}
+		} catch (Exception e) {
 		}
 	}
 

@@ -144,15 +144,19 @@ public class ListadoPersonas {
 	}
 
 	public void onClick() {
-		if (String.class.isInstance(_screen.getSelected())) {
-			nuevaPersona();
-		} else {
-			if ((_style & ON_CLICK_VER) == ON_CLICK_VER) {
-				verPersona();
+		try {
+			if (String.class.isInstance(_screen.getSelected())) {
+				nuevaPersona();
 			} else {
-				_selected = (Persona) _screen.getSelected();
-				UiApplication.getUiApplication().popScreen((Screen) _screen);
+				if ((_style & ON_CLICK_VER) == ON_CLICK_VER) {
+					verPersona();
+				} else {
+					_selected = (Persona) _screen.getSelected();
+					UiApplication.getUiApplication()
+							.popScreen((Screen) _screen);
+				}
 			}
+		} catch (Exception e) {
 		}
 	}
 
