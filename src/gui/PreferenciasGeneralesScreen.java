@@ -50,14 +50,14 @@ public class PreferenciasGeneralesScreen extends MainScreen {
 	private String[] _listaEstilos = { "Normal", "Negrita", "Extra negrita",
 			"Negrita cursiva", "Cursiva" };
 	private int[] _listaPantallas = {
-			Preferencias.getLISTADO_CAMPOS_MAIN(),
-			Preferencias.getLISTADO_JUZGADOS_MAIN(),
+			Preferencias.LISTADO_CAMPOS_MAIN,
+			Preferencias.LISTADO_JUZGADOS_MAIN,
 			// Preferencias.getLISTADO_PERSONAS_MAIN(),
-			Preferencias.getLISTADO_PROCESOS_MAIN(),
-			Preferencias.getLISTADO_CATEGORIAS_MAIN(),
-			Preferencias.getLISTADO_DEMANDANTES_MAIN(),
-			Preferencias.getLISTADO_DEMANDADOS_MAIN(),
-			Preferencias.getPANTALLA_INICIAL_MAIN() };
+			Preferencias.LISTADO_PROCESOS_MAIN,
+			Preferencias.LISTADO_CATEGORIAS_MAIN,
+			Preferencias.LISTADO_DEMANDANTES_MAIN,
+			Preferencias.LISTADO_DEMANDADOS_MAIN,
+			Preferencias.PANTALLA_INICIAL_MAIN };
 	private String[] _nombresPantallas = { "Lista de Campos Personalizados",
 			"Lista de Juzgados", "Lista de Procesos", "Lista de Categorías",
 			"Lista de Demandantes", "Lista de Demandados", "Eventos próximos" };
