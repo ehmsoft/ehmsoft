@@ -162,6 +162,7 @@ public class VerProceso {
 						} catch (Exception e1) {
 							Util.alert(e1.toString());
 						}
+						Util.popScreen(_screen);
 					}
 				});
 			} else if (cambioCampos()) {
@@ -177,8 +178,8 @@ public class VerProceso {
 				} catch (Exception e) {
 					Util.alert(e.toString());
 				}
+				Util.popScreen(_screen);
 			}
-			Util.popScreen(_screen);
 		}
 	}
 

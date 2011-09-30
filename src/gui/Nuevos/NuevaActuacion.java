@@ -91,12 +91,12 @@ public class NuevaActuacion {
 							Util.alert(e.toString());
 						}
 						Util.popWaitScreen();
+						Util.popScreen(_screen);
 					}
 				});
 
 			}
 			borrarCitaActuacion();
-			Util.popScreen(_screen);
 		}
 	}
 
