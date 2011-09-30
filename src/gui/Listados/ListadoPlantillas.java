@@ -128,11 +128,6 @@ public class ListadoPlantillas {
 		}
 	}
 
-	public void setVectorPlantillas(Vector plantillas) {
-		_vectorPlantillas = plantillas;
-		addPlantillas();
-	}
-
 	public Plantilla getSelected() {
 		return _selected;
 	}

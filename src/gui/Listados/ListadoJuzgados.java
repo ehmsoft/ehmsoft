@@ -96,10 +96,6 @@ public class ListadoJuzgados {
 		}
 	};
 
-	public void setTitle(String text) {
-		_screen.setTitle(text);
-	}
-
 	private void llamar() {
 		Object selected = _screen.getSelected();
 		if (!String.class.equals(selected)) {
@@ -115,11 +111,6 @@ public class ListadoJuzgados {
 		if (_vectorJuzgados != null) {
 			_screen.loadFrom(_vectorJuzgados);
 		}
-	}
-
-	public void setVectorJuzgados(Vector juzgados) {
-		_vectorJuzgados = juzgados;
-		addJuzgados();
 	}
 
 	public Juzgado getSelected() {

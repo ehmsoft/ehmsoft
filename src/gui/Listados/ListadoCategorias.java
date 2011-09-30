@@ -92,19 +92,10 @@ public class ListadoCategorias {
 		}
 	};
 
-	public void setTitle(String text) {
-		_screen.setTitle(text);
-	}
-
 	private void addCategorias() {
 		if (_vectorCategorias != null) {
 			_screen.loadFrom(_vectorCategorias);
 		}
-	}
-
-	public void setVectorCategorias(Vector categorias) {
-		_vectorCategorias = categorias;
-		addCategorias();
 	}
 
 	public Categoria getSelected() {

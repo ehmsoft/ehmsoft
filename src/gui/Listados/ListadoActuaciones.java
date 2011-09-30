@@ -98,10 +98,6 @@ public class ListadoActuaciones {
 		}
 	};
 
-	public void setTitle(String text) {
-		_screen.setTitle(text);
-	}
-
 	private void addActuaciones() {
 		if (_vectorActuaciones != null) {
 			_screen.loadFrom(_vectorActuaciones);

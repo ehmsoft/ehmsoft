@@ -91,19 +91,10 @@ public class ListadoCampos {
 		}
 	};
 
-	public void setTitle(String text) {
-		_screen.setTitle(text);
-	}
-
 	private void addCampos() {
 		if (_vectorCampos != null) {
 			_screen.loadFrom(_vectorCampos);
 		}
-	}
-
-	public void setVectorCampos(Vector campos) {
-		_vectorCampos = campos;
-		addCampos();
 	}
 
 	public CampoPersonalizado getSelected() {

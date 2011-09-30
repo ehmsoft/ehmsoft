@@ -108,10 +108,6 @@ public class ListadoPersonas {
 		}
 	};
 
-	public void setTitle(String text) {
-		_screen.setTitle(text);
-	}
-
 	private void llamar() {
 		Object selected = _screen.getSelected();
 		if (!String.class.equals(selected)) {
@@ -127,11 +123,6 @@ public class ListadoPersonas {
 		if (_vectorPersonas != null) {
 			_screen.loadFrom(_vectorPersonas);
 		}
-	}
-
-	public void setVectorPersonas(Vector juzgados) {
-		_vectorPersonas = juzgados;
-		addPersonas();
 	}
 
 	public Persona getSelected() {
