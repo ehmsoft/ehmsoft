@@ -107,8 +107,13 @@ public class Util {
 	}
 
 	public static void popWaitScreen() {
-		while (!WAIT_SCREEN.isGlobal())
-			;
+		if (!WAIT_SCREEN.isDisplayed()) {
+			try {
+				Thread.sleep(500);
+			} catch (InterruptedException e) {
+				alert(e.toString());
+			}
+		}
 		popScreen(WAIT_SCREEN);
 	}
 
@@ -201,18 +206,6 @@ public class Util {
 			alert(e.toString());
 		}
 		return juzgado;
-	}
-
-	public static Categoria consultarCategoriaVacio() {
-		Categoria categoria = null;
-		try {
-			categoria = new Persistence().consultarCategoria("1");
-		} catch (NullPointerException e) {
-			noSd();
-		} catch (Exception e) {
-			alert(e.toString());
-		}
-		return categoria;
 	}
 
 	public static Vector consultarCategorias() {
