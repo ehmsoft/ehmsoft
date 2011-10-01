@@ -281,6 +281,7 @@ public class ScreenMain extends MainScreen {
 	protected void makeMenu(Menu menu, int instance) {
 		if(_lista.getSize() != 0) {
 			menu.add(menuVerProceso);
+			menu.add(menuVerActuacion);
 		}
 		menu.add(menuListas);
 		menu.add(menuNuevos);
@@ -289,7 +290,7 @@ public class ScreenMain extends MainScreen {
 		menu.add(menuAcerca);
 	}
 	
-	private final MenuItem menuVerProceso = new MenuItem("Ver proceso", 65537, 0) {
+	private final MenuItem menuVerProceso = new MenuItem("Ver proceso", 0, 0) {
 		
 		public void run() {
 			ActuacionCritica a = (ActuacionCritica) _lista.get(_lista, _lista.getSelectedIndex());
@@ -305,6 +306,15 @@ public class ScreenMain extends MainScreen {
 				Util.verProceso(p);
 				cargarActuaciones();
 			}			
+		}
+	};
+	
+	private final MenuItem menuVerActuacion = new MenuItem("Ver actuacion", 0, 0) {
+		
+		public void run() {
+			ActuacionCritica a = (ActuacionCritica) _lista.get(_lista, _lista.getSelectedIndex());
+			Util.verActuacion(a);
+			cargarActuaciones();
 		}
 	};
 
