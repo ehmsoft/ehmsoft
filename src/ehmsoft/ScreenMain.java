@@ -290,7 +290,7 @@ public class ScreenMain extends MainScreen {
 		menu.add(menuAcerca);
 	}
 	
-	private final MenuItem menuVerProceso = new MenuItem("Ver proceso", 0, 0) {
+	private final MenuItem menuVerProceso = new MenuItem("Ver proceso", 65537, 0) {
 		
 		public void run() {
 			ActuacionCritica a = (ActuacionCritica) _lista.get(_lista, _lista.getSelectedIndex());
@@ -309,7 +309,7 @@ public class ScreenMain extends MainScreen {
 		}
 	};
 	
-	private final MenuItem menuVerActuacion = new MenuItem("Ver actuacion", 0, 0) {
+	private final MenuItem menuVerActuacion = new MenuItem("Ver actuacion", 65537, 1) {
 		
 		public void run() {
 			ActuacionCritica a = (ActuacionCritica) _lista.get(_lista, _lista.getSelectedIndex());
@@ -318,7 +318,7 @@ public class ScreenMain extends MainScreen {
 		}
 	};
 
-	private final MenuItem menuListas = new MenuItem("Listado", 65537, 1) {
+	private final MenuItem menuListas = new MenuItem("Listado", 131075, 2) {
 
 		public void run() {
 			UiApplication.getUiApplication().pushModalScreen(
@@ -327,7 +327,7 @@ public class ScreenMain extends MainScreen {
 		}
 	};
 
-	private final MenuItem menuNuevos = new MenuItem("Nuevo", 65537, 2) {
+	private final MenuItem menuNuevos = new MenuItem("Nuevo", 131075, 3) {
 
 		public void run() {
 			UiApplication.getUiApplication().pushModalScreen(
@@ -336,7 +336,7 @@ public class ScreenMain extends MainScreen {
 		}
 	};
 
-	private final MenuItem menuAcerca = new MenuItem("Acerca de", 262147, 3) {
+	private final MenuItem menuAcerca = new MenuItem("Acerca de", 327682, 5) {
 
 		public void run() {
 			TransitionContext transition = new TransitionContext(TransitionContext.TRANSITION_SLIDE);
@@ -352,7 +352,7 @@ public class ScreenMain extends MainScreen {
 	};
 
 	private final MenuItem menuPreferencias = new MenuItem("Preferencias",
-			131075, 2) {
+			262147, 4) {
 
 		public void run() {
 			PreferenciasGenerales p = new PreferenciasGenerales();
@@ -361,7 +361,7 @@ public class ScreenMain extends MainScreen {
 		}
 	};
 	private MenuItem menuCerrar = new MenuItem("Salir de Aplicación",
-			1000000000, 4) {
+			1000000000, 6) {
 
 		public void run() {
 			System.exit(0);
