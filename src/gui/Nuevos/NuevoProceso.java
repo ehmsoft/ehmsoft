@@ -8,6 +8,7 @@ import java.util.Vector;
 
 import net.rim.device.api.ui.Field;
 import net.rim.device.api.ui.FieldChangeListener;
+import net.rim.device.api.ui.UiApplication;
 import persistence.Persistence;
 import core.Actuacion;
 import core.CampoPersonalizado;
@@ -139,21 +140,30 @@ public class NuevoProceso {
 		} else if (isCampoObligatorio()) {
 		} else if (checkLonMin()) {
 		} else {
-			_proceso = new Proceso(_demandante, _demandado, _screen.getFecha(),
-					_juzgado, _screen.getRadicado(),
-					_screen.getRadicadoUnico(), _actuaciones,
-					_screen.getEstado(), (Categoria) _screen.getCategoria(),
-					_screen.getTipo(), _screen.getNotas(), _campos,
-					_screen.getPrioridad());
-			try {
-				new Persistence().guardarProceso(_proceso);
-			} catch (NullPointerException e) {
-				_screen.alert(Util.noSDString());
-				System.exit(0);
-			} catch (Exception e) {
-				_screen.alert(e.toString());
-			}
-			Util.popScreen(_screen);
+			Util.pushWaitScreen();
+			UiApplication.getUiApplication().invokeLater(new Runnable() {
+
+				public void run() {
+					_proceso = new Proceso(_demandante, _demandado, _screen
+							.getFecha(), _juzgado, _screen.getRadicado(),
+							_screen.getRadicadoUnico(), _actuaciones, _screen
+									.getEstado(), (Categoria) _screen
+									.getCategoria(), _screen.getTipo(), _screen
+									.getNotas(), _campos, _screen
+									.getPrioridad());
+					try {
+						new Persistence().guardarProceso(_proceso);
+					} catch (NullPointerException e) {
+						_screen.alert(Util.noSDString());
+						System.exit(0);
+					} catch (Exception e) {
+						_screen.alert(e.toString());
+					} finally {
+						Util.popScreen(_screen);
+						Util.popWaitScreen();
+					}
+				}
+			});
 		}
 	}
 
@@ -296,7 +306,7 @@ public class NuevoProceso {
 	private void cerrarPantalla() {
 		if (_actuaciones.size() != 0 || _campos.size() != 0
 				|| _demandante != null || _demandado != null
-				|| _juzgado != null) {
+				|| _juzgado != null || _screen.isDirty()) {
 			Object[] ask = { "Guardar", "Descartar", "Cancelar" };
 			int sel = _screen.ask(ask, "Se han detectado cambios", 2);
 			if (sel == 0) {

@@ -7,6 +7,7 @@ import java.util.Vector;
 
 import net.rim.device.api.ui.Field;
 import net.rim.device.api.ui.FieldChangeListener;
+import net.rim.device.api.ui.UiApplication;
 import persistence.Persistence;
 import core.CampoPersonalizado;
 import core.Categoria;
@@ -82,7 +83,7 @@ public class NuevaPlantilla {
 			} else if (context == Util.ADD_CATEGORIA) {
 				addCategoria();
 			} else if (context == Util.GUARDAR) {
-				guardarProceso();
+				guardarPlantilla();
 			} else if (context == Util.ADD_CAMPO) {
 				addCampo();
 			} else if (context == Util.ELIMINAR_CAMPO) {
@@ -110,34 +111,44 @@ public class NuevaPlantilla {
 	 * Se crea el nuevo Proceso, basado en los datos capturados por la pantalla
 	 * y se guarda en la base de datos
 	 */
-	private void guardarProceso() {
+	private void guardarPlantilla() {
 		getValoresCampos();
 		if (_screen.getNombre().equals("")) {
 			Util.alert("El campo Nombre es obligatorio");
 		} else if (checkLonMin()) {
 		} else {
-			if (_demandante == null) {
-				_demandante = _demandanteVacio;
-			}
-			if (_demandado == null) {
-				_demandado = _demandadoVacio;
-			}
-			if (_juzgado == null) {
-				_juzgado = _juzgadoVacio;
-			}
-			_plantilla = new Plantilla(_screen.getNombre(), _demandante,
-					_demandado, _juzgado, _screen.getRadicado(),
-					_screen.getRadicadoUnico(), _screen.getEstado(),
-					(Categoria) _screen.getCategoria(), _screen.getTipo(),
-					_screen.getNotas(), _campos, _screen.getPrioridad());
-			try {
-				new Persistence().guardarPlantilla(_plantilla);
-			} catch (NullPointerException e) {
-				Util.noSd();
-			} catch (Exception e) {
-				Util.alert(e.toString());
-			}
-			Util.popScreen(_screen);
+			Util.pushWaitScreen();
+			UiApplication.getUiApplication().invokeLater(new Runnable() {
+
+				public void run() {
+					if (_demandante == null) {
+						_demandante = _demandanteVacio;
+					}
+					if (_demandado == null) {
+						_demandado = _demandadoVacio;
+					}
+					if (_juzgado == null) {
+						_juzgado = _juzgadoVacio;
+					}
+					_plantilla = new Plantilla(_screen.getNombre(),
+							_demandante, _demandado, _juzgado, _screen
+									.getRadicado(), _screen.getRadicadoUnico(),
+							_screen.getEstado(), (Categoria) _screen
+									.getCategoria(), _screen.getTipo(), _screen
+									.getNotas(), _campos, _screen
+									.getPrioridad());
+					try {
+						new Persistence().guardarPlantilla(_plantilla);
+					} catch (NullPointerException e) {
+						Util.noSd();
+					} catch (Exception e) {
+						Util.alert(e.toString());
+					} finally {
+						Util.popScreen(_screen);
+						Util.popWaitScreen();
+					}
+				}
+			});
 		}
 	}
 
@@ -272,11 +283,11 @@ public class NuevaPlantilla {
 
 	private void cerrarPantalla() {
 		if (_campos.size() != 0 || _demandante != null || _demandado != null
-				|| _juzgado != null) {
+				|| _juzgado != null || _screen.isDirty()) {
 			Object[] ask = { "Guardar", "Descartar", "Cancelar" };
 			int sel = _screen.ask(ask, "Se han detectado cambios", 2);
 			if (sel == 1) {
-				guardarProceso();
+				guardarPlantilla();
 			} else if (sel == 2) {
 				Util.popScreen(_screen);
 			}

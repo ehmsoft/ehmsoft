@@ -75,26 +75,30 @@ public class NuevaPersona {
 	}
 
 	private void guardar() {
-		_persona = new Persona(_tipo, _screen.getCedula(), _screen.getNombre(),
-				_screen.getTelefono(), _screen.getDireccion(),
-				_screen.getCorreo(), _screen.getNotas());
-		try {
-			new Persistence().guardarPersona(_persona);
-			UiApplication.getUiApplication().popScreen(_screen);
-		} catch (NullPointerException e) {
-			_screen.alert(Util.noSDString());
-			System.exit(0);
-		} catch (Exception e) {
-			_screen.alert(e.toString());
-		}
+		Util.popWaitScreen();
+		UiApplication.getUiApplication().invokeLater(new Runnable() {
+
+			public void run() {
+				_persona = new Persona(_tipo, _screen.getCedula(), _screen
+						.getNombre(), _screen.getTelefono(), _screen
+						.getDireccion(), _screen.getCorreo(), _screen
+						.getNotas());
+				try {
+					new Persistence().guardarPersona(_persona);
+				} catch (NullPointerException e) {
+					Util.noSd();
+				} catch (Exception e) {
+					Util.alert(e.toString());
+				} finally {
+					Util.popScreen(_screen);
+					Util.popWaitScreen();
+				}
+			}
+		});
 	}
 
 	private void cerrarPantalla() {
-		if (!_screen.getNombre().equals("") || !_screen.getCedula().equals("")
-				|| !_screen.getTelefono().equals("")
-				|| !_screen.getDireccion().equals("")
-				|| !_screen.getCorreo().equals("")
-				|| !_screen.getNotas().equals("")) {
+		if (_screen.isDirty()) {
 			Object[] ask = { "Guardar", "Descartar", "Cancelar" };
 			int sel = _screen.ask(ask, "Se han detectado cambios", 2);
 			if (sel == 0) {

@@ -58,14 +58,15 @@ public class NuevaCategoria {
 				public void run() {
 					try {
 						new Persistence().guardarCategoria(_categoria);
-						UiApplication.getUiApplication().popScreen(getScreen());
 					} catch (NullPointerException e) {
 						_screen.alert(Util.noSDString());
 						System.exit(0);
 					} catch (Exception e) {
 						_screen.alert(e.toString());
+					} finally {
+						Util.popScreen((Screen) _screen);
+						Util.popWaitScreen();
 					}
-					Util.popWaitScreen();
 				}
 			});
 		}

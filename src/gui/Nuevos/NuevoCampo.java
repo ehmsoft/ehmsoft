@@ -57,17 +57,26 @@ public class NuevoCampo {
 		} else {
 			_campo = new CampoPersonalizado(nombre, null, new Boolean(
 					isObligatorio), lonMax, lonMin);
-			if (_saveInBd) {
-				try {
-					new Persistence().guardarAtributo(_campo);
-				} catch (NullPointerException e) {
-					_screen.alert(Util.noSDString());
-					System.exit(0);
-				} catch (Exception e) {
-					_screen.alert(e.toString());
+			Util.pushWaitScreen();
+			UiApplication.getUiApplication().invokeLater(new Runnable() {
+
+				public void run() {
+					if (_saveInBd) {
+						try {
+							new Persistence().guardarAtributo(_campo);
+						} catch (NullPointerException e) {
+							Util.noSd();
+						} catch (Exception e) {
+							Util.alert(e.toString());
+						} finally {
+							Util.popScreen(_screen);
+							Util.popWaitScreen();
+						}
+					} else {
+						Util.popScreen(_screen);
+					}
 				}
-			}
-			UiApplication.getUiApplication().popScreen(_screen);
+			});
 		}
 	}
 

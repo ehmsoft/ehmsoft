@@ -85,9 +85,10 @@ public class NuevaActuacion {
 							Util.noSd();
 						} catch (Exception e) {
 							Util.alert(e.toString());
+						} finally {
+							Util.popWaitScreen();
+							Util.popScreen(_screen);
 						}
-						Util.popWaitScreen();
-						Util.popScreen(_screen);
 					}
 				});
 

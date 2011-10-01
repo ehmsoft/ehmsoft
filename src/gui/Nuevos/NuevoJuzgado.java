@@ -63,25 +63,30 @@ public class NuevoJuzgado {
 	}
 
 	private void guardar() {
-		_juzgado = new Juzgado(_screen.getNombre(), _screen.getCiudad(),
-				_screen.getDireccion(), _screen.getTelefono(),
-				_screen.getTipo());
-		try {
-			new Persistence().guardarJuzgado(_juzgado);
-			UiApplication.getUiApplication().popScreen(_screen);
-		} catch (NullPointerException e) {
-			_screen.showAlert(Util.noSDString());
-			System.exit(0);
-		} catch (Exception e) {
-			_screen.showAlert(e.toString());
-		}
+		Util.pushWaitScreen();
+		UiApplication.getUiApplication().invokeLater(new Runnable() {
+
+			public void run() {
+				_juzgado = new Juzgado(_screen.getNombre(),
+						_screen.getCiudad(), _screen.getDireccion(), _screen
+								.getTelefono(), _screen.getTipo());
+				try {
+					new Persistence().guardarJuzgado(_juzgado);
+				} catch (NullPointerException e) {
+					_screen.showAlert(Util.noSDString());
+					System.exit(0);
+				} catch (Exception e) {
+					_screen.showAlert(e.toString());
+				} finally {
+					Util.popScreen(_screen);
+					Util.popWaitScreen();
+				}
+			}
+		});
 	}
 
 	private void cerrarPantalla() {
-		if (!_screen.getNombre().equals("") || !_screen.getCiudad().equals("")
-				|| !_screen.getDireccion().equals("")
-				|| !_screen.getTelefono().equals("")
-				|| !_screen.getTipo().equals("")) {
+		if (_screen.isDirty()) {
 			Object[] ask = { "Guardar", "Descartar", "Cancelar" };
 			int sel = _screen.ask(ask, "Se han detectado cambios", 2);
 			if (sel == 0) {
