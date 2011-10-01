@@ -75,7 +75,7 @@ public class NuevaPersona {
 	}
 
 	private void guardar() {
-		Util.popWaitScreen();
+		Util.pushWaitScreen();
 		UiApplication.getUiApplication().invokeLater(new Runnable() {
 
 			public void run() {
