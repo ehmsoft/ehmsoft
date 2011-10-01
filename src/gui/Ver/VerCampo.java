@@ -59,23 +59,28 @@ public class VerCampo {
 		} else if (_screen.getLongitudMax() == _screen.getLongitudMin()
 				&& _screen.getLongitudMax() != 0) {
 			_screen.alert("La longitud máxima no puede ser igual que la loongitud minima");
-		} else {
-			CampoPersonalizado campo = new CampoPersonalizado(
-					_campo.getId_campo(), _campo.getId_atributo(),
-					_screen.getNombre(), null, _screen.isObligatorio(),
-					_screen.getLongitudMax(), _screen.getLongitudMin());
-			if (!campo.equals(_campo)) {
-				try {
-					new Persistence().actualizarAtributo(campo);
-				} catch (NullPointerException e) {
-					_screen.alert(Util.noSDString());
-					System.exit(0);
-				} catch (Exception e) {
-					_screen.alert(e.toString());
+		} else if (_screen.isDirty()) {
+			_campo.setNombre(_screen.getNombre());
+			_campo.setObligatorio(_screen.isObligatorio());
+			_campo.setLongitudMax(_screen.getLongitudMax());
+			_campo.setLongitudMin(_screen.getLongitudMin());
+			Util.pushWaitScreen();
+			UiApplication.getUiApplication().invokeLater(new Runnable() {
+
+				public void run() {
+					try {
+						new Persistence().actualizarAtributo(_campo);
+					} catch (NullPointerException e) {
+						_screen.alert(Util.noSDString());
+						System.exit(0);
+					} catch (Exception e) {
+						_screen.alert(e.toString());
+					} finally {
+						UiApplication.getUiApplication().popScreen(_screen);
+						Util.popWaitScreen();
+					}
 				}
-				_campo = campo;
-			}
-			UiApplication.getUiApplication().popScreen(_screen);
+			});
 		}
 	}
 
@@ -97,11 +102,7 @@ public class VerCampo {
 	}
 
 	private void cerrarPantalla() {
-		CampoPersonalizado campo = new CampoPersonalizado(_campo.getId_campo(),
-				_campo.getId_atributo(), _screen.getNombre(), null,
-				_screen.isObligatorio(), _screen.getLongitudMax(),
-				_screen.getLongitudMin());
-		if (!campo.equals(_campo)) {
+		if (_screen.isDirty()) {
 			Object[] ask = { "Guardar", "Descartar", "Cancelar" };
 			int sel = _screen.ask(ask, "Se han detectado cambios", 2);
 			if (sel == 0) {

@@ -57,23 +57,29 @@ public class VerJuzgado {
 	private void actualizarJuzgado() {
 		if (_screen.getNombre().length() == 0) {
 			_screen.alert("El campo Nombre es obligatorio");
-		} else {
-			Juzgado juzgado = new Juzgado(_screen.getNombre(),
-					_screen.getCiudad(), _screen.getDireccion(),
-					_screen.getTelefono(), _screen.getTipo(),
-					_juzgado.getId_juzgado());
-			if (!_juzgado.equals(juzgado)) {
-				try {
-					new Persistence().actualizarJuzgado(juzgado);
-				} catch (NullPointerException e) {
-					_screen.alert(Util.noSDString());
-					System.exit(0);
-				} catch (Exception e) {
-					_screen.alert(e.toString());
+		} else if (_screen.isDirty()) {
+			_juzgado.setNombre(_screen.getNombre());
+			_juzgado.setCiudad(_screen.getCiudad());
+			_juzgado.setDireccion(_screen.getDireccion());
+			_juzgado.setTelefono(_screen.getTelefono());
+			_juzgado.setTipo(_screen.getTipo());
+			Util.pushWaitScreen();
+			UiApplication.getUiApplication().invokeLater(new Runnable() {
+
+				public void run() {
+					try {
+						new Persistence().actualizarJuzgado(_juzgado);
+					} catch (NullPointerException e) {
+						_screen.alert(Util.noSDString());
+						System.exit(0);
+					} catch (Exception e) {
+						_screen.alert(e.toString());
+					} finally {
+						UiApplication.getUiApplication().popScreen(_screen);
+						Util.popWaitScreen();
+					}
 				}
-				_juzgado = juzgado;
-			}
-			UiApplication.getUiApplication().popScreen(_screen);
+			});
 		}
 	}
 

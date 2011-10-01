@@ -58,24 +58,29 @@ public class VerPersona {
 	private void actualizarPersona() {
 		if (_screen.getNombre().length() == 0) {
 			_screen.alert("El campo Nombre es obligatorio");
-		} else {
-			Persona persona = new Persona(_persona.getTipo(),
-					_screen.getCedula(), _screen.getNombre(),
-					_screen.getTelefono(), _screen.getDireccion(),
-					_screen.getCorreo(), _screen.getNotas(),
-					_persona.getId_persona());
-			if (!persona.equals(_persona)) {
-				try {
-					new Persistence().actualizarPersona(persona);
-				} catch (NullPointerException e) {
-					_screen.alert(Util.noSDString());
-					System.exit(0);
-				} catch (Exception e) {
-					_screen.alert(e.toString());
+		} else if(_screen.isDirty()) {
+			_persona.setId(_screen.getCedula());
+			_persona.setNombre(_screen.getNombre());
+			_persona.setTelefono(_screen.getTelefono());
+			_persona.setDireccion(_screen.getDireccion());
+			_persona.setCorreo(_screen.getCorreo());
+			_persona.setNotas(_screen.getNotas());
+			Util.pushWaitScreen();
+			UiApplication.getUiApplication().invokeLater(new Runnable() {
+				public void run() {
+					try {
+						new Persistence().actualizarPersona(_persona);
+					} catch (NullPointerException e) {
+						_screen.alert(Util.noSDString());
+						System.exit(0);
+					} catch (Exception e) {
+						_screen.alert(e.toString());
+					} finally {
+						UiApplication.getUiApplication().popScreen(_screen);
+						Util.popWaitScreen();
+					}
 				}
-				_persona = persona;
-			}
-			UiApplication.getUiApplication().popScreen(_screen);
+			});
 		}
 	}
 
@@ -97,11 +102,7 @@ public class VerPersona {
 	}
 
 	private void cerrarPantalla() {
-		Persona persona = new Persona(_persona.getTipo(), _screen.getCedula(),
-				_screen.getNombre(), _screen.getTelefono(),
-				_screen.getDireccion(), _screen.getCorreo(),
-				_screen.getNotas(), _persona.getId_persona());
-		if (!persona.equals(_persona)) {
+		if (_screen.isDirty()) {
 			Object[] ask = { "Guardar", "Descartar", "Cancelar" };
 			int sel = _screen.ask(ask, "Se han detectado cambios", 2);
 			if (sel == 0) {

@@ -30,7 +30,6 @@ public class VerPlantilla {
 	private Persona _demandanteVacio;
 	private Persona _demandadoVacio;
 	private Juzgado _juzgadoVacio;
-	private Categoria _categoriaVacia;
 
 	private Vector _campos;
 	private Vector _camposNuevos;
@@ -135,7 +134,7 @@ public class VerPlantilla {
 		getValoresCampos();
 		if (isCampoObligatorio()) {
 		} else if (checkLong()) {
-		} else {
+		} else if (_screen.isDirty()) {
 			if (_camposNuevos.size() != 0) {
 				guardarCamposNuevos();
 			}
@@ -143,41 +142,41 @@ public class VerPlantilla {
 				eliminarCampos();
 			}
 			concatCampos();
-			Plantilla plantilla = new Plantilla(_screen.getNombre(),
-					_plantilla.getId_plantilla(), _demandante, _demandado,
-					_juzgado, _screen.getRadicado(),
-					_screen.getRadicadoUnico(), _screen.getEstado(),
-					_categoria, _screen.getTipo(), _screen.getNotas(), _campos,
-					_screen.getPrioridad());
-			if (!plantilla.equals(_plantilla)) {
-				_plantilla = plantilla;
-				UiApplication.getUiApplication().invokeLater(new Runnable() {
-
-					public void run() {
-						try {
-							new Persistence().actualizarPlantilla(_plantilla);
-						} catch (NullPointerException e1) {
-							Util.noSd();
-						} catch (Exception e1) {
-							Util.alert(e1.toString());
+			_plantilla.setNombre(_screen.getNombre());
+			_plantilla.setDemandante(_demandante);
+			_plantilla.setDemandado(_demandado);
+			_plantilla.setJuzgado(_juzgado);
+			_plantilla.setRadicado(_screen.getRadicado());
+			_plantilla.setRadicadoUnico(_screen.getRadicadoUnico());
+			_plantilla.setEstado(_screen.getEstado());
+			_plantilla.setCategoria(_categoria);
+			_plantilla.setTipo(_screen.getTipo());
+			_plantilla.setNotas(_screen.getNotas());
+			_plantilla.setCampos(_campos);
+			_plantilla.setPrioridad(_screen.getPrioridad());
+			Util.pushWaitScreen();
+			UiApplication.getUiApplication().invokeLater(new Runnable() {
+				public void run() {
+					try {
+						new Persistence().actualizarPlantilla(_plantilla);
+						if (cambioCampos()) {
+							Persistence p = new Persistence();
+							Enumeration e = _campos.elements();
+							while (e.hasMoreElements()) {
+								p.actualizarCampoPlantilla((CampoPersonalizado) e
+										.nextElement());
+							}
 						}
+					} catch (NullPointerException e1) {
+						Util.noSd();
+					} catch (Exception e1) {
+						Util.alert(e1.toString());
+					} finally {
+						Util.popScreen(_screen);
+						Util.popWaitScreen();
 					}
-				});
-			} else if (cambioCampos()) {
-				try {
-					Persistence p = new Persistence();
-					Enumeration e = _campos.elements();
-					while (e.hasMoreElements()) {
-						p.actualizarCampoPlantilla((CampoPersonalizado) e
-								.nextElement());
-					}
-				} catch (NullPointerException e) {
-					Util.noSd();
-				} catch (Exception e) {
-					Util.alert(e.toString());
 				}
-			}
-			Util.popScreen(_screen);
+			});
 		}
 	}
 
@@ -231,6 +230,7 @@ public class VerPlantilla {
 		if (campo != null) {
 			_camposNuevos.addElement(campo);
 			_screen.addCampo(campo, campo.getNombre(), "");
+			_screen.setDirty(true);
 		}
 	}
 
@@ -246,6 +246,7 @@ public class VerPlantilla {
 				_camposNuevos.removeElement(old);
 			}
 			_screen.eliminarCampo();
+			_screen.setDirty(true);
 		} else if (!old.equals(nw)) {
 			if (_campos.contains(old)) {
 				int index = _campos.indexOf(old);
@@ -257,6 +258,7 @@ public class VerPlantilla {
 				_camposNuevos.insertElementAt(nw, index);
 			}
 			_screen.modificarCampo(nw, nw.getNombre());
+			_screen.setDirty(true);
 		}
 	}
 
@@ -275,6 +277,7 @@ public class VerPlantilla {
 			} else {
 				_camposNuevos.removeElement(old);
 			}
+			_screen.setDirty(true);
 		}
 	}
 
@@ -377,6 +380,7 @@ public class VerPlantilla {
 			}
 			_demandante = null;
 			_screen.setDemandante(_demandanteVacio.getNombre());
+			_screen.setDirty(true);
 		}
 	}
 
@@ -389,6 +393,7 @@ public class VerPlantilla {
 			}
 			_demandado = null;
 			_screen.setDemandado(_demandadoVacio.getNombre());
+			_screen.setDirty(true);
 		}
 	}
 
@@ -401,22 +406,25 @@ public class VerPlantilla {
 			}
 			_juzgado = null;
 			_screen.setJuzgado(_juzgadoVacio.getNombre());
+			_screen.setDirty(true);
 		}
 	}
 
 	private void verDemandante() {
-		if (!_demandante.getId_persona().equals("1")) {
-			if (_demandante != null) {
-				_demandante = Util.verPersona(_demandante);
-				if (_demandante != null) {
-					_plantilla.setDemandante(_demandante);
+		if (!_demandante.getId_persona().equals("1") && _demandante != null) {
+			Persona demandante = Util.verPersona(_demandante);
+			if (demandante != null) {
+				if (!demandante.equals(_demandante)) {
+					_demandante = demandante;
 					_screen.setDemandante(_demandante.getNombre());
-				} else {
-					if (_demandanteVacio == null) {
-						_demandanteVacio = Util.consultarPersonaVacia(1);
-					}
-					_screen.setDemandante(_demandanteVacio.getNombre());
+					_screen.setDirty(true);
 				}
+			} else {
+				if (_demandanteVacio == null) {
+					_demandanteVacio = Util.consultarPersonaVacia(1);
+				}
+				_screen.setDemandante(_demandanteVacio.getNombre());
+				_screen.setDirty(true);
 			}
 		} else {
 			addDemandante();
@@ -424,18 +432,20 @@ public class VerPlantilla {
 	}
 
 	private void verDemandado() {
-		if (!_demandado.getId_persona().equals("1")) {
-			if (_demandado != null) {
-				_demandado = Util.verPersona(_demandado);
-				if (_demandado != null) {
-					_plantilla.setDemandado(_demandado);
+		if (!_demandado.getId_persona().equals("1") && _demandado != null) {
+			Persona demandado = Util.verPersona(_demandado);
+			if (demandado != null) {
+				if (!demandado.equals(_demandado)) {
+					_demandado = demandado;
 					_screen.setDemandado(_demandado.getNombre());
-				} else {
-					if (_demandadoVacio == null) {
-						_demandadoVacio = Util.consultarPersonaVacia(2);
-					}
-					_screen.setDemandado(_demandadoVacio.getNombre());
+					_screen.setDirty(true);
 				}
+			} else {
+				if (_demandadoVacio == null) {
+					_demandadoVacio = Util.consultarPersonaVacia(2);
+				}
+				_screen.setDemandado(_demandadoVacio.getNombre());
+				_screen.setDirty(true);
 			}
 		} else {
 			addDemandado();
@@ -443,18 +453,20 @@ public class VerPlantilla {
 	}
 
 	private void verJuzgado() {
-		if (!_juzgado.getId_juzgado().equals("1")) {
-			if (_juzgado != null) {
-				_juzgado = Util.verJuzgado(_juzgado);
-				if (_juzgado != null) {
-					_plantilla.setJuzgado(_juzgado);
+		if (!_juzgado.getId_juzgado().equals("1") && _juzgado != null) {
+			Juzgado juzgado = Util.verJuzgado(_juzgado);
+			if (juzgado != null) {
+				if (!juzgado.equals(_juzgado)) {
+					_juzgado = juzgado;
 					_screen.setJuzgado(_juzgado.getNombre());
-				} else {
-					if (_juzgadoVacio == null) {
-						_juzgadoVacio = Util.consultarJuzgadoVacio();
-					}
-					_screen.setJuzgado(_juzgadoVacio.getNombre());
+					_screen.setDirty(true);
 				}
+			} else {
+				if (_juzgadoVacio == null) {
+					_juzgadoVacio = Util.consultarJuzgadoVacio();
+				}
+				_screen.setJuzgado(_juzgadoVacio.getNombre());
+				_screen.setDirty(true);
 			}
 		} else {
 			addJuzgado();
@@ -462,64 +474,51 @@ public class VerPlantilla {
 	}
 
 	private void verCategoria() {
-		if (_categoria != null) {
-			_categoria = Util.verCategoria(_categoria);
+		if (_categoria.getId_categoria() != "1") {
+			Categoria categoria = Util.verCategoria(_categoria);
 			if (_categoria != null) {
-				_screen.setCategoria(_categoria.getDescripcion());
-			} else {
-				if (_categoriaVacia == null) {
-					_categoriaVacia = Util.consultarCategoriaVacio();
+				if (!categoria.equals(_categoria)) {
+					_categoria = categoria;
+					_screen.setCategoria(_categoria.getDescripcion());
+					_screen.setDirty(true);
 				}
-				_screen.setCategoria(_categoriaVacia.getDescripcion());
 			}
 		}
 	}
 
 	private void addDemandante() {
-		_demandante = Util.listadoPersonas(1, true, 0);
-		if (_demandante != null) {
+		Persona demandante = Util.listadoPersonas(1, true, 0);
+		if (!demandante.equals(_demandante)) {
+			_demandante = demandante;
 			_screen.setDemandante(_demandante.getNombre());
-		} else {
-			if (_demandanteVacio == null) {
-				_demandanteVacio = Util.consultarPersonaVacia(1);
-			}
-			_screen.setDemandante(_demandanteVacio.getNombre());
+			_screen.setDirty(true);
 		}
 	}
 
 	private void addDemandado() {
-		_demandado = Util.listadoPersonas(2, true, 0);
-		if (_demandado != null) {
+		Persona demandado = Util.listadoPersonas(2, true, 0);
+		if (!demandado.equals(_demandado)) {
+			_demandado = demandado;
 			_screen.setDemandado(_demandado.getNombre());
-		} else {
-			if (_demandadoVacio == null) {
-				_demandadoVacio = Util.consultarPersonaVacia(2);
-			}
-			_screen.setDemandado(_demandadoVacio.getNombre());
+			_screen.setDirty(true);
 		}
 	}
 
 	private void addJuzgado() {
-		_juzgado = Util.listadoJuzgados(true, 0);
-		if (_juzgado != null) {
+		Juzgado juzgado = Util.listadoJuzgados(true, 0);
+		if (!juzgado.equals(_juzgado)) {
+			_juzgado = juzgado;
 			_screen.setJuzgado(_juzgado.getNombre());
-		} else {
-			if (_juzgadoVacio == null) {
-				_juzgadoVacio = Util.consultarJuzgadoVacio();
-			}
-			_screen.setJuzgado(_juzgadoVacio.getNombre());
+			_screen.setDirty(true);
 		}
 	}
 
 	private void addCategoria() {
-		_categoria = Util.listadoCategorias(true, 0);
-		if (_categoria != null) {
+		Categoria categoria = Util.listadoCategorias(true, 0);
+		if (!categoria.equals(_categoria)) {
+			_categoria = categoria;
 			_screen.setCategoria(_categoria.getDescripcion());
-		} else {
-			if (_categoriaVacia == null) {
-				_categoriaVacia = Util.consultarCategoriaVacio();
-			}
-			_screen.setCategoria(_categoriaVacia.getDescripcion());
+			_screen.setDirty(true);
 		}
 	}
 
@@ -527,15 +526,23 @@ public class VerPlantilla {
 		Object[] ask = { "Aceptar", "Cancelar" };
 		int sel = _screen.ask(ask, Util.delBDPlantilla(), 1);
 		if (sel == 0) {
-			try {
-				new Persistence().borrarPlantilla(_plantilla);
-			} catch (NullPointerException e) {
-				Util.noSd();
-			} catch (Exception e) {
-				Util.alert(e.toString());
-			}
-			_plantilla = null;
-			Util.popScreen(_screen);
+			Util.pushWaitScreen();
+			UiApplication.getUiApplication().invokeLater(new Runnable() {
+
+				public void run() {
+					try {
+						new Persistence().borrarPlantilla(_plantilla);
+					} catch (NullPointerException e) {
+						Util.noSd();
+					} catch (Exception e) {
+						Util.alert(e.toString());
+					} finally {
+						_plantilla = null;
+						Util.popScreen(_screen);
+						Util.popWaitScreen();
+					}
+				}
+			});
 		}
 	}
 
@@ -550,12 +557,7 @@ public class VerPlantilla {
 	}
 
 	private void cerrarPantalla() {
-		Plantilla plantilla = new Plantilla(_screen.getNombre(),
-				_plantilla.getId_plantilla(), _demandante, _demandado,
-				_juzgado, _screen.getRadicado(), _screen.getRadicadoUnico(),
-				_screen.getEstado(), _categoria, _screen.getTipo(),
-				_screen.getNotas(), _campos, _screen.getPrioridad());
-		if (!plantilla.equals(_plantilla)) {
+		if (_screen.isDirty()) {
 			Object[] ask = { "Guardar", "Descartar", "Cancelar" };
 			int sel = _screen.ask(ask, "Se han detectado cambios", 2);
 			if (sel == 0) {

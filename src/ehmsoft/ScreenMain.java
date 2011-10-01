@@ -125,22 +125,30 @@ public class ScreenMain extends MainScreen {
 	}
 	
 	private void cargarActuaciones() {
-		try {
-			Vector v = new Persistence().consultarActuacionesCriticas(Preferencias.getCantidadActuacionesCriticas());
-			Enumeration e = v.elements();
-			while(_lista.getSize() != 0){
-				_lista.delete(0);
+		Util.pushWaitScreen();
+		UiApplication.getUiApplication().invokeLater(new Runnable() {
+			
+			public void run() {
+				try {
+					Vector v = new Persistence().consultarActuacionesCriticas(Preferencias.getCantidadActuacionesCriticas());
+					Enumeration e = v.elements();
+					while(_lista.getSize() != 0){
+						_lista.delete(0);
+					}
+					while (e.hasMoreElements()) {
+						_lista.insert(_lista.getSize(), e.nextElement());
+						
+					}
+				} catch (NullPointerException e) {
+					Util.noSd();
+				} catch (Exception e) {
+					Util.alert(e.toString());
+				}
+				_lista.focusChangeNotify(0);
+				Util.popWaitScreen();
+				_grid.invalidate();
 			}
-			while (e.hasMoreElements()) {
-				_lista.insert(_lista.getSize(), e.nextElement());
-				
-			}
-		} catch (NullPointerException e) {
-			Util.noSd();
-		} catch (Exception e) {
-			Util.alert(e.toString());
-		}
-		_lista.focusChangeNotify(0);
+		});
 	}
 
 	private void actuacionesManager() {

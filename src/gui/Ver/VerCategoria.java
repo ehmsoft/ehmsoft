@@ -42,21 +42,25 @@ public class VerCategoria {
 	private void actualizarCategoria() {
 		if (_screen.getDescripcion().length() == 0) {
 			_screen.alert("El campo Descripcion es obligatorio");
-		} else {
-			Categoria categoria = new Categoria(_categoria.getId_categoria(),
-					_screen.getDescripcion());
-			if (!categoria.equals(_categoria)) {
-				try {
-					new Persistence().actualizarCategoria(categoria);
-				} catch (NullPointerException e) {
-					_screen.alert(Util.noSDString());
-					System.exit(0);
-				} catch (Exception e) {
-					_screen.alert(e.toString());
+		} else if (_screen.isDirty()) {
+			_categoria.setDescripcion(_screen.getDescripcion());
+			Util.pushWaitScreen();
+			UiApplication.getUiApplication().invokeLater(new Runnable() {
+
+				public void run() {
+					try {
+						new Persistence().actualizarCategoria(_categoria);
+					} catch (NullPointerException e) {
+						_screen.alert(Util.noSDString());
+						System.exit(0);
+					} catch (Exception e) {
+						_screen.alert(e.toString());
+					} finally {
+						UiApplication.getUiApplication().popScreen(_screen);
+						Util.popWaitScreen();
+					}
 				}
-				_categoria = categoria;
-			}
-			UiApplication.getUiApplication().popScreen(_screen);
+			});
 		}
 	}
 

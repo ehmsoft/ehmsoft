@@ -71,22 +71,29 @@ public class VerActuacion {
 			_screen.alert("El campo Descripción es obligatorio");
 		} else if (_juzgado == null || _juzgado.getId_juzgado().equals("1")) {
 			Util.alert("El juzgado es obligatorio");
-		} else {
-			Actuacion actuacion = new Actuacion(_juzgado, _screen.getFecha(),
-					_screen.getFechaProxima(), _screen.getDescripcion(),
-					_actuacion.getId_actuacion(), _cita.getUid());
-			if (!_actuacion.equals(actuacion)) {
-				try {
-					new Persistence().actualizarActuacion(actuacion);
-				} catch (NullPointerException e) {
-					Util.noSd();
-				} catch (Exception e) {
-					Util.alert(e.toString());
+		} else if (_screen.isDirty()) {
+			_actuacion.setJuzgado(_juzgado);
+			_actuacion.setFecha(_screen.getFecha());
+			_actuacion.setFechaProxima(_screen.getFechaProxima());
+			_actuacion.setDescripcion(_screen.getDescripcion());
+			_actuacion.setUid(_cita.getUid());
+			Util.pushWaitScreen();
+			UiApplication.getUiApplication().invokeLater(new Runnable() {
+
+				public void run() {
+					try {
+						new Persistence().actualizarActuacion(_actuacion);
+						borrarCitaActuacion();
+					} catch (NullPointerException e) {
+						Util.noSd();
+					} catch (Exception e) {
+						Util.alert(e.toString());
+					} finally {
+						Util.popScreen(_screen);
+						Util.popWaitScreen();
+					}
 				}
-				_actuacion = actuacion;
-			}
-			borrarCitaActuacion();
-			Util.popScreen(_screen);
+			});
 		}
 	}
 
@@ -119,14 +126,18 @@ public class VerActuacion {
 		if (!_juzgado.getId_juzgado().equals("1") && _juzgado != null) {
 			Juzgado juzgado = Util.verJuzgado(_juzgado);
 			if (juzgado != null) {
-				_juzgado = juzgado;
-				_screen.setJuzgado(_juzgado.getNombre());
+				if (!_juzgado.equals(juzgado)) {
+					_juzgado = juzgado;
+					_screen.setJuzgado(_juzgado.getNombre());
+					_screen.setDirty(true);
+				}
 			} else {
 				if (_juzgadoVacio == null) {
 					_juzgadoVacio = Util.consultarJuzgadoVacio();
 				}
 				_juzgado = null;
 				_screen.setJuzgado(_juzgadoVacio.getNombre());
+				_screen.setDirty(true);
 			}
 		} else {
 			addJuzgado();
@@ -151,6 +162,7 @@ public class VerActuacion {
 		if (juzgado != null) {
 			_juzgado = juzgado;
 			_screen.setJuzgado(_juzgado.getNombre());
+			_screen.setDirty(true);
 		}
 	}
 
@@ -176,10 +188,7 @@ public class VerActuacion {
 	}
 
 	private void cerrarPantalla() {
-		Actuacion actuacion = new Actuacion(_juzgado, _screen.getFecha(),
-				_screen.getFechaProxima(), _screen.getDescripcion(),
-				_actuacion.getId_actuacion(), _cita.getUid());
-		if (!actuacion.equals(_actuacion)) {
+		if (_screen.isDirty()) {
 			Object[] ask = { "Guardar", "Descartar", "Cancelar" };
 			int sel = _screen.ask(ask, "Se han detectado cambios", 2);
 			if (sel == 0) {
