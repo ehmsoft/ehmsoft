@@ -43,6 +43,7 @@ import net.rim.device.api.ui.component.Menu;
 import net.rim.device.api.ui.component.ObjectListField;
 import net.rim.device.api.ui.component.SeparatorField;
 import net.rim.device.api.ui.container.GridFieldManager;
+import net.rim.device.api.ui.container.HorizontalFieldManager;
 import net.rim.device.api.ui.container.MainScreen;
 import net.rim.device.api.ui.container.PopupScreen;
 import net.rim.device.api.ui.container.VerticalFieldManager;
@@ -70,25 +71,44 @@ public class ScreenMain extends MainScreen {
 		
 		getMainManager().setBackground(
 				BackgroundFactory.createSolidBackground(Color.BLACK));
+		
+		if(Display.getOrientation() == Display.ORIENTATION_PORTRAIT) {
+			_grid = new GridFieldManager(2, 1, GridFieldManager.FIXED_SIZE);
+			
+			HorizontalFieldManager top = new HorizontalFieldManager(VERTICAL_SCROLL | VERTICAL_SCROLLBAR);
+			HorizontalFieldManager bottom = new HorizontalFieldManager();
+			
+			top.setBorder(BorderFactory.createRoundedBorder(
+					new XYEdges(5, 5, 5, 5), Color.WHITE, Border.STYLE_SOLID));
+			top.add(_lista);
+			bottom.add(_vertical);
+			
+			_grid.add(top);
+			_grid.add(bottom);
+			
+			add(_grid);
+			top.setFocus();
+			top.invalidate();
+		} else if(Display.getOrientation() == Display.ORIENTATION_LANDSCAPE) {
+			_grid = new GridFieldManager(1, 2, GridFieldManager.FIXED_SIZE);
 
-		_grid = new GridFieldManager(1, 2, GridFieldManager.FIXED_SIZE);
+			VerticalFieldManager right = new VerticalFieldManager(VERTICAL_SCROLL
+					| VERTICAL_SCROLLBAR);
+			VerticalFieldManager left = new VerticalFieldManager(VERTICAL_SCROLL
+					| VERTICAL_SCROLLBAR);
+			left.setBorder(BorderFactory.createRoundedBorder(
+					new XYEdges(5, 5, 5, 5), Color.WHITE, Border.STYLE_SOLID));
 
-		VerticalFieldManager right = new VerticalFieldManager(VERTICAL_SCROLL
-				| VERTICAL_SCROLLBAR);
-		VerticalFieldManager left = new VerticalFieldManager(VERTICAL_SCROLL
-				| VERTICAL_SCROLLBAR);
-		left.setBorder(BorderFactory.createRoundedBorder(
-				new XYEdges(5, 5, 5, 5), Color.WHITE, Border.STYLE_SOLID));
+			left.add(_lista);
+			right.add(_vertical);
 
-		left.add(_lista);
-		right.add(_vertical);
+			_grid.add(left);
+			_grid.add(right);
 
-		_grid.add(left);
-		_grid.add(right);
-
-		add(_grid);
-		left.setFocus();
-		left.invalidate();
+			add(_grid);
+			left.setFocus();
+			left.invalidate();
+		}
 		
 		final PopupScreen wait = new PopupScreen(new VerticalFieldManager());
 		wait.add(new LabelField("Porfavor espere..."));
@@ -271,9 +291,17 @@ public class ScreenMain extends MainScreen {
 				_fechaProxima.setText(fecha);
 			} catch (Exception e) {
 			} finally {
-				_grid.setColumnProperty(0, GridFieldManager.FIXED_SIZE, column1);
-				_grid.setColumnProperty(1, GridFieldManager.FIXED_SIZE, column2);
-				_grid.setRowProperty(0, GridFieldManager.FIXED_SIZE, row);
+				if (Display.getOrientation() == Display.ORIENTATION_LANDSCAPE) {
+					_grid.setColumnProperty(0, GridFieldManager.FIXED_SIZE,
+							column1);
+					_grid.setColumnProperty(1, GridFieldManager.FIXED_SIZE,
+							column2);
+					_grid.setRowProperty(0, GridFieldManager.FIXED_SIZE, row);
+				} else if (Display.getOrientation() == Display.ORIENTATION_PORTRAIT) {
+					_grid.setRowProperty(0, GridFieldManager.FIXED_SIZE, Display.getHeight() / 2);
+					_grid.setRowProperty(1, GridFieldManager.FIXED_SIZE, Display.getHeight() / 2);
+					_grid.setColumnProperty(0, GridFieldManager.FIXED_SIZE, Display.getWidth());
+				}
 			}
 		}
 	};
