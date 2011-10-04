@@ -25,7 +25,7 @@ public class ConnectionManager {
 		}
 	}
 	
-	public boolean existeBD(){//Método que verifica si la SD está presente, luego verifica si la base de datos existe, sino la crea
+	public boolean existeBD(){//Método que verifica si la SD está presente, luego verifica si la base de datos existe, retornando verdadero en el caso que exista
 		try{
 		verificarSD();
 		if(DatabaseFactory.exists(dbLocation)){
@@ -68,7 +68,12 @@ public class ConnectionManager {
 					"'telefono' TEXT,"+
 					"'direccion' TEXT,"+
 					"'correo' TEXT,"+
-					"'notas' TEXT, UNIQUE("+
+					"'notas' TEXT, " +
+					"'nuevo' BOOLEAN, "+
+					"'modificado' BOOLEAN, "+
+					"'eliminado' BOOELAN, "+
+					"'fecha_mod' DATE," +
+					"UNIQUE("+
 					"'cedula',"+
 			"'nombre'))");
 			st.prepare();
@@ -82,7 +87,12 @@ public class ConnectionManager {
 					"'telefono' TEXT,"+
 					"'direccion' TEXT,"+
 					"'correo' TEXT,"+
-					"'notas' TEXT, UNIQUE("+
+					"'notas' TEXT, " +
+					"'nuevo' BOOLEAN, "+
+					"'modificado' BOOLEAN, "+
+					"'eliminado' BOOELAN, "+
+					"'fecha_mod' DATE," +
+					"UNIQUE("+
 					"'cedula',"+
 			"'nombre'))");
 			st.prepare();
@@ -95,7 +105,12 @@ public class ConnectionManager {
 					"'ciudad' TEXT,"+
 					"'telefono' TEXT,"+
 					"'direccion' TEXT,"+
-					"'tipo' TEXT, UNIQUE("+
+					"'tipo' TEXT, " +
+					"'nuevo' BOOLEAN, "+
+					"'modificado' BOOLEAN, "+
+					"'eliminado' BOOELAN, "+
+					"'fecha_mod' DATE," +
+					"UNIQUE("+
 					"'nombre',"+
 					"'ciudad',"+
 			"'tipo'))");            
@@ -110,7 +125,12 @@ public class ConnectionManager {
 					"'fecha_creacion' DATE,"+
 					"'fecha_proxima' DATE,"+
 					"'descripcion' TEXT,"+
-					"'uid' TEXT,FOREIGN KEY(id_proceso) REFERENCES procesos(id_proceso),FOREIGN KEY(id_juzgado) REFERENCES juzgados(id_juzgado), UNIQUE("+
+					"'uid' TEXT," +
+					"'nuevo' BOOLEAN, "+
+					"'modificado' BOOLEAN, "+
+					"'eliminado' BOOELAN, "+
+					"'fecha_mod' DATE," +
+					"FOREIGN KEY(id_proceso) REFERENCES procesos(id_proceso),FOREIGN KEY(id_juzgado) REFERENCES juzgados(id_juzgado), UNIQUE("+
 					"'id_proceso',"+
 					"'id_juzgado',"+
 					"'fecha_creacion',"+
@@ -122,7 +142,12 @@ public class ConnectionManager {
 			//Crear Tabla Categorias
 			st = d.createStatement("CREATE TABLE 'categorias'("+
 					"'id_categoria' INTEGER PRIMARY KEY,"+
-			"'descripcion' TEXT)");
+			"'descripcion' TEXT," +
+			"'nuevo' BOOLEAN, "+
+			"'modificado' BOOLEAN, "+
+			"'eliminado' BOOELAN, "+
+			"'fecha_mod' DATE" +
+			")");
 			st.prepare();
 			st.execute();
 			st.close();
@@ -132,7 +157,12 @@ public class ConnectionManager {
 					"'nombre' TEXT,"+
 					"'obligatorio' BOOLEAN,"+
 					"'longitud_max' INTEGER,"+
-					"'longitud_min' INTEGER, UNIQUE("+
+					"'longitud_min' INTEGER, " +
+					"'nuevo' BOOLEAN, "+
+					"'modificado' BOOLEAN, "+
+					"'eliminado' BOOELAN, "+
+					"'fecha_mod' DATE," +
+					"UNIQUE("+
 					"'nombre',"+
 			"'obligatorio'))");
 			st.prepare();
@@ -143,7 +173,12 @@ public class ConnectionManager {
 					"'id_atributo_proceso' INTEGER PRIMARY KEY,"+
 					"'id_atributo' INTEGER,"+
 					"'id_proceso' INTEGER,"+
-					"'valor' TEXT,FOREIGN KEY(id_atributo) REFERENCES atributos(id_atributo),FOREIGN KEY(id_proceso) REFERENCES procesos(id_proceso),UNIQUE("+
+					"'valor' TEXT," +
+					"'nuevo' BOOLEAN, "+
+					"'modificado' BOOLEAN, "+
+					"'eliminado' BOOELAN, "+
+					"'fecha_mod' DATE," +
+					"FOREIGN KEY(id_atributo) REFERENCES atributos(id_atributo),FOREIGN KEY(id_proceso) REFERENCES procesos(id_proceso),UNIQUE("+
 					"'id_atributo',"+
 					"'id_proceso',"+
 			"'valor'))");
@@ -163,7 +198,12 @@ public class ConnectionManager {
 					"'notas' TEXT,"+
 					"'prioridad' TEXT,"+
 					"'id_juzgado' INTEGER,"+
-					"'id_categoria' INTEGER,FOREIGN KEY(id_demandante) REFERENCES demandantes(id_demandante),FOREIGN KEY(id_demandado) REFERENCES demandados(id_demandado),FOREIGN KEY(id_juzgado) REFERENCES juzgados(id_juzgado),FOREIGN KEY(id_categoria) REFERENCES categorias(id_categoria), UNIQUE("+
+					"'id_categoria' INTEGER," +
+					"'nuevo' BOOLEAN, "+
+					"'modificado' BOOLEAN, "+
+					"'eliminado' BOOELAN, "+
+					"'fecha_mod' DATE," +
+					"FOREIGN KEY(id_demandante) REFERENCES demandantes(id_demandante),FOREIGN KEY(id_demandado) REFERENCES demandados(id_demandado),FOREIGN KEY(id_juzgado) REFERENCES juzgados(id_juzgado),FOREIGN KEY(id_categoria) REFERENCES categorias(id_categoria), UNIQUE("+
 					"'id_demandante',"+
 					"'id_demandado',"+
 					"'radicado',"+
@@ -193,7 +233,12 @@ public class ConnectionManager {
 					"'notas' TEXT,"+
 					"'prioridad' TEXT,"+
 					"'id_juzgado' INTEGER,"+
-					"'id_categoria' INTEGER,FOREIGN KEY(id_demandante) REFERENCES demandantes(id_demandante),FOREIGN KEY(id_demandado) REFERENCES demandados(id_demandado),FOREIGN KEY(id_juzgado) REFERENCES juzgados(id_juzgado),FOREIGN KEY(id_categoria) REFERENCES categorias(id_categoria), UNIQUE("+
+					"'id_categoria' INTEGER," +
+					"'nuevo' BOOLEAN, "+
+					"'modificado' BOOLEAN, "+
+					"'eliminado' BOOELAN, "+
+					"'fecha_mod' DATE," +
+					"FOREIGN KEY(id_demandante) REFERENCES demandantes(id_demandante),FOREIGN KEY(id_demandado) REFERENCES demandados(id_demandado),FOREIGN KEY(id_juzgado) REFERENCES juzgados(id_juzgado),FOREIGN KEY(id_categoria) REFERENCES categorias(id_categoria), UNIQUE("+
 					"'id_demandante',"+
 					"'id_demandado',"+
 					"'radicado',"+
@@ -207,7 +252,12 @@ public class ConnectionManager {
 					"'id_atributo_plantilla' INTEGER PRIMARY KEY,"+
 					"'id_atributo' INTEGER,"+
 					"'id_plantilla' INTEGER,"+
-					"'valor' TEXT,FOREIGN KEY(id_atributo) REFERENCES atributos(id_atributo),FOREIGN KEY(id_plantilla) REFERENCES plantillas(id_plantilla),UNIQUE("+
+					"'valor' TEXT," +
+					"'nuevo' BOOLEAN, "+
+					"'modificado' BOOLEAN, "+
+					"'eliminado' BOOELAN, "+
+					"'fecha_mod' DATE," +
+					"FOREIGN KEY(id_atributo) REFERENCES atributos(id_atributo),FOREIGN KEY(id_plantilla) REFERENCES plantillas(id_plantilla),UNIQUE("+
 					"'id_atributo',"+
 					"'id_plantilla',"+
 			"'valor'))");
