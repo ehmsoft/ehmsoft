@@ -43,7 +43,7 @@ public class NuevoProcesoScreen extends FondoNormal {
 		_txtCampos = new Vector();
 
 		_lblDemandante = new EditableTextField("Demandante: ");
-		
+
 		add(_lblDemandante);
 
 		_lblDemandado = new EditableTextField("Demandado: ");
@@ -86,16 +86,16 @@ public class NuevoProcesoScreen extends FondoNormal {
 		_txtNotas.setLabel("Notas: ");
 		add(_txtNotas);
 	}
-	
+
 	protected boolean navigationClick(int status, int time) {
 		Field f = getFieldWithFocus();
-		if(f.equals(_lblDemandante)) {
+		if (f.equals(_lblDemandante)) {
 			fieldChangeNotify(Util.ADD_DEMANDANTE);
 			return true;
-		} else if(f.equals(_lblDemandado)) {
+		} else if (f.equals(_lblDemandado)) {
 			fieldChangeNotify(Util.ADD_DEMANDADO);
 			return true;
-		} else if(f.equals(_lblJuzgado)) {
+		} else if (f.equals(_lblJuzgado)) {
 			fieldChangeNotify(Util.ADD_JUZGADO);
 			return true;
 		} else {

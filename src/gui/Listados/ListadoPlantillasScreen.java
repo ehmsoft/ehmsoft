@@ -10,13 +10,14 @@ import net.rim.device.api.ui.container.HorizontalFieldManager;
 import gui.ListaScreen;
 import gui.Util;
 
-public class ListadoPlantillasScreen extends ListaScreen  implements ListadoProcesosInterface{
-	
+public class ListadoPlantillasScreen extends ListaScreen implements
+		ListadoProcesosInterface {
+
 	private ObjectChoiceField _cfCategorias;
 
 	public ListadoPlantillasScreen() {
 		super();
-		
+
 		_cfCategorias = new ObjectChoiceField();
 		_cfCategorias.setChangeListener(listener);
 
@@ -25,7 +26,7 @@ public class ListadoPlantillasScreen extends ListaScreen  implements ListadoProc
 		title.add(_cfCategorias);
 
 		setTitle(title);
-		
+
 		_lista = new ListadoPlantillasLista() {
 			protected boolean navigationClick(int status, int time) {
 				click();
@@ -49,7 +50,7 @@ public class ListadoPlantillasScreen extends ListaScreen  implements ListadoProc
 			fieldChangeNotify(Util.NEW_PROCESO);
 		}
 	};
-	
+
 	public void setCategorias(Object[] choices) {
 		_cfCategorias.setChoices(choices);
 		invalidate();

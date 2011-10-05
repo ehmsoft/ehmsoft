@@ -1,5 +1,8 @@
 package gui.Nuevos;
 
+import java.util.Enumeration;
+import java.util.Vector;
+
 import gui.Cita;
 import gui.Util;
 import gui.Listados.ListadoJuzgados;
@@ -27,6 +30,23 @@ public class NuevaActuacion {
 		_screen = new NuevaActuacionScreen();
 		_screen.setJuzgado(_juzgadoVacio.getNombre());
 		_screen.setChangeListener(listener);
+			
+		if(Util.TEMP == null && _proceso != null) {
+			UiApplication.getUiApplication().invokeLater(new Runnable() {
+				
+				public void run() {
+					try {
+						Util.TEMP = new Persistence().consultarActuaciones(_proceso);
+					} catch(NullPointerException e) {
+						Util.noSd();
+					} catch(Exception e) {
+						Util.alert(e.toString());
+					}
+				}
+			});
+		} else {
+			Util.TEMP = new Vector();
+		}
 	}
 
 	public NuevaActuacion() {
@@ -74,29 +94,47 @@ public class NuevaActuacion {
 			_actuacion = new Actuacion(_juzgado, _screen.getFecha(),
 					_screen.getFechaProxima(), _screen.getDescripcion(), null,
 					_cita.getUid());
-			if (_proceso != null) {
-				Util.pushWaitScreen();
-				UiApplication.getUiApplication().invokeLater(new Runnable() {
-					public void run() {
-						try {
-							new Persistence().guardarActuacion(_actuacion,
-									_proceso.getId_proceso());
-						} catch (NullPointerException e) {
-							Util.noSd();
-						} catch (Exception e) {
-							Util.alert(e.toString());
-						} finally {
-							Util.popWaitScreen();
-							Util.popScreen(_screen);
-						}
-					}
-				});
+			if (!exist(_actuacion)) {
+				if (_proceso != null) {
+					Util.pushWaitScreen();
+					UiApplication.getUiApplication().invokeLater(
+							new Runnable() {
+								public void run() {
+									try {
+										new Persistence().guardarActuacion(
+												_actuacion,
+												_proceso.getId_proceso());
+									} catch (NullPointerException e) {
+										Util.noSd();
+									} catch (Exception e) {
+										Util.TEMP = null;
+										Util.alert(e.toString());
+									} finally {
+										Util.popWaitScreen();
+										Util.popScreen(_screen);
+									}
+								}
+							});
 
-			} else {
-				Util.popScreen(_screen);
+				} else {
+					Util.popScreen(_screen);
+				}
 			}
+			Util.TEMP = null;
 			borrarCitaActuacion();
 		}
+	}
+
+	private boolean exist(Actuacion actuacion) {
+		boolean exist = false;
+		Enumeration e = Util.TEMP.elements();
+		while(e.hasMoreElements()) {
+			if(e.nextElement().equals(actuacion)) {
+				exist = true;
+				break;
+			}
+		}
+		return exist;
 	}
 
 	private void addJuzgado() {

@@ -1,5 +1,7 @@
 package gui.Nuevos;
 
+import java.util.Enumeration;
+
 import gui.Util;
 import net.rim.device.api.ui.Field;
 import net.rim.device.api.ui.FieldChangeListener;
@@ -25,6 +27,24 @@ public class NuevaPersona {
 			_screen.setTitle("Nuevo demandante");
 		} else {
 			_screen.setTitle("Nuevo demandado");
+		}
+		if(Util.TEMP == null) {
+			UiApplication.getUiApplication().invokeLater(new Runnable() {
+				
+				public void run() {
+					try {
+						if(_tipo == 1) {
+							Util.TEMP = new Persistence().consultarDemandantes();
+						} else {
+							Util.TEMP = new Persistence().consultarDemandados();
+						}
+					} catch(NullPointerException e) {
+						Util.noSd();
+					} catch (Exception e) {
+						Util.alert(e.toString());
+					}
+				}
+			});
 		}
 	}
 
@@ -83,18 +103,34 @@ public class NuevaPersona {
 						.getNombre(), _screen.getTelefono(), _screen
 						.getDireccion(), _screen.getCorreo(), _screen
 						.getNotas());
-				try {
-					new Persistence().guardarPersona(_persona);
-				} catch (NullPointerException e) {
-					Util.noSd();
-				} catch (Exception e) {
-					Util.alert(e.toString());
-				} finally {
-					Util.popScreen(_screen);
-					Util.popWaitScreen();
+				if (!exist(_persona)) {
+					try {
+						new Persistence().guardarPersona(_persona);
+					} catch (NullPointerException e) {
+						Util.noSd();
+					} catch (Exception e) {
+						Util.TEMP = null;
+						Util.alert(e.toString());
+					} finally {
+						Util.popScreen(_screen);
+						Util.popWaitScreen();
+					}
 				}
+				Util.TEMP = null;
 			}
 		});
+	}
+	
+	private boolean exist(Persona element) {
+		boolean exist = false;
+		Enumeration e = Util.TEMP.elements();
+		while(e.hasMoreElements()) {
+			if(e.nextElement().equals(element)) {
+				exist = true;
+				break;
+			}
+		}
+		return exist;
 	}
 
 	private void cerrarPantalla() {

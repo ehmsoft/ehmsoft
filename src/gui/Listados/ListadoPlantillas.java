@@ -54,6 +54,7 @@ public class ListadoPlantillas {
 			public void run() {
 				try {
 					_vectorPlantillas = new Persistence().consultarPlantillas();
+					Util.TEMP = _vectorPlantillas;
 				} catch (NullPointerException e) {
 					Util.noSd();
 				} catch (Exception e) {
@@ -80,7 +81,7 @@ public class ListadoPlantillas {
 				_style = _style | ON_CLICK_VER;
 			}
 		}
-		
+
 		_categorias = Util.consultarCategorias();
 
 		if (_categorias != null) {
@@ -159,6 +160,7 @@ public class ListadoPlantillas {
 		UiApplication.getUiApplication().pushModalScreen(n.getScreen());
 		Plantilla proceso = n.getPlantilla();
 		if (proceso != null) {
+			_vectorPlantillas.addElement(proceso);
 			if ((_style & NO_NUEVO) == NO_NUEVO) {
 				_screen.addElement(proceso, 0);
 			} else {
@@ -171,7 +173,9 @@ public class ListadoPlantillas {
 	private void verPlantilla() {
 		Plantilla selected = (Plantilla) _screen.getSelected();
 		Plantilla plantilla = Util.verPlantilla(selected);
+		_vectorPlantillas.removeElement(selected);
 		if (plantilla != null) {
+			_vectorPlantillas.addElement(plantilla);
 			_screen.replace(selected, plantilla);
 		} else {
 			_screen.remove(selected);
@@ -192,11 +196,13 @@ public class ListadoPlantillas {
 				_screen.alert(e.toString());
 			}
 			_screen.remove(selected);
+			_vectorPlantillas.removeElement(selected);
 		}
 	}
 
 	private void cerrarPantalla() {
 		_selected = null;
+		Util.TEMP = null;
 		UiApplication.getUiApplication().popScreen((Screen) _screen);
 	}
 }

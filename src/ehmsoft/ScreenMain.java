@@ -52,44 +52,82 @@ import net.rim.device.api.ui.decor.BorderFactory;
 
 public class ScreenMain extends MainScreen {
 
-	private  GridFieldManager _grid;
-	private  VerticalFieldManager _vertical;
-	private  ObjectListField _lista;
-	private  LabelField _juzgado;
-	private  LabelField _fecha;
-	private  LabelField _fechaProxima;
-	private  LabelField _descripcion;
-	private  final int column1 = (Display.getWidth() / 2) - 32;
-	private  final int column2 = (Display.getWidth() / 2) + 16;
-	private  final int row = Display.getHeight() - 32;
+	private GridFieldManager _grid;
+	private VerticalFieldManager _info;
+	private ObjectListField _lista;
+	private LabelField _juzgado;
+	private LabelField _fecha;
+	private LabelField _fechaProxima;
+	private LabelField _descripcion;
+	private final int column1 = (Display.getWidth() / 2)
+			- (int) (Display.getWidth() * (30.3 / 480));
+	private final int column2 = (Display.getWidth() / 2)
+			+ (int) (Display.getWidth() * (16.3 / 480));
+	private final int row = Display.getHeight()
+			- (int) (Display.getHeight() * (13.3 / 360));
+	private final int row1 = Display.getHeight() / 2
+			- (int) (Display.getWidth() * (32.3 / 480));
+	private final int row2 = Display.getHeight() / 2;
+	private final int column = Display.getWidth() - 7
+			- (int) (Display.getWidth() * (32.3 / 360));
 
 	public ScreenMain() {
-		super();
-		
+		super(NO_VERTICAL_SCROLL);
+
 		actuacionesManager();
-		
+
+		Util.alert(Display.getWidth() + " " + Display.getHeight());
+
 		getMainManager().setBackground(
 				BackgroundFactory.createSolidBackground(Color.BLACK));
 
-		_grid = new GridFieldManager(1, 2, GridFieldManager.FIXED_SIZE);
+		if (Display.getOrientation() == Display.ORIENTATION_PORTRAIT) {
+			_grid = new GridFieldManager(2, 1, GridFieldManager.FIXED_SIZE) {
+				public Field getField(int index) {
+					try {
+						return super.getField(index);
+					} catch (ArrayIndexOutOfBoundsException e) {
+						return super.getField(0);
+					}
+				}
+			};
 
-		VerticalFieldManager right = new VerticalFieldManager(VERTICAL_SCROLL
-				| VERTICAL_SCROLLBAR);
-		VerticalFieldManager left = new VerticalFieldManager(VERTICAL_SCROLL
-				| VERTICAL_SCROLLBAR);
-		left.setBorder(BorderFactory.createRoundedBorder(
-				new XYEdges(5, 5, 5, 5), Color.WHITE, Border.STYLE_SOLID));
+			VerticalFieldManager top = new VerticalFieldManager(VERTICAL_SCROLL
+					| VERTICAL_SCROLLBAR);
+			VerticalFieldManager bottom = new VerticalFieldManager();
 
-		left.add(_lista);
-		right.add(_vertical);
+			top.setBorder(BorderFactory.createRoundedBorder(new XYEdges(5, 5,
+					5, 5), Color.WHITE, Border.STYLE_SOLID));
+			top.add(_lista);
+			bottom.add(_info);
 
-		_grid.add(left);
-		_grid.add(right);
+			_grid.add(top);
+			_grid.add(bottom);
 
-		add(_grid);
-		left.setFocus();
-		left.invalidate();
-		
+			add(_grid);
+			top.setFocus();
+			top.invalidate();
+		} else if (Display.getOrientation() == Display.ORIENTATION_LANDSCAPE) {
+			_grid = new GridFieldManager(1, 2, GridFieldManager.FIXED_SIZE);
+
+			VerticalFieldManager right = new VerticalFieldManager(
+					VERTICAL_SCROLL | VERTICAL_SCROLLBAR);
+			VerticalFieldManager left = new VerticalFieldManager(
+					VERTICAL_SCROLL | VERTICAL_SCROLLBAR);
+			left.setBorder(BorderFactory.createRoundedBorder(new XYEdges(5, 5,
+					5, 5), Color.WHITE, Border.STYLE_SOLID));
+
+			left.add(_lista);
+			right.add(_info);
+
+			_grid.add(left);
+			_grid.add(right);
+
+			add(_grid);
+			left.setFocus();
+			left.invalidate();
+		}
+
 		final PopupScreen wait = new PopupScreen(new VerticalFieldManager());
 		wait.add(new LabelField("Porfavor espere..."));
 		wait.add(new LabelField(
@@ -102,7 +140,7 @@ public class ScreenMain extends MainScreen {
 			public void run() {
 				try {
 					new ConnectionManager().prepararBD();
-					new Persistence().consultarPreferencias();				
+					new Persistence().consultarPreferencias();
 				} catch (NullPointerException e) {
 					UiApplication.getUiApplication().popScreen(wait);
 					Dialog.alert(Util.noSDString());
@@ -113,9 +151,10 @@ public class ScreenMain extends MainScreen {
 				}
 				UiApplication.getUiApplication().popScreen(wait);
 				Llaves llaves = new Llaves();
-				if(!llaves.verificarLlaves()) {
-					UiApplication.getUiApplication().pushModalScreen(llaves.getScreen());
-					if(!llaves.verificarLlaves()) {
+				if (!llaves.verificarLlaves()) {
+					UiApplication.getUiApplication().pushModalScreen(
+							llaves.getScreen());
+					if (!llaves.verificarLlaves()) {
 						System.exit(0);
 					}
 				}
@@ -123,21 +162,23 @@ public class ScreenMain extends MainScreen {
 			}
 		});
 	}
-	
+
 	private void cargarActuaciones() {
 		Util.pushWaitScreen();
 		UiApplication.getUiApplication().invokeLater(new Runnable() {
-			
+
 			public void run() {
 				try {
-					Vector v = new Persistence().consultarActuacionesCriticas(Preferencias.getCantidadActuacionesCriticas());
+					Vector v = new Persistence()
+							.consultarActuacionesCriticas(Preferencias
+									.getCantidadActuacionesCriticas());
 					Enumeration e = v.elements();
-					while(_lista.getSize() != 0){
+					while (_lista.getSize() != 0) {
 						_lista.delete(0);
 					}
 					while (e.hasMoreElements()) {
 						_lista.insert(_lista.getSize(), e.nextElement());
-						
+
 					}
 				} catch (NullPointerException e) {
 					Util.noSd();
@@ -153,7 +194,7 @@ public class ScreenMain extends MainScreen {
 
 	private void actuacionesManager() {
 		initLista();
-		initRight();
+		initInfo();
 	}
 
 	private void initLista() {
@@ -164,25 +205,48 @@ public class ScreenMain extends MainScreen {
 				graphics.drawText(objeto.toString(), 0, y);
 				graphics.drawText(
 						Util.calendarToString(objeto.getFechaProxima(), false),
-						15, y + getFont().getHeight());
+						(int) (Display.getWidth() * 13.3 / 480), y
+								+ getFont().getHeight());
 			};
+
 			protected void paint(Graphics g) {
 				g.setColor(Color.WHITE);
 				super.paint(g);
 			}
 		};
-		_lista.setFont(_lista.getFont().derive(_lista.getFont().getStyle(),
-				_lista.getFont().getHeight() - 8));
+		if (Display.getOrientation() == Display.ORIENTATION_LANDSCAPE) {
+			_lista.setFont(_lista
+					.getFont()
+					.derive(_lista.getFont().getStyle(),
+							_lista.getFont().getHeight()
+									- (int) ((float) Display.getHeight() * (8.3 / 360))));
+		} else if (Display.getOrientation() == Display.ORIENTATION_PORTRAIT) {
+			_lista.setFont(_lista
+					.getFont()
+					.derive(_lista.getFont().getStyle(),
+							_lista.getFont().getHeight()
+									- (int) ((float) Display.getHeight() * (5.3 / 480))));
+		}
 		_lista.setRowHeight(_lista.getFont().getHeight() * 2);
 
 		_lista.setFocusListener(listener);
 	}
-	
-	private void initRight() {
-		_vertical = new VerticalFieldManager();
-		_vertical.setFont(_vertical.getFont().derive(
-				_vertical.getFont().getStyle(),
-				_vertical.getFont().getHeight() - 5));
+
+	private void initInfo() {
+		_info = new VerticalFieldManager();
+		if (Display.getOrientation() == Display.ORIENTATION_LANDSCAPE) {
+			_info.setFont(_info
+					.getFont()
+					.derive(_info.getFont().getStyle(),
+							_info.getFont().getHeight()
+									- (int) ((float) Display.getHeight() * (6.3 / 360))));
+		} else if (Display.getOrientation() == Display.ORIENTATION_PORTRAIT) {
+			_info.setFont(_info
+					.getFont()
+					.derive(_info.getFont().getStyle(),
+							_info.getFont().getHeight()
+									- (int) ((float) Display.getHeight() * (4.3 / 480))));
+		}
 
 		LabelField lblDescripcion = new LabelField("Descripción:", FOCUSABLE) {
 			protected void paint(Graphics g) {
@@ -209,7 +273,7 @@ public class ScreenMain extends MainScreen {
 			}
 		};
 
-		Font bold = _vertical.getFont().derive(Font.BOLD);
+		Font bold = _info.getFont().derive(Font.BOLD);
 
 		lblDescripcion.setFont(bold);
 		lblJuzgado.setFont(bold);
@@ -241,23 +305,40 @@ public class ScreenMain extends MainScreen {
 			}
 		};
 
-		_vertical.add(lblDescripcion);
-		_vertical.add(_descripcion);
-		_vertical.add(new SeparatorField());
-		_vertical.add(lblJuzgado);
-		_vertical.add(_juzgado);
-		_vertical.add(new SeparatorField());
-		_vertical.add(lblFecha);
-		_vertical.add(_fecha);
-		_vertical.add(new SeparatorField());
-		_vertical.add(lblFechaProxima);
-		_vertical.add(_fechaProxima);
+		_info.add(lblDescripcion);
+		_info.add(_descripcion);
+		_info.add(new SeparatorField());
+		_info.add(lblJuzgado);
+		_info.add(_juzgado);
+		_info.add(new SeparatorField());
+		_info.add(lblFecha);
+		_info.add(_fecha);
+		_info.add(new SeparatorField());
+		_info.add(lblFechaProxima);
+		_info.add(_fechaProxima);
 	}
-	
+
 	private FocusChangeListener listener = new FocusChangeListener() {
 
 		public void focusChanged(Field field, int context) {
 			try {
+				if (Display.getOrientation() == Display.ORIENTATION_LANDSCAPE) {
+					_grid.setColumnProperty(0, GridFieldManager.FIXED_SIZE,
+							column1);
+					_grid.setColumnProperty(1, GridFieldManager.FIXED_SIZE,
+							column2);
+					_grid.setRowProperty(0, GridFieldManager.FIXED_SIZE, row);
+
+				} else if (Display.getOrientation() == Display.ORIENTATION_PORTRAIT) {
+					_grid.setRowProperty(0, GridFieldManager.FIXED_SIZE, row1);
+					_grid.setRowProperty(1, GridFieldManager.FIXED_SIZE, row2);
+					_grid.setColumnProperty(0, GridFieldManager.FIXED_SIZE,
+							column);
+					_grid.setPadding(new XYEdges(
+							(int) (Display.getWidth() * (16.3 / 360)), 0, 0,
+							(int) (Display.getWidth() * (16.3 / 360))));
+				}
+
 				Actuacion a = (Actuacion) _lista.get(_lista,
 						_lista.getSelectedIndex());
 				if (a == null) {
@@ -270,16 +351,12 @@ public class ScreenMain extends MainScreen {
 				fecha = Util.calendarToString(a.getFechaProxima(), true);
 				_fechaProxima.setText(fecha);
 			} catch (Exception e) {
-			} finally {
-				_grid.setColumnProperty(0, GridFieldManager.FIXED_SIZE, column1);
-				_grid.setColumnProperty(1, GridFieldManager.FIXED_SIZE, column2);
-				_grid.setRowProperty(0, GridFieldManager.FIXED_SIZE, row);
 			}
 		}
 	};
 
 	protected void makeMenu(Menu menu, int instance) {
-		if(_lista.getSize() != 0) {
+		if (_lista.getSize() != 0) {
 			menu.add(menuVerProceso);
 			menu.add(menuVerActuacion);
 		}
@@ -289,11 +366,13 @@ public class ScreenMain extends MainScreen {
 		menu.add(menuCerrar);
 		menu.add(menuAcerca);
 	}
-	
-	private final MenuItem menuVerProceso = new MenuItem("Ver proceso", 65537, 0) {
-		
+
+	private final MenuItem menuVerProceso = new MenuItem("Ver proceso", 65537,
+			0) {
+
 		public void run() {
-			ActuacionCritica a = (ActuacionCritica) _lista.get(_lista, _lista.getSelectedIndex());
+			ActuacionCritica a = (ActuacionCritica) _lista.get(_lista,
+					_lista.getSelectedIndex());
 			Proceso p = null;
 			try {
 				p = new Persistence().consultarProceso(a.getId_proceso());
@@ -302,17 +381,19 @@ public class ScreenMain extends MainScreen {
 			} catch (Exception e) {
 				Util.alert(e.toString());
 			}
-			if(p != null) {
+			if (p != null) {
 				Util.verProceso(p);
 				cargarActuaciones();
-			}			
+			}
 		}
 	};
-	
-	private final MenuItem menuVerActuacion = new MenuItem("Ver actuacion", 65537, 1) {
-		
+
+	private final MenuItem menuVerActuacion = new MenuItem("Ver actuacion",
+			65537, 1) {
+
 		public void run() {
-			ActuacionCritica a = (ActuacionCritica) _lista.get(_lista, _lista.getSelectedIndex());
+			ActuacionCritica a = (ActuacionCritica) _lista.get(_lista,
+					_lista.getSelectedIndex());
 			Util.verActuacion(a);
 			cargarActuaciones();
 		}
@@ -339,15 +420,19 @@ public class ScreenMain extends MainScreen {
 	private final MenuItem menuAcerca = new MenuItem("Acerca de", 327682, 5) {
 
 		public void run() {
-			TransitionContext transition = new TransitionContext(TransitionContext.TRANSITION_SLIDE);
-		    transition.setIntAttribute(TransitionContext.ATTR_DURATION, 500);
-		    transition.setIntAttribute(TransitionContext.ATTR_DIRECTION, TransitionContext.DIRECTION_DOWN);
-		    transition.setIntAttribute(TransitionContext.ATTR_STYLE, TransitionContext.STYLE_OVER);
-		    About nextScreen = new About();
-		    UiEngineInstance engine = Ui.getUiEngineInstance();
-		    engine.setTransition(null, nextScreen, UiEngineInstance.TRIGGER_PUSH, transition);
-		    Util.pushModalScreen(nextScreen);
-		    cargarActuaciones();
+			TransitionContext transition = new TransitionContext(
+					TransitionContext.TRANSITION_SLIDE);
+			transition.setIntAttribute(TransitionContext.ATTR_DURATION, 500);
+			transition.setIntAttribute(TransitionContext.ATTR_DIRECTION,
+					TransitionContext.DIRECTION_DOWN);
+			transition.setIntAttribute(TransitionContext.ATTR_STYLE,
+					TransitionContext.STYLE_OVER);
+			About nextScreen = new About();
+			UiEngineInstance engine = Ui.getUiEngineInstance();
+			engine.setTransition(null, nextScreen,
+					UiEngineInstance.TRIGGER_PUSH, transition);
+			Util.pushModalScreen(nextScreen);
+			cargarActuaciones();
 		}
 	};
 
@@ -367,7 +452,7 @@ public class ScreenMain extends MainScreen {
 			System.exit(0);
 		}
 	};
-	
+
 	public boolean onClose() {
 		System.exit(0);
 		return true;
@@ -390,13 +475,13 @@ class Listados extends PopupScreen {
 			add(new LabelField("Ver listado de:", FIELD_HCENTER));
 			Object[] o = { "Demandantes", "Demandados", "Juzgados",
 					"Campos personalizados", "Categorías", "Procesos",
-					"Plantillas", "Actuaciones"};
+					"Plantillas", "Actuaciones" };
 			_lista.set(o);
 		} else if ((_style & NUEVO) == NUEVO) {
 			add(new LabelField("Crear:", FIELD_HCENTER));
 			Object[] o = { "Demandante", "Demandado", "Juzgado",
-					"Campo personalizado", "Categoría", "Proceso",
-					"Plantilla", "Actuación", "Proceso a partir de plantilla"};
+					"Campo personalizado", "Categoría", "Proceso", "Plantilla",
+					"Actuación", "Proceso a partir de plantilla" };
 			_lista.set(o);
 		}
 		add(new SeparatorField());
@@ -449,7 +534,8 @@ class Listados extends PopupScreen {
 				Util.nuevaPlantilla();
 			}
 		} else if (index == 7) {
-			ListadoProcesos procesos = new ListadoProcesos(true, ListadoProcesos.NO_NUEVO);
+			ListadoProcesos procesos = new ListadoProcesos(true,
+					ListadoProcesos.NO_NUEVO);
 			procesos.setTitle("Procesos ");
 			Util.pushModalScreen(procesos.getScreen());
 			Proceso proceso = procesos.getSelected();
@@ -463,12 +549,14 @@ class Listados extends PopupScreen {
 					Util.pushModalScreen(actuacion.getScreen());
 				}
 			}
-		} else if (index == 8){
-			ListadoPlantillas plantillas = new ListadoPlantillas(true, ListadoPlantillas.ON_CLICK_SELECT | ListadoPlantillas.NO_NUEVO);
+		} else if (index == 8) {
+			ListadoPlantillas plantillas = new ListadoPlantillas(true,
+					ListadoPlantillas.ON_CLICK_SELECT
+							| ListadoPlantillas.NO_NUEVO);
 			plantillas.setTitle("Seleccione una plantilla");
 			Util.pushModalScreen(plantillas.getScreen());
 			Plantilla plantilla = plantillas.getSelected();
-			if(plantilla != null){
+			if (plantilla != null) {
 				NuevoProceso n = new NuevoProceso(plantilla);
 				UiApplication.getUiApplication().pushModalScreen(n.getScreen());
 			}

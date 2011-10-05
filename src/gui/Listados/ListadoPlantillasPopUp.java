@@ -8,13 +8,14 @@ import net.rim.device.api.ui.component.ObjectChoiceField;
 import net.rim.device.api.ui.container.HorizontalFieldManager;
 import gui.ListaPopUp;
 
-public class ListadoPlantillasPopUp extends ListaPopUp implements ListadoProcesosInterface{
-	
+public class ListadoPlantillasPopUp extends ListaPopUp implements
+		ListadoProcesosInterface {
+
 	private ObjectChoiceField _cfCategorias;
 
 	public ListadoPlantillasPopUp() {
 		super();
-		
+
 		_cfCategorias = new ObjectChoiceField(null, null, 0,
 				ChoiceField.FORCE_SINGLE_LINE);
 		_cfCategorias.setChangeListener(listener);
@@ -24,7 +25,7 @@ public class ListadoPlantillasPopUp extends ListaPopUp implements ListadoProceso
 		title.add(_cfCategorias);
 
 		setTitle(title);
-		
+
 		_lista = new ListadoPlantillasLista() {
 			protected boolean navigationClick(int status, int time) {
 				click();
@@ -33,7 +34,7 @@ public class ListadoPlantillasPopUp extends ListaPopUp implements ListadoProceso
 		};
 		add(_lista);
 	}
-	
+
 	public void setCategorias(Object[] choices) {
 		_cfCategorias.setChoices(choices);
 		invalidate();

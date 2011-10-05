@@ -58,7 +58,7 @@ public class VerPersona {
 	private void actualizarPersona() {
 		if (_screen.getNombre().length() == 0) {
 			_screen.alert("El campo Nombre es obligatorio");
-		} else if(_screen.isDirty()) {
+		} else if (_screen.isDirty()) {
 			_persona.setId(_screen.getCedula());
 			_persona.setNombre(_screen.getNombre());
 			_persona.setTelefono(_screen.getTelefono());

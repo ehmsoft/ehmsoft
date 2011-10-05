@@ -61,9 +61,9 @@ public class NuevaActuacionScreen extends FondoNormal {
 		_txtDescripcion.setLabel("Descripción: ");
 		add(_txtDescripcion);
 	}
-	
+
 	protected boolean navigationClick(int status, int time) {
-		if(getFieldWithFocus().equals(_lblJuzgado)) {
+		if (getFieldWithFocus().equals(_lblJuzgado)) {
 			fieldChangeNotify(Util.ADD_JUZGADO);
 			return true;
 		} else {

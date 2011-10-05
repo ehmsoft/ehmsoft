@@ -115,8 +115,7 @@ public class PreferenciasGeneralesScreen extends MainScreen {
 				ButtonField.CONSUME_CLICK | Field.FIELD_RIGHT);
 		// Restaurar Preferencias
 		_lblRestaurarPrefs = new LabelField(
-				"Restaurar preferencias predeterminadas",
-				Field.USE_ALL_WIDTH);
+				"Restaurar preferencias predeterminadas", Field.USE_ALL_WIDTH);
 		_btnRestaurarPrefs = new ButtonField("Restaurar Preferencias",
 				ButtonField.CONSUME_CLICK | Field.FIELD_RIGHT);
 		_btnCopiaSeguridad.setChangeListener(listenerCopiaSeguridad);
@@ -131,8 +130,8 @@ public class PreferenciasGeneralesScreen extends MainScreen {
 		add(_chkMostrarCampoBusqueda);
 		add(_chkMostrarTitulosPantalla);
 		add(_chkRecordarUltimaCategoria);
-		//add(new SeparatorField());
-		//add(_chfPantallaInicial);
+		// add(new SeparatorField());
+		// add(_chfPantallaInicial);
 		add(_hfmCantidadActuaciones);
 		add(new SeparatorField());
 		add(_chfTipoFuente);
