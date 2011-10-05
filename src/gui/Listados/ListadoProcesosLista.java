@@ -42,8 +42,8 @@ public class ListadoProcesosLista extends ListaListas implements
 
 	public void drawListRow(ListField listField, Graphics graphics, int index,
 			int y, int w) {
-		ReadableList r = ((ListaListas) listField).getResultList();
-		if (r.size() != 0) {
+		try {
+			ReadableList r = ((ListaListas) listField).getResultList();
 			if (String.class.isInstance(r.getAt(index))) {
 				graphics.setFont(graphics.getFont().derive(Font.BOLD));
 				int color = graphics.getColor();
@@ -71,6 +71,8 @@ public class ListadoProcesosLista extends ListaListas implements
 				graphics.drawText("Juzgado: " + juzgado, 20, y
 						+ getFont().getHeight() * 3);
 			}
+		} catch (ArrayIndexOutOfBoundsException e) {
+
 		}
 	}
 
