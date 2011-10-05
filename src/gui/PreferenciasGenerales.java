@@ -81,6 +81,7 @@ public class PreferenciasGenerales {
 		try {
 			Persistence per = new Persistence();
 			per.borrarPreferencias();
+			per.consultarPreferencias();
 		} catch (NullPointerException npe) {
 			_screen.alert(Util.noSDString());
 			System.exit(0);
