@@ -82,7 +82,7 @@ public class ListadoPersonas {
 		}
 		if (Preferencias.isMostrarTitulosPantallas() && !popup) {
 			if (tipo == 1) {
-				_screen.setTitle("Demandanes");
+				_screen.setTitle("Demandantes");
 			} else {
 				_screen.setTitle("Demandados");
 			}
