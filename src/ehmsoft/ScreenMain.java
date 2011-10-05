@@ -61,7 +61,7 @@ public class ScreenMain extends MainScreen {
 	private  LabelField _descripcion;
 	private  final int column1 = (Display.getWidth() / 2) - 32;
 	private  final int column2 = (Display.getWidth() / 2) + 16;
-	private  final int row = Display.getHeight() - 32;
+	private  final int row = Display.getHeight() - 7;
 	private final int row1 = Display.getHeight() / 2 - 32;
 	private final int row2 = Display.getHeight() / 2;
 	private final int column = Display.getWidth() - 10;
