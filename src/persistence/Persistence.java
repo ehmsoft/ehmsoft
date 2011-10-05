@@ -1220,7 +1220,7 @@ public class Persistence implements Cargado, Guardado {
 			connMgr.prepararBD();
 			d = DatabaseFactory.open(connMgr.getDbLocation());
 			Statement st = d
-					.createStatement("SELECT (id_demandante, cedula, nombre, telefono, direccion, correo, notas) FROM demandantes order by nombre");
+					.createStatement("SELECT id_demandante, cedula, nombre, telefono, direccion, correo, notas FROM demandantes order by nombre");
 			st.prepare();
 			Cursor cursor = st.getCursor();
 			while (cursor.next()) {
@@ -1261,7 +1261,7 @@ public class Persistence implements Cargado, Guardado {
 			connMgr.prepararBD();
 			d = DatabaseFactory.open(connMgr.getDbLocation());
 			Statement st = d
-					.createStatement("SELECT (id_demandado, cedula, nombre, telefono, direccion, correo, notas) FROM demandados order by nombre");
+					.createStatement("SELECT id_demandado, cedula, nombre, telefono, direccion, correo, notas FROM demandados order by nombre");
 			st.prepare();
 			Cursor cursor = st.getCursor();
 			while (cursor.next()) {
@@ -1303,7 +1303,7 @@ public class Persistence implements Cargado, Guardado {
 			connMgr.prepararBD();
 			d = DatabaseFactory.open(connMgr.getDbLocation());
 			Statement st = d
-					.createStatement("SELECT (id_demandado, cedula, nombre, telefono, direccion, correo, notas) FROM demandados order by nombre");
+					.createStatement("SELECT id_demandado, cedula, nombre, telefono, direccion, correo, notas FROM demandados order by nombre");
 			st.prepare();
 			Cursor cursor = st.getCursor();
 			while (cursor.next()) {
@@ -1324,7 +1324,7 @@ public class Persistence implements Cargado, Guardado {
 			}
 			st.close();
 			cursor.close();
-			st = d.createStatement("SELECT (id_demandante, cedula, nombre, telefono, direccion, correo, notas) FROM demandantes order by nombre");
+			st = d.createStatement("SELECT id_demandante, cedula, nombre, telefono, direccion, correo, notas FROM demandantes order by nombre");
 			st.prepare();
 			cursor = st.getCursor();
 			while (cursor.next()) {
@@ -1364,7 +1364,7 @@ public class Persistence implements Cargado, Guardado {
 			d = DatabaseFactory.open(connMgr.getDbLocation());
 			if (tipo == 2) {
 				Statement st = d
-						.createStatement("SELECT (id_demandado, cedula, nombre, telefono, direccion, correo, notas) FROM demandados where id_demandado = ?");
+						.createStatement("SELECT id_demandado, cedula, nombre, telefono, direccion, correo, notas FROM demandados where id_demandado = ?");
 				st.prepare();
 				st.bind(1, id_persona);
 				Cursor cursor = st.getCursor();
@@ -1384,7 +1384,7 @@ public class Persistence implements Cargado, Guardado {
 				cursor.close();
 			} else if (tipo == 1) {
 				Statement st = d
-						.createStatement("SELECT (id_demandante, cedula, nombre, telefono, direccion, correo, notas) FROM demandantes where id_demandante = ?");
+						.createStatement("SELECT id_demandante, cedula, nombre, telefono, direccion, correo, notas FROM demandantes where id_demandante = ?");
 				st.prepare();
 				st.bind(1, id_persona);
 				Cursor cursor = st.getCursor();
