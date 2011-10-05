@@ -59,16 +59,16 @@ public class ScreenMain extends MainScreen {
 	private  LabelField _fecha;
 	private  LabelField _fechaProxima;
 	private  LabelField _descripcion;
-	private  final int column1 = (Display.getWidth() / 2) - 32;
-	private  final int column2 = (Display.getWidth() / 2) + 16;
-	private  final int row = Display.getHeight() - 7;
+	private  final int column1 = (Display.getWidth() / 2) - (int)(Display.getWidth() * (30.3/480));
+	private  final int column2 = (Display.getWidth() / 2) + (int)(Display.getWidth() * (16.3/480));
+	private  final int row = Display.getHeight() - (int)(Display.getHeight() * (13.3/360));
 	private final int row1 = Display.getHeight() / 2 - 32;
 	private final int row2 = Display.getHeight() / 2;
-	private final int column = Display.getWidth() - 10;
+	private final int column = Display.getWidth() - 7 - 32;
 	
 	public ScreenMain() {
 		super(NO_VERTICAL_SCROLL);
-		
+				
 		actuacionesManager();
 		
 		getMainManager().setBackground(
@@ -194,7 +194,7 @@ public class ScreenMain extends MainScreen {
 				graphics.drawText(objeto.toString(), 0, y);
 				graphics.drawText(
 						Util.calendarToString(objeto.getFechaProxima(), false),
-						15, y + getFont().getHeight());
+						(int)(Display.getWidth() * 13.3/480), y + getFont().getHeight());
 			};
 			protected void paint(Graphics g) {
 				g.setColor(Color.WHITE);
@@ -202,7 +202,7 @@ public class ScreenMain extends MainScreen {
 			}
 		};
 		_lista.setFont(_lista.getFont().derive(_lista.getFont().getStyle(),
-				_lista.getFont().getHeight() - 8));
+				_lista.getFont().getHeight() - (int)((float)Display.getHeight() * (8.3/360))));
 		_lista.setRowHeight(_lista.getFont().getHeight() * 2);
 
 		_lista.setFocusListener(listener);
@@ -212,7 +212,7 @@ public class ScreenMain extends MainScreen {
 		_info = new VerticalFieldManager();
 		_info.setFont(_info.getFont().derive(
 				_info.getFont().getStyle(),
-				_info.getFont().getHeight() - 5));
+				_info.getFont().getHeight() - (int)((float)Display.getHeight() * (6.3/360))));
 
 		LabelField lblDescripcion = new LabelField("Descripción:", FOCUSABLE) {
 			protected void paint(Graphics g) {
@@ -294,11 +294,13 @@ public class ScreenMain extends MainScreen {
 					_grid.setColumnProperty(1, GridFieldManager.FIXED_SIZE,
 							column2);
 					_grid.setRowProperty(0, GridFieldManager.FIXED_SIZE, row);
+					
 				} else if (Display.getOrientation() == Display.ORIENTATION_PORTRAIT) {
 					_grid.setRowProperty(0, GridFieldManager.FIXED_SIZE, row1);
 					_grid.setRowProperty(1, GridFieldManager.FIXED_SIZE, row2);
 					_grid.setColumnProperty(0, GridFieldManager.FIXED_SIZE,
 							column);
+					_grid.setPadding(new XYEdges(16, 0, 0, 16));
 				}
 
 				Actuacion a = (Actuacion) _lista.get(_lista,
