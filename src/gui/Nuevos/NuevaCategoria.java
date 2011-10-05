@@ -1,7 +1,5 @@
 package gui.Nuevos;
 
-import java.util.Enumeration;
-
 import gui.Util;
 import net.rim.device.api.ui.Field;
 import net.rim.device.api.ui.FieldChangeListener;
@@ -22,14 +20,6 @@ public class NuevaCategoria {
 			_screen = new NuevaCategoriaScreen();
 		}
 		((Screen) _screen).setChangeListener(listener);
-		if(Util.TEMP == null) {
-			UiApplication.getUiApplication().invokeLater(new Runnable() {
-				
-				public void run() {
-					Util.TEMP = Util.consultarCategorias();
-				}
-			});
-		}
 	}
 
 	FieldChangeListener listener = new FieldChangeListener() {
@@ -62,39 +52,24 @@ public class NuevaCategoria {
 			_screen.alert("No puede crearse una categoría vacía");
 		} else {
 			_categoria = new Categoria(descripcion);
-			if (!exist(_categoria)) {
-				Util.pushWaitScreen();
-				UiApplication.getUiApplication().invokeLater(new Runnable() {
+			Util.pushWaitScreen();
+			UiApplication.getUiApplication().invokeLater(new Runnable() {
 
-					public void run() {
-						try {
-							new Persistence().guardarCategoria(_categoria);
-						} catch (NullPointerException e) {
-							Util.noSd();
-							Util.TEMP = null;
-						} catch (Exception e) {
-							Util.alert(e.toString());
-						} finally {
-							Util.popScreen((Screen) _screen);
-							Util.popWaitScreen();
-						}
+				public void run() {
+					try {
+						new Persistence().guardarCategoria(_categoria);
+					} catch (NullPointerException e) {
+						_screen.alert(Util.noSDString());
+						System.exit(0);
+					} catch (Exception e) {
+						_screen.alert(e.toString());
+					} finally {
+						Util.popScreen((Screen) _screen);
+						Util.popWaitScreen();
 					}
-				});
-			}
-			Util.TEMP = null;
+				}
+			});
 		}
-	}
-	
-	private boolean exist(Categoria element) {
-		boolean exist = false;
-		Enumeration e = Util.TEMP.elements();
-		while(e.hasMoreElements()) {
-			if(e.nextElement().equals(element)) {
-				exist = true;
-				break;
-			}
-		}
-		return exist;
 	}
 
 	private void cerrarPantalla() {

@@ -51,7 +51,6 @@ public class ListadoActuaciones {
 			try {
 				_vectorActuaciones = new Persistence()
 						.consultarActuaciones(_proceso);
-				Util.TEMP = _vectorActuaciones;
 			} catch (NullPointerException e) {
 				_screen.alert(Util.noSDString());
 				System.exit(0);
@@ -135,7 +134,6 @@ public class ListadoActuaciones {
 	private void nuevaActuacion() {
 		Actuacion actuacion = Util.nuevaActuacion(_proceso);
 		if (actuacion != null) {
-			_vectorActuaciones.addElement(actuacion);
 			if ((_style & NO_NUEVO) == NO_NUEVO) {
 				_screen.addElement(actuacion, 0);
 			} else {
@@ -147,9 +145,7 @@ public class ListadoActuaciones {
 	private void verActuacion() {
 		Actuacion selected = (Actuacion) _screen.getSelected();
 		Actuacion actuacion = Util.verActuacion(selected);
-		_vectorActuaciones.removeElement(selected);
 		if (actuacion != null) {
-			_vectorActuaciones.addElement(actuacion);
 			_screen.replace(selected, actuacion);
 		} else {
 			_screen.remove(selected);
@@ -169,13 +165,11 @@ public class ListadoActuaciones {
 				Util.alert(e.toString());
 			}
 			_screen.remove(selected);
-			_vectorActuaciones.removeElement(selected);
 		}
 	}
 
 	private void cerrarPantalla() {
 		_selected = null;
-		Util.TEMP = null;
 		UiApplication.getUiApplication().popScreen((Screen) _screen);
 	}
 

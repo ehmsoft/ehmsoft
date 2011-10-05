@@ -76,8 +76,6 @@ public class ScreenMain extends MainScreen {
 
 		actuacionesManager();
 
-		Util.alert(Display.getWidth() + " " + Display.getHeight());
-
 		getMainManager().setBackground(
 				BackgroundFactory.createSolidBackground(Color.BLACK));
 

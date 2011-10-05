@@ -53,7 +53,6 @@ public class ListadoPersonas {
 			} else {
 				_vectorPersonas = new Persistence().consultarDemandados();
 			}
-			Util.TEMP = _vectorPersonas;
 		} catch (NullPointerException e) {
 			Util.noSd();
 		} catch (Exception e) {
@@ -155,7 +154,6 @@ public class ListadoPersonas {
 	private void nuevaPersona() {
 		Persona persona = Util.nuevaPersona(_tipo);
 		if (persona != null) {
-			_vectorPersonas.addElement(persona);
 			if ((_style & NO_NUEVO) == NO_NUEVO) {
 				_screen.addElement(persona, 0);
 			} else {
@@ -167,9 +165,7 @@ public class ListadoPersonas {
 	private void verPersona() {
 		Persona selected = (Persona) _screen.getSelected();
 		Persona persona = Util.verPersona(selected);
-		_vectorPersonas.removeElement(selected);
 		if (persona != null) {
-			_vectorPersonas.addElement(persona);
 			_screen.replace(selected, persona);
 		} else {
 			_screen.remove(selected);
@@ -190,13 +186,11 @@ public class ListadoPersonas {
 				_screen.alert(e.toString());
 			}
 			_screen.remove(selected);
-			_vectorPersonas.removeElement(selected);
 		}
 	}
 
 	private void cerrarPantalla() {
 		_selected = null;
-		Util.TEMP = null;
 		UiApplication.getUiApplication().popScreen((Screen) _screen);
 	}
 
