@@ -52,6 +52,7 @@ public class ListadoProcesos {
 			public void run() {
 				try {
 					_vectorProcesos = new Persistence().consultarProcesos();
+					Util.TEMP = _vectorProcesos;
 				} catch (NullPointerException e) {
 					Util.noSd();
 				} catch (Exception e) {
@@ -149,6 +150,7 @@ public class ListadoProcesos {
 		UiApplication.getUiApplication().pushModalScreen(n.getScreen());
 		Proceso proceso = n.getProceso();
 		if (proceso != null) {
+			_vectorProcesos.addElement(proceso);
 			if ((_style & NO_NUEVO) == NO_NUEVO) {
 				_screen.addElement(proceso, 0);
 			} else {
@@ -161,7 +163,9 @@ public class ListadoProcesos {
 	private void verProceso() {
 		Proceso selected = (Proceso) _screen.getSelected();
 		Proceso proceso = Util.verProceso(selected);
+		_vectorProcesos.removeElement(selected);
 		if (proceso != null) {
+			_vectorProcesos.addElement(proceso);
 			_screen.replace(selected, proceso);
 		} else {
 			_screen.remove(selected);
@@ -182,11 +186,13 @@ public class ListadoProcesos {
 				_screen.alert(e.toString());
 			}
 			_screen.remove(selected);
+			_vectorProcesos.removeElement(selected);
 		}
 	}
 
 	private void cerrarPantalla() {
 		_selected = null;
+		Util.TEMP = null;
 		UiApplication.getUiApplication().popScreen((Screen) _screen);
 	}
 

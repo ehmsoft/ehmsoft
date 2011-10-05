@@ -49,6 +49,7 @@ public class ListadoJuzgados {
 
 		try {
 			_vectorJuzgados = new Persistence().consultarJuzgados();
+			Util.TEMP = _vectorJuzgados;
 		} catch (NullPointerException e) {
 			Util.noSd();
 		} catch (Exception e) {
@@ -141,6 +142,7 @@ public class ListadoJuzgados {
 
 	private void nuevoJuzgado() {
 		Juzgado juzgado = Util.nuevoJuzgado();
+		_vectorJuzgados.addElement(juzgado);
 		if (juzgado != null) {
 			if ((_style & NO_NUEVO) == NO_NUEVO) {
 				_screen.addElement(juzgado, 0);
@@ -153,7 +155,9 @@ public class ListadoJuzgados {
 	private void verJuzgado() {
 		Juzgado selected = (Juzgado) _screen.getSelected();
 		Juzgado juzgado = Util.verJuzgado(selected);
+		_vectorJuzgados.removeElement(selected);
 		if (juzgado != null) {
+			_vectorJuzgados.addElement(juzgado);
 			_screen.replace(selected, juzgado);
 		} else {
 			_screen.remove(selected);
@@ -174,11 +178,13 @@ public class ListadoJuzgados {
 				_screen.alert(e.toString());
 			}
 			_screen.remove(selected);
+			_vectorJuzgados.removeElement(selected);
 		}
 	}
 
 	private void cerrarPantalla() {
 		_selected = null;
+		Util.TEMP = null;
 		UiApplication.getUiApplication().popScreen((Screen) _screen);
 	}
 
