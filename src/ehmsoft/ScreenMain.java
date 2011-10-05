@@ -43,7 +43,6 @@ import net.rim.device.api.ui.component.Menu;
 import net.rim.device.api.ui.component.ObjectListField;
 import net.rim.device.api.ui.component.SeparatorField;
 import net.rim.device.api.ui.container.GridFieldManager;
-import net.rim.device.api.ui.container.HorizontalFieldManager;
 import net.rim.device.api.ui.container.MainScreen;
 import net.rim.device.api.ui.container.PopupScreen;
 import net.rim.device.api.ui.container.VerticalFieldManager;
@@ -54,7 +53,7 @@ import net.rim.device.api.ui.decor.BorderFactory;
 public class ScreenMain extends MainScreen {
 
 	private  GridFieldManager _grid;
-	private  VerticalFieldManager _vertical;
+	private  VerticalFieldManager _info;
 	private  ObjectListField _lista;
 	private  LabelField _juzgado;
 	private  LabelField _fecha;
@@ -63,25 +62,36 @@ public class ScreenMain extends MainScreen {
 	private  final int column1 = (Display.getWidth() / 2) - 32;
 	private  final int column2 = (Display.getWidth() / 2) + 16;
 	private  final int row = Display.getHeight() - 32;
-
+	private final int row1 = Display.getHeight() / 2 - 32;
+	private final int row2 = Display.getHeight() / 2;
+	private final int column = Display.getWidth() - 10;
+	
 	public ScreenMain() {
-		super();
+		super(NO_VERTICAL_SCROLL);
 		
 		actuacionesManager();
 		
 		getMainManager().setBackground(
 				BackgroundFactory.createSolidBackground(Color.BLACK));
-		
-		if(Display.getOrientation() == Display.ORIENTATION_PORTRAIT) {
-			_grid = new GridFieldManager(2, 1, GridFieldManager.FIXED_SIZE);
-			
-			HorizontalFieldManager top = new HorizontalFieldManager(VERTICAL_SCROLL | VERTICAL_SCROLLBAR);
-			HorizontalFieldManager bottom = new HorizontalFieldManager();
+
+		if (Display.getOrientation() == Display.ORIENTATION_PORTRAIT) {
+			_grid = new GridFieldManager(2, 1, GridFieldManager.FIXED_SIZE) {
+				public Field getField(int index) {
+					try {
+						return super.getField(index);
+					} catch (ArrayIndexOutOfBoundsException e) {
+						return super.getField(0);
+					}
+				}
+			};
+
+			VerticalFieldManager top = new VerticalFieldManager(VERTICAL_SCROLL | VERTICAL_SCROLLBAR);
+			VerticalFieldManager bottom = new VerticalFieldManager();
 			
 			top.setBorder(BorderFactory.createRoundedBorder(
 					new XYEdges(5, 5, 5, 5), Color.WHITE, Border.STYLE_SOLID));
 			top.add(_lista);
-			bottom.add(_vertical);
+			bottom.add(_info);
 			
 			_grid.add(top);
 			_grid.add(bottom);
@@ -100,7 +110,7 @@ public class ScreenMain extends MainScreen {
 					new XYEdges(5, 5, 5, 5), Color.WHITE, Border.STYLE_SOLID));
 
 			left.add(_lista);
-			right.add(_vertical);
+			right.add(_info);
 
 			_grid.add(left);
 			_grid.add(right);
@@ -173,7 +183,7 @@ public class ScreenMain extends MainScreen {
 
 	private void actuacionesManager() {
 		initLista();
-		initRight();
+		initInfo();
 	}
 
 	private void initLista() {
@@ -198,11 +208,11 @@ public class ScreenMain extends MainScreen {
 		_lista.setFocusListener(listener);
 	}
 	
-	private void initRight() {
-		_vertical = new VerticalFieldManager();
-		_vertical.setFont(_vertical.getFont().derive(
-				_vertical.getFont().getStyle(),
-				_vertical.getFont().getHeight() - 5));
+	private void initInfo() {
+		_info = new VerticalFieldManager();
+		_info.setFont(_info.getFont().derive(
+				_info.getFont().getStyle(),
+				_info.getFont().getHeight() - 5));
 
 		LabelField lblDescripcion = new LabelField("Descripción:", FOCUSABLE) {
 			protected void paint(Graphics g) {
@@ -229,7 +239,7 @@ public class ScreenMain extends MainScreen {
 			}
 		};
 
-		Font bold = _vertical.getFont().derive(Font.BOLD);
+		Font bold = _info.getFont().derive(Font.BOLD);
 
 		lblDescripcion.setFont(bold);
 		lblJuzgado.setFont(bold);
@@ -261,23 +271,36 @@ public class ScreenMain extends MainScreen {
 			}
 		};
 
-		_vertical.add(lblDescripcion);
-		_vertical.add(_descripcion);
-		_vertical.add(new SeparatorField());
-		_vertical.add(lblJuzgado);
-		_vertical.add(_juzgado);
-		_vertical.add(new SeparatorField());
-		_vertical.add(lblFecha);
-		_vertical.add(_fecha);
-		_vertical.add(new SeparatorField());
-		_vertical.add(lblFechaProxima);
-		_vertical.add(_fechaProxima);
+		_info.add(lblDescripcion);
+		_info.add(_descripcion);
+		_info.add(new SeparatorField());
+		_info.add(lblJuzgado);
+		_info.add(_juzgado);
+		_info.add(new SeparatorField());
+		_info.add(lblFecha);
+		_info.add(_fecha);
+		_info.add(new SeparatorField());
+		_info.add(lblFechaProxima);
+		_info.add(_fechaProxima);
 	}
 	
 	private FocusChangeListener listener = new FocusChangeListener() {
 
 		public void focusChanged(Field field, int context) {
 			try {
+				if (Display.getOrientation() == Display.ORIENTATION_LANDSCAPE) {
+					_grid.setColumnProperty(0, GridFieldManager.FIXED_SIZE,
+							column1);
+					_grid.setColumnProperty(1, GridFieldManager.FIXED_SIZE,
+							column2);
+					_grid.setRowProperty(0, GridFieldManager.FIXED_SIZE, row);
+				} else if (Display.getOrientation() == Display.ORIENTATION_PORTRAIT) {
+					_grid.setRowProperty(0, GridFieldManager.FIXED_SIZE, row1);
+					_grid.setRowProperty(1, GridFieldManager.FIXED_SIZE, row2);
+					_grid.setColumnProperty(0, GridFieldManager.FIXED_SIZE,
+							column);
+				}
+
 				Actuacion a = (Actuacion) _lista.get(_lista,
 						_lista.getSelectedIndex());
 				if (a == null) {
@@ -290,18 +313,6 @@ public class ScreenMain extends MainScreen {
 				fecha = Util.calendarToString(a.getFechaProxima(), true);
 				_fechaProxima.setText(fecha);
 			} catch (Exception e) {
-			} finally {
-				if (Display.getOrientation() == Display.ORIENTATION_LANDSCAPE) {
-					_grid.setColumnProperty(0, GridFieldManager.FIXED_SIZE,
-							column1);
-					_grid.setColumnProperty(1, GridFieldManager.FIXED_SIZE,
-							column2);
-					_grid.setRowProperty(0, GridFieldManager.FIXED_SIZE, row);
-				} else if (Display.getOrientation() == Display.ORIENTATION_PORTRAIT) {
-					_grid.setRowProperty(0, GridFieldManager.FIXED_SIZE, Display.getHeight() / 2);
-					_grid.setRowProperty(1, GridFieldManager.FIXED_SIZE, Display.getHeight() / 2);
-					_grid.setColumnProperty(0, GridFieldManager.FIXED_SIZE, Display.getWidth());
-				}
 			}
 		}
 	};
