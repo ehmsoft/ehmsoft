@@ -25,18 +25,17 @@ public class Cita {
 		_alarma = alarma;
 		_uid = uid;
 	}
-/*
-	public Cita(String descripcion, Date date) {
-		this(descripcion, date, 0, null);
-	}
 
-	public Cita(String descripcion, Date date, String uid) {
-		this(descripcion, date, 0, uid);
-	}
-
-	public Cita(String descripcion, Date date, int alarma) {
-		this(descripcion, date, alarma, null);
-	}*/
+	/*
+	 * public Cita(String descripcion, Date date) { this(descripcion, date, 0,
+	 * null); }
+	 * 
+	 * public Cita(String descripcion, Date date, String uid) {
+	 * this(descripcion, date, 0, uid); }
+	 * 
+	 * public Cita(String descripcion, Date date, int alarma) {
+	 * this(descripcion, date, alarma, null); }
+	 */
 
 	public Cita() {
 		this(null, null, 0, null);

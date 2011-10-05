@@ -80,7 +80,7 @@ public class ListadoPlantillas {
 				_style = _style | ON_CLICK_VER;
 			}
 		}
-		
+
 		_categorias = Util.consultarCategorias();
 
 		if (_categorias != null) {

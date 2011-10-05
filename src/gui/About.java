@@ -35,10 +35,8 @@ public class About extends FullScreen {
 		add(new WhiteLabelField(VERSION, Field.FIELD_HCENTER));
 		add(new WhiteLabelField(LICENCIA, Field.FIELD_HCENTER));
 		add(new WhiteLabelField(EMPRESA, Field.FIELD_HCENTER));
-		add(new WhiteLabelField(URL, Field.FOCUSABLE
-				| Field.FIELD_HCENTER));
-		add(new WhiteLabelField(CONTACTO, Field.FOCUSABLE
-				| Field.FIELD_HCENTER));
+		add(new WhiteLabelField(URL, Field.FOCUSABLE | Field.FIELD_HCENTER));
+		add(new WhiteLabelField(CONTACTO, Field.FOCUSABLE | Field.FIELD_HCENTER));
 
 	}
 

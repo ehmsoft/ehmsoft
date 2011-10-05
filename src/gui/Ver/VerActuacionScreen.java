@@ -59,9 +59,9 @@ public class VerActuacionScreen extends FondoNormal {
 		add(_dfFechaProxima);
 		add(_txtDescripcion);
 	}
-	
+
 	protected boolean navigationClick(int status, int time) {
-		if(getFieldWithFocus().equals(_lblJuzgado)) {
+		if (getFieldWithFocus().equals(_lblJuzgado)) {
 			fieldChangeNotify(Util.ADD_JUZGADO);
 			return true;
 		} else {
