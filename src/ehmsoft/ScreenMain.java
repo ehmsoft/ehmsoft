@@ -23,6 +23,7 @@ import gui.Listados.ListadoProcesos;
 import gui.Listados.ListadoPlantillas;
 import gui.Nuevos.NuevaActuacion;
 import gui.Nuevos.NuevoProceso;
+import net.rim.device.api.system.Bitmap;
 import net.rim.device.api.system.Display;
 import net.rim.device.api.ui.Color;
 import net.rim.device.api.ui.Field;
@@ -47,7 +48,6 @@ import net.rim.device.api.ui.container.MainScreen;
 import net.rim.device.api.ui.container.PopupScreen;
 import net.rim.device.api.ui.container.VerticalFieldManager;
 import net.rim.device.api.ui.decor.BackgroundFactory;
-import net.rim.device.api.ui.decor.Border;
 import net.rim.device.api.ui.decor.BorderFactory;
 
 public class ScreenMain extends MainScreen {
@@ -75,9 +75,20 @@ public class ScreenMain extends MainScreen {
 		super(NO_VERTICAL_SCROLL);
 
 		actuacionesManager();
+				
+		Bitmap backGround = Bitmap.getBitmapResource("bg480x360.png");
+		if(Display.getWidth() == 320 && Display.getHeight() == 240) {
+			backGround = Bitmap.getBitmapResource("bg320x240.png");
+		} else if(Display.getWidth() == 320 && Display.getHeight() == 480) {
+			backGround = Bitmap.getBitmapResource("bg320x480.png");
+		} else if(Display.getWidth() == 360 && Display.getHeight() == 480) {
+			backGround = Bitmap.getBitmapResource("bg360x480.png");
+		} else if(Display.getWidth() == 480 && Display.getHeight() == 360) {
+			backGround = Bitmap.getBitmapResource("bg480x360.png");
+		}
 
 		getMainManager().setBackground(
-				BackgroundFactory.createSolidBackground(Color.BLACK));
+				BackgroundFactory.createBitmapBackground(backGround));
 
 		if (Display.getOrientation() == Display.ORIENTATION_PORTRAIT) {
 			_grid = new GridFieldManager(2, 1, GridFieldManager.FIXED_SIZE) {
@@ -92,10 +103,11 @@ public class ScreenMain extends MainScreen {
 
 			VerticalFieldManager top = new VerticalFieldManager(VERTICAL_SCROLL
 					| VERTICAL_SCROLLBAR);
+			//top.setBackground(BackgroundFactory.createSolidTransparentBackground(Color.BLACK, 100));
 			VerticalFieldManager bottom = new VerticalFieldManager();
 
-			top.setBorder(BorderFactory.createRoundedBorder(new XYEdges(5, 5,
-					5, 5), Color.WHITE, Border.STYLE_SOLID));
+			top.setBorder(BorderFactory.createBitmapBorder(new XYEdges(5, 5, 5, 5), Bitmap.getBitmapResource("blackBorder.png")));
+
 			top.add(_lista);
 			bottom.add(_info);
 
@@ -112,8 +124,8 @@ public class ScreenMain extends MainScreen {
 					VERTICAL_SCROLL | VERTICAL_SCROLLBAR);
 			VerticalFieldManager left = new VerticalFieldManager(
 					VERTICAL_SCROLL | VERTICAL_SCROLLBAR);
-			left.setBorder(BorderFactory.createRoundedBorder(new XYEdges(5, 5,
-					5, 5), Color.WHITE, Border.STYLE_SOLID));
+			left.setBorder(BorderFactory.createBitmapBorder(new XYEdges(5, 5, 5, 5), Bitmap.getBitmapResource("blackBorder.png")));
+			//left.setBackground(BackgroundFactory.createBitmapBackground(Bitmap.getBitmapResource("blackBorder.png")));
 
 			left.add(_lista);
 			right.add(_info);
@@ -212,19 +224,18 @@ public class ScreenMain extends MainScreen {
 				super.paint(g);
 			}
 		};
+
+		Font font = _lista.getFont();
+		float fHeight = font.getHeight();
+		int fStyle = font.getStyle();
+		int resultHeight = (int)fHeight;
 		if (Display.getOrientation() == Display.ORIENTATION_LANDSCAPE) {
-			_lista.setFont(_lista
-					.getFont()
-					.derive(_lista.getFont().getStyle(),
-							_lista.getFont().getHeight()
-									- (int) ((float) Display.getHeight() * (8.3 / 360))));
+			resultHeight = (int)(fHeight - fHeight * (8.0 / 27));
+			_lista.setFont(font.derive(fStyle, resultHeight));
 		} else if (Display.getOrientation() == Display.ORIENTATION_PORTRAIT) {
-			_lista.setFont(_lista
-					.getFont()
-					.derive(_lista.getFont().getStyle(),
-							_lista.getFont().getHeight()
-									- (int) ((float) Display.getHeight() * (5.3 / 480))));
+			resultHeight = (int)(fHeight - fHeight * (5.0 / 20));
 		}
+		_lista.setFont(font.derive(fStyle, resultHeight));
 		_lista.setRowHeight(_lista.getFont().getHeight() * 2);
 
 		_lista.setFocusListener(listener);
@@ -232,19 +243,16 @@ public class ScreenMain extends MainScreen {
 
 	private void initInfo() {
 		_info = new VerticalFieldManager();
+		Font font = _info.getFont();
+		float fHeight = font.getHeight();
+		int fStyle = font.getStyle();
+		int resultHeight = (int)fHeight;
 		if (Display.getOrientation() == Display.ORIENTATION_LANDSCAPE) {
-			_info.setFont(_info
-					.getFont()
-					.derive(_info.getFont().getStyle(),
-							_info.getFont().getHeight()
-									- (int) ((float) Display.getHeight() * (6.3 / 360))));
+			resultHeight = (int)(fHeight - fHeight * (6.0 / 27));
 		} else if (Display.getOrientation() == Display.ORIENTATION_PORTRAIT) {
-			_info.setFont(_info
-					.getFont()
-					.derive(_info.getFont().getStyle(),
-							_info.getFont().getHeight()
-									- (int) ((float) Display.getHeight() * (4.3 / 480))));
+			resultHeight = (int)(fHeight - fHeight * (4.0 / 20));
 		}
+		_info.setFont(font.derive(fStyle, resultHeight));
 
 		LabelField lblDescripcion = new LabelField("Descripción:", FOCUSABLE) {
 			protected void paint(Graphics g) {
