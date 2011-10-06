@@ -214,19 +214,18 @@ public class ScreenMain extends MainScreen {
 				super.paint(g);
 			}
 		};
+
+		Font font = _lista.getFont();
+		float fHeight = font.getHeight();
+		int fStyle = font.getStyle();
+		int resultHeight = (int)fHeight;
 		if (Display.getOrientation() == Display.ORIENTATION_LANDSCAPE) {
-			_lista.setFont(_lista
-					.getFont()
-					.derive(_lista.getFont().getStyle(),
-							_lista.getFont().getHeight()
-									- (int) ((float) Display.getHeight() * (8.3 / 360))));
+			resultHeight = (int)(fHeight - fHeight * (8.0 / 27));
+			_lista.setFont(font.derive(fStyle, resultHeight));
 		} else if (Display.getOrientation() == Display.ORIENTATION_PORTRAIT) {
-			_lista.setFont(_lista
-					.getFont()
-					.derive(_lista.getFont().getStyle(),
-							_lista.getFont().getHeight()
-									- (int) ((float) Display.getHeight() * (5.3 / 480))));
+			resultHeight = (int)(fHeight - fHeight * (5.0 / 20));
 		}
+		_lista.setFont(font.derive(fStyle, resultHeight));
 		_lista.setRowHeight(_lista.getFont().getHeight() * 2);
 
 		_lista.setFocusListener(listener);
@@ -234,19 +233,16 @@ public class ScreenMain extends MainScreen {
 
 	private void initInfo() {
 		_info = new VerticalFieldManager();
+		Font font = _info.getFont();
+		float fHeight = font.getHeight();
+		int fStyle = font.getStyle();
+		int resultHeight = (int)fHeight;
 		if (Display.getOrientation() == Display.ORIENTATION_LANDSCAPE) {
-			_info.setFont(_info
-					.getFont()
-					.derive(_info.getFont().getStyle(),
-							_info.getFont().getHeight()
-									- (int) ((float) Display.getHeight() * (6.3 / 360))));
+			resultHeight = (int)(fHeight - fHeight * (6.0 / 27));
 		} else if (Display.getOrientation() == Display.ORIENTATION_PORTRAIT) {
-			_info.setFont(_info
-					.getFont()
-					.derive(_info.getFont().getStyle(),
-							_info.getFont().getHeight()
-									- (int) ((float) Display.getHeight() * (4.3 / 480))));
+			resultHeight = (int)(fHeight - fHeight * (4.0 / 20));
 		}
+		_info.setFont(font.derive(fStyle, resultHeight));
 
 		LabelField lblDescripcion = new LabelField("Descripción:", FOCUSABLE) {
 			protected void paint(Graphics g) {
