@@ -23,6 +23,7 @@ import gui.Listados.ListadoProcesos;
 import gui.Listados.ListadoPlantillas;
 import gui.Nuevos.NuevaActuacion;
 import gui.Nuevos.NuevoProceso;
+import net.rim.device.api.system.Bitmap;
 import net.rim.device.api.system.Display;
 import net.rim.device.api.ui.Color;
 import net.rim.device.api.ui.Field;
@@ -47,7 +48,6 @@ import net.rim.device.api.ui.container.MainScreen;
 import net.rim.device.api.ui.container.PopupScreen;
 import net.rim.device.api.ui.container.VerticalFieldManager;
 import net.rim.device.api.ui.decor.BackgroundFactory;
-import net.rim.device.api.ui.decor.Border;
 import net.rim.device.api.ui.decor.BorderFactory;
 
 public class ScreenMain extends MainScreen {
@@ -75,9 +75,20 @@ public class ScreenMain extends MainScreen {
 		super(NO_VERTICAL_SCROLL);
 
 		actuacionesManager();
+				
+		Bitmap backGround = Bitmap.getBitmapResource("bg480x360.png");
+		if(Display.getWidth() == 320 && Display.getHeight() == 240) {
+			backGround = Bitmap.getBitmapResource("bg320x240.png");
+		} else if(Display.getWidth() == 320 && Display.getHeight() == 480) {
+			backGround = Bitmap.getBitmapResource("bg320x480.png");
+		} else if(Display.getWidth() == 360 && Display.getHeight() == 480) {
+			backGround = Bitmap.getBitmapResource("bg360x480.png");
+		} else if(Display.getWidth() == 480 && Display.getHeight() == 360) {
+			backGround = Bitmap.getBitmapResource("bg480x360.png");
+		}
 
 		getMainManager().setBackground(
-				BackgroundFactory.createLinearGradientBackground(Color.BLACK, Color.BLACK, Color.BLACK, Color.GRAY));
+				BackgroundFactory.createBitmapBackground(backGround));
 
 		if (Display.getOrientation() == Display.ORIENTATION_PORTRAIT) {
 			_grid = new GridFieldManager(2, 1, GridFieldManager.FIXED_SIZE) {
@@ -92,11 +103,11 @@ public class ScreenMain extends MainScreen {
 
 			VerticalFieldManager top = new VerticalFieldManager(VERTICAL_SCROLL
 					| VERTICAL_SCROLLBAR);
-			top.setBackground(BackgroundFactory.createSolidTransparentBackground(Color.BLACK, 100));
+			//top.setBackground(BackgroundFactory.createSolidTransparentBackground(Color.BLACK, 100));
 			VerticalFieldManager bottom = new VerticalFieldManager();
 
-			top.setBorder(BorderFactory.createRoundedBorder(new XYEdges(5, 5,
-					5, 5), Color.WHITE, Border.STYLE_SOLID));
+			top.setBorder(BorderFactory.createBitmapBorder(new XYEdges(5, 5, 5, 5), Bitmap.getBitmapResource("blackBorder.png")));
+
 			top.add(_lista);
 			bottom.add(_info);
 
@@ -113,9 +124,8 @@ public class ScreenMain extends MainScreen {
 					VERTICAL_SCROLL | VERTICAL_SCROLLBAR);
 			VerticalFieldManager left = new VerticalFieldManager(
 					VERTICAL_SCROLL | VERTICAL_SCROLLBAR);
-			left.setBorder(BorderFactory.createRoundedBorder(new XYEdges(5, 5,
-					5, 5), Color.WHITE, Border.STYLE_SOLID));
-			left.setBackground(BackgroundFactory.createSolidTransparentBackground(Color.BLACK, 175));
+			left.setBorder(BorderFactory.createBitmapBorder(new XYEdges(5, 5, 5, 5), Bitmap.getBitmapResource("blackBorder.png")));
+			//left.setBackground(BackgroundFactory.createBitmapBackground(Bitmap.getBitmapResource("blackBorder.png")));
 
 			left.add(_lista);
 			right.add(_info);
