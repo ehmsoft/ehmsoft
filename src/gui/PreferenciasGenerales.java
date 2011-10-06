@@ -50,25 +50,32 @@ public class PreferenciasGenerales {
 	}
 
 	private void guardarPreferencias() {
-		Preferencias.setNombreUsuario(_screen.getNombreUsuario());
-		Preferencias.setMostrarCampoBusqueda(_screen.isMostrarBusqueda());
-		Preferencias.setMostrarTitulosPantallas(_screen.isMostrarTitulos());
-		Preferencias.setRecodarUltimaCategoria(_screen
-				.isRecordarUltimaCategoria());
-		Preferencias.setTipoFuente(_screen.getFuente());
-		Preferencias.setPantallaInicial(_screen.getPantallaInicial());
-		Preferencias.setCantidadActuacionesCriticas(_screen
-				.getCantidadActuacionesCriticas());
-		try {
-			Persistence per = new Persistence();
-			per.actualizarPreferencias();
-		} catch (NullPointerException npe) {
-			_screen.alert(Util.noSDString());
-			System.exit(0);
-		} catch (Exception e) {
-			_screen.alert("No se han podido guardar las preferencias. Error Desconocido");
-		}
-		Util.popScreen(_screen);
+		Util.pushWaitScreen();
+		UiApplication.getUiApplication().invokeLater(new Runnable() {
+			
+			public void run() {
+				Preferencias.setNombreUsuario(_screen.getNombreUsuario());
+				Preferencias.setMostrarCampoBusqueda(_screen.isMostrarBusqueda());
+				Preferencias.setMostrarTitulosPantallas(_screen.isMostrarTitulos());
+				Preferencias.setRecodarUltimaCategoria(_screen
+						.isRecordarUltimaCategoria());
+				Preferencias.setTipoFuente(_screen.getFuente());
+				Preferencias.setPantallaInicial(_screen.getPantallaInicial());
+				Preferencias.setCantidadActuacionesCriticas(_screen
+						.getCantidadActuacionesCriticas());
+				try {
+					Persistence per = new Persistence();
+					per.actualizarPreferencias();
+				} catch (NullPointerException npe) {
+					Util.noSd();
+				} catch (Exception e) {
+					_screen.alert("No se han podido guardar las preferencias. Error Desconocido" + e.toString());
+				} finally {
+					Util.popScreen(_screen);
+					Util.popWaitScreen();
+				}
+			}
+		});
 	}
 
 	private void copiaDeSeguridad() {
@@ -78,17 +85,25 @@ public class PreferenciasGenerales {
 	}
 
 	private void restaurarPreferencias() {
-		try {
-			Persistence per = new Persistence();
-			per.borrarPreferencias();
-			per.consultarPreferencias();
-		} catch (NullPointerException npe) {
-			_screen.alert(Util.noSDString());
-			System.exit(0);
-		} catch (Exception e) {
-			_screen.alert("No se han podido guardar las preferencias. Error Desconocido");
-		}
-		Util.popScreen(_screen);
+		Util.pushWaitScreen();
+		UiApplication.getUiApplication().invokeLater(new Runnable() {
+
+			public void run() {
+				try {
+					Persistence per = new Persistence();
+					per.borrarPreferencias();
+					per.consultarPreferencias();
+				} catch (NullPointerException npe) {
+					_screen.alert(Util.noSDString());
+					System.exit(0);
+				} catch (Exception e) {
+					_screen.alert("No se han podido guardar las preferencias. Error Desconocido");
+				} finally {
+					Util.popScreen(_screen);
+					Util.popWaitScreen();
+				}
+			}
+		});
 	}
 
 	private void activacion() {
