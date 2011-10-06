@@ -50,7 +50,7 @@ public abstract class ListaPopUp extends PopupScreen implements
 	}
 
 	public void setSearchField() {
-		_lista.getKeywordField().setBackground(getBackground());
+		_lista.getKeywordField().setBackground(null);
 		_searchField.add(_lista.getKeywordField());
 	}
 

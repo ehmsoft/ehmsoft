@@ -77,7 +77,7 @@ public class ScreenMain extends MainScreen {
 		actuacionesManager();
 
 		getMainManager().setBackground(
-				BackgroundFactory.createSolidBackground(Color.BLACK));
+				BackgroundFactory.createLinearGradientBackground(Color.BLACK, Color.BLACK, Color.BLACK, Color.GRAY));
 
 		if (Display.getOrientation() == Display.ORIENTATION_PORTRAIT) {
 			_grid = new GridFieldManager(2, 1, GridFieldManager.FIXED_SIZE) {
@@ -92,6 +92,7 @@ public class ScreenMain extends MainScreen {
 
 			VerticalFieldManager top = new VerticalFieldManager(VERTICAL_SCROLL
 					| VERTICAL_SCROLLBAR);
+			top.setBackground(BackgroundFactory.createSolidTransparentBackground(Color.BLACK, 100));
 			VerticalFieldManager bottom = new VerticalFieldManager();
 
 			top.setBorder(BorderFactory.createRoundedBorder(new XYEdges(5, 5,
@@ -114,6 +115,7 @@ public class ScreenMain extends MainScreen {
 					VERTICAL_SCROLL | VERTICAL_SCROLLBAR);
 			left.setBorder(BorderFactory.createRoundedBorder(new XYEdges(5, 5,
 					5, 5), Color.WHITE, Border.STYLE_SOLID));
+			left.setBackground(BackgroundFactory.createSolidTransparentBackground(Color.BLACK, 175));
 
 			left.add(_lista);
 			right.add(_info);
