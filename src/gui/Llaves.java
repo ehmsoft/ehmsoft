@@ -13,23 +13,15 @@ public class Llaves {
 	public Llaves() {
 		_screen = new LlavesScreen();
 		_screen.setChangeListener(listener);
-		Util.pushWaitScreen();
-		UiApplication.getUiApplication().invokeLater(new Runnable() {
-			
-			public void run() {
-				try {
-					_llave = new Persistence().consultarPreferencia(998);
-					_screen.setLlave(_llave);
-					verificarLlaves();
-				} catch (NullPointerException npe) {
-					Util.noSd();
-				} catch (Exception e) {
-					Util.alert("No se ha podido verificar la llave de licencia. Error Desconocido");
-				} finally {
-					Util.popWaitScreen();
-				}
-			}
-		});
+		try {
+			_llave = new Persistence().consultarPreferencia(998);
+			_screen.setLlave(_llave);
+			verificarLlaves();
+		} catch (NullPointerException npe) {
+			Util.noSd();
+		} catch (Exception e) {
+			Util.alert("No se ha podido verificar la llave de licencia. Error Desconocido");
+		}
 	}
 
 	private FieldChangeListener listener = new FieldChangeListener() {
