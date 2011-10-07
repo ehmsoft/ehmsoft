@@ -76,7 +76,7 @@ public class NuevaPersona {
 	}
 
 	private void guardar() {
-		Util.pushWaitScreen();
+		_screen.setStatus(Util.getWaitStatus());
 		UiApplication.getUiApplication().invokeLater(new Runnable() {
 
 			public void run() {
@@ -97,7 +97,6 @@ public class NuevaPersona {
 					Util.alert(e.toString());
 				} finally {
 					Util.popScreen(_screen);
-					Util.popWaitScreen();
 				}
 			}
 		});

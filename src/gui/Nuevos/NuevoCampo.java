@@ -58,7 +58,7 @@ public class NuevoCampo {
 		} else {
 			final CampoPersonalizado campo = new CampoPersonalizado(nombre, null, new Boolean(
 					isObligatorio), lonMax, lonMin);
-			Util.pushWaitScreen();
+			_screen.setStatus(Util.getWaitStatus());
 			UiApplication.getUiApplication().invokeLater(new Runnable() {
 
 				public void run() {
@@ -76,7 +76,6 @@ public class NuevoCampo {
 							Util.alert(e.toString());
 						} finally {
 							Util.popScreen(_screen);
-							Util.popWaitScreen();
 						}
 					} else {
 						Util.popScreen(_screen);

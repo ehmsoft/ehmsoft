@@ -101,7 +101,7 @@ public class NuevaPlantilla {
 			Util.alert("El campo Nombre es obligatorio");
 		} else if (checkLonMin()) {
 		} else {
-			Util.pushWaitScreen();
+			_screen.setStatus(Util.getWaitStatus());
 			UiApplication.getUiApplication().invokeLater(new Runnable() {
 
 				public void run() {
@@ -132,7 +132,6 @@ public class NuevaPlantilla {
 						Util.alert(e.toString());
 					} finally {
 						Util.popScreen(_screen);
-						Util.popWaitScreen();
 					}
 				}
 			});

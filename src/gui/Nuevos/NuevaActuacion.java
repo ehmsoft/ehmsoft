@@ -76,7 +76,7 @@ public class NuevaActuacion {
 					_screen.getFechaProxima(), _screen.getDescripcion(), null,
 					_cita.getUid());
 			if (_proceso != null) {
-				Util.pushWaitScreen();
+				_screen.setStatus(Util.getWaitStatus());
 				UiApplication.getUiApplication().invokeLater(new Runnable() {
 					public void run() {
 						try {
@@ -92,7 +92,6 @@ public class NuevaActuacion {
 						} catch (Exception e) {
 							Util.alert(e.toString());
 						} finally {
-							Util.popWaitScreen();
 							Util.popScreen(_screen);
 						}
 					}

@@ -141,7 +141,7 @@ public class NuevoProceso {
 		} else if (isCampoObligatorio()) {
 		} else if (checkLonMin()) {
 		} else {
-			Util.pushWaitScreen();
+			_screen.setStatus(Util.getWaitStatus());
 			UiApplication.getUiApplication().invokeLater(new Runnable() {
 
 				public void run() {
@@ -167,7 +167,6 @@ public class NuevoProceso {
 						_screen.alert(e.toString());
 					} finally {
 						Util.popScreen(_screen);
-						Util.popWaitScreen();
 					}
 				}
 			});

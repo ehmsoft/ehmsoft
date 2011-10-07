@@ -64,7 +64,7 @@ public class NuevoJuzgado {
 	}
 
 	private void guardar() {
-		Util.pushWaitScreen();
+		_screen.setStatus(Util.getWaitStatus());
 		UiApplication.getUiApplication().invokeLater(new Runnable() {
 
 			public void run() {
@@ -86,7 +86,6 @@ public class NuevoJuzgado {
 					_screen.showAlert(e.toString());
 				} finally {
 					Util.popScreen(_screen);
-					Util.popWaitScreen();
 				}
 			}
 		});
