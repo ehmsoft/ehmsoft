@@ -24,7 +24,7 @@ public class NuevaPlantilla {
 	private Persona _demandado;
 	private Juzgado _juzgado;
 	private Vector _campos;
-	private Vector _categorias;
+	private Categoria _categoria;
 
 	private Persona _demandanteVacio;
 	private Persona _demandadoVacio;
@@ -39,24 +39,9 @@ public class NuevaPlantilla {
 		_demandanteVacio = Util.consultarPersonaVacia(1);
 		_demandadoVacio = Util.consultarPersonaVacia(2);
 		_juzgadoVacio = Util.consultarJuzgadoVacio();
-		_screen = new NuevaPlantillaScreen();
-
-		try {
-			Persistence p = new Persistence();
-
-			_categorias = p.consultarCategorias();
-			Categoria ninguna = p.consultarCategoria("1");
-			_categorias.removeElement(ninguna);
-			_categorias.insertElementAt(ninguna, 0);
-		} catch (NullPointerException e) {
-			Util.noSd();
-		} catch (Exception e) {
-			Util.alert(e.toString());
-		}
-
-		Object[] categorias = new Object[_categorias.size()];
-		_categorias.copyInto(categorias);
-		_screen.addCategorias(categorias);
+		_categoria = Util.consultarCategoriaVacia();
+		_screen = new NuevaPlantillaScreen();		
+		_screen.setCategoria(_categoria.getDescripcion());
 		_screen.setDemandante(_demandanteVacio.getNombre());
 		_screen.setDemandado(_demandadoVacio.getNombre());
 		_screen.setJuzgado(_juzgadoVacio.getNombre());
@@ -78,8 +63,6 @@ public class NuevaPlantilla {
 				eliminarDemandado();
 			} else if (context == Util.ELIMINAR_JUZGADO) {
 				eliminarJuzgado();
-			} else if (context == Util.NEW_CATEGORIA) {
-				newCategoria();
 			} else if (context == Util.ADD_CATEGORIA) {
 				addCategoria();
 			} else if (context == Util.GUARDAR) {
@@ -133,10 +116,8 @@ public class NuevaPlantilla {
 					_plantilla = new Plantilla(_screen.getNombre(),
 							_demandante, _demandado, _juzgado, _screen
 									.getRadicado(), _screen.getRadicadoUnico(),
-							_screen.getEstado(), (Categoria) _screen
-									.getCategoria(), _screen.getTipo(), _screen
-									.getNotas(), _campos, _screen
-									.getPrioridad());
+							_screen.getEstado(), _categoria, _screen.getTipo(),
+							_screen.getNotas(), _campos, _screen.getPrioridad());
 					try {
 						new Persistence().guardarPlantilla(_plantilla);
 					} catch (NullPointerException e) {
@@ -233,11 +214,8 @@ public class NuevaPlantilla {
 	private void addCategoria() {
 		Categoria categoria = Util.listadoCategorias(true, 0);
 		if (categoria != null) {
-			_categorias.addElement(categoria);
-			Object[] categorias = new Object[_categorias.size()];
-			_categorias.copyInto(categorias);
-			_screen.addCategorias(categorias);
-			_screen.selectCategoria(_categorias.indexOf(categoria));
+			_categoria = categoria;
+			_screen.setCategoria(_categoria.getDescripcion());
 		}
 	}
 
@@ -252,17 +230,6 @@ public class NuevaPlantilla {
 	private void eliminarCampo() {
 		_campos.removeElement(_screen.getFocused());
 		_screen.eliminarCampo();
-	}
-
-	private void newCategoria() {
-		Categoria categoria = Util.nuevaCategoria(true);
-		if (categoria != null) {
-			_categorias.addElement(categoria);
-			Object[] categorias = new Object[_categorias.size()];
-			_categorias.copyInto(categorias);
-			_screen.addCategorias(categorias);
-			_screen.selectCategoria(_categorias.indexOf(categoria));
-		}
 	}
 
 	private void verCampo() {
