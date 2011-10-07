@@ -78,18 +78,7 @@ public class Actuacion {
 	public String toString() {
 		return getDescripcion();
 	}
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result
-				+ ((descripcion == null) ? 0 : descripcion.hashCode());
-		result = prime * result + ((fecha == null) ? 0 : fecha.hashCode());
-		result = prime * result
-				+ ((fechaProxima == null) ? 0 : fechaProxima.hashCode());
-		result = prime * result + ((juzgado == null) ? 0 : juzgado.hashCode());
-		result = prime * result + ((uid == null) ? 0 : uid.hashCode());
-		return result;
-	}
+
 	public boolean equals(Object obj) {
 		if (this == obj)
 			return true;
