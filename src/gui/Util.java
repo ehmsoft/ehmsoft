@@ -368,10 +368,10 @@ public class Util {
 		} else {
 			string = string + " - ";
 		}
-		if (calendar.get(Calendar.HOUR) < 10) {
+		if (calendar.get(Calendar.HOUR) > 0 && calendar.get(Calendar.HOUR) < 10) {
 			string = string + "0";
 		}
-		string = string + calendar.get(Calendar.HOUR);
+		string += (calendar.get(Calendar.HOUR) == 0)? "12": calendar.get(Calendar.HOUR) +"";
 		string = string + ":";
 		if (calendar.get(Calendar.MINUTE) < 10) {
 			string = string + "0";
