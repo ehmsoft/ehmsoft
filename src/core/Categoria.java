@@ -29,13 +29,7 @@ public class Categoria {
 	public String toString() {
 		return getDescripcion();
 	}
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result
-				+ ((descripcion == null) ? 0 : descripcion.hashCode());
-		return result;
-	}
+
 	public boolean equals(Object obj) {
 		if (this == obj)
 			return true;
