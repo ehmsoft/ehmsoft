@@ -1,6 +1,7 @@
 package gui.Ver;
 
 import gui.Util;
+import net.rim.device.api.database.DatabaseException;
 import net.rim.device.api.ui.Field;
 import net.rim.device.api.ui.FieldChangeListener;
 import net.rim.device.api.ui.UiApplication;
@@ -73,6 +74,10 @@ public class VerCampo {
 					} catch (NullPointerException e) {
 						_screen.alert(Util.noSDString());
 						System.exit(0);
+					} catch (DatabaseException e) {
+						if(e.getMessage().equalsIgnoreCase("constraint failed")) {
+							
+						}
 					} catch (Exception e) {
 						_screen.alert(e.toString());
 					} finally {

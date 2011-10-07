@@ -107,13 +107,6 @@ public class Util {
 	}
 
 	public static void popWaitScreen() {
-		if (!WAIT_SCREEN.isDisplayed()) {
-			try {
-				Thread.sleep(500);
-			} catch (InterruptedException e) {
-				alert(e.toString());
-			}
-		}
 		popScreen(WAIT_SCREEN);
 	}
 

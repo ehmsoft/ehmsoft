@@ -5,6 +5,7 @@ import gui.Util;
 import java.util.Enumeration;
 import java.util.Vector;
 
+import net.rim.device.api.database.DatabaseException;
 import net.rim.device.api.ui.Field;
 import net.rim.device.api.ui.FieldChangeListener;
 import net.rim.device.api.ui.UiApplication;
@@ -113,15 +114,20 @@ public class NuevaPlantilla {
 					if (_juzgado == null) {
 						_juzgado = _juzgadoVacio;
 					}
-					_plantilla = new Plantilla(_screen.getNombre(),
+					final Plantilla plantilla = new Plantilla(_screen.getNombre(),
 							_demandante, _demandado, _juzgado, _screen
 									.getRadicado(), _screen.getRadicadoUnico(),
 							_screen.getEstado(), _categoria, _screen.getTipo(),
 							_screen.getNotas(), _campos, _screen.getPrioridad());
 					try {
-						new Persistence().guardarPlantilla(_plantilla);
+						new Persistence().guardarPlantilla(plantilla);
+						_plantilla = plantilla;
 					} catch (NullPointerException e) {
 						Util.noSd();
+					} catch (DatabaseException e) {
+						if(e.getMessage().equalsIgnoreCase("constraint failed")) {
+							Util.alert("Esta plantilla ya existe");
+						}
 					} catch (Exception e) {
 						Util.alert(e.toString());
 					} finally {

@@ -1,6 +1,7 @@
 package gui.Nuevos;
 
 import gui.Util;
+import net.rim.device.api.database.DatabaseException;
 import net.rim.device.api.ui.Field;
 import net.rim.device.api.ui.FieldChangeListener;
 import net.rim.device.api.ui.UiApplication;
@@ -67,14 +68,20 @@ public class NuevoJuzgado {
 		UiApplication.getUiApplication().invokeLater(new Runnable() {
 
 			public void run() {
-				_juzgado = new Juzgado(_screen.getNombre(),
+				final Juzgado juzgado = new Juzgado(_screen.getNombre(),
 						_screen.getCiudad(), _screen.getDireccion(), _screen
 								.getTelefono(), _screen.getTipo());
 				try {
-					new Persistence().guardarJuzgado(_juzgado);
+					new Persistence().guardarJuzgado(juzgado);
+					_juzgado = juzgado;
 				} catch (NullPointerException e) {
 					_screen.showAlert(Util.noSDString());
 					System.exit(0);
+				} catch (DatabaseException e) {
+					if(e.getMessage().equalsIgnoreCase("constraint failed")) {
+						Util.alert("Este juzgado ya existe");
+						_juzgado = null;
+					}
 				} catch (Exception e) {
 					_screen.showAlert(e.toString());
 				} finally {

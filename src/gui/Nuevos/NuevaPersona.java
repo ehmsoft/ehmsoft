@@ -1,6 +1,7 @@
 package gui.Nuevos;
 
 import gui.Util;
+import net.rim.device.api.database.DatabaseException;
 import net.rim.device.api.ui.Field;
 import net.rim.device.api.ui.FieldChangeListener;
 import net.rim.device.api.ui.UiApplication;
@@ -79,14 +80,19 @@ public class NuevaPersona {
 		UiApplication.getUiApplication().invokeLater(new Runnable() {
 
 			public void run() {
-				_persona = new Persona(_tipo, _screen.getCedula(), _screen
+				final Persona persona = new Persona(_tipo, _screen.getCedula(), _screen
 						.getNombre(), _screen.getTelefono(), _screen
 						.getDireccion(), _screen.getCorreo(), _screen
 						.getNotas());
 				try {
-					new Persistence().guardarPersona(_persona);
+					new Persistence().guardarPersona(persona);					
+					_persona = persona;
 				} catch (NullPointerException e) {
 					Util.noSd();
+				} catch (DatabaseException e) {
+					if(e.getMessage().equalsIgnoreCase("constraint failed")) {
+						Util.alert("Esta persona ya existe");
+					}
 				} catch (Exception e) {
 					Util.alert(e.toString());
 				} finally {

@@ -4,6 +4,7 @@ import gui.Cita;
 import gui.Util;
 import gui.Listados.ListadoJuzgados;
 import gui.Ver.VerCita;
+import net.rim.device.api.database.DatabaseException;
 import net.rim.device.api.ui.Field;
 import net.rim.device.api.ui.FieldChangeListener;
 import net.rim.device.api.ui.UiApplication;
@@ -71,7 +72,7 @@ public class NuevaActuacion {
 		} else if (_juzgado == null) {
 			Util.alert("El juzgado es obligatorio");
 		} else {
-			_actuacion = new Actuacion(_juzgado, _screen.getFecha(),
+			final Actuacion actuacion = new Actuacion(_juzgado, _screen.getFecha(),
 					_screen.getFechaProxima(), _screen.getDescripcion(), null,
 					_cita.getUid());
 			if (_proceso != null) {
@@ -79,10 +80,15 @@ public class NuevaActuacion {
 				UiApplication.getUiApplication().invokeLater(new Runnable() {
 					public void run() {
 						try {
-							new Persistence().guardarActuacion(_actuacion,
+							new Persistence().guardarActuacion(actuacion,
 									_proceso.getId_proceso());
+							_actuacion = actuacion;
 						} catch (NullPointerException e) {
 							Util.noSd();
+						} catch (DatabaseException e) {
+							if(e.getMessage().equalsIgnoreCase("constraint failed")) {
+								Util.alert("Esta actuación ya existe");
+							}
 						} catch (Exception e) {
 							Util.alert(e.toString());
 						} finally {

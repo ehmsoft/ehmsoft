@@ -2,6 +2,7 @@ package gui.Listados;
 
 import gui.ListadosInterface;
 import gui.Util;
+import gui.Nuevos.NuevoCampo;
 
 import java.util.Vector;
 
@@ -124,7 +125,10 @@ public class ListadoCampos {
 	}
 
 	private void nuevoCampo() {
-		CampoPersonalizado campo = Util.nuevoCampoPersonalizado();
+		CampoPersonalizado campo = null;
+		NuevoCampo n = new NuevoCampo(true);
+		UiApplication.getUiApplication().pushModalScreen(n.getScreen());
+		campo = n.getCampo();
 		if (campo != null) {
 			if ((_style & NO_NUEVO) == NO_NUEVO) {
 				_screen.addElement(campo, 0);

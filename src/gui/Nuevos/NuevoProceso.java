@@ -6,6 +6,7 @@ import gui.Listados.ListadoActuaciones;
 import java.util.Enumeration;
 import java.util.Vector;
 
+import net.rim.device.api.database.DatabaseException;
 import net.rim.device.api.ui.Field;
 import net.rim.device.api.ui.FieldChangeListener;
 import net.rim.device.api.ui.UiApplication;
@@ -144,7 +145,7 @@ public class NuevoProceso {
 			UiApplication.getUiApplication().invokeLater(new Runnable() {
 
 				public void run() {
-					_proceso = new Proceso(_demandante, _demandado, _screen
+					final Proceso proceso = new Proceso(_demandante, _demandado, _screen
 							.getFecha(), _juzgado, _screen.getRadicado(),
 							_screen.getRadicadoUnico(), _actuaciones, _screen
 									.getEstado(), (Categoria) _screen
@@ -152,10 +153,16 @@ public class NuevoProceso {
 									.getNotas(), _campos, _screen
 									.getPrioridad());
 					try {
-						new Persistence().guardarProceso(_proceso);
+						new Persistence().guardarProceso(proceso);
+						_proceso = proceso;
 					} catch (NullPointerException e) {
 						_screen.alert(Util.noSDString());
 						System.exit(0);
+					}  catch (DatabaseException e) {
+						if(e.getMessage().equalsIgnoreCase("constraint failed")) {
+							Util.alert("Este proceso ya existe");
+							_proceso = null;
+						}
 					} catch (Exception e) {
 						_screen.alert(e.toString());
 					} finally {

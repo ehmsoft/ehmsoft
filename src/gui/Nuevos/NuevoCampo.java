@@ -1,6 +1,7 @@
 package gui.Nuevos;
 
 import gui.Util;
+import net.rim.device.api.database.DatabaseException;
 import net.rim.device.api.ui.Field;
 import net.rim.device.api.ui.FieldChangeListener;
 import net.rim.device.api.ui.UiApplication;
@@ -55,7 +56,7 @@ public class NuevoCampo {
 		} else if (lonMax == lonMin && lonMax != 0) {
 			_screen.alert("La longitud máxima no puede ser igual que la longitud mínima");
 		} else {
-			_campo = new CampoPersonalizado(nombre, null, new Boolean(
+			final CampoPersonalizado campo = new CampoPersonalizado(nombre, null, new Boolean(
 					isObligatorio), lonMax, lonMin);
 			Util.pushWaitScreen();
 			UiApplication.getUiApplication().invokeLater(new Runnable() {
@@ -63,9 +64,14 @@ public class NuevoCampo {
 				public void run() {
 					if (_saveInBd) {
 						try {
-							new Persistence().guardarAtributo(_campo);
+							new Persistence().guardarAtributo(campo);
+							_campo = campo;
 						} catch (NullPointerException e) {
 							Util.noSd();
+						} catch (DatabaseException e) {
+							if(e.getMessage().equalsIgnoreCase("constraint failed")) {
+								Util.alert("Este campo personalizado ya existe");
+							}
 						} catch (Exception e) {
 							Util.alert(e.toString());
 						} finally {
