@@ -64,9 +64,9 @@ public class BackupScreen extends PopupScreen {
 		}
 	};
 
-	public String getChoice() {
-		return (String) _lsRoots.getChoice(_lsRoots.getSelectedIndex());
-	}
+//	public String getChoice() {
+//		return (String) _lsRoots.getChoice(_lsRoots.getSelectedIndex());
+//	}
 
 	public int getIndexChoice() {
 		return _lsRoots.getSelectedIndex();

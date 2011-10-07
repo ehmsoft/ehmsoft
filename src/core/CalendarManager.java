@@ -199,11 +199,11 @@ public class CalendarManager {
 		}
 		return flag;
 	}
-	public static long getDURACION_CITA() {
-		return DURACION_CITA;
-	}
-	public static void setDURACION_CITA(long dURACION_CITA) {
-		DURACION_CITA = dURACION_CITA;
-	}
+//	public static long getDURACION_CITA() {
+//		return DURACION_CITA;
+//	}
+//	public static void setDURACION_CITA(long dURACION_CITA) {
+//		DURACION_CITA = dURACION_CITA;
+//	}
 	
 }

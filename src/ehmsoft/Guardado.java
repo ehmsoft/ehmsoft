@@ -40,7 +40,6 @@ public interface Guardado {
 	public void borrarCampoPlantilla(CampoPersonalizado campo) throws Exception;
 	//preferencias
 	public void actualizarPreferencia(int id_preferencia,String valor) throws Exception;
-	public void borrarPreferencia(int id_preferencia) throws Exception;
 	
 	public void actualizarPreferencias() throws Exception;
 	public void borrarPreferencias() throws Exception;

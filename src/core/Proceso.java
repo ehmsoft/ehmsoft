@@ -162,30 +162,7 @@ public class Proceso {
 	public void setPrioridad(int prioridad) {
 		this.prioridad = prioridad;
 	}
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result
-				+ ((actuaciones == null) ? 0 : actuaciones.hashCode());
-		result = prime * result + ((campos == null) ? 0 : campos.hashCode());
-		result = prime * result
-				+ ((categoria == null) ? 0 : categoria.hashCode());
-		result = prime * result
-				+ ((demandado == null) ? 0 : demandado.hashCode());
-		result = prime * result
-				+ ((demandante == null) ? 0 : demandante.hashCode());
-		result = prime * result + ((estado == null) ? 0 : estado.hashCode());
-		result = prime * result + ((fecha == null) ? 0 : fecha.hashCode());
-		result = prime * result + ((juzgado == null) ? 0 : juzgado.hashCode());
-		result = prime * result + ((notas == null) ? 0 : notas.hashCode());
-		result = prime * result + prioridad;
-		result = prime * result
-				+ ((radicado == null) ? 0 : radicado.hashCode());
-		result = prime * result
-				+ ((radicadoUnico == null) ? 0 : radicadoUnico.hashCode());
-		result = prime * result + ((tipo == null) ? 0 : tipo.hashCode());
-		return result;
-	}
+
 	public boolean equals(Object obj) {
 		if (this == obj)
 			return true;
