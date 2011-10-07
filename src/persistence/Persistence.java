@@ -1016,28 +1016,6 @@ public class Persistence implements Cargado, Guardado {
 
 	}
 
-	public void borrarPreferencia(int id_preferencia) throws Exception {
-		Database d = null;
-		try {
-			connMgr.prepararBD();
-			d = DatabaseFactory.open(connMgr.getDbLocation());
-			Statement stPreferencias = d
-					.createStatement("UPDATE preferencias SET valor = ? WHERE id_preferencia = ?");
-			stPreferencias.prepare();
-			stPreferencias.bind(2, id_preferencia);
-			stPreferencias.bind(2, id_preferencia);
-			stPreferencias.execute();
-			stPreferencias.close();
-
-		} catch (Exception e) {
-			throw e;
-		} finally {
-			if (d != null) {
-				d.close();
-			}
-		}
-	}
-
 	public void actualizarPreferencias() throws Exception {
 		Database d = null;
 		try {
