@@ -89,7 +89,11 @@ public class ListadoPlantillas {
 			String todas = "Todas";
 			o[_categorias.size()] = todas;
 			_screen.setCategorias(o);
-			_screen.setSelectedCategoria(todas);
+			if (Preferencias.getUltimaCategoria() == null) {
+				_screen.setSelectedCategoria(todas);
+			} else {
+				_screen.setSelectedCategoria(Preferencias.getUltimaCategoria());
+			}
 		}
 	}
 
@@ -145,6 +149,7 @@ public class ListadoPlantillas {
 				if ((_style & ON_CLICK_VER) == ON_CLICK_VER) {
 					verPlantilla();
 				} else {
+					setUltimaCategoria();
 					_selected = (Plantilla) _screen.getSelected();
 					UiApplication.getUiApplication()
 							.popScreen((Screen) _screen);
@@ -194,8 +199,13 @@ public class ListadoPlantillas {
 			_screen.remove(selected);
 		}
 	}
+	
+	private void setUltimaCategoria() {
+		Preferencias.setUltimaCategoria(_screen.getSelectedCategoria());		
+	}
 
 	private void cerrarPantalla() {
+		setUltimaCategoria();
 		_selected = null;
 		UiApplication.getUiApplication().popScreen((Screen) _screen);
 	}

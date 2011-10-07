@@ -54,7 +54,7 @@ public class VerCita {
 			}
 			_cita.setDescripcion(_screen.getDescripcion());
 			_cita.setFecha(_screen.getFecha());
-			_cita.guardarCita();
+			_cita.actualizarCita();
 			Util.popScreen(_screen);
 		}
 	}

@@ -62,7 +62,7 @@ public class Proceso {
 
 	//Fin Constructores
 
-	public void addActuacion(Actuacion act){
+/*	public void addActuacion(Actuacion act){
 		this.actuaciones.addElement(act);
 	}
 	public void delActuacion(Actuacion act){
@@ -73,7 +73,7 @@ public class Proceso {
 	}
 	public void delCampo(CampoPersonalizado campo){
 		this.campos.removeElement(campo);
-	}
+	}*/
 	//Getters
 	public Persona getDemandante() {
 		return demandante;

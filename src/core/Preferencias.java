@@ -1,5 +1,7 @@
 package core;
 
+import persistence.Persistence;
+import gui.Util;
 import net.rim.device.api.ui.Font;
 
 public class Preferencias {
@@ -37,6 +39,8 @@ public class Preferencias {
 	public final static short VER_CITA_POP = 20262;
 	public final static short VER_CATEGORIA_MAIN = 20271;
 	public final static short PANTALLA_INICIAL_MAIN = 20001;
+	
+	private static Categoria _ultimaCategoria;
 	
 	private static boolean mostrarCampoBusqueda = true;
 	private static Font tipoFuente = Font.getDefault();
@@ -91,5 +95,45 @@ public class Preferencias {
 	public static void setCantidadActuacionesCriticas(
 			int cantidadActuacionesCriticas) {
 		Preferencias.cantidadActuacionesCriticas = (short)cantidadActuacionesCriticas;
-	}	
+	}
+	
+	public static void setUltimaCategoria(Object categoria) {
+		if (isRecodarUltimaCategoria()) {
+			if (String.class.isInstance(categoria)) {
+				_ultimaCategoria = null;
+			} else {
+				_ultimaCategoria = (Categoria) categoria;
+			}
+			try {
+				if (_ultimaCategoria == null) {
+					new Persistence().actualizarPreferencia(10202, null);
+				} else {
+					new Persistence().actualizarPreferencia(10202,
+							_ultimaCategoria.getId_categoria());
+				}
+			} catch (NullPointerException e) {
+				Util.noSd();
+			} catch (Exception e) {
+				Util.alert(e.toString());
+			}
+		}
+	}
+	
+	public static void setUltimaCategoria(Object categoria, boolean guardar) {
+		if (isRecodarUltimaCategoria()) {
+			if (!guardar) {
+				_ultimaCategoria = (Categoria) categoria;
+			} else {
+				setUltimaCategoria(categoria);
+			}
+		}
+	}
+
+	public static Categoria getUltimaCategoria() {
+		if (isRecodarUltimaCategoria()) {
+			return _ultimaCategoria;
+		} else {
+			return null;
+		}
+	}
 }

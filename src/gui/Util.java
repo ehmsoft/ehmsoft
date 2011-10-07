@@ -195,6 +195,18 @@ public class Util {
 		}
 		return persona;
 	}
+	
+	public static Categoria consultarCategoriaVacia() {
+		Categoria categoria = null;
+		try {
+			categoria = new Persistence().consultarCategoria("1");
+		} catch (NullPointerException e) {
+			noSd();
+		} catch (Exception e) {
+			alert(e.toString());
+		}
+		return categoria;
+	}
 
 	public static Juzgado consultarJuzgadoVacio() {
 		Juzgado juzgado = null;

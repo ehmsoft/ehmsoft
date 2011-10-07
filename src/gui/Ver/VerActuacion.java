@@ -94,6 +94,8 @@ public class VerActuacion {
 					}
 				}
 			});
+		} else {
+			Util.popScreen(_screen);
 		}
 	}
 
@@ -154,6 +156,7 @@ public class VerActuacion {
 			if (_cita.hasAlarma()) {
 				_screen.setBell();
 			}
+			_screen.setDirty(true);
 		}
 	}
 

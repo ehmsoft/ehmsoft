@@ -1271,7 +1271,7 @@ public class Persistence implements Cargado, Guardado {
 		return demandados;
 	}
 
-	public Vector consultarPersonas() throws Exception {// Devuelve un vector
+	/*public Vector consultarPersonas() throws Exception {// Devuelve un vector
 														// iterable con todos
 														// los demandantes y
 														// demandados
@@ -1331,7 +1331,7 @@ public class Persistence implements Cargado, Guardado {
 			}
 		}
 		return pers;
-	}
+	}*/
 
 	public Persona consultarPersona(String id_persona, int tipo)
 			throws Exception {// Devuelve una persona especifica
@@ -1563,7 +1563,7 @@ public class Persistence implements Cargado, Guardado {
 		return actuaciones;
 	}
 
-	public Actuacion consultarActuacion(String id_actuacion) throws Exception {
+	/*public Actuacion consultarActuacion(String id_actuacion) throws Exception {
 		Database d = null;
 		Actuacion actuacion = null;
 		try {
@@ -1598,7 +1598,7 @@ public class Persistence implements Cargado, Guardado {
 		actuacion.setJuzgado(consultarJuzgado(actuacion.getJuzgado()
 				.getId_juzgado()));
 		return actuacion;
-	}
+	}*/
 
 	public Vector consultarActuacionesCriticas(int cantidad) throws Exception {
 		Database d = null;
@@ -1811,7 +1811,7 @@ public class Persistence implements Cargado, Guardado {
 		return campos;
 	}
 
-	public CampoPersonalizado consultarCampo(String id_campo) throws Exception {
+	/*public CampoPersonalizado consultarCampo(String id_campo) throws Exception {
 		Database d = null;
 		CampoPersonalizado campo = null;
 		try {
@@ -1847,7 +1847,7 @@ public class Persistence implements Cargado, Guardado {
 			}
 		}
 		return campo;
-	}
+	}*/
 
 	public Vector consultarAtributos() throws Exception {
 		Database d = null;
@@ -1948,7 +1948,7 @@ public class Persistence implements Cargado, Guardado {
 		return plantillas;
 	}
 
-	public Plantilla consultarPlantilla(String id_plantilla) throws Exception {
+	/*public Plantilla consultarPlantilla(String id_plantilla) throws Exception {
 		Database d = null;
 		Plantilla plantilla = null;
 		try {
@@ -2005,7 +2005,7 @@ public class Persistence implements Cargado, Guardado {
 		plantilla.setCategoria(consultarCategoria(plantilla.getCategoria()
 				.getId_categoria()));
 		return plantilla;
-	}
+	}*/
 
 	public Vector consultarCamposPlantilla(Plantilla plantilla)
 			throws Exception {
@@ -2046,7 +2046,7 @@ public class Persistence implements Cargado, Guardado {
 		return campos;
 	}
 
-	public CampoPersonalizado consultarCampoPlantilla(String id_campo)
+	/*public CampoPersonalizado consultarCampoPlantilla(String id_campo)
 			throws Exception {
 		Database d = null;
 		CampoPersonalizado campo = null;
@@ -2083,7 +2083,7 @@ public class Persistence implements Cargado, Guardado {
 			}
 		}
 		return campo;
-	}
+	}*/
 
 	public String consultarPreferencia(int id_preferencia) throws Exception {
 		String valor = "0";
@@ -2132,7 +2132,7 @@ public class Persistence implements Cargado, Guardado {
 
 	public void consultarPreferencias() throws Exception {
 		Database d = null;
-		String tipoFuente = "", tamanoFuente = "", estiloFuente = "";
+		String tipoFuente = "", tamanoFuente = "", estiloFuente = "", idCategoria = null;
 
 		try {
 			connMgr.prepararBD();
@@ -2175,6 +2175,9 @@ public class Persistence implements Cargado, Guardado {
 					break;
 				}
 				case 10202:
+					if(valor != null) {
+						idCategoria = valor;
+					}
 					break;
 				case 10301: {
 					if (valor.equals("1")) {
@@ -2207,6 +2210,12 @@ public class Persistence implements Cargado, Guardado {
 			if (d != null) {
 				d.close();
 			}
+		}
+		
+		if(idCategoria != null) {
+			Preferencias.setUltimaCategoria(consultarCategoria(idCategoria), false);
+		} else {
+			Preferencias.setUltimaCategoria(null, false);
 		}
 	}
 

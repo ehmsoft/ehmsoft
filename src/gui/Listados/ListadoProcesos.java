@@ -87,7 +87,11 @@ public class ListadoProcesos {
 			String todas = "Todas";
 			o[_categorias.size()] = todas;
 			_screen.setCategorias(o);
-			_screen.setSelectedCategoria(todas);
+			if (Preferencias.getUltimaCategoria() == null) {
+				_screen.setSelectedCategoria(todas);
+			} else {
+				_screen.setSelectedCategoria(Preferencias.getUltimaCategoria());
+			}
 		}
 	}
 
@@ -135,6 +139,7 @@ public class ListadoProcesos {
 				if ((_style & ON_CLICK_VER) == ON_CLICK_VER) {
 					verProceso();
 				} else {
+					setUltimaCategoria();
 					_selected = (Proceso) _screen.getSelected();
 					UiApplication.getUiApplication()
 							.popScreen((Screen) _screen);
@@ -184,8 +189,13 @@ public class ListadoProcesos {
 			_screen.remove(selected);
 		}
 	}
+	
+	private void setUltimaCategoria() {
+		Preferencias.setUltimaCategoria(_screen.getSelectedCategoria());		
+	}
 
 	private void cerrarPantalla() {
+		setUltimaCategoria();
 		_selected = null;
 		UiApplication.getUiApplication().popScreen((Screen) _screen);
 	}

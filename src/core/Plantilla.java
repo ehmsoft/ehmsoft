@@ -55,12 +55,12 @@ public class Plantilla {
 		this.prioridad = prioridad;
 	}
 	//Fin Constructores
-	public void addCampo(CampoPersonalizado campo){
+/*	public void addCampo(CampoPersonalizado campo){
 		this.campos.addElement(campo);
 	}
 	public void delCampo(CampoPersonalizado campo){
 		this.campos.removeElement(campo);
-	}
+	}*/
 	//Getters
 	public String getNombre() {
 		return nombre;
