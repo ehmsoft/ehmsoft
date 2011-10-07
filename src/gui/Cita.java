@@ -132,10 +132,6 @@ public class Cita {
 		}
 	}
 
-	public int getAlarma() {
-		return _alarma;
-	}
-
 	public Date getFecha() {
 		return _fecha;
 	}
@@ -166,10 +162,6 @@ public class Cita {
 
 	public void setFecha(Date fecha) {
 		_fecha = fecha;
-	}
-
-	public void setUid(String uid) {
-		_uid = uid;
 	}
 
 	public boolean hasAlarma() {
