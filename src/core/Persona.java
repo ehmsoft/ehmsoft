@@ -82,9 +82,9 @@ public class Persona {
 	public void setId_persona(String id_persona) {
 		this.id_persona = id_persona;
 	}
-	public void setTipo(int tipo) {
-		this.tipo = tipo;
-	}
+//	public void setTipo(int tipo) {
+//		this.tipo = tipo;
+//	}
 	public void setId(String id) {
 		this.id = id;
 	}
