@@ -87,21 +87,7 @@ public class CampoPersonalizado {
 	public String toString() {
 		return getNombre();
 	}
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result
-				+ ((id_atributo == null) ? 0 : id_atributo.hashCode());
-		result = prime * result
-				+ ((id_campo == null) ? 0 : id_campo.hashCode());
-		result = prime * result + longitudMax;
-		result = prime * result + longitudMin;
-		result = prime * result + ((nombre == null) ? 0 : nombre.hashCode());
-		result = prime * result
-				+ ((obligatorio == null) ? 0 : obligatorio.hashCode());
-		result = prime * result + ((valor == null) ? 0 : valor.hashCode());
-		return result;
-	}
+
 	public boolean equals(Object obj) {
 		if (this == obj)
 			return true;
