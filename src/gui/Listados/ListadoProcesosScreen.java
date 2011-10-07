@@ -43,6 +43,10 @@ public class ListadoProcesosScreen extends ListaScreen implements
 		_cfCategorias.setSelectedIndex(object);
 		invalidate();
 	}
+	
+	public Object getSelectedCategoria() {
+		return _cfCategorias.getChoice(_cfCategorias.getSelectedIndex());
+	}
 
 	private FieldChangeListener listener = new FieldChangeListener() {
 

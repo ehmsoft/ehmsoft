@@ -2197,6 +2197,11 @@ public class Persistence implements Cargado, Guardado {
 					break;
 				}
 				case 10202:
+					if(valor == null) {
+						Preferencias.setUltimaCategoria(null, false);
+					} else {
+						Preferencias.setUltimaCategoria(consultarCategoria(valor), false);
+					}
 					break;
 				case 10301: {
 					if (valor.equals("1")) {
