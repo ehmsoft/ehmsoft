@@ -2132,7 +2132,7 @@ public class Persistence implements Cargado, Guardado {
 
 	public void consultarPreferencias() throws Exception {
 		Database d = null;
-		String tipoFuente = "", tamanoFuente = "", estiloFuente = "";
+		String tipoFuente = "", tamanoFuente = "", estiloFuente = "", idCategoria = null;
 
 		try {
 			connMgr.prepararBD();
@@ -2175,10 +2175,8 @@ public class Persistence implements Cargado, Guardado {
 					break;
 				}
 				case 10202:
-					if(valor == null) {
-						Preferencias.setUltimaCategoria(null, false);
-					} else {
-						Preferencias.setUltimaCategoria(consultarCategoria(valor), false);
+					if(valor != null) {
+						idCategoria = valor;
 					}
 					break;
 				case 10301: {
@@ -2212,6 +2210,12 @@ public class Persistence implements Cargado, Guardado {
 			if (d != null) {
 				d.close();
 			}
+		}
+		
+		if(idCategoria != null) {
+			Preferencias.setUltimaCategoria(consultarCategoria(idCategoria), false);
+		} else {
+			Preferencias.setUltimaCategoria(null, false);
 		}
 	}
 
