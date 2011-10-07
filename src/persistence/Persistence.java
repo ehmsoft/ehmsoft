@@ -1168,25 +1168,25 @@ public class Persistence implements Cargado, Guardado {
 
 	}
 
-	public void log(String descripcion) throws Exception {
-		Database d = null;
-		try {
-			connMgr.prepararBD();
-			d = DatabaseFactory.open(connMgr.getDbLocation());
-			Statement stPreferencias = d
-					.createStatement("INSERT INTO log(fecha, descripcion) VALUES(datetime(),?) ");
-			stPreferencias.prepare();
-			stPreferencias.bind(1, descripcion);
-			stPreferencias.execute();
-			stPreferencias.close();
-		} catch (Exception e) {
-			throw e;
-		} finally {
-			if (d != null) {
-				d.close();
-			}
-		}
-	}
+//	public void log(String descripcion) throws Exception {
+//		Database d = null;
+//		try {
+//			connMgr.prepararBD();
+//			d = DatabaseFactory.open(connMgr.getDbLocation());
+//			Statement stPreferencias = d
+//					.createStatement("INSERT INTO log(fecha, descripcion) VALUES(datetime(),?) ");
+//			stPreferencias.prepare();
+//			stPreferencias.bind(1, descripcion);
+//			stPreferencias.execute();
+//			stPreferencias.close();
+//		} catch (Exception e) {
+//			throw e;
+//		} finally {
+//			if (d != null) {
+//				d.close();
+//			}
+//		}
+//	}
 
 	public Vector consultarDemandantes() throws Exception {// Devuelve una
 															// vector iterable

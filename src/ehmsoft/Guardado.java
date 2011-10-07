@@ -44,5 +44,5 @@ public interface Guardado {
 	public void actualizarPreferencias() throws Exception;
 	public void borrarPreferencias() throws Exception;
 	//Log
-	public void log(String descripcion) throws Exception;
+	//public void log(String descripcion) throws Exception;
 }
