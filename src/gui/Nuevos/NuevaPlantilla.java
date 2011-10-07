@@ -138,23 +138,25 @@ public class NuevaPlantilla {
 		Enumeration e = _campos.elements();
 		while (e.hasMoreElements()) {
 			CampoPersonalizado campo = (CampoPersonalizado) e.nextElement();
-			if (campo.getLongitudMin() > campo.getValor().length()
-					&& campo.getLongitudMin() != 0) {
-				Util.alert("El campo " + campo.getNombre()
-						+ " posee una longitud minima de "
-						+ campo.getLongitudMin()
-						+ " caracteres, y usted ingresó "
-						+ campo.getValor().length());
-				ret = true;
-			}
-			if (campo.getLongitudMax() < campo.getValor().length()
-					&& campo.getLongitudMax() != 0) {
-				Util.alert("El campo " + campo.getNombre()
-						+ " posee una longitud máxima de "
-						+ campo.getLongitudMax()
-						+ " caracteres, y usted ingresó "
-						+ campo.getValor().length());
-				ret = true;
+			if (campo.getValor().length() != 0) {
+				if (campo.getLongitudMin() > campo.getValor().length()
+						&& campo.getLongitudMin() != 0) {
+					Util.alert("El campo " + campo.getNombre()
+							+ " posee una longitud minima de "
+							+ campo.getLongitudMin()
+							+ " caracteres, y usted ingresó "
+							+ campo.getValor().length());
+					ret = true;
+				}
+				if (campo.getLongitudMax() < campo.getValor().length()
+						&& campo.getLongitudMax() != 0) {
+					Util.alert("El campo " + campo.getNombre()
+							+ " posee una longitud máxima de "
+							+ campo.getLongitudMax()
+							+ " caracteres, y usted ingresó "
+							+ campo.getValor().length());
+					ret = true;
+				}
 			}
 		}
 		return ret;
