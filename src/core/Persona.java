@@ -106,20 +106,7 @@ public class Persona {
 	public String toString() {
 		return getNombre();
 	}
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((correo == null) ? 0 : correo.hashCode());
-		result = prime * result
-				+ ((direccion == null) ? 0 : direccion.hashCode());
-		result = prime * result + ((id == null) ? 0 : id.hashCode());
-		result = prime * result + ((nombre == null) ? 0 : nombre.hashCode());
-		result = prime * result + ((notas == null) ? 0 : notas.hashCode());
-		result = prime * result
-				+ ((telefono == null) ? 0 : telefono.hashCode());
-		result = prime * result + tipo;
-		return result;
-	}
+
 	public boolean equals(Object obj) {
 		if (this == obj)
 			return true;
