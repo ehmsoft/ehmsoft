@@ -24,6 +24,9 @@ import gui.Ver.VerProceso;
 import java.util.Calendar;
 import java.util.Vector;
 
+import net.rim.device.api.ui.Color;
+import net.rim.device.api.ui.Field;
+import net.rim.device.api.ui.Graphics;
 import net.rim.device.api.ui.Screen;
 import net.rim.device.api.ui.UiApplication;
 import net.rim.device.api.ui.UiEngine;
@@ -31,6 +34,7 @@ import net.rim.device.api.ui.component.Dialog;
 import net.rim.device.api.ui.component.LabelField;
 import net.rim.device.api.ui.container.PopupScreen;
 import net.rim.device.api.ui.container.VerticalFieldManager;
+import net.rim.device.api.ui.decor.BackgroundFactory;
 import persistence.Persistence;
 import core.Actuacion;
 import core.CampoPersonalizado;
@@ -87,6 +91,8 @@ public class Util {
 	public static final short LLAVES = 33;
 
 	public static PopupScreen WAIT_SCREEN;
+	
+	private static LabelField _waitLabel = null;
 
 	public static UiApplication UI_Application;
 
@@ -95,6 +101,19 @@ public class Util {
 			UI_Application = UiApplication.getUiApplication();
 		}
 		UI_Application.popScreen(screen);
+	}
+	
+	public static LabelField getWaitStatus() {
+		if (_waitLabel == null) {
+			_waitLabel = new LabelField("Porfavor espere...", Field.USE_ALL_WIDTH) {
+				protected void paint(Graphics g) {
+					g.setColor(Color.WHITE);
+				}
+			};
+			_waitLabel.setBackground(BackgroundFactory
+					.createSolidBackground(Color.BLACK));
+		}
+		return _waitLabel;
 	}
 
 	public static void pushWaitScreen() {
