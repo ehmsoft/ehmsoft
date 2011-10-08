@@ -513,37 +513,45 @@ public class VerProceso {
 
 	private void addDemandante() {
 		Persona demandante = Util.listadoPersonas(1, true, 0);
-		if (!demandante.equals(_demandante)) {
-			_demandante = demandante;
-			_screen.setDemandante(_demandante.getNombre());
-			_screen.setDirty(true);
+		if (demandante != null) {
+			if (!_demandante.equals(demandante)) {
+				_demandante = demandante;
+				_screen.setDemandante(_demandante.getNombre());
+				_screen.setDirty(true);
+			}
 		}
 	}
 
 	private void addDemandado() {
 		Persona demandado = Util.listadoPersonas(2, true, 0);
-		if (!demandado.equals(_demandado)) {
-			_demandado = demandado;
-			_screen.setDemandado(_demandado.getNombre());
-			_screen.setDirty(true);
+		if (demandado != null) {
+			if (!_demandado.equals(demandado)) {
+				_demandado = demandado;
+				_screen.setDemandado(_demandado.getNombre());
+				_screen.setDirty(true);
+			}
 		}
 	}
 
 	private void addJuzgado() {
 		Juzgado juzgado = Util.listadoJuzgados(true, 0);
-		if (!juzgado.equals(_juzgado)) {
-			_juzgado = juzgado;
-			_screen.setJuzgado(_juzgado.getNombre());
-			_screen.setDirty(true);
+		if (juzgado != null) {
+			if (!_juzgado.equals(juzgado)) {
+				_juzgado = juzgado;
+				_screen.setJuzgado(_juzgado.getNombre());
+				_screen.setDirty(true);
+			}
 		}
 	}
 
 	private void addCategoria() {
 		Categoria categoria = Util.listadoCategorias(true, 0);
-		if (!categoria.equals(_categoria)) {
-			_categoria = categoria;
-			_screen.setCategoria(_categoria.getDescripcion());
-			_screen.setDirty(true);
+		if (categoria != null) {
+			if (!_categoria.equals(categoria)) {
+				_categoria = categoria;
+				_screen.setCategoria(_categoria.getDescripcion());
+				_screen.setDirty(true);
+			}
 		}
 	}
 
