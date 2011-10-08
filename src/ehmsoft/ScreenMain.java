@@ -10,6 +10,7 @@ import core.Plantilla;
 import core.ActuacionCritica;
 import core.Preferencias;
 import core.Proceso;
+import gui.Cita;
 import gui.Llaves;
 import gui.PreferenciasGenerales;
 import gui.Util;
@@ -208,7 +209,17 @@ public class ScreenMain extends MainScreen {
 			public void drawListRow(ListField listField, Graphics graphics,
 					int index, int y, int width) {
 				Actuacion objeto = (Actuacion) this.get(listField, index);
-				graphics.drawText(objeto.toString(), 0, y);
+				Cita cita = new Cita(objeto.getUid());
+				int count = 0;
+				if(cita.exist()) {
+					graphics.drawBitmap(0, y, 16, 16, Bitmap.getBitmapResource("clock.png"), 0, 0);
+					count += 16;
+					if(cita.hasAlarma()) {
+						graphics.drawBitmap(count, y, 16, 16, Bitmap.getBitmapResource("bell.png"), 0, 0);
+						count += 16;
+					}
+				}
+				graphics.drawText(objeto.toString(), count, y);
 				graphics.drawText(
 						Util.calendarToString(objeto.getFechaProxima(), false),
 						(int) (Display.getWidth() * 13.3 / 480), y
