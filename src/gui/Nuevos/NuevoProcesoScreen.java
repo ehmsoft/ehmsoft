@@ -167,6 +167,7 @@ public class NuevoProcesoScreen extends FondoNormal {
 			}
 		}
 		menu.add(menuCampo);
+		menu.add(menuModificarCampo);
 		menu.add(menuGuardar);
 		menu.add(menuCerrar);
 	}
@@ -238,6 +239,15 @@ public class NuevoProcesoScreen extends FondoNormal {
 			fieldChangeNotify(Util.ADD_CAMPO);
 		}
 	};
+	
+	//TODO Modificar orden de este menú
+	private final MenuItem menuModificarCampo = new MenuItem("Modificar",
+			393216, 8) {
+
+		public void run() {
+			fieldChangeNotify(Util.VER_CAMPO);
+		}
+	};
 
 	private final MenuItem menuEliminarCampo = new MenuItem("Eliminar", 393216,
 			7) {
@@ -257,6 +267,22 @@ public class NuevoProcesoScreen extends FondoNormal {
 			}
 		}
 	};
+	
+	public Object getCookieOfFocused() {
+		return getLeafFieldWithFocus().getCookie();
+	}
+	
+	public void modificarCampo(Object cookie, String text) {
+		Field focus = getLeafFieldWithFocus();
+		focus.setCookie(cookie);
+		((BasicEditField) focus).setLabel(text + ": ");
+	}
+	
+	public void eliminarCampo() {
+		Field focus = getLeafFieldWithFocus();
+		delete(focus);
+		_txtCampos.removeElement(focus);
+	}
 
 	public void setDemandante(String text) {
 		_lblDemandante.setText(text);

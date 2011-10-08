@@ -111,6 +111,8 @@ public class NuevoProceso {
 				cerrarPantalla();
 			} else if (context == Util.VER_LISTADO_ACTUACIONES) {
 				verActuaciones();
+			} else if (context == Util.VER_CAMPO) {
+				verCampo();
 			}
 		}
 	};
@@ -286,14 +288,28 @@ public class NuevoProceso {
 
 	private void addCampo() {
 		CampoPersonalizado campo = Util.listadoCampos(true, 0);
-		if (campo != null) {
-			_campos.addElement(campo);
-			_screen.addCampo(campo, campo.getNombre());
+		if (!_campos.contains(campo)) {
+			if (campo != null) {
+				_campos.addElement(campo);
+				_screen.addCampo(campo, campo.getNombre());
+			}
+		} else {
+			Util.alert("Este campo personalizado ya está incluido en el proceso");
 		}
 	}
 
 	private void eliminarCampo() {
-
+		Object[] ask = { "Aceptar", "Cancelar" };
+		int sel = _screen.ask(ask, Util.delCampo(), 1);
+		if (sel == 0) {
+			CampoPersonalizado old = (CampoPersonalizado) _screen
+					.getCookieOfFocused();
+			_screen.eliminarCampo();
+			if (_campos.contains(old)) {
+				_campos.removeElement(old);
+			}
+			_screen.setDirty(true);
+		}
 	}
 
 	private void newCategoria() {
@@ -304,6 +320,22 @@ public class NuevoProceso {
 			_categorias.copyInto(categorias);
 			_screen.addCategorias(categorias);
 			_screen.selectCategoria(_categorias.indexOf(categoria));
+		}
+	}
+	
+	private void verCampo() {
+		CampoPersonalizado campo = (CampoPersonalizado) _screen
+				.getCookieOfFocused();
+		campo = Util.verCampo(campo);
+		if (campo != null) {
+			_screen.modificarCampo(campo, campo.getNombre());
+			_screen.setDirty(true);
+		} else {
+			if (_campos.contains(campo)) {
+				_campos.removeElement(campo);
+			}
+			_screen.eliminarCampo();
+			_screen.setDirty(true);
 		}
 	}
 
