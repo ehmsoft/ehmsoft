@@ -6,6 +6,7 @@ import gui.Listados.ListadoActuaciones;
 import java.util.Enumeration;
 import java.util.Vector;
 
+import net.rim.device.api.database.DatabaseException;
 import net.rim.device.api.ui.Field;
 import net.rim.device.api.ui.FieldChangeListener;
 import net.rim.device.api.ui.UiApplication;
@@ -137,7 +138,7 @@ public class VerProceso {
 			} else if (isCampoObligatorio()) {
 			} else if (checkLong()) {
 			} else {
-				Util.pushWaitScreen();
+				_screen.setStatus(Util.getWaitLabel());
 				UiApplication.getUiApplication().invokeLater(new Runnable() {
 
 					public void run() {
@@ -175,11 +176,15 @@ public class VerProceso {
 							}
 						} catch (NullPointerException e1) {
 							Util.noSd();
+						} catch (DatabaseException e) {
+							if (e.getMessage().equalsIgnoreCase(": constraint failed")) {
+								Util.alert("Este proceso ya existe");
+								_proceso = Util.consultarProceso(_proceso.getId_proceso());
+							}
 						} catch (Exception e1) {
 							Util.alert(e1.toString());
 						} finally {
 							Util.popScreen(_screen);
-							Util.popWaitScreen();
 						}
 					}
 				});
@@ -554,7 +559,7 @@ public class VerProceso {
 		Object[] ask = { "Aceptar", "Cancelar" };
 		int sel = _screen.ask(ask, Util.delBDProceso(), 1);
 		if (sel == 0) {
-			Util.pushWaitScreen();
+			_screen.setStatus(Util.getWaitLabel());
 			UiApplication.getUiApplication().invokeLater(new Runnable() {
 				public void run() {
 					try {
@@ -566,7 +571,6 @@ public class VerProceso {
 					} finally {
 						_proceso = null;
 						Util.popScreen(_screen);
-						Util.popWaitScreen();
 					}
 				}
 			});

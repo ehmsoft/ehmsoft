@@ -59,17 +59,14 @@ public class ScreenMain extends MainScreen {
 	private LabelField _fecha;
 	private LabelField _fechaProxima;
 	private LabelField _descripcion;
-	private final int column1 = (Display.getWidth() / 2)
-			- (int) (Display.getWidth() * (30.3 / 480));
-	private final int column2 = (Display.getWidth() / 2)
-			+ (int) (Display.getWidth() * (16.3 / 480));
-	private final int row = Display.getHeight()
-			- (int) (Display.getHeight() * (13.3 / 360));
-	private final int row1 = Display.getHeight() / 2
-			- (int) (Display.getWidth() * (32.3 / 480));
+	private VerticalFieldManager _fldLista;
+	private VerticalFieldManager _fldInfo;
+	private final int column1 = (Display.getWidth() / 2) - (int) (Display.getWidth() * (30.3 / 480));
+	private final int column2 = (Display.getWidth() / 2) + (int) (Display.getWidth() * (16.3 / 480));
+	private final int row = Display.getHeight()	- (int) (Display.getHeight() * (13.3 / 360));
+	private final int row1 = Display.getHeight() / 2 - (int) (Display.getWidth() * (32.3 / 480));
 	private final int row2 = Display.getHeight() / 2;
-	private final int column = Display.getWidth() - 7
-			- (int) (Display.getWidth() * (32.3 / 360));
+	private final int column = Display.getWidth() - 7 - (int) (Display.getWidth() * (32.3 / 360));
 
 	public ScreenMain() {
 		super(NO_VERTICAL_SCROLL);
@@ -89,7 +86,15 @@ public class ScreenMain extends MainScreen {
 
 		getMainManager().setBackground(
 				BackgroundFactory.createBitmapBackground(backGround));
-
+		
+		_fldLista = new VerticalFieldManager(VERTICAL_SCROLL | VERTICAL_SCROLLBAR);
+		_fldInfo = new VerticalFieldManager(VERTICAL_SCROLL | VERTICAL_SCROLLBAR);
+		
+		_fldLista.add(_lista);
+		_fldInfo.add(_info);
+		
+		_fldLista.setBorder(BorderFactory.createBitmapBorder(new XYEdges(5, 5, 5, 5), Bitmap.getBitmapResource("blackBorder.png")));
+		
 		if (Display.getOrientation() == Display.ORIENTATION_PORTRAIT) {
 			_grid = new GridFieldManager(2, 1, GridFieldManager.FIXED_SIZE) {
 				public Field getField(int index) {
@@ -100,43 +105,14 @@ public class ScreenMain extends MainScreen {
 					}
 				}
 			};
-
-			VerticalFieldManager top = new VerticalFieldManager(VERTICAL_SCROLL
-					| VERTICAL_SCROLLBAR);
-			//top.setBackground(BackgroundFactory.createSolidTransparentBackground(Color.BLACK, 100));
-			VerticalFieldManager bottom = new VerticalFieldManager();
-
-			top.setBorder(BorderFactory.createBitmapBorder(new XYEdges(5, 5, 5, 5), Bitmap.getBitmapResource("blackBorder.png")));
-
-			top.add(_lista);
-			bottom.add(_info);
-
-			_grid.add(top);
-			_grid.add(bottom);
-
-			add(_grid);
-			top.setFocus();
-			top.invalidate();
 		} else if (Display.getOrientation() == Display.ORIENTATION_LANDSCAPE) {
 			_grid = new GridFieldManager(1, 2, GridFieldManager.FIXED_SIZE);
-
-			VerticalFieldManager right = new VerticalFieldManager(
-					VERTICAL_SCROLL | VERTICAL_SCROLLBAR);
-			VerticalFieldManager left = new VerticalFieldManager(
-					VERTICAL_SCROLL | VERTICAL_SCROLLBAR);
-			left.setBorder(BorderFactory.createBitmapBorder(new XYEdges(5, 5, 5, 5), Bitmap.getBitmapResource("blackBorder.png")));
-			//left.setBackground(BackgroundFactory.createBitmapBackground(Bitmap.getBitmapResource("blackBorder.png")));
-
-			left.add(_lista);
-			right.add(_info);
-
-			_grid.add(left);
-			_grid.add(right);
-
-			add(_grid);
-			left.setFocus();
-			left.invalidate();
 		}
+		
+		add(_grid);
+		
+		_grid.add(_fldLista);
+		_grid.add(_fldInfo);
 
 		final PopupScreen wait = new PopupScreen(new VerticalFieldManager());
 		wait.add(new LabelField("Porfavor espere..."));
@@ -169,23 +145,23 @@ public class ScreenMain extends MainScreen {
 					}
 				}
 				cargarActuaciones();
+				_fldLista.setFocus();
 			}
 		});
 	}
 
 	private void cargarActuaciones() {
-		Util.pushWaitScreen();
+		setStatus(Util.getWaitLabel());
 		UiApplication.getUiApplication().invokeLater(new Runnable() {
 
 			public void run() {
 				try {
+					_fldLista.deleteAll();
+					initLista();
 					Vector v = new Persistence()
 							.consultarActuacionesCriticas(Preferencias
 									.getCantidadActuacionesCriticas());
 					Enumeration e = v.elements();
-					while (_lista.getSize() != 0) {
-						_lista.delete(0);
-					}
 					while (e.hasMoreElements()) {
 						_lista.insert(_lista.getSize(), e.nextElement());
 
@@ -194,9 +170,11 @@ public class ScreenMain extends MainScreen {
 					Util.noSd();
 				} catch (Exception e) {
 					Util.alert(e.toString());
+				} finally {
+					_fldLista.add(_lista);
 				}
 				_lista.focusChangeNotify(0);
-				Util.popWaitScreen();
+				setStatus(null);
 				_grid.invalidate();
 			}
 		});

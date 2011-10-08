@@ -3,6 +3,7 @@ package gui.Ver;
 import gui.Cita;
 import gui.Util;
 import gui.Nuevos.NuevaCita;
+import net.rim.device.api.database.DatabaseException;
 import net.rim.device.api.ui.Field;
 import net.rim.device.api.ui.FieldChangeListener;
 import net.rim.device.api.ui.UiApplication;
@@ -77,7 +78,7 @@ public class VerActuacion {
 			_actuacion.setFechaProxima(_screen.getFechaProxima());
 			_actuacion.setDescripcion(_screen.getDescripcion());
 			_actuacion.setUid(_cita.getUid());
-			Util.pushWaitScreen();
+			_screen.setStatus(Util.getWaitLabel());
 			UiApplication.getUiApplication().invokeLater(new Runnable() {
 
 				public void run() {
@@ -86,11 +87,15 @@ public class VerActuacion {
 						borrarCitaActuacion();
 					} catch (NullPointerException e) {
 						Util.noSd();
+					} catch (DatabaseException e) {
+						if (e.getMessage().equalsIgnoreCase(": constraint failed")) {
+							Util.alert("Esta actuación ya existe");
+							_actuacion = Util.consultarActuacion(_actuacion.getId_actuacion());
+						}
 					} catch (Exception e) {
 						Util.alert(e.toString());
 					} finally {
 						Util.popScreen(_screen);
-						Util.popWaitScreen();
 					}
 				}
 			});

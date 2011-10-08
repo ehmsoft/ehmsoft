@@ -101,7 +101,7 @@ public class NuevaPlantilla {
 			Util.alert("El campo Nombre es obligatorio");
 		} else if (checkLonMin()) {
 		} else {
-			_screen.setStatus(Util.getWaitStatus());
+			_screen.setStatus(Util.getWaitLabel());
 			UiApplication.getUiApplication().invokeLater(new Runnable() {
 
 				public void run() {
@@ -114,19 +114,19 @@ public class NuevaPlantilla {
 					if (_juzgado == null) {
 						_juzgado = _juzgadoVacio;
 					}
-					final Plantilla plantilla = new Plantilla(_screen.getNombre(),
+					_plantilla = new Plantilla(_screen.getNombre(),
 							_demandante, _demandado, _juzgado, _screen
 									.getRadicado(), _screen.getRadicadoUnico(),
 							_screen.getEstado(), _categoria, _screen.getTipo(),
 							_screen.getNotas(), _campos, _screen.getPrioridad());
 					try {
-						new Persistence().guardarPlantilla(plantilla);
-						_plantilla = plantilla;
+						new Persistence().guardarPlantilla(_plantilla);
 					} catch (NullPointerException e) {
 						Util.noSd();
 					} catch (DatabaseException e) {
-						if(e.getMessage().equalsIgnoreCase("constraint failed")) {
+						if(e.getMessage().equalsIgnoreCase(": constraint failed")) {
 							Util.alert("Esta plantilla ya existe");
+							_plantilla = null;
 						}
 					} catch (Exception e) {
 						Util.alert(e.toString());

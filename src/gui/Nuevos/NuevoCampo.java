@@ -56,21 +56,21 @@ public class NuevoCampo {
 		} else if (lonMax == lonMin && lonMax != 0) {
 			_screen.alert("La longitud máxima no puede ser igual que la longitud mínima");
 		} else {
-			final CampoPersonalizado campo = new CampoPersonalizado(nombre, null, new Boolean(
+			_campo = new CampoPersonalizado(nombre, null, new Boolean(
 					isObligatorio), lonMax, lonMin);
-			_screen.setStatus(Util.getWaitStatus());
+			_screen.setStatus(Util.getWaitLabel());
 			UiApplication.getUiApplication().invokeLater(new Runnable() {
 
 				public void run() {
 					if (_saveInBd) {
 						try {
-							new Persistence().guardarAtributo(campo);
-							_campo = campo;
+							new Persistence().guardarAtributo(_campo);
 						} catch (NullPointerException e) {
 							Util.noSd();
 						} catch (DatabaseException e) {
-							if(e.getMessage().equalsIgnoreCase("constraint failed")) {
-								Util.alert("Este campo personalizado ya existe");
+							if(e.getMessage().equalsIgnoreCase(": constraint failed")) {
+								Util.alert("El campo personalizado ya existe");
+								_campo = null;
 							}
 						} catch (Exception e) {
 							Util.alert(e.toString());

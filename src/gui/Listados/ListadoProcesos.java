@@ -45,7 +45,7 @@ public class ListadoProcesos {
 			_screen = new ListadoProcesosScreen();
 		}
 
-		Util.pushWaitScreen();
+		_screen.setStatus(Util.getWaitLabel());
 
 		UiApplication.getUiApplication().invokeLater(new Runnable() {
 
@@ -57,19 +57,19 @@ public class ListadoProcesos {
 				} catch (Exception e) {
 					Util.alert(e.toString());
 				}
+				_screen.setStatus(null);
 				addProcesos();
 				if ((_style & NO_NUEVO) != NO_NUEVO) {
 					_screen.addElement("Crear nuevo proceso", 0);
 				}
-				Util.popWaitScreen();
+				if (Preferencias.isMostrarCampoBusqueda()) {
+					_screen.setSearchField();
+				}
 			}
 		});
 
 		((Screen) _screen).setChangeListener(listener);
 
-		if (Preferencias.isMostrarCampoBusqueda()) {
-			_screen.setSearchField();
-		}
 		if ((_style & ON_CLICK_VER) != ON_CLICK_VER
 				&& (_style & ON_CLICK_SELECT) != ON_CLICK_SELECT) {
 			if (popup) {

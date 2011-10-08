@@ -47,7 +47,7 @@ public class ListadoPlantillas {
 			_screen = new ListadoPlantillasScreen();
 		}
 
-		Util.pushWaitScreen();
+		_screen.setStatus(Util.getWaitLabel());
 
 		UiApplication.getUiApplication().invokeLater(new Runnable() {
 
@@ -63,7 +63,7 @@ public class ListadoPlantillas {
 				if ((_style & NO_NUEVO) != NO_NUEVO) {
 					_screen.addElement("Crear nueva plantilla", 0);
 				}
-				Util.popWaitScreen();
+				_screen.setStatus(null);
 			}
 		});
 

@@ -16,12 +16,23 @@ public abstract class ListaPopUp extends PopupScreen implements
 	private HorizontalFieldManager _searchField = new HorizontalFieldManager(
 			USE_ALL_WIDTH);
 	private VerticalFieldManager _title;
+	private HorizontalFieldManager _status;
 
 	public ListaPopUp() {
 		super(new VerticalFieldManager(VERTICAL_SCROLL | VERTICAL_SCROLLBAR));
 		_title = new VerticalFieldManager();
+		_status = new HorizontalFieldManager();
+		add(_status);
 		add(_title);
 		add(_searchField);
+	}
+	
+	public void setStatus(Field field) {
+		if(field != null) {
+			_status.add(field);
+		} else {
+			_status.deleteAll();
+		}
 	}
 
 	public void setTitle(String text) {

@@ -44,20 +44,18 @@ public class VerCategoria {
 			_screen.alert("El campo Descripcion es obligatorio");
 		} else if (_screen.isDirty()) {
 			_categoria.setDescripcion(_screen.getDescripcion());
-			Util.pushWaitScreen();
+			_screen.setStatus(Util.getWaitLabel());
 			UiApplication.getUiApplication().invokeLater(new Runnable() {
 
 				public void run() {
 					try {
 						new Persistence().actualizarCategoria(_categoria);
 					} catch (NullPointerException e) {
-						_screen.alert(Util.noSDString());
-						System.exit(0);
+						Util.noSd();
 					} catch (Exception e) {
-						_screen.alert(e.toString());
+						Util.alert(e.toString());
 					} finally {
-						UiApplication.getUiApplication().popScreen(_screen);
-						Util.popWaitScreen();
+						Util.popScreen(_screen);
 					}
 				}
 			});

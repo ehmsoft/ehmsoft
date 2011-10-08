@@ -29,11 +29,9 @@ import net.rim.device.api.ui.Field;
 import net.rim.device.api.ui.Graphics;
 import net.rim.device.api.ui.Screen;
 import net.rim.device.api.ui.UiApplication;
-import net.rim.device.api.ui.UiEngine;
 import net.rim.device.api.ui.component.Dialog;
 import net.rim.device.api.ui.component.LabelField;
 import net.rim.device.api.ui.container.PopupScreen;
-import net.rim.device.api.ui.container.VerticalFieldManager;
 import net.rim.device.api.ui.decor.BackgroundFactory;
 import persistence.Persistence;
 import core.Actuacion;
@@ -92,41 +90,25 @@ public class Util {
 
 	public static PopupScreen WAIT_SCREEN;
 	
-	private static LabelField _waitLabel = null;
-
 	public static UiApplication UI_Application;
+
+	public static LabelField getWaitLabel() {
+		LabelField wait = new LabelField("Porfavor espere...",
+				Field.USE_ALL_WIDTH) {
+			protected void paint(Graphics g) {
+				g.setColor(Color.WHITE);
+				super.paint(g);
+			}
+		};
+		wait.setBackground(BackgroundFactory.createSolidBackground(Color.BLACK));
+		return wait;
+	}
 
 	public static void popScreen(Screen screen) {
 		if (UI_Application == null) {
 			UI_Application = UiApplication.getUiApplication();
 		}
 		UI_Application.popScreen(screen);
-	}
-	
-	public static LabelField getWaitStatus() {
-		if (_waitLabel == null) {
-			_waitLabel = new LabelField("Porfavor espere...", Field.USE_ALL_WIDTH) {
-				protected void paint(Graphics g) {
-					g.setColor(Color.WHITE);
-				}
-			};
-			_waitLabel.setBackground(BackgroundFactory
-					.createSolidBackground(Color.BLACK));
-		}
-		return _waitLabel;
-	}
-
-	public static void pushWaitScreen() {
-		if (WAIT_SCREEN == null) {
-			WAIT_SCREEN = new PopupScreen(new VerticalFieldManager());
-			WAIT_SCREEN.add(new LabelField("Procesando, espere por favor..."));
-		}
-		UiApplication.getUiApplication().pushGlobalScreen(WAIT_SCREEN, 0,
-				UiEngine.GLOBAL_SHOW_LOWER);
-	}
-
-	public static void popWaitScreen() {
-		popScreen(WAIT_SCREEN);
 	}
 
 	public static String noSDString() {
@@ -369,6 +351,71 @@ public class Util {
 		pushModalScreen(n.getScreen());
 		return n.getPlantilla();
 	}
+	
+	public static Actuacion consultarActuacion(String id_actuacion) {
+		Actuacion actuacion = null;
+		try {
+			actuacion = new Persistence().consultarActuacion(id_actuacion);
+		} catch (NullPointerException e) {
+			noSd();
+		} catch (Exception e) {
+			alert(e.toString());
+		}
+		return actuacion;
+	}
+	
+	public static Persona consultarPersona(int tipo, String id_persona) {
+		Persona persona = null;
+		try {
+			persona = new Persistence().consultarPersona(id_persona, tipo);
+		} catch (NullPointerException e) {
+			noSd();
+		} catch (Exception e) {
+			alert(e.toString());
+		}
+		return persona;
+	}
+	
+	public static Juzgado consultarJuzgado(String id_juzgado) {
+		Juzgado juzgado = null;
+		try {
+			juzgado = new Persistence().consultarJuzgado(id_juzgado);
+		} catch (NullPointerException e) {
+			noSd();
+		} catch (Exception e) {
+			alert(e.toString());
+		}
+		return juzgado;
+	}
+	
+	public static Plantilla consultarPlantilla(String id_plantilla) {
+		Plantilla plantilla = null;
+		try {
+			plantilla = new Persistence().consultarPlantilla(id_plantilla);
+		} catch (NullPointerException e) {
+			noSd();
+		} catch (Exception e) {
+			alert(e.toString());
+		}
+		return plantilla;
+	}
+	
+	public static CampoPersonalizado consultarCampo(String id_campo) {
+		return null;
+	}
+	
+	public static Proceso consultarProceso(String id_proceso) {
+		Proceso proceso = null;
+		try {
+			proceso = new Persistence().consultarProceso(id_proceso);
+		} catch (NullPointerException e) {
+			noSd();
+		} catch (Exception e) {
+			alert(e.toString());
+		}
+		return proceso;
+	}
+	
 
 	public static String calendarToString(Calendar calendar, boolean largo) {
 		String string = "";

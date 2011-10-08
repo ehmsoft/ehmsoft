@@ -49,23 +49,21 @@ public class NuevaCategoria {
 		String descripcion = _screen.getDescripcion();
 
 		if (descripcion.length() == 0) {
-			_screen.alert("No puede crearse una categoría vacía");
+			Util.alert("No puede crearse una categoría vacía");
 		} else {
 			_categoria = new Categoria(descripcion);
-			Util.pushWaitScreen();
+			_screen.setStatus(Util.getWaitLabel());
 			UiApplication.getUiApplication().invokeLater(new Runnable() {
 
 				public void run() {
 					try {
 						new Persistence().guardarCategoria(_categoria);
 					} catch (NullPointerException e) {
-						_screen.alert(Util.noSDString());
-						System.exit(0);
+						Util.noSd();
 					} catch (Exception e) {
-						_screen.alert(e.toString());
+						Util.alert(e.toString());
 					} finally {
 						Util.popScreen((Screen) _screen);
-						Util.popWaitScreen();
 					}
 				}
 			});

@@ -65,24 +65,22 @@ public class VerCampo {
 			_campo.setObligatorio(_screen.isObligatorio());
 			_campo.setLongitudMax(_screen.getLongitudMax());
 			_campo.setLongitudMin(_screen.getLongitudMin());
-			Util.pushWaitScreen();
+			_screen.setStatus(Util.getWaitLabel());
 			UiApplication.getUiApplication().invokeLater(new Runnable() {
 
 				public void run() {
 					try {
 						new Persistence().actualizarAtributo(_campo);
 					} catch (NullPointerException e) {
-						_screen.alert(Util.noSDString());
-						System.exit(0);
+						Util.noSd();
 					} catch (DatabaseException e) {
-						if(e.getMessage().equalsIgnoreCase("constraint failed")) {
-							
+						if (e.getMessage().equalsIgnoreCase(": constraint failed")) {
+							//TODO Restaurar campo inicial de la BD
 						}
 					} catch (Exception e) {
-						_screen.alert(e.toString());
+						Util.alert(e.toString());
 					} finally {
 						UiApplication.getUiApplication().popScreen(_screen);
-						Util.popWaitScreen();
 					}
 				}
 			});

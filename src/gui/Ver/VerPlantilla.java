@@ -6,6 +6,7 @@ import gui.Nuevos.NuevoProceso;
 import java.util.Enumeration;
 import java.util.Vector;
 
+import net.rim.device.api.database.DatabaseException;
 import net.rim.device.api.ui.Field;
 import net.rim.device.api.ui.FieldChangeListener;
 import net.rim.device.api.ui.UiApplication;
@@ -141,22 +142,22 @@ public class VerPlantilla {
 			if (_camposEliminados.size() != 0) {
 				eliminarCampos();
 			}
-			concatCampos();
-			_plantilla.setNombre(_screen.getNombre());
-			_plantilla.setDemandante(_demandante);
-			_plantilla.setDemandado(_demandado);
-			_plantilla.setJuzgado(_juzgado);
-			_plantilla.setRadicado(_screen.getRadicado());
-			_plantilla.setRadicadoUnico(_screen.getRadicadoUnico());
-			_plantilla.setEstado(_screen.getEstado());
-			_plantilla.setCategoria(_categoria);
-			_plantilla.setTipo(_screen.getTipo());
-			_plantilla.setNotas(_screen.getNotas());
-			_plantilla.setCampos(_campos);
-			_plantilla.setPrioridad(_screen.getPrioridad());
-			Util.pushWaitScreen();
+			_screen.setStatus(Util.getWaitLabel());
 			UiApplication.getUiApplication().invokeLater(new Runnable() {
 				public void run() {
+					concatCampos();
+					_plantilla.setNombre(_screen.getNombre());
+					_plantilla.setDemandante(_demandante);
+					_plantilla.setDemandado(_demandado);
+					_plantilla.setJuzgado(_juzgado);
+					_plantilla.setRadicado(_screen.getRadicado());
+					_plantilla.setRadicadoUnico(_screen.getRadicadoUnico());
+					_plantilla.setEstado(_screen.getEstado());
+					_plantilla.setCategoria(_categoria);
+					_plantilla.setTipo(_screen.getTipo());
+					_plantilla.setNotas(_screen.getNotas());
+					_plantilla.setCampos(_campos);
+					_plantilla.setPrioridad(_screen.getPrioridad());
 					try {
 						new Persistence().actualizarPlantilla(_plantilla);
 						if (cambioCampos()) {
@@ -169,11 +170,17 @@ public class VerPlantilla {
 						}
 					} catch (NullPointerException e1) {
 						Util.noSd();
+					} catch (DatabaseException e) {
+						if (e.getMessage().equalsIgnoreCase(
+								": constraint failed")) {
+							Util.alert("Esta plantilla ya existe");
+							_plantilla = Util.consultarPlantilla(_plantilla
+									.getId_plantilla());
+						}
 					} catch (Exception e1) {
 						Util.alert(e1.toString());
 					} finally {
 						Util.popScreen(_screen);
-						Util.popWaitScreen();
 					}
 				}
 			});
@@ -526,7 +533,7 @@ public class VerPlantilla {
 		Object[] ask = { "Aceptar", "Cancelar" };
 		int sel = _screen.ask(ask, Util.delBDPlantilla(), 1);
 		if (sel == 0) {
-			Util.pushWaitScreen();
+			_screen.setStatus(Util.getWaitLabel());
 			UiApplication.getUiApplication().invokeLater(new Runnable() {
 
 				public void run() {
@@ -539,7 +546,6 @@ public class VerPlantilla {
 					} finally {
 						_plantilla = null;
 						Util.popScreen(_screen);
-						Util.popWaitScreen();
 					}
 				}
 			});

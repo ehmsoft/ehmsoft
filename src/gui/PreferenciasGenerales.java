@@ -50,7 +50,7 @@ public class PreferenciasGenerales {
 	}
 
 	private void guardarPreferencias() {
-		Util.pushWaitScreen();
+		_screen.setStatus(Util.getWaitLabel());
 		UiApplication.getUiApplication().invokeLater(new Runnable() {
 			
 			public void run() {
@@ -72,7 +72,6 @@ public class PreferenciasGenerales {
 					_screen.alert("No se han podido guardar las preferencias. Error Desconocido" + e.toString());
 				} finally {
 					Util.popScreen(_screen);
-					Util.popWaitScreen();
 				}
 			}
 		});
@@ -85,7 +84,7 @@ public class PreferenciasGenerales {
 	}
 
 	private void restaurarPreferencias() {
-		Util.pushWaitScreen();
+		_screen.setStatus(Util.getWaitLabel());
 		UiApplication.getUiApplication().invokeLater(new Runnable() {
 
 			public void run() {
@@ -100,7 +99,6 @@ public class PreferenciasGenerales {
 					_screen.alert("No se han podido guardar las preferencias. Error Desconocido");
 				} finally {
 					Util.popScreen(_screen);
-					Util.popWaitScreen();
 				}
 			}
 		});

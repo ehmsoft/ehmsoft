@@ -1,6 +1,7 @@
 package gui.Ver;
 
 import gui.Util;
+import net.rim.device.api.database.DatabaseException;
 import net.rim.device.api.ui.Field;
 import net.rim.device.api.ui.FieldChangeListener;
 import net.rim.device.api.ui.UiApplication;
@@ -63,20 +64,23 @@ public class VerJuzgado {
 			_juzgado.setDireccion(_screen.getDireccion());
 			_juzgado.setTelefono(_screen.getTelefono());
 			_juzgado.setTipo(_screen.getTipo());
-			Util.pushWaitScreen();
+			_screen.setStatus(Util.getWaitLabel());
 			UiApplication.getUiApplication().invokeLater(new Runnable() {
 
 				public void run() {
 					try {
 						new Persistence().actualizarJuzgado(_juzgado);
 					} catch (NullPointerException e) {
-						_screen.alert(Util.noSDString());
-						System.exit(0);
+						Util.noSd();
+					} catch (DatabaseException e) {
+						if (e.getMessage().equalsIgnoreCase(": constraint failed")) {
+							Util.alert("Este juzgado ya existe");
+							_juzgado = Util.consultarJuzgado(_juzgado.getId_juzgado());
+						}
 					} catch (Exception e) {
-						_screen.alert(e.toString());
+						Util.alert(e.toString());
 					} finally {
 						UiApplication.getUiApplication().popScreen(_screen);
-						Util.popWaitScreen();
 					}
 				}
 			});

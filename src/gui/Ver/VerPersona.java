@@ -1,6 +1,7 @@
 package gui.Ver;
 
 import gui.Util;
+import net.rim.device.api.database.DatabaseException;
 import net.rim.device.api.ui.Field;
 import net.rim.device.api.ui.FieldChangeListener;
 import net.rim.device.api.ui.UiApplication;
@@ -65,19 +66,22 @@ public class VerPersona {
 			_persona.setDireccion(_screen.getDireccion());
 			_persona.setCorreo(_screen.getCorreo());
 			_persona.setNotas(_screen.getNotas());
-			Util.pushWaitScreen();
+			_screen.setStatus(Util.getWaitLabel());
 			UiApplication.getUiApplication().invokeLater(new Runnable() {
 				public void run() {
 					try {
 						new Persistence().actualizarPersona(_persona);
+					} catch (DatabaseException e) {
+						if (e.getMessage().equalsIgnoreCase(": constraint failed")) {
+							Util.alert("Esta persona ya existe");
+							_persona = Util.consultarPersona(_persona.getTipo(), _persona.getId_persona());
+						}
 					} catch (NullPointerException e) {
-						_screen.alert(Util.noSDString());
-						System.exit(0);
+						Util.noSd();
 					} catch (Exception e) {
-						_screen.alert(e.toString());
+						Util.alert(e.toString());
 					} finally {
-						UiApplication.getUiApplication().popScreen(_screen);
-						Util.popWaitScreen();
+						Util.popScreen(_screen);
 					}
 				}
 			});

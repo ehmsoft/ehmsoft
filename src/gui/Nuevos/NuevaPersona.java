@@ -76,22 +76,22 @@ public class NuevaPersona {
 	}
 
 	private void guardar() {
-		_screen.setStatus(Util.getWaitStatus());
+		_screen.setStatus(Util.getWaitLabel());
 		UiApplication.getUiApplication().invokeLater(new Runnable() {
 
 			public void run() {
-				final Persona persona = new Persona(_tipo, _screen.getCedula(), _screen
+				_persona = new Persona(_tipo, _screen.getCedula(), _screen
 						.getNombre(), _screen.getTelefono(), _screen
 						.getDireccion(), _screen.getCorreo(), _screen
 						.getNotas());
 				try {
-					new Persistence().guardarPersona(persona);					
-					_persona = persona;
+					new Persistence().guardarPersona(_persona);					
 				} catch (NullPointerException e) {
 					Util.noSd();
 				} catch (DatabaseException e) {
-					if(e.getMessage().equalsIgnoreCase("constraint failed")) {
+					if(e.getMessage().equalsIgnoreCase(": constraint failed")) {
 						Util.alert("Esta persona ya existe");
+						_persona = null;
 					}
 				} catch (Exception e) {
 					Util.alert(e.toString());

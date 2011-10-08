@@ -72,22 +72,22 @@ public class NuevaActuacion {
 		} else if (_juzgado == null) {
 			Util.alert("El juzgado es obligatorio");
 		} else {
-			final Actuacion actuacion = new Actuacion(_juzgado, _screen.getFecha(),
+			_actuacion = new Actuacion(_juzgado, _screen.getFecha(),
 					_screen.getFechaProxima(), _screen.getDescripcion(), null,
 					_cita.getUid());
 			if (_proceso != null) {
-				_screen.setStatus(Util.getWaitStatus());
+				_screen.setStatus(Util.getWaitLabel());
 				UiApplication.getUiApplication().invokeLater(new Runnable() {
 					public void run() {
 						try {
-							new Persistence().guardarActuacion(actuacion,
+							new Persistence().guardarActuacion(_actuacion,
 									_proceso.getId_proceso());
-							_actuacion = actuacion;
 						} catch (NullPointerException e) {
 							Util.noSd();
 						} catch (DatabaseException e) {
-							if(e.getMessage().equalsIgnoreCase("constraint failed")) {
+							if(e.getMessage().equalsIgnoreCase(": constraint failed")) {
 								Util.alert("Esta actuación ya existe");
+								_actuacion = null;
 							}
 						} catch (Exception e) {
 							Util.alert(e.toString());

@@ -141,11 +141,11 @@ public class NuevoProceso {
 		} else if (isCampoObligatorio()) {
 		} else if (checkLonMin()) {
 		} else {
-			_screen.setStatus(Util.getWaitStatus());
+			_screen.setStatus(Util.getWaitLabel());
 			UiApplication.getUiApplication().invokeLater(new Runnable() {
 
 				public void run() {
-					final Proceso proceso = new Proceso(_demandante, _demandado, _screen
+					_proceso = new Proceso(_demandante, _demandado, _screen
 							.getFecha(), _juzgado, _screen.getRadicado(),
 							_screen.getRadicadoUnico(), _actuaciones, _screen
 									.getEstado(), (Categoria) _screen
@@ -153,13 +153,11 @@ public class NuevoProceso {
 									.getNotas(), _campos, _screen
 									.getPrioridad());
 					try {
-						new Persistence().guardarProceso(proceso);
-						_proceso = proceso;
+						new Persistence().guardarProceso(_proceso);
 					} catch (NullPointerException e) {
-						_screen.alert(Util.noSDString());
-						System.exit(0);
+						Util.noSd();
 					}  catch (DatabaseException e) {
-						if(e.getMessage().equalsIgnoreCase("constraint failed")) {
+						if(e.getMessage().equalsIgnoreCase(": constraint failed")) {
 							Util.alert("Este proceso ya existe");
 							_proceso = null;
 						}

@@ -1563,7 +1563,7 @@ public class Persistence implements Cargado, Guardado {
 		return actuaciones;
 	}
 
-	/*public Actuacion consultarActuacion(String id_actuacion) throws Exception {
+	public Actuacion consultarActuacion(String id_actuacion) throws Exception {
 		Database d = null;
 		Actuacion actuacion = null;
 		try {
@@ -1598,7 +1598,7 @@ public class Persistence implements Cargado, Guardado {
 		actuacion.setJuzgado(consultarJuzgado(actuacion.getJuzgado()
 				.getId_juzgado()));
 		return actuacion;
-	}*/
+	}
 
 	public Vector consultarActuacionesCriticas(int cantidad) throws Exception {
 		Database d = null;
@@ -1811,7 +1811,7 @@ public class Persistence implements Cargado, Guardado {
 		return campos;
 	}
 
-	/*public CampoPersonalizado consultarCampo(String id_campo) throws Exception {
+/*	public CampoPersonalizado consultarCampo(String id_campo) throws Exception {
 		Database d = null;
 		CampoPersonalizado campo = null;
 		try {
@@ -1948,7 +1948,7 @@ public class Persistence implements Cargado, Guardado {
 		return plantillas;
 	}
 
-	/*public Plantilla consultarPlantilla(String id_plantilla) throws Exception {
+	public Plantilla consultarPlantilla(String id_plantilla) throws Exception {
 		Database d = null;
 		Plantilla plantilla = null;
 		try {
@@ -2005,7 +2005,7 @@ public class Persistence implements Cargado, Guardado {
 		plantilla.setCategoria(consultarCategoria(plantilla.getCategoria()
 				.getId_categoria()));
 		return plantilla;
-	}*/
+	}
 
 	public Vector consultarCamposPlantilla(Plantilla plantilla)
 			throws Exception {

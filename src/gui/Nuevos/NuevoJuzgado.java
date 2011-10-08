@@ -64,26 +64,24 @@ public class NuevoJuzgado {
 	}
 
 	private void guardar() {
-		_screen.setStatus(Util.getWaitStatus());
+		_screen.setStatus(Util.getWaitLabel());
 		UiApplication.getUiApplication().invokeLater(new Runnable() {
 
 			public void run() {
-				final Juzgado juzgado = new Juzgado(_screen.getNombre(),
+				_juzgado = new Juzgado(_screen.getNombre(),
 						_screen.getCiudad(), _screen.getDireccion(), _screen
 								.getTelefono(), _screen.getTipo());
 				try {
-					new Persistence().guardarJuzgado(juzgado);
-					_juzgado = juzgado;
+					new Persistence().guardarJuzgado(_juzgado);
 				} catch (NullPointerException e) {
-					_screen.showAlert(Util.noSDString());
-					System.exit(0);
+					Util.noSd();
 				} catch (DatabaseException e) {
-					if(e.getMessage().equalsIgnoreCase("constraint failed")) {
+					if(e.getMessage().equalsIgnoreCase(": constraint failed")) {
 						Util.alert("Este juzgado ya existe");
 						_juzgado = null;
 					}
 				} catch (Exception e) {
-					_screen.showAlert(e.toString());
+					Util.alert(e.toString());
 				} finally {
 					Util.popScreen(_screen);
 				}

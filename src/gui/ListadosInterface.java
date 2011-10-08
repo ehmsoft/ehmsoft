@@ -2,6 +2,8 @@ package gui;
 
 import java.util.Vector;
 
+import net.rim.device.api.ui.Field;
+
 public interface ListadosInterface {
 	public void addElement(Object element, int index);
 
@@ -20,4 +22,6 @@ public interface ListadosInterface {
 	public void setSearchField();
 
 	public void setTitle(String text);
+	
+	public void setStatus(Field field);
 }

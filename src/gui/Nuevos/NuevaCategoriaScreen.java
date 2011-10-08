@@ -41,10 +41,6 @@ public class NuevaCategoriaScreen extends FondoNormal implements
 		}
 	};
 
-	public void alert(String string) {
-		Dialog.alert(string);
-	}
-
 	public int ask(Object[] options, String string, int index) {
 		return Dialog.ask(string, options, index);
 	}
