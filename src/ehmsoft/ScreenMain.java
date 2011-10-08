@@ -67,10 +67,12 @@ public class ScreenMain extends MainScreen {
 	private final int row1 = Display.getHeight() / 2 - (int) (Display.getWidth() * (32.3 / 480));
 	private final int row2 = Display.getHeight() / 2;
 	private final int column = Display.getWidth() - 7 - (int) (Display.getWidth() * (32.3 / 360));
+	private final Font _defaultFont = Font.getDefault();
+	
 
 	public ScreenMain() {
 		super(NO_VERTICAL_SCROLL);
-
+						
 		try {
 			if (!new ConnectionManager().existeBD()) {
 				//TODO Escribir el texto de la licencia
@@ -219,7 +221,7 @@ public class ScreenMain extends MainScreen {
 			}
 		};
 
-		Font font = _lista.getFont();
+		Font font = _defaultFont;
 		float fHeight = font.getHeight();
 		int fStyle = font.getStyle();
 		int resultHeight = (int)fHeight;
@@ -237,7 +239,7 @@ public class ScreenMain extends MainScreen {
 
 	private void initInfo() {
 		_info = new VerticalFieldManager();
-		Font font = _info.getFont();
+		Font font = _defaultFont;
 		float fHeight = font.getHeight();
 		int fStyle = font.getStyle();
 		int resultHeight = (int)fHeight;
