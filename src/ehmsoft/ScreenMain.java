@@ -71,6 +71,22 @@ public class ScreenMain extends MainScreen {
 	public ScreenMain() {
 		super(NO_VERTICAL_SCROLL);
 
+		try {
+			if (!new ConnectionManager().existeBD()) {
+				//TODO Escribir el texto de la licencia
+				String licencia = "¿Acepta la licencia?";
+				if (Dialog.ask(Dialog.D_YES_NO, licencia, Dialog.NO) != Dialog.YES) {
+					System.exit(0);
+				}
+				licencia = null;
+			}
+		} catch (NullPointerException e) {
+			Dialog.alert(Util.noSDString());
+			System.exit(0);
+		} catch (Exception e) {
+			Dialog.alert(e.toString());
+		}
+
 		actuacionesManager();
 				
 		Bitmap backGround = Bitmap.getBitmapResource("bg480x360.png");
