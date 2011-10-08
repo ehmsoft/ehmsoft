@@ -29,7 +29,7 @@ public class NuevaCitaPopUp extends PopupScreen {
 	public final int CERRAR = 2;
 
 	public NuevaCitaPopUp() {
-		super(new VerticalFieldManager());
+		super(new VerticalFieldManager(VERTICAL_SCROLL | VERTICAL_SCROLLBAR));
 
 		LabelField labelField = new LabelField("Crear cita",
 				Field.FIELD_HCENTER);
