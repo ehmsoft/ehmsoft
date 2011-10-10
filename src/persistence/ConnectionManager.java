@@ -32,18 +32,17 @@ public class ConnectionManager {
 
 		}
 	}
+	
+	// Método que verifica si la SD
+	// está presente,
+	// luego verifica si la base de datos existe,
+	// retornando verdadero en el caso que exista
 
-	public boolean existeBD() {// Método que verifica si la SD está presente,
-								// luego verifica si la base de datos existe,
-								// retornando verdadero en el caso que exista
-		try {
-			verificarSD();
-			if (DatabaseFactory.exists(dbLocation)) {
-				return true;
-			} else {
-				return false;
-			}
-		} catch (Exception e) {
+	public boolean existeBD() throws Exception {
+		verificarSD();
+		if (DatabaseFactory.exists(dbLocation)) {
+			return true;
+		} else {
 			return false;
 		}
 	}
