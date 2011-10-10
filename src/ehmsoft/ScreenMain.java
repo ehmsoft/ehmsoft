@@ -30,6 +30,7 @@ import net.rim.device.api.ui.Color;
 import net.rim.device.api.ui.Field;
 import net.rim.device.api.ui.FocusChangeListener;
 import net.rim.device.api.ui.Font;
+import net.rim.device.api.ui.FontFamily;
 import net.rim.device.api.ui.Graphics;
 import net.rim.device.api.ui.MenuItem;
 import net.rim.device.api.ui.TransitionContext;
@@ -87,7 +88,7 @@ public class ScreenMain extends MainScreen {
 	private final int row1 = Display.getHeight() / 2 - (int) (Display.getWidth() * (32.3 / 480));
 	private final int row2 = Display.getHeight() / 2;
 	private final int column = Display.getWidth() - 7 - (int) (Display.getWidth() * (32.3 / 360));
-	private final Font _defaultFont = Font.getDefault();
+	private Font _defaultFont = Font.getDefault();
 	
 
 	public ScreenMain() {
@@ -108,9 +109,27 @@ public class ScreenMain extends MainScreen {
 		} catch (Exception e) {
 			Dialog.alert(e.toString());
 		}
+		
+		try {
+			FontFamily fontF = FontFamily.forName("BBAlpha Sans");
 
+			if (Display.getOrientation() == Display.ORIENTATION_LANDSCAPE) {
+				_defaultFont = fontF.getFont(0, Display.getHeight() / 13);
+			} else if (Display.getOrientation() == Display.ORIENTATION_PORTRAIT) {
+				_defaultFont = fontF.getFont(0, Display.getHeight() / 24);
+			}
+
+			
+		} catch (ClassNotFoundException e1) {
+		}
+		
+		dibujarPantalla();
+		cargarBD();
+	}
+	
+	private void dibujarPantalla() {
 		actuacionesManager();
-				
+		
 		Bitmap backGround = Bitmap.getBitmapResource("bg480x360.png");
 		if(Display.getWidth() == 320 && Display.getHeight() == 240) {
 			backGround = Bitmap.getBitmapResource("bg320x240.png");
@@ -151,7 +170,9 @@ public class ScreenMain extends MainScreen {
 		
 		_grid.add(_fldLista);
 		_grid.add(_fldInfo);
-
+	}
+	
+	private void cargarBD() {
 		final PopupScreen wait = new PopupScreen(new VerticalFieldManager());
 		wait.add(new LabelField("Por favor espere..."));
 		wait.add(new LabelField(
