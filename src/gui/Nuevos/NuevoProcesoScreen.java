@@ -162,12 +162,12 @@ public class NuevoProcesoScreen extends FondoNormal {
 				menu.addSeparator();
 			} else if (BasicEditField.class.isInstance(f)) {
 				if (f.getCookie() != null) {
+					menu.add(menuModificarCampo);
 					menu.add(menuEliminarCampo);
 				}
 			}
 		}
 		menu.add(menuCampo);
-		menu.add(menuModificarCampo);
 		menu.add(menuGuardar);
 		menu.add(menuCerrar);
 	}
@@ -241,7 +241,7 @@ public class NuevoProcesoScreen extends FondoNormal {
 	};
 	
 	//TODO Modificar orden de este menú
-	private final MenuItem menuModificarCampo = new MenuItem("Modificar",
+	private final MenuItem menuModificarCampo = new MenuItem("Modificar campo",
 			393216, 8) {
 
 		public void run() {

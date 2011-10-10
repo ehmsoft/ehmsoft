@@ -240,7 +240,7 @@ public class VerProcesoScreen extends FondoNormal {
 		}
 	};
 
-	private final MenuItem menuModificarCampo = new MenuItem("Modificar",
+	private final MenuItem menuModificarCampo = new MenuItem("Modificar campo",
 			393216, 8) {
 
 		public void run() {
