@@ -152,7 +152,7 @@ public class ScreenMain extends MainScreen {
 		_grid.add(_fldInfo);
 
 		final PopupScreen wait = new PopupScreen(new VerticalFieldManager());
-		wait.add(new LabelField("Porfavor espere..."));
+		wait.add(new LabelField("Por favor espere..."));
 		wait.add(new LabelField(
 				"Verificando la base de datos y cargando las preferencias, esto puede tomar unos minutos"));
 		UiApplication.getUiApplication().pushGlobalScreen(wait, 0,

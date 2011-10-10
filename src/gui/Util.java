@@ -93,7 +93,7 @@ public class Util {
 	public static UiApplication UI_Application;
 
 	public static LabelField getWaitLabel() {
-		LabelField wait = new LabelField("Porfavor espere...",
+		LabelField wait = new LabelField("Por favor espere...",
 				Field.USE_ALL_WIDTH) {
 			protected void paint(Graphics g) {
 				g.setColor(Color.WHITE);
