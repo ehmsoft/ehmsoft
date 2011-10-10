@@ -52,7 +52,26 @@ import net.rim.device.api.ui.decor.BackgroundFactory;
 import net.rim.device.api.ui.decor.BorderFactory;
 
 public class ScreenMain extends MainScreen {
-
+	private final String LICENCIA = "AVISO IMPORTANTE: Antes de descargar, instalar, copiar o utilizar " +
+			"el software lea los siguientes términos y condiciones: ehmSoftware es el propietario del " +
+			"software y del soporte físico. ehmSoftware  concede este software bajo una licencia " +
+			"exclusivamente de uso a una persona natural o jurídica. Disponiendo de ésta, la instalación podrá " +
+			"realizarse solamente en un dispositivo, el cual está permitido cambiarlo, para esto debe " +
+			"eliminar por completo la instalación en el dispositivo anterior y contactar a ehmSoftware. Para " +
+			"que el software funcione correctamente se debe contar con un sistema operativo BlackBerry® OS 5.0 " +
+			"o superior y una tarjeta microSD presente en el dispositivo, ehmSoftware no se hará responsable " +
+			"por pérdidas, daños, reclamaciones o costes de cualquier naturaleza, incluyendo cualquier daño " +
+			"consecuente, indirecto o secundario, ni de cualquier pérdida de beneficios o ganancias, daños " +
+			"que resulten de la interrupción del negocio, daño personal o incumplimiento de cualquier deber " +
+			"de diligencia o reclamaciones de terceros, del mismo modo no garantiza que el software este " +
+			"libre de errores y se recomienda que en el caso de que éstos se presente sean reportados a soporte@ehmsoft.com " +
+			"para realizar el seguimiento de los mismos y tomar medidas para su corrección en el menor tiempo " +
+			"posible. ehmSoftware se reserva todos los derechos que no se le conceden expresamente a usted en " +
+			"este documento y puede retirar la licencia de uso si usted no cumple con los términos y condiciones. " +
+			"Si usted presiona el botón “Sí” indica que ha leído, comprendido y está de acuerdo con todos los " +
+			"términos y condiciones expuestos en el presente documento así como con la licencia exclusivamente " +
+			"de uso del software. Si no está de acuerdo presione el botón “No”, destruya todas las copias del software " +
+			"que tenga en su poder y póngase en contacto con ehmSoftware. ";
 	private GridFieldManager _grid;
 	private VerticalFieldManager _info;
 	private ObjectListField _lista;
@@ -76,8 +95,7 @@ public class ScreenMain extends MainScreen {
 						
 		try {
 			if (!new ConnectionManager().existeBD()) {
-				//TODO Escribir el texto de la licencia
-				String licencia = "¿Acepta la licencia?";
+				String licencia = LICENCIA + "\n¿Acepta la licencia?";
 				if (Dialog.ask(Dialog.D_YES_NO, licencia, Dialog.NO) != Dialog.YES) {
 					System.exit(0);
 				}
