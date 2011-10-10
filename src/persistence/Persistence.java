@@ -1779,24 +1779,44 @@ public class Persistence implements Cargado, Guardado {
 		return campos;
 	}
 
-	/*
-	 * public CampoPersonalizado consultarCampo(String id_campo) throws
-	 * Exception { Database d = null; CampoPersonalizado campo = null; try {
-	 * connMgr.prepararBD(); d = DatabaseFactory.open(connMgr.getDbLocation());
-	 * Statement st = d .createStatement(
-	 * "SELECT at.id_atributo_proceso, at.id_atributo, at.valor, a.nombre,a.obligatorio,a.longitud_max, a.longitud_min FROM atributos_proceso at, atributos a WHERE at.id_atributo = a.id_atributo AND at.id_atributo_proceso = ?"
-	 * ); st.prepare(); st.bind(1, id_campo); Cursor cursor = st.getCursor(); if
-	 * (cursor.next()) { Row row = cursor.getRow(); int id_atributo_proceso =
-	 * row.getInteger(0); int id_atributo = row.getInteger(1); String valor =
-	 * row.getString(2); String nombre = row.getString(3); boolean obligatorio =
-	 * row.getBoolean(4); int longitud_max = row.getInteger(5); int longitud_min
-	 * = row.getInteger(6); campo = new CampoPersonalizado(
-	 * Integer.toString(id_atributo_proceso), Integer.toString(id_atributo),
-	 * nombre, valor, new Boolean(obligatorio), longitud_max, longitud_min);
-	 * 
-	 * } st.close(); cursor.close(); } catch (Exception e) { throw e; } finally
-	 * { if (d != null) { d.close(); } } return campo; }
-	 */
+	public CampoPersonalizado consultarCampo(String id_campo) throws Exception {
+		Database d = null;
+		CampoPersonalizado campo = null;
+		try {
+			connMgr.prepararBD();
+			d = DatabaseFactory.open(connMgr.getDbLocation());
+			Statement st = d
+					.createStatement("SELECT at.id_atributo_proceso, at.id_atributo, at.valor, a.nombre,a.obligatorio,a.longitud_max, a.longitud_min FROM atributos_proceso at, atributos a WHERE at.id_atributo = a.id_atributo AND at.id_atributo_proceso = ?");
+			st.prepare();
+			st.bind(1, id_campo);
+			Cursor cursor = st.getCursor();
+			if (cursor.next()) {
+				Row row = cursor.getRow();
+				int id_atributo_proceso = row.getInteger(0);
+				int id_atributo = row.getInteger(1);
+				String valor = row.getString(2);
+				String nombre = row.getString(3);
+				boolean obligatorio = row.getBoolean(4);
+				int longitud_max = row.getInteger(5);
+				int longitud_min = row.getInteger(6);
+				campo = new CampoPersonalizado(
+						Integer.toString(id_atributo_proceso),
+						Integer.toString(id_atributo), nombre, valor,
+						new Boolean(obligatorio), longitud_max, longitud_min);
+
+			}
+			st.close();
+			cursor.close();
+		} catch (Exception e) {
+			throw e;
+		} finally {
+			if (d != null) {
+				d.close();
+			}
+		}
+		return campo;
+	}
+	 
 
 	public Vector consultarAtributos() throws Exception {
 		Database d = null;

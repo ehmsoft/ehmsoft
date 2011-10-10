@@ -159,17 +159,14 @@ public class VerPersonaScreen extends FondoNormal {
 	private KeyListener listener = new KeyListener() {
 
 		public boolean keyUp(int keycode, int time) {
-			// TODO Auto-generated method stub
 			return false;
 		}
 
 		public boolean keyStatus(int keycode, int time) {
-			// TODO Auto-generated method stub
 			return false;
 		}
 
 		public boolean keyRepeat(int keycode, int time) {
-			// TODO Auto-generated method stub
 			return false;
 		}
 
@@ -183,7 +180,6 @@ public class VerPersonaScreen extends FondoNormal {
 		}
 
 		public boolean keyChar(char key, int status, int time) {
-			// TODO Auto-generated method stub
 			return false;
 		}
 	};

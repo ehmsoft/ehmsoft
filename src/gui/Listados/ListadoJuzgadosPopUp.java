@@ -22,17 +22,14 @@ public class ListadoJuzgadosPopUp extends ListaPopUp {
 	private KeyListener listener = new KeyListener() {
 
 		public boolean keyUp(int keycode, int time) {
-			// TODO Auto-generated method stub
 			return false;
 		}
 
 		public boolean keyStatus(int keycode, int time) {
-			// TODO Auto-generated method stub
 			return false;
 		}
 
 		public boolean keyRepeat(int keycode, int time) {
-			// TODO Auto-generated method stub
 			return false;
 		}
 
@@ -46,7 +43,6 @@ public class ListadoJuzgadosPopUp extends ListaPopUp {
 		}
 
 		public boolean keyChar(char key, int status, int time) {
-			// TODO Auto-generated method stub
 			return false;
 		}
 	};

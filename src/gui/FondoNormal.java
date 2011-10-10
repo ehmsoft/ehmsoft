@@ -21,7 +21,6 @@ public abstract class FondoNormal extends MainScreen {
 		super();
 		_vertical = new VerticalFieldManager(VERTICAL_SCROLL
 				| VERTICAL_SCROLLBAR | USE_ALL_WIDTH);
-		// TODO Auto-generated constructor stub
 		this.getMainManager().setBackground(
 				BackgroundFactory.createLinearGradientBackground(0x0099CCFF,
 						0x0099CCFF, 0x00336699, 0x00336699));

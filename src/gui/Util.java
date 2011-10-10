@@ -401,7 +401,27 @@ public class Util {
 	}
 	
 	public static CampoPersonalizado consultarCampo(String id_campo) {
-		return null;
+		CampoPersonalizado campo = null;
+		try {
+			campo = new Persistence().consultarCampo(id_campo);
+		} catch (NullPointerException e) {
+			noSd();
+		} catch (Exception e) {
+			alert(e.toString());
+		}
+		return campo;
+	}
+	
+	public static CampoPersonalizado consultarAtributo(String id_atributo) {
+		CampoPersonalizado campo = null;
+		try {
+			campo = new Persistence().consultarAtributo(id_atributo);
+		} catch (NullPointerException e) {
+			noSd();
+		} catch (Exception e) {
+			alert(e.toString());
+		}
+		return campo;
 	}
 	
 	public static Proceso consultarProceso(String id_proceso) {

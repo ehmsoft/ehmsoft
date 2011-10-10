@@ -52,7 +52,7 @@ import net.rim.device.api.ui.decor.BackgroundFactory;
 import net.rim.device.api.ui.decor.BorderFactory;
 
 public class ScreenMain extends MainScreen {
-	private final String LICENCIA = "AVISO IMPORTANTE: Antes de descargar, instalar, copiar o utilizar " +
+	private String _licencia = "AVISO IMPORTANTE: Antes de descargar, instalar, copiar o utilizar " +
 			"el software lea los siguientes términos y condiciones: ehmSoftware es el propietario del " +
 			"software y del soporte físico. ehmSoftware  concede este software bajo una licencia " +
 			"exclusivamente de uso a una persona natural o jurídica. Disponiendo de ésta, la instalación podrá " +
@@ -95,10 +95,11 @@ public class ScreenMain extends MainScreen {
 						
 		try {
 			if (!new ConnectionManager().existeBD()) {
-				String licencia = LICENCIA + "\n¿Acepta la licencia?";
+				String licencia = _licencia + "\n¿Acepta la licencia?";
 				if (Dialog.ask(Dialog.D_YES_NO, licencia, Dialog.NO) != Dialog.YES) {
 					System.exit(0);
 				}
+				_licencia = null; 
 				licencia = null;
 			}
 		} catch (NullPointerException e) {

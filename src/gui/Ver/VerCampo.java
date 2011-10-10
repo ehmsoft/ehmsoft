@@ -75,7 +75,12 @@ public class VerCampo {
 						Util.noSd();
 					} catch (DatabaseException e) {
 						if (e.getMessage().equalsIgnoreCase(": constraint failed")) {
-							//TODO Restaurar campo inicial de la BD
+							Util.alert("Este campo ya existe");
+							if(_campo.getId_campo() != null && !_campo.getId_campo().equals("")) {
+								_campo = Util.consultarCampo(_campo.getId_campo());
+							} else {
+								_campo = Util.consultarAtributo(_campo.getId_atributo());
+							}
 						}
 					} catch (Exception e) {
 						Util.alert(e.toString());
