@@ -1067,7 +1067,8 @@ public class Persistence implements Cargado, Guardado {
 			Statement stRecordarUltimaCategoria = d
 					.createStatement("UPDATE preferencias SET valor=? WHERE id_preferencia =10201");
 			stRecordarUltimaCategoria.prepare();
-			stRecordarUltimaCategoria.bind(1, Integer.toString(recordarUltimaCategoria));
+			stRecordarUltimaCategoria.bind(1,
+					Integer.toString(recordarUltimaCategoria));
 			stRecordarUltimaCategoria.execute();
 			stRecordarUltimaCategoria.close();
 			int mostrarBusqueda = 0;
@@ -1168,25 +1169,25 @@ public class Persistence implements Cargado, Guardado {
 
 	}
 
-//	public void log(String descripcion) throws Exception {
-//		Database d = null;
-//		try {
-//			connMgr.prepararBD();
-//			d = DatabaseFactory.open(connMgr.getDbLocation());
-//			Statement stPreferencias = d
-//					.createStatement("INSERT INTO log(fecha, descripcion) VALUES(datetime(),?) ");
-//			stPreferencias.prepare();
-//			stPreferencias.bind(1, descripcion);
-//			stPreferencias.execute();
-//			stPreferencias.close();
-//		} catch (Exception e) {
-//			throw e;
-//		} finally {
-//			if (d != null) {
-//				d.close();
-//			}
-//		}
-//	}
+	// public void log(String descripcion) throws Exception {
+	// Database d = null;
+	// try {
+	// connMgr.prepararBD();
+	// d = DatabaseFactory.open(connMgr.getDbLocation());
+	// Statement stPreferencias = d
+	// .createStatement("INSERT INTO log(fecha, descripcion) VALUES(datetime(),?) ");
+	// stPreferencias.prepare();
+	// stPreferencias.bind(1, descripcion);
+	// stPreferencias.execute();
+	// stPreferencias.close();
+	// } catch (Exception e) {
+	// throw e;
+	// } finally {
+	// if (d != null) {
+	// d.close();
+	// }
+	// }
+	// }
 
 	public Vector consultarDemandantes() throws Exception {// Devuelve una
 															// vector iterable
@@ -1271,67 +1272,33 @@ public class Persistence implements Cargado, Guardado {
 		return demandados;
 	}
 
-	/*public Vector consultarPersonas() throws Exception {// Devuelve un vector
-														// iterable con todos
-														// los demandantes y
-														// demandados
-		Database d = null;
-		Vector pers = new Vector();
-		try {
-			connMgr.prepararBD();
-			d = DatabaseFactory.open(connMgr.getDbLocation());
-			Statement st = d
-					.createStatement("SELECT id_demandado, cedula, nombre, telefono, direccion, correo, notas FROM demandados order by nombre");
-			st.prepare();
-			Cursor cursor = st.getCursor();
-			while (cursor.next()) {
-				Row row = cursor.getRow();
-				int id_demandado = row.getInteger(0);
-				String cedula = row.getString(1);
-				String nombre = row.getString(2);
-				String telefono = row.getString(3);
-				String direccion = row.getString(4);
-				String correo = row.getString(5);
-				String notas = row.getString(6);
-				Persona per = new Persona(2, cedula, nombre, telefono,
-						direccion, correo, notas,
-						Integer.toString(id_demandado));
-				if (id_demandado != 1) {
-					pers.addElement(per);
-				}
-			}
-			st.close();
-			cursor.close();
-			st = d.createStatement("SELECT id_demandante, cedula, nombre, telefono, direccion, correo, notas FROM demandantes order by nombre");
-			st.prepare();
-			cursor = st.getCursor();
-			while (cursor.next()) {
-				Row row = cursor.getRow();
-				int id_demandante = row.getInteger(0);
-				String cedula = row.getString(1);
-				String nombre = row.getString(2);
-				String telefono = row.getString(3);
-				String direccion = row.getString(4);
-				String correo = row.getString(5);
-				String notas = row.getString(6);
-				Persona per = new Persona(1, cedula, nombre, telefono,
-						direccion, correo, notas,
-						Integer.toString(id_demandante));
-				if (id_demandante != 1) {
-					pers.addElement(per);
-				}
-			}
-			st.close();
-			cursor.close();
-		} catch (Exception e) {
-			throw e;
-		} finally {
-			if (d != null) {
-				d.close();
-			}
-		}
-		return pers;
-	}*/
+	/*
+	 * public Vector consultarPersonas() throws Exception {// Devuelve un vector
+	 * // iterable con todos // los demandantes y // demandados Database d =
+	 * null; Vector pers = new Vector(); try { connMgr.prepararBD(); d =
+	 * DatabaseFactory.open(connMgr.getDbLocation()); Statement st = d
+	 * .createStatement(
+	 * "SELECT id_demandado, cedula, nombre, telefono, direccion, correo, notas FROM demandados order by nombre"
+	 * ); st.prepare(); Cursor cursor = st.getCursor(); while (cursor.next()) {
+	 * Row row = cursor.getRow(); int id_demandado = row.getInteger(0); String
+	 * cedula = row.getString(1); String nombre = row.getString(2); String
+	 * telefono = row.getString(3); String direccion = row.getString(4); String
+	 * correo = row.getString(5); String notas = row.getString(6); Persona per =
+	 * new Persona(2, cedula, nombre, telefono, direccion, correo, notas,
+	 * Integer.toString(id_demandado)); if (id_demandado != 1) {
+	 * pers.addElement(per); } } st.close(); cursor.close(); st =
+	 * d.createStatement(
+	 * "SELECT id_demandante, cedula, nombre, telefono, direccion, correo, notas FROM demandantes order by nombre"
+	 * ); st.prepare(); cursor = st.getCursor(); while (cursor.next()) { Row row
+	 * = cursor.getRow(); int id_demandante = row.getInteger(0); String cedula =
+	 * row.getString(1); String nombre = row.getString(2); String telefono =
+	 * row.getString(3); String direccion = row.getString(4); String correo =
+	 * row.getString(5); String notas = row.getString(6); Persona per = new
+	 * Persona(1, cedula, nombre, telefono, direccion, correo, notas,
+	 * Integer.toString(id_demandante)); if (id_demandante != 1) {
+	 * pers.addElement(per); } } st.close(); cursor.close(); } catch (Exception
+	 * e) { throw e; } finally { if (d != null) { d.close(); } } return pers; }
+	 */
 
 	public Persona consultarPersona(String id_persona, int tipo)
 			throws Exception {// Devuelve una persona especifica
@@ -1622,9 +1589,10 @@ public class Persistence implements Cargado, Guardado {
 				String uid = row.getString(6);
 				Juzgado juzgado = new Juzgado();
 				juzgado.setId_juzgado(Integer.toString(id_juzgado));
-				ActuacionCritica actuacion = new ActuacionCritica(juzgado, fecha_creacion,
-						fecha_proxima, descripcion,
-						Integer.toString(id_actuacion), uid, Integer.toString(id_proceso));
+				ActuacionCritica actuacion = new ActuacionCritica(juzgado,
+						fecha_creacion, fecha_proxima, descripcion,
+						Integer.toString(id_actuacion), uid,
+						Integer.toString(id_proceso));
 				actuaciones.addElement(actuacion);
 			}
 			st.close();
@@ -1811,43 +1779,24 @@ public class Persistence implements Cargado, Guardado {
 		return campos;
 	}
 
-/*	public CampoPersonalizado consultarCampo(String id_campo) throws Exception {
-		Database d = null;
-		CampoPersonalizado campo = null;
-		try {
-			connMgr.prepararBD();
-			d = DatabaseFactory.open(connMgr.getDbLocation());
-			Statement st = d
-					.createStatement("SELECT at.id_atributo_proceso, at.id_atributo, at.valor, a.nombre,a.obligatorio,a.longitud_max, a.longitud_min FROM atributos_proceso at, atributos a WHERE at.id_atributo = a.id_atributo AND at.id_atributo_proceso = ?");
-			st.prepare();
-			st.bind(1, id_campo);
-			Cursor cursor = st.getCursor();
-			if (cursor.next()) {
-				Row row = cursor.getRow();
-				int id_atributo_proceso = row.getInteger(0);
-				int id_atributo = row.getInteger(1);
-				String valor = row.getString(2);
-				String nombre = row.getString(3);
-				boolean obligatorio = row.getBoolean(4);
-				int longitud_max = row.getInteger(5);
-				int longitud_min = row.getInteger(6);
-				campo = new CampoPersonalizado(
-						Integer.toString(id_atributo_proceso),
-						Integer.toString(id_atributo), nombre, valor,
-						new Boolean(obligatorio), longitud_max, longitud_min);
-
-			}
-			st.close();
-			cursor.close();
-		} catch (Exception e) {
-			throw e;
-		} finally {
-			if (d != null) {
-				d.close();
-			}
-		}
-		return campo;
-	}*/
+	/*
+	 * public CampoPersonalizado consultarCampo(String id_campo) throws
+	 * Exception { Database d = null; CampoPersonalizado campo = null; try {
+	 * connMgr.prepararBD(); d = DatabaseFactory.open(connMgr.getDbLocation());
+	 * Statement st = d .createStatement(
+	 * "SELECT at.id_atributo_proceso, at.id_atributo, at.valor, a.nombre,a.obligatorio,a.longitud_max, a.longitud_min FROM atributos_proceso at, atributos a WHERE at.id_atributo = a.id_atributo AND at.id_atributo_proceso = ?"
+	 * ); st.prepare(); st.bind(1, id_campo); Cursor cursor = st.getCursor(); if
+	 * (cursor.next()) { Row row = cursor.getRow(); int id_atributo_proceso =
+	 * row.getInteger(0); int id_atributo = row.getInteger(1); String valor =
+	 * row.getString(2); String nombre = row.getString(3); boolean obligatorio =
+	 * row.getBoolean(4); int longitud_max = row.getInteger(5); int longitud_min
+	 * = row.getInteger(6); campo = new CampoPersonalizado(
+	 * Integer.toString(id_atributo_proceso), Integer.toString(id_atributo),
+	 * nombre, valor, new Boolean(obligatorio), longitud_max, longitud_min);
+	 * 
+	 * } st.close(); cursor.close(); } catch (Exception e) { throw e; } finally
+	 * { if (d != null) { d.close(); } } return campo; }
+	 */
 
 	public Vector consultarAtributos() throws Exception {
 		Database d = null;
@@ -1883,6 +1832,42 @@ public class Persistence implements Cargado, Guardado {
 			}
 		}
 		return campos;
+	}
+
+	public CampoPersonalizado consultarAtributo(String id_atributo)
+			throws Exception {
+		Database d = null;
+		CampoPersonalizado campo = null;
+		try {
+			connMgr.prepararBD();
+			d = DatabaseFactory.open(connMgr.getDbLocation());
+			Statement st = d
+					.createStatement("SELECT id_atributo, nombre,obligatorio,longitud_max, longitud_min FROM atributos WHERE id_atributo = ?");
+			st.prepare();
+			st.bind(1, id_atributo);
+			Cursor cursor = st.getCursor();
+			if (cursor.next()) {
+				Row row = cursor.getRow();
+				String nombre = row.getString(1);
+				boolean obligatorio = row.getBoolean(2);
+				int longitud_max = row.getInteger(3);
+				int longitud_min = row.getInteger(4);
+				String id_campo = null;
+				String valor = null;
+				campo = new CampoPersonalizado(id_campo,
+						id_atributo, nombre, valor,
+						new Boolean(obligatorio), longitud_max, longitud_min);
+			}
+			st.close();
+			cursor.close();
+		} catch (Exception e) {
+			throw e;
+		} finally {
+			if (d != null) {
+				d.close();
+			}
+		}
+		return campo;
 	}
 
 	public Vector consultarPlantillas() throws Exception {
@@ -2046,44 +2031,24 @@ public class Persistence implements Cargado, Guardado {
 		return campos;
 	}
 
-	/*public CampoPersonalizado consultarCampoPlantilla(String id_campo)
-			throws Exception {
-		Database d = null;
-		CampoPersonalizado campo = null;
-		try {
-			connMgr.prepararBD();
-			d = DatabaseFactory.open(connMgr.getDbLocation());
-			Statement st = d
-					.createStatement("SELECT at.id_atributo_plantilla, at.id_atributo, at.valor, a.nombre,a.obligatorio,a.longitud_max, a.longitud_min FROM atributos_plantilla at, atributos a WHERE at.id_atributo = a.id_atributo AND at.id_atributo_plantilla = ?");
-			st.prepare();
-			st.bind(1, id_campo);
-			Cursor cursor = st.getCursor();
-			if (cursor.next()) {
-				Row row = cursor.getRow();
-				int id_atributo_plantilla = row.getInteger(0);
-				int id_atributo = row.getInteger(1);
-				String valor = row.getString(2);
-				String nombre = row.getString(3);
-				boolean obligatorio = row.getBoolean(4);
-				int longitud_max = row.getInteger(5);
-				int longitud_min = row.getInteger(6);
-				campo = new CampoPersonalizado(
-						Integer.toString(id_atributo_plantilla),
-						Integer.toString(id_atributo), nombre, valor,
-						new Boolean(obligatorio), longitud_max, longitud_min);
-
-			}
-			st.close();
-			cursor.close();
-		} catch (Exception e) {
-			throw e;
-		} finally {
-			if (d != null) {
-				d.close();
-			}
-		}
-		return campo;
-	}*/
+	/*
+	 * public CampoPersonalizado consultarCampoPlantilla(String id_campo) throws
+	 * Exception { Database d = null; CampoPersonalizado campo = null; try {
+	 * connMgr.prepararBD(); d = DatabaseFactory.open(connMgr.getDbLocation());
+	 * Statement st = d .createStatement(
+	 * "SELECT at.id_atributo_plantilla, at.id_atributo, at.valor, a.nombre,a.obligatorio,a.longitud_max, a.longitud_min FROM atributos_plantilla at, atributos a WHERE at.id_atributo = a.id_atributo AND at.id_atributo_plantilla = ?"
+	 * ); st.prepare(); st.bind(1, id_campo); Cursor cursor = st.getCursor(); if
+	 * (cursor.next()) { Row row = cursor.getRow(); int id_atributo_plantilla =
+	 * row.getInteger(0); int id_atributo = row.getInteger(1); String valor =
+	 * row.getString(2); String nombre = row.getString(3); boolean obligatorio =
+	 * row.getBoolean(4); int longitud_max = row.getInteger(5); int longitud_min
+	 * = row.getInteger(6); campo = new CampoPersonalizado(
+	 * Integer.toString(id_atributo_plantilla), Integer.toString(id_atributo),
+	 * nombre, valor, new Boolean(obligatorio), longitud_max, longitud_min);
+	 * 
+	 * } st.close(); cursor.close(); } catch (Exception e) { throw e; } finally
+	 * { if (d != null) { d.close(); } } return campo; }
+	 */
 
 	public String consultarPreferencia(int id_preferencia) throws Exception {
 		String valor = "0";
@@ -2175,7 +2140,7 @@ public class Persistence implements Cargado, Guardado {
 					break;
 				}
 				case 10202:
-					if(valor != null) {
+					if (valor != null) {
 						idCategoria = valor;
 					}
 					break;
@@ -2211,9 +2176,10 @@ public class Persistence implements Cargado, Guardado {
 				d.close();
 			}
 		}
-		
-		if(idCategoria != null) {
-			Preferencias.setUltimaCategoria(consultarCategoria(idCategoria), false);
+
+		if (idCategoria != null) {
+			Preferencias.setUltimaCategoria(consultarCategoria(idCategoria),
+					false);
 		} else {
 			Preferencias.setUltimaCategoria(null, false);
 		}
