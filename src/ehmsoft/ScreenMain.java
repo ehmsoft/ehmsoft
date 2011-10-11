@@ -82,12 +82,12 @@ public class ScreenMain extends MainScreen {
 	private LabelField _descripcion;
 	private VerticalFieldManager _fldLista;
 	private VerticalFieldManager _fldInfo;
-	private final int column1 = (Display.getWidth() / 2) - (int) (Display.getWidth() * (30.3 / 480));
-	private final int column2 = (Display.getWidth() / 2) + (int) (Display.getWidth() * (16.3 / 480));
-	private final int row = Display.getHeight()	- (int) (Display.getHeight() * (13.3 / 360));
-	private final int row1 = Display.getHeight() / 2 - (int) (Display.getWidth() * (32.3 / 480));
-	private final int row2 = Display.getHeight() / 2;
-	private final int column = Display.getWidth() - 7 - (int) (Display.getWidth() * (32.3 / 360));
+	private int column1;
+	private int column2;
+	private int row;
+	private int row1;
+	private int row2;
+	private int column;
 	private Font _defaultFont = Font.getDefault();
 	
 
@@ -110,6 +110,22 @@ public class ScreenMain extends MainScreen {
 			Dialog.alert(e.toString());
 		}
 		
+		dibujarPantalla();
+		cargarBD();
+	}
+	
+	private void cargarParametros() {
+		column1 = (Display.getWidth() / 2) - (int) (Display.getWidth() * (30.3 / 480));
+		column2 = (Display.getWidth() / 2) + (int) (Display.getWidth() * (16.3 / 480));
+		row = Display.getHeight()	- (int) (Display.getHeight() * (13.3 / 360));
+		row1 = Display.getHeight() / 2 - (int) (Display.getWidth() * (32.3 / 480));
+		row2 = Display.getHeight() / 2;
+		column = Display.getWidth() - 7 - (int) (Display.getWidth() * (32.3 / 360));
+	}
+	
+	private void dibujarPantalla() {
+		
+		cargarParametros();		
 		try {
 			FontFamily fontF = FontFamily.forName("BBAlpha Sans");
 
@@ -123,11 +139,6 @@ public class ScreenMain extends MainScreen {
 		} catch (ClassNotFoundException e1) {
 		}
 		
-		dibujarPantalla();
-		cargarBD();
-	}
-	
-	private void dibujarPantalla() {
 		actuacionesManager();
 		
 		Bitmap backGround = Bitmap.getBitmapResource("bg480x360.png");
@@ -509,6 +520,23 @@ public class ScreenMain extends MainScreen {
 	public boolean onClose() {
 		System.exit(0);
 		return true;
+	}
+	
+	protected void paint(Graphics g) {
+		if (Display.getOrientation() == Display.ORIENTATION_LANDSCAPE) {
+			if(_grid.getRowCount() > 1) {
+				deleteAll();
+				dibujarPantalla();
+				cargarBD();
+			}
+		} else if (Display.getOrientation() == Display.ORIENTATION_PORTRAIT) {
+			if(_grid.getColumnCount() > 1) {
+				deleteAll();
+				dibujarPantalla();
+				cargarBD();
+			}
+		}
+		super.paint(g);
 	}
 }
 
