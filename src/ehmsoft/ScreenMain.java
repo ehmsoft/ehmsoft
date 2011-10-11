@@ -215,7 +215,6 @@ public class ScreenMain extends MainScreen {
 					}
 				}
 				cargarActuaciones();
-				_fldLista.setFocus();
 			}
 		});
 	}
@@ -246,6 +245,7 @@ public class ScreenMain extends MainScreen {
 				_lista.focusChangeNotify(0);
 				setStatus(null);
 				_grid.invalidate();
+				_lista.setFocus();
 			}
 		});
 	}
