@@ -51,7 +51,7 @@ public class NuevaCita {
 			}
 			_cita.setDescripcion(_screen.getDescripcion());
 			_cita.setFecha(_screen.getFecha());
-			_cita.guardarCita();
+			_cita.markGuardar();
 			Util.popScreen(_screen);
 		}
 	}

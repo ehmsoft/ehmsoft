@@ -14,6 +14,10 @@ public class Cita {
 	private Date _fecha;
 	private int _alarma;
 	private String _uid;
+	
+	private boolean _eliminar = false;
+	private boolean _actualizar = false;
+	private boolean _guardar = false;
 
 	public static final String DIAS = "Días";
 	public static final String HORAS = "Horas";
@@ -25,17 +29,6 @@ public class Cita {
 		_alarma = alarma;
 		_uid = uid;
 	}
-
-	/*
-	 * public Cita(String descripcion, Date date) { this(descripcion, date, 0,
-	 * null); }
-	 * 
-	 * public Cita(String descripcion, Date date, String uid) {
-	 * this(descripcion, date, 0, uid); }
-	 * 
-	 * public Cita(String descripcion, Date date, int alarma) {
-	 * this(descripcion, date, alarma, null); }
-	 */
 
 	public Cita() {
 		this(null, null, 0, null);
@@ -56,17 +49,36 @@ public class Cita {
 			Util.alert(e.toString());
 		}
 	}
+	
+	public void markActualizar() {
+		_guardar = false;
+		_eliminar = false;
+		_actualizar = true;
+	}
+	
+	public void markEliminar() {
+		_guardar = false;
+		_eliminar = true;
+		_actualizar = false;
+	}
+	
+	public void markGuardar() {
+		_guardar = true;
+		_eliminar = false;
+		_actualizar = false;
+	}
 
 	public Object[] getAlarmaConFormato() {
 		Object[] ret = new Object[2];
-		if (_alarma >= 86400) {
-			ret[0] = new Integer(_alarma /= 86400);
+		int alarma = _alarma;
+		if (alarma >= 86400) {
+			ret[0] = new Integer(alarma /= 86400);
 			ret[1] = DIAS;
-		} else if (_alarma >= 3600) {
-			ret[0] = new Integer(_alarma /= 3600);
+		} else if (alarma >= 3600) {
+			ret[0] = new Integer(alarma /= 3600);
 			ret[1] = HORAS;
-		} else if (_alarma >= 60) {
-			ret[0] = new Integer(_alarma /= 60);
+		} else if (alarma >= 60) {
+			ret[0] = new Integer(alarma /= 60);
 			ret[1] = MINUTOS;
 		}
 		return ret;
@@ -98,17 +110,23 @@ public class Cita {
 	}
 
 	public void actualizarCita() {
-		try {
-			if (hasAlarma()) {
-				CalendarManager.actualizarCita(_uid, _fecha, _descripcion,
-						_alarma);
-			} else {
-				CalendarManager.actualizarCita(_uid, _fecha, _descripcion);
+		if (_actualizar) {
+			try {
+				if (hasAlarma()) {
+					CalendarManager.actualizarCita(_uid, _fecha, _descripcion,
+							_alarma);
+				} else {
+					CalendarManager.actualizarCita(_uid, _fecha, _descripcion);
+				}
+			} catch (NullPointerException e) {
+				guardarCita();
+			} catch (Exception e) {
+				Util.citaErrorMessage();
 			}
-		} catch (NullPointerException e) {
+		} else if (_eliminar) {
+			eliminarCita();
+		} else if (_guardar) {
 			guardarCita();
-		} catch (Exception e) {
-			Util.citaErrorMessage();
 		}
 	}
 

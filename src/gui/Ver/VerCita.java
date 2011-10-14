@@ -42,6 +42,10 @@ public class VerCita {
 	public VerCitaPopUp getScreen() {
 		return _screen;
 	}
+	
+	public boolean isDirty() {
+		return _screen.isDirty();
+	}
 
 	private void actualizarCita() {
 		if (_screen.getDescripcion().equals("")) {
@@ -54,7 +58,7 @@ public class VerCita {
 			}
 			_cita.setDescripcion(_screen.getDescripcion());
 			_cita.setFecha(_screen.getFecha());
-			_cita.actualizarCita();
+			_cita.markActualizar();
 			Util.popScreen(_screen);
 		}
 	}

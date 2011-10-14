@@ -73,6 +73,7 @@ public class VerActuacion {
 		} else if (_juzgado == null || _juzgado.getId_juzgado().equals("1")) {
 			Util.alert("El juzgado es obligatorio");
 		} else if (_screen.isDirty()) {
+			_cita.actualizarCita();
 			_actuacion.setJuzgado(_juzgado);
 			_actuacion.setFecha(_screen.getFecha());
 			_actuacion.setFechaProxima(_screen.getFechaProxima());
@@ -118,14 +119,15 @@ public class VerActuacion {
 	}
 
 	private void verCita() {
-		if (_cita.exist()) {
-			VerCita v = new VerCita(_cita);
-			UiApplication.getUiApplication().pushModalScreen(v.getScreen());
+		VerCita v = new VerCita(_cita);
+		UiApplication.getUiApplication().pushModalScreen(v.getScreen());
+		if (v.isDirty()) {
 			if (_cita.hasAlarma()) {
 				_screen.setBell();
 			} else {
 				_screen.removeBell();
 			}
+			_screen.setDirty(true);
 		}
 	}
 
@@ -156,7 +158,7 @@ public class VerActuacion {
 				.getFechaProxima().getTime());
 		UiApplication.getUiApplication().pushModalScreen(n.getScreen());
 		_cita = n.getCita();
-		if (_cita.exist()) {
+		if (_cita.getDescripcion().length() != 0) {
 			_screen.setClock();
 			if (_cita.hasAlarma()) {
 				_screen.setBell();
@@ -186,13 +188,15 @@ public class VerActuacion {
 				Util.alert(e.toString());
 			}
 			_actuacion = null;
+			_cita.eliminarCita();
 			UiApplication.getUiApplication().popScreen(_screen);
 		}
 	}
 
 	private void eliminarCita() {
-		_cita.eliminarCita();
+		_cita.markEliminar();
 		_screen.removeClock();
+		_screen.setDirty(true);
 	}
 
 	private void cerrarPantalla() {
