@@ -75,7 +75,7 @@ public class VerCategoria {
 				_screen.alert(e.toString());
 			}
 			_categoria = null;
-			UiApplication.getUiApplication().popScreen(_screen);
+			Util.popScreen(_screen);
 		}
 	}
 
@@ -88,10 +88,10 @@ public class VerCategoria {
 			if (sel == 0) {
 				actualizarCategoria();
 			} else if (sel == 1) {
-				UiApplication.getUiApplication().popScreen(_screen);
+				Util.popScreen(_screen);
 			}
 		} else {
-			UiApplication.getUiApplication().popScreen(_screen);
+			Util.popScreen(_screen);
 		}
 	}
 }

@@ -127,7 +127,7 @@ public class ListadoCampos {
 	private void nuevoCampo() {
 		CampoPersonalizado campo = null;
 		NuevoCampo n = new NuevoCampo(true);
-		UiApplication.getUiApplication().pushModalScreen(n.getScreen());
+		Util.pushModalScreen(n.getScreen());
 		campo = n.getCampo();
 		if (campo != null) {
 			if ((_style & NO_NUEVO) == NO_NUEVO) {
@@ -168,7 +168,7 @@ public class ListadoCampos {
 
 	private void cerrarPantalla() {
 		_selected = null;
-		UiApplication.getUiApplication().popScreen((Screen) _screen);
+		Util.popScreen((Screen) _screen);
 	}
 
 	public String toString() {

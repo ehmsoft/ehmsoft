@@ -8,7 +8,6 @@ import java.util.Vector;
 import net.rim.device.api.ui.Field;
 import net.rim.device.api.ui.FieldChangeListener;
 import net.rim.device.api.ui.Screen;
-import net.rim.device.api.ui.UiApplication;
 import persistence.Persistence;
 import core.Actuacion;
 import core.Preferencias;
@@ -126,7 +125,7 @@ public class ListadoActuaciones {
 				verActuacion();
 			} else {
 				_selected = (Actuacion) _screen.getSelected();
-				UiApplication.getUiApplication().popScreen((Screen) _screen);
+				Util.popScreen((Screen) _screen);
 			}
 		}
 	}
@@ -170,7 +169,7 @@ public class ListadoActuaciones {
 
 	private void cerrarPantalla() {
 		_selected = null;
-		UiApplication.getUiApplication().popScreen((Screen) _screen);
+		Util.popScreen((Screen) _screen);
 	}
 
 	public String toString() {

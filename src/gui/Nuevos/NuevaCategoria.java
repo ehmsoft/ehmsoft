@@ -77,10 +77,10 @@ public class NuevaCategoria {
 			if (sel == 0) {
 				guardarCategoria();
 			} else if (sel == 1) {
-				UiApplication.getUiApplication().popScreen(getScreen());
+				Util.popScreen(getScreen());
 			}
 		} else {
-			UiApplication.getUiApplication().popScreen(getScreen());
+			Util.popScreen(getScreen());
 		}
 	}
 }

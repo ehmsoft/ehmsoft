@@ -1,29 +1,16 @@
 package ehmsoft;
 
-import java.util.Enumeration;
-import java.util.Vector;
-
-import persistence.ConnectionManager;
-import persistence.Persistence;
-import core.Actuacion;
-import core.Plantilla;
-import core.ActuacionCritica;
-import core.Preferencias;
-import core.Proceso;
+import gui.About;
 import gui.Cita;
 import gui.Llaves;
 import gui.PreferenciasGenerales;
+import gui.ScreenMainListas;
 import gui.Util;
-import gui.About;
-import gui.Listados.ListadoActuaciones;
-import gui.Listados.ListadoCampos;
-import gui.Listados.ListadoCategorias;
-import gui.Listados.ListadoJuzgados;
-import gui.Listados.ListadoPersonas;
-import gui.Listados.ListadoProcesos;
-import gui.Listados.ListadoPlantillas;
-import gui.Nuevos.NuevaActuacion;
-import gui.Nuevos.NuevoProceso;
+
+import java.util.Enumeration;
+import java.util.Vector;
+
+import net.rim.device.api.system.AccelerometerSensor;
 import net.rim.device.api.system.Bitmap;
 import net.rim.device.api.system.Display;
 import net.rim.device.api.ui.Color;
@@ -51,28 +38,34 @@ import net.rim.device.api.ui.container.PopupScreen;
 import net.rim.device.api.ui.container.VerticalFieldManager;
 import net.rim.device.api.ui.decor.BackgroundFactory;
 import net.rim.device.api.ui.decor.BorderFactory;
+import persistence.ConnectionManager;
+import persistence.Persistence;
+import core.Actuacion;
+import core.ActuacionCritica;
+import core.Preferencias;
+import core.Proceso;
 
 public class ScreenMain extends MainScreen {
-	private String _licencia = "AVISO IMPORTANTE: Antes de descargar, instalar, copiar o utilizar " +
-			"el software lea los siguientes términos y condiciones: ehmSoftware es el propietario del " +
-			"software y del soporte físico. ehmSoftware  concede este software bajo una licencia " +
-			"exclusivamente de uso a una persona natural o jurídica. Disponiendo de ésta, la instalación podrá " +
-			"realizarse solamente en un dispositivo, el cual está permitido cambiarlo, para esto debe " +
-			"eliminar por completo la instalación en el dispositivo anterior y contactar a ehmSoftware. Para " +
-			"que el software funcione correctamente se debe contar con un sistema operativo BlackBerry® OS 5.0 " +
-			"o superior y una tarjeta microSD presente en el dispositivo, ehmSoftware no se hará responsable " +
-			"por pérdidas, daños, reclamaciones o costes de cualquier naturaleza, incluyendo cualquier daño " +
-			"consecuente, indirecto o secundario, ni de cualquier pérdida de beneficios o ganancias, daños " +
-			"que resulten de la interrupción del negocio, daño personal o incumplimiento de cualquier deber " +
-			"de diligencia o reclamaciones de terceros, del mismo modo no garantiza que el software este " +
-			"libre de errores y se recomienda que en el caso de que éstos se presente sean reportados a soporte@ehmsoft.com " +
-			"para realizar el seguimiento de los mismos y tomar medidas para su corrección en el menor tiempo " +
-			"posible. ehmSoftware se reserva todos los derechos que no se le conceden expresamente a usted en " +
-			"este documento y puede retirar la licencia de uso si usted no cumple con los términos y condiciones. " +
-			"Si usted presiona el botón “Sí” indica que ha leído, comprendido y está de acuerdo con todos los " +
-			"términos y condiciones expuestos en el presente documento así como con la licencia exclusivamente " +
-			"de uso del software. Si no está de acuerdo presione el botón “No”, destruya todas las copias del software " +
-			"que tenga en su poder y póngase en contacto con ehmSoftware. ";
+	private String _licencia = "AVISO IMPORTANTE: Antes de descargar, instalar, copiar o utilizar "
+			+ "el software lea los siguientes términos y condiciones: ehmSoftware es el propietario del "
+			+ "software y del soporte físico. ehmSoftware  concede este software bajo una licencia "
+			+ "exclusivamente de uso a una persona natural o jurídica. Disponiendo de ésta, la instalación podrá "
+			+ "realizarse solamente en un dispositivo, el cual está permitido cambiarlo, para esto debe "
+			+ "eliminar por completo la instalación en el dispositivo anterior y contactar a ehmSoftware. Para "
+			+ "que el software funcione correctamente se debe contar con un sistema operativo BlackBerry® OS 5.0 "
+			+ "o superior y una tarjeta microSD presente en el dispositivo, ehmSoftware no se hará responsable "
+			+ "por pérdidas, daños, reclamaciones o costes de cualquier naturaleza, incluyendo cualquier daño "
+			+ "consecuente, indirecto o secundario, ni de cualquier pérdida de beneficios o ganancias, daños "
+			+ "que resulten de la interrupción del negocio, daño personal o incumplimiento de cualquier deber "
+			+ "de diligencia o reclamaciones de terceros, del mismo modo no garantiza que el software este "
+			+ "libre de errores y se recomienda que en el caso de que éstos se presente sean reportados a soporte@ehmsoft.com "
+			+ "para realizar el seguimiento de los mismos y tomar medidas para su corrección en el menor tiempo "
+			+ "posible. ehmSoftware se reserva todos los derechos que no se le conceden expresamente a usted en "
+			+ "este documento y puede retirar la licencia de uso si usted no cumple con los términos y condiciones. "
+			+ "Si usted presiona el botón “Sí” indica que ha leído, comprendido y está de acuerdo con todos los "
+			+ "términos y condiciones expuestos en el presente documento así como con la licencia exclusivamente "
+			+ "de uso del software. Si no está de acuerdo presione el botón “No”, destruya todas las copias del software "
+			+ "que tenga en su poder y póngase en contacto con ehmSoftware. ";
 	private GridFieldManager _grid;
 	private VerticalFieldManager _info;
 	private ObjectListField _lista;
@@ -89,18 +82,21 @@ public class ScreenMain extends MainScreen {
 	private int row2;
 	private int column;
 	private Font _defaultFont = Font.getDefault();
-	
+	private boolean _accelerometer = AccelerometerSensor.isSupported();
+	private ScreenMainListas _listasMenu = new ScreenMainListas();
 
 	public ScreenMain() {
 		super(NO_VERTICAL_SCROLL);
-						
+
+		Util.setUiApplication();
+
 		try {
 			if (!new ConnectionManager().existeBD()) {
 				String licencia = _licencia + "\n¿Acepta la licencia?";
 				if (Dialog.ask(Dialog.D_YES_NO, licencia, Dialog.NO) != Dialog.YES) {
 					System.exit(0);
 				}
-				_licencia = null; 
+				_licencia = null;
 				licencia = null;
 			}
 		} catch (NullPointerException e) {
@@ -109,23 +105,27 @@ public class ScreenMain extends MainScreen {
 		} catch (Exception e) {
 			Dialog.alert(e.toString());
 		}
-		
+
 		dibujarPantalla();
 		cargarBD();
 	}
-	
+
 	private void cargarParametros() {
-		column1 = (Display.getWidth() / 2) - (int) (Display.getWidth() * (30.3 / 480));
-		column2 = (Display.getWidth() / 2) + (int) (Display.getWidth() * (16.3 / 480));
-		row = Display.getHeight()	- (int) (Display.getHeight() * (13.3 / 360));
-		row1 = Display.getHeight() / 2 - (int) (Display.getWidth() * (32.3 / 480));
+		column1 = (Display.getWidth() / 2)
+				- (int) (Display.getWidth() * (30.3 / 480));
+		column2 = (Display.getWidth() / 2)
+				+ (int) (Display.getWidth() * (16.3 / 480));
+		row = Display.getHeight() - (int) (Display.getHeight() * (13.3 / 360));
+		row1 = Display.getHeight() / 2
+				- (int) (Display.getWidth() * (32.3 / 480));
 		row2 = Display.getHeight() / 2;
-		column = Display.getWidth() - 7 - (int) (Display.getWidth() * (32.3 / 360));
+		column = Display.getWidth() - 7
+				- (int) (Display.getWidth() * (32.3 / 360));
 	}
-	
+
 	private void dibujarPantalla() {
-		
-		cargarParametros();		
+
+		cargarParametros();
 		try {
 			FontFamily fontF = FontFamily.forName("BBAlpha Sans");
 
@@ -135,34 +135,36 @@ public class ScreenMain extends MainScreen {
 				_defaultFont = fontF.getFont(0, Display.getHeight() / 24);
 			}
 
-			
 		} catch (ClassNotFoundException e1) {
 		}
-		
+
 		actuacionesManager();
-		
+
 		Bitmap backGround = Bitmap.getBitmapResource("bg480x360.png");
-		if(Display.getWidth() == 320 && Display.getHeight() == 240) {
+		if (Display.getWidth() == 320 && Display.getHeight() == 240) {
 			backGround = Bitmap.getBitmapResource("bg320x240.png");
-		} else if(Display.getWidth() == 320 && Display.getHeight() == 480) {
+		} else if (Display.getWidth() == 320 && Display.getHeight() == 480) {
 			backGround = Bitmap.getBitmapResource("bg320x480.png");
-		} else if(Display.getWidth() == 360 && Display.getHeight() == 480) {
+		} else if (Display.getWidth() == 360 && Display.getHeight() == 480) {
 			backGround = Bitmap.getBitmapResource("bg360x480.png");
-		} else if(Display.getWidth() == 480 && Display.getHeight() == 360) {
+		} else if (Display.getWidth() == 480 && Display.getHeight() == 360) {
 			backGround = Bitmap.getBitmapResource("bg480x360.png");
 		}
 
 		getMainManager().setBackground(
 				BackgroundFactory.createBitmapBackground(backGround));
-		
-		_fldLista = new VerticalFieldManager(VERTICAL_SCROLL | VERTICAL_SCROLLBAR);
-		_fldInfo = new VerticalFieldManager(VERTICAL_SCROLL | VERTICAL_SCROLLBAR);
-		
+
+		_fldLista = new VerticalFieldManager(VERTICAL_SCROLL
+				| VERTICAL_SCROLLBAR);
+		_fldInfo = new VerticalFieldManager(VERTICAL_SCROLL
+				| VERTICAL_SCROLLBAR);
+
 		_fldLista.add(_lista);
 		_fldInfo.add(_info);
-		
-		_fldLista.setBorder(BorderFactory.createBitmapBorder(new XYEdges(5, 5, 5, 5), Bitmap.getBitmapResource("blackBorder.png")));
-		
+
+		_fldLista.setBorder(BorderFactory.createBitmapBorder(new XYEdges(5, 5,
+				5, 5), Bitmap.getBitmapResource("blackBorder.png")));
+
 		if (Display.getOrientation() == Display.ORIENTATION_PORTRAIT) {
 			_grid = new GridFieldManager(2, 1, GridFieldManager.FIXED_SIZE) {
 				public Field getField(int index) {
@@ -176,13 +178,13 @@ public class ScreenMain extends MainScreen {
 		} else if (Display.getOrientation() == Display.ORIENTATION_LANDSCAPE) {
 			_grid = new GridFieldManager(1, 2, GridFieldManager.FIXED_SIZE);
 		}
-		
+
 		add(_grid);
-		
+
 		_grid.add(_fldLista);
 		_grid.add(_fldInfo);
 	}
-	
+
 	private void cargarBD() {
 		final PopupScreen wait = new PopupScreen(new VerticalFieldManager());
 		wait.add(new LabelField("Por favor espere..."));
@@ -198,18 +200,17 @@ public class ScreenMain extends MainScreen {
 					new ConnectionManager().prepararBD();
 					new Persistence().consultarPreferencias();
 				} catch (NullPointerException e) {
-					UiApplication.getUiApplication().popScreen(wait);
+					Util.popScreen(wait);
 					Dialog.alert(Util.noSDString());
 					System.exit(0);
 				} catch (Exception e) {
-					UiApplication.getUiApplication().popScreen(wait);
+					Util.popScreen(wait);
 					Util.alert(e.toString());
 				}
-				UiApplication.getUiApplication().popScreen(wait);
+				Util.popScreen(wait);
 				Llaves llaves = new Llaves();
 				if (!llaves.verificarLlaves()) {
-					UiApplication.getUiApplication().pushModalScreen(
-							llaves.getScreen());
+					Util.pushModalScreen(llaves.getScreen());
 					if (!llaves.verificarLlaves()) {
 						System.exit(0);
 					}
@@ -262,11 +263,13 @@ public class ScreenMain extends MainScreen {
 				Actuacion objeto = (Actuacion) this.get(listField, index);
 				Cita cita = new Cita(objeto.getUid());
 				int count = 0;
-				if(cita.exist()) {
-					graphics.drawBitmap(0, y, 16, 16, Bitmap.getBitmapResource("clock.png"), 0, 0);
+				if (cita.exist()) {
+					graphics.drawBitmap(0, y, 16, 16,
+							Bitmap.getBitmapResource("clock.png"), 0, 0);
 					count += 16;
-					if(cita.hasAlarma()) {
-						graphics.drawBitmap(count, y, 16, 16, Bitmap.getBitmapResource("bell.png"), 0, 0);
+					if (cita.hasAlarma()) {
+						graphics.drawBitmap(count, y, 16, 16,
+								Bitmap.getBitmapResource("bell.png"), 0, 0);
 						count += 16;
 					}
 				}
@@ -286,12 +289,12 @@ public class ScreenMain extends MainScreen {
 		Font font = _defaultFont;
 		float fHeight = font.getHeight();
 		int fStyle = font.getStyle();
-		int resultHeight = (int)fHeight;
+		int resultHeight = (int) fHeight;
 		if (Display.getOrientation() == Display.ORIENTATION_LANDSCAPE) {
-			resultHeight = (int)(fHeight - fHeight * (8.0 / 27));
+			resultHeight = (int) (fHeight - fHeight * (8.0 / 27));
 			_lista.setFont(font.derive(fStyle, resultHeight));
 		} else if (Display.getOrientation() == Display.ORIENTATION_PORTRAIT) {
-			resultHeight = (int)(fHeight - fHeight * (5.0 / 20));
+			resultHeight = (int) (fHeight - fHeight * (5.0 / 20));
 		}
 		_lista.setFont(font.derive(fStyle, resultHeight));
 		_lista.setRowHeight(_lista.getFont().getHeight() * 2);
@@ -304,11 +307,11 @@ public class ScreenMain extends MainScreen {
 		Font font = _defaultFont;
 		float fHeight = font.getHeight();
 		int fStyle = font.getStyle();
-		int resultHeight = (int)fHeight;
+		int resultHeight = (int) fHeight;
 		if (Display.getOrientation() == Display.ORIENTATION_LANDSCAPE) {
-			resultHeight = (int)(fHeight - fHeight * (6.0 / 27));
+			resultHeight = (int) (fHeight - fHeight * (6.0 / 27));
 		} else if (Display.getOrientation() == Display.ORIENTATION_PORTRAIT) {
-			resultHeight = (int)(fHeight - fHeight * (4.0 / 20));
+			resultHeight = (int) (fHeight - fHeight * (4.0 / 20));
 		}
 		_info.setFont(font.derive(fStyle, resultHeight));
 
@@ -466,8 +469,8 @@ public class ScreenMain extends MainScreen {
 	private final MenuItem menuListas = new MenuItem("Listado", 131075, 2) {
 
 		public void run() {
-			UiApplication.getUiApplication().pushModalScreen(
-					new Listados(Listados.LISTA));
+			_listasMenu.call(ScreenMainListas.LISTA);
+			Util.pushModalScreen(_listasMenu);
 			cargarActuaciones();
 		}
 	};
@@ -475,8 +478,8 @@ public class ScreenMain extends MainScreen {
 	private final MenuItem menuNuevos = new MenuItem("Nuevo", 131075, 3) {
 
 		public void run() {
-			UiApplication.getUiApplication().pushModalScreen(
-					new Listados(Listados.NUEVO));
+			_listasMenu.call(ScreenMainListas.NUEVO);
+			Util.pushModalScreen(_listasMenu);
 			cargarActuaciones();
 		}
 	};
@@ -521,132 +524,23 @@ public class ScreenMain extends MainScreen {
 		System.exit(0);
 		return true;
 	}
-	
+
 	protected void paint(Graphics g) {
-		if (Display.getOrientation() == Display.ORIENTATION_LANDSCAPE) {
-			if(_grid.getRowCount() > 1) {
-				deleteAll();
-				dibujarPantalla();
-				cargarBD();
-			}
-		} else if (Display.getOrientation() == Display.ORIENTATION_PORTRAIT) {
-			if(_grid.getColumnCount() > 1) {
-				deleteAll();
-				dibujarPantalla();
-				cargarBD();
+		if (_accelerometer) {
+			if (Display.getOrientation() == Display.ORIENTATION_LANDSCAPE) {
+				if (_grid.getRowCount() > 1) {
+					deleteAll();
+					dibujarPantalla();
+					cargarBD();
+				}
+			} else if (Display.getOrientation() == Display.ORIENTATION_PORTRAIT) {
+				if (_grid.getColumnCount() > 1) {
+					deleteAll();
+					dibujarPantalla();
+					cargarBD();
+				}
 			}
 		}
 		super.paint(g);
-	}
-}
-
-class Listados extends PopupScreen {
-
-	private ObjectListField _lista;
-	private int _style;
-
-	public static final short LISTA = 1;
-	public static final short NUEVO = 2;
-
-	public Listados(int style) {
-		super(new VerticalFieldManager(VERTICAL_SCROLL | VERTICAL_SCROLLBAR));
-		_style = style;
-		_lista = new ObjectListField();
-		if ((_style & LISTA) == LISTA) {
-			add(new LabelField("Ver listado de:", FIELD_HCENTER));
-			Object[] o = { "Demandantes", "Demandados", "Juzgados",
-					"Campos personalizados", "Categorías", "Procesos",
-					"Plantillas", "Actuaciones" };
-			_lista.set(o);
-		} else if ((_style & NUEVO) == NUEVO) {
-			add(new LabelField("Crear:", FIELD_HCENTER));
-			Object[] o = { "Demandante", "Demandado", "Juzgado",
-					"Campo personalizado", "Categoría", "Proceso", "Plantilla",
-					"Actuación", "Proceso a partir de plantilla" };
-			_lista.set(o);
-		}
-		add(new SeparatorField());
-		add(_lista);
-	}
-
-	protected boolean navigationClick(int arg0, int arg1) {
-		int index = _lista.getSelectedIndex();
-		UiApplication.getUiApplication().popScreen(this);
-		if (index == 0) {
-			if ((_style & LISTA) == LISTA) {
-				Util.listadoPersonas(1, false, ListadoPersonas.ON_CLICK_VER);
-			} else if ((_style & NUEVO) == NUEVO) {
-				Util.nuevaPersona(1);
-			}
-		} else if (index == 1) {
-			if ((_style & LISTA) == LISTA) {
-				Util.listadoPersonas(2, false, ListadoPersonas.ON_CLICK_VER);
-			} else if ((_style & NUEVO) == NUEVO) {
-				Util.nuevaPersona(2);
-			}
-		} else if (index == 2) {
-			if ((_style & LISTA) == LISTA) {
-				Util.listadoJuzgados(false, ListadoJuzgados.ON_CLICK_VER);
-			} else if ((_style & NUEVO) == NUEVO) {
-				Util.nuevoJuzgado();
-			}
-		} else if (index == 3) {
-			if ((_style & LISTA) == LISTA) {
-				Util.listadoCampos(false, ListadoCampos.ON_CLICK_VER);
-			} else if ((_style & NUEVO) == NUEVO) {
-				Util.nuevoCampoPersonalizado();
-			}
-		} else if (index == 4) {
-			if ((_style & LISTA) == LISTA) {
-				Util.listadoCategorias(false, ListadoCategorias.ON_CLICK_VER);
-			} else if ((_style & NUEVO) == NUEVO) {
-				Util.nuevaCategoria(false);
-			}
-		} else if (index == 5) {
-			if ((_style & LISTA) == LISTA) {
-				Util.listadoProcesos(false, ListadoProcesos.ON_CLICK_VER);
-			} else if ((_style & NUEVO) == NUEVO) {
-				Util.nuevoProceso();
-			}
-		} else if (index == 6) {
-			if ((_style & LISTA) == LISTA) {
-				Util.listadoPlantillas(false, ListadoPlantillas.ON_CLICK_VER);
-			} else if ((_style & NUEVO) == NUEVO) {
-				Util.nuevaPlantilla();
-			}
-		} else if (index == 7) {
-			ListadoProcesos procesos = new ListadoProcesos(true,
-					ListadoProcesos.NO_NUEVO);
-			procesos.setTitle("Procesos ");
-			Util.pushModalScreen(procesos.getScreen());
-			Proceso proceso = procesos.getSelected();
-			if (proceso != null) {
-				if ((_style & LISTA) == LISTA) {
-					ListadoActuaciones actuaciones = new ListadoActuaciones(
-							proceso);
-					Util.pushModalScreen(actuaciones.getScreen());
-				} else if ((_style & NUEVO) == NUEVO) {
-					NuevaActuacion actuacion = new NuevaActuacion(proceso);
-					Util.pushModalScreen(actuacion.getScreen());
-				}
-			}
-		} else if (index == 8) {
-			ListadoPlantillas plantillas = new ListadoPlantillas(true,
-					ListadoPlantillas.ON_CLICK_SELECT
-							| ListadoPlantillas.NO_NUEVO);
-			plantillas.setTitle("Seleccione una plantilla");
-			Util.pushModalScreen(plantillas.getScreen());
-			Plantilla plantilla = plantillas.getSelected();
-			if (plantilla != null) {
-				NuevoProceso n = new NuevoProceso(plantilla);
-				UiApplication.getUiApplication().pushModalScreen(n.getScreen());
-			}
-		}
-		return true;
-	}
-
-	public boolean onClose() {
-		UiApplication.getUiApplication().popScreen(this);
-		return true;
 	}
 }

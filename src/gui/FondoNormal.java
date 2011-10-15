@@ -1,6 +1,5 @@
 package gui;
 
-import core.Preferencias;
 import net.rim.device.api.system.Bitmap;
 import net.rim.device.api.ui.Field;
 import net.rim.device.api.ui.XYEdges;
@@ -9,6 +8,7 @@ import net.rim.device.api.ui.container.MainScreen;
 import net.rim.device.api.ui.container.VerticalFieldManager;
 import net.rim.device.api.ui.decor.BackgroundFactory;
 import net.rim.device.api.ui.decor.BorderFactory;
+import core.Preferencias;
 
 public abstract class FondoNormal extends MainScreen {
 

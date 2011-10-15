@@ -30,7 +30,7 @@ public class NuevaCategoriaPopUp extends PopupScreen implements
 		_txtDescripcion.setLabel("Descripcion: ");
 
 		add(_txtDescripcion);
-		
+
 		_statusField = new HorizontalFieldManager();
 		add(_statusField);
 		ButtonField btnfldOk = new ButtonField("OK", ButtonField.CONSUME_CLICK
@@ -39,7 +39,7 @@ public class NuevaCategoriaPopUp extends PopupScreen implements
 		btnfldOk.setChangeListener(listenetAceptar);
 		add(btnfldOk);
 	}
-	
+
 	public void setStatus(Field field) {
 		_statusField.add(field);
 	}

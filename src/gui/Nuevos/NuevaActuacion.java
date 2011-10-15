@@ -86,7 +86,8 @@ public class NuevaActuacion {
 						} catch (NullPointerException e) {
 							Util.noSd();
 						} catch (DatabaseException e) {
-							if(e.getMessage().equalsIgnoreCase(": constraint failed")) {
+							if (e.getMessage().equalsIgnoreCase(
+									": constraint failed")) {
 								Util.alert("Esta actuación ya existe");
 								_actuacion = null;
 							}
@@ -107,7 +108,7 @@ public class NuevaActuacion {
 
 	private void addJuzgado() {
 		ListadoJuzgados l = new ListadoJuzgados(true);
-		UiApplication.getUiApplication().pushModalScreen(l.getScreen());
+		Util.pushModalScreen(l.getScreen());
 		Juzgado juzgado = l.getSelected();
 		if (juzgado != null) {
 			_juzgado = juzgado;
@@ -133,7 +134,7 @@ public class NuevaActuacion {
 	private void addCita() {
 		NuevaCita n = new NuevaCita(_screen.getDescripcion(), _screen
 				.getFechaProxima().getTime());
-		UiApplication.getUiApplication().pushModalScreen(n.getScreen());
+		Util.pushModalScreen(n.getScreen());
 		_cita = n.getCita();
 		if (_cita.getDescripcion().length() != 0) {
 			_screen.setClock();
@@ -146,7 +147,7 @@ public class NuevaActuacion {
 
 	private void verCita() {
 		VerCita v = new VerCita(_cita);
-		UiApplication.getUiApplication().pushModalScreen(v.getScreen());
+		Util.pushModalScreen(v.getScreen());
 		if (v.isDirty()) {
 			if (_cita.hasAlarma()) {
 				_screen.setBell();

@@ -85,11 +85,11 @@ public class NuevaPersona {
 						.getDireccion(), _screen.getCorreo(), _screen
 						.getNotas());
 				try {
-					new Persistence().guardarPersona(_persona);					
+					new Persistence().guardarPersona(_persona);
 				} catch (NullPointerException e) {
 					Util.noSd();
 				} catch (DatabaseException e) {
-					if(e.getMessage().equalsIgnoreCase(": constraint failed")) {
+					if (e.getMessage().equalsIgnoreCase(": constraint failed")) {
 						Util.alert("Esta persona ya existe");
 						_persona = null;
 					}
@@ -109,10 +109,10 @@ public class NuevaPersona {
 			if (sel == 0) {
 				guardarPersona();
 			} else if (sel == 1) {
-				UiApplication.getUiApplication().popScreen(_screen);
+				Util.popScreen(_screen);
 			}
 		} else {
-			UiApplication.getUiApplication().popScreen(_screen);
+			Util.popScreen(_screen);
 		}
 	}
 }

@@ -3,8 +3,10 @@ package persistence;
 import java.util.Enumeration;
 
 import javax.microedition.io.file.FileSystemRegistry;
-import java.lang.Exception;
-import net.rim.device.api.database.*;
+
+import net.rim.device.api.database.Database;
+import net.rim.device.api.database.DatabaseFactory;
+import net.rim.device.api.database.Statement;
 import net.rim.device.api.io.URI;
 import net.rim.device.api.ui.Font;
 
@@ -32,7 +34,7 @@ public class ConnectionManager {
 
 		}
 	}
-	
+
 	// Método que verifica si la SD
 	// está presente,
 	// luego verifica si la base de datos existe,

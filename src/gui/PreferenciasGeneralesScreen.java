@@ -1,13 +1,11 @@
 package gui;
 
-import core.Preferencias;
 import net.rim.device.api.ui.Field;
 import net.rim.device.api.ui.FieldChangeListener;
 import net.rim.device.api.ui.Font;
 import net.rim.device.api.ui.FontFamily;
 import net.rim.device.api.ui.Manager;
 import net.rim.device.api.ui.MenuItem;
-import net.rim.device.api.ui.UiApplication;
 import net.rim.device.api.ui.XYEdges;
 import net.rim.device.api.ui.component.BasicEditField;
 import net.rim.device.api.ui.component.ButtonField;
@@ -21,6 +19,7 @@ import net.rim.device.api.ui.component.SeparatorField;
 import net.rim.device.api.ui.container.HorizontalFieldManager;
 import net.rim.device.api.ui.container.MainScreen;
 import net.rim.device.api.ui.decor.BorderFactory;
+import core.Preferencias;
 
 public class PreferenciasGeneralesScreen extends MainScreen {
 
@@ -309,7 +308,7 @@ public class PreferenciasGeneralesScreen extends MainScreen {
 		public void run() {
 			if (Dialog.ask(Dialog.D_YES_NO,
 					"Seguro que desea salir y descartar cambios?") == Dialog.YES) {
-				UiApplication.getUiApplication().popScreen(getScreen());
+				Util.popScreen(getScreen());
 			}
 		}
 	};

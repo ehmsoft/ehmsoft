@@ -1,9 +1,9 @@
 package gui.Listados;
 
-import net.rim.device.api.system.KeyListener;
-import net.rim.device.api.ui.Keypad;
 import gui.ListaScreen;
 import gui.Util;
+import net.rim.device.api.system.KeyListener;
+import net.rim.device.api.ui.Keypad;
 
 public class ListadoJuzgadosScreen extends ListaScreen {
 

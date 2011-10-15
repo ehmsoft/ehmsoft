@@ -9,7 +9,6 @@ import javax.microedition.io.file.FileSystemRegistry;
 
 import net.rim.device.api.ui.Field;
 import net.rim.device.api.ui.FieldChangeListener;
-import net.rim.device.api.ui.UiApplication;
 
 public class DirectoryPicker {
 	private DirectoryPickerScreen _screen;
@@ -45,7 +44,7 @@ public class DirectoryPicker {
 				break;
 			case Util.GUARDAR:
 				_selected = true;
-				UiApplication.getUiApplication().popScreen(_screen);
+				Util.popScreen(_screen);
 				break;
 			}
 		}

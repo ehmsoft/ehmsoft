@@ -1,5 +1,6 @@
 package gui;
 
+import gui.Listados.ListadoActuaciones;
 import gui.Listados.ListadoCampos;
 import gui.Listados.ListadoCategorias;
 import gui.Listados.ListadoJuzgados;
@@ -89,7 +90,7 @@ public class Util {
 	public static final short LLAVES = 33;
 
 	public static PopupScreen WAIT_SCREEN;
-	
+
 	public static UiApplication UI_Application;
 
 	public static LabelField getWaitLabel() {
@@ -105,10 +106,15 @@ public class Util {
 	}
 
 	public static void popScreen(Screen screen) {
-		if (UI_Application == null) {
-			UI_Application = UiApplication.getUiApplication();
-		}
 		UI_Application.popScreen(screen);
+	}
+
+	public static void pushModalScreen(Screen screen) {
+		UI_Application.pushModalScreen(screen);
+	}
+
+	public static void setUiApplication() {
+		UI_Application = UiApplication.getUiApplication();
 	}
 
 	public static String noSDString() {
@@ -189,7 +195,7 @@ public class Util {
 		}
 		return persona;
 	}
-	
+
 	public static Categoria consultarCategoriaVacia() {
 		Categoria categoria = null;
 		try {
@@ -228,73 +234,73 @@ public class Util {
 
 	public static Persona verPersona(Persona persona) {
 		VerPersona v = new VerPersona(persona);
-		UiApplication.getUiApplication().pushModalScreen(v.getScreen());
+		pushModalScreen(v.getScreen());
 		return v.getPersona();
 	}
 
 	public static Juzgado verJuzgado(Juzgado juzgado) {
 		VerJuzgado v = new VerJuzgado(juzgado);
-		UiApplication.getUiApplication().pushModalScreen(v.getScreen());
+		pushModalScreen(v.getScreen());
 		return v.getJuzgado();
 	}
 
 	public static Categoria verCategoria(Categoria categoria) {
 		VerCategoria v = new VerCategoria(categoria);
-		UiApplication.getUiApplication().pushModalScreen(v.getScreen());
+		pushModalScreen(v.getScreen());
 		return v.getCategoria();
 	}
 
 	public static CampoPersonalizado verCampo(CampoPersonalizado campo) {
 		VerCampo v = new VerCampo(campo);
-		UiApplication.getUiApplication().pushModalScreen(v.getScreen());
+		pushModalScreen(v.getScreen());
 		return v.getCampo();
 	}
 
 	public static Actuacion verActuacion(Actuacion actuacion) {
 		VerActuacion v = new VerActuacion(actuacion);
-		UiApplication.getUiApplication().pushModalScreen(v.getScreen());
+		pushModalScreen(v.getScreen());
 		return v.getActuacion();
 	}
 
 	public static Proceso verProceso(Proceso proceso) {
 		VerProceso v = new VerProceso(proceso);
-		UiApplication.getUiApplication().pushModalScreen(v.getScreen());
+		pushModalScreen(v.getScreen());
 		return v.getProceso();
 	}
 
 	public static Plantilla verPlantilla(Plantilla plantilla) {
 		VerPlantilla v = new VerPlantilla(plantilla);
-		UiApplication.getUiApplication().pushModalScreen(v.getScreen());
+		pushModalScreen(v.getScreen());
 		return v.getPlantilla();
 	}
 
 	public static Persona listadoPersonas(int tipo, boolean popup, int style) {
 		ListadoPersonas l = new ListadoPersonas(tipo, popup, style);
-		UiApplication.getUiApplication().pushModalScreen(l.getScreen());
+		pushModalScreen(l.getScreen());
 		return l.getSelected();
 	}
 
 	public static Juzgado listadoJuzgados(boolean popup, int style) {
 		ListadoJuzgados l = new ListadoJuzgados(popup, style);
-		UiApplication.getUiApplication().pushModalScreen(l.getScreen());
+		pushModalScreen(l.getScreen());
 		return l.getSelected();
 	}
 
 	public static Categoria listadoCategorias(boolean popup, int style) {
 		ListadoCategorias l = new ListadoCategorias(popup, style);
-		UiApplication.getUiApplication().pushModalScreen(l.getScreen());
+		pushModalScreen(l.getScreen());
 		return l.getSelected();
 	}
 
 	public static CampoPersonalizado listadoCampos(boolean popup, int style) {
 		ListadoCampos l = new ListadoCampos(popup, style);
-		UiApplication.getUiApplication().pushModalScreen(l.getScreen());
+		pushModalScreen(l.getScreen());
 		return l.getSelected();
 	}
 
 	public static Proceso listadoProcesos(boolean popup, int style) {
 		ListadoProcesos l = new ListadoProcesos(popup, style);
-		UiApplication.getUiApplication().pushModalScreen(l.getScreen());
+		pushModalScreen(l.getScreen());
 		return l.getSelected();
 	}
 
@@ -304,45 +310,58 @@ public class Util {
 		return l.getSelected();
 	}
 
+	public static Actuacion listadoActuaciones(Proceso proceso, boolean popup,
+			int style) {
+		ListadoActuaciones l = new ListadoActuaciones(proceso, popup, style);
+		pushModalScreen(l.getScreen());
+		return l.getSelected();
+	}
+
 	public static Actuacion nuevaActuacion(Proceso proceso) {
 		NuevaActuacion n = new NuevaActuacion(proceso);
-		UiApplication.getUiApplication().pushModalScreen(n.getScreen());
+		pushModalScreen(n.getScreen());
 		return n.getActuacion();
 	}
 
 	public static Actuacion nuevaActuacion() {
 		NuevaActuacion n = new NuevaActuacion();
-		UiApplication.getUiApplication().pushModalScreen(n.getScreen());
+		pushModalScreen(n.getScreen());
 		return n.getActuacion();
 	}
 
 	public static CampoPersonalizado nuevoCampoPersonalizado() {
 		NuevoCampo n = new NuevoCampo();
-		UiApplication.getUiApplication().pushModalScreen(n.getScreen());
+		pushModalScreen(n.getScreen());
 		return n.getCampo();
 	}
 
 	public static Categoria nuevaCategoria(boolean popup) {
 		NuevaCategoria n = new NuevaCategoria(popup);
-		UiApplication.getUiApplication().pushModalScreen(n.getScreen());
+		pushModalScreen(n.getScreen());
 		return n.getCategoria();
 	}
 
 	public static Juzgado nuevoJuzgado() {
 		NuevoJuzgado n = new NuevoJuzgado();
-		UiApplication.getUiApplication().pushModalScreen(n.getScreen());
+		pushModalScreen(n.getScreen());
 		return n.getJuzgado();
 	}
 
 	public static Persona nuevaPersona(int tipo) {
 		NuevaPersona n = new NuevaPersona(tipo);
-		UiApplication.getUiApplication().pushModalScreen(n.getScreen());
+		pushModalScreen(n.getScreen());
 		return n.getPersona();
 	}
 
 	public static Proceso nuevoProceso() {
 		NuevoProceso n = new NuevoProceso();
-		UiApplication.getUiApplication().pushModalScreen(n.getScreen());
+		pushModalScreen(n.getScreen());
+		return n.getProceso();
+	}
+
+	public static Proceso nuevoProceso(Plantilla plantilla) {
+		NuevoProceso n = new NuevoProceso(plantilla);
+		pushModalScreen(n.getScreen());
 		return n.getProceso();
 	}
 
@@ -351,7 +370,7 @@ public class Util {
 		pushModalScreen(n.getScreen());
 		return n.getPlantilla();
 	}
-	
+
 	public static Actuacion consultarActuacion(String id_actuacion) {
 		Actuacion actuacion = null;
 		try {
@@ -363,7 +382,7 @@ public class Util {
 		}
 		return actuacion;
 	}
-	
+
 	public static Persona consultarPersona(int tipo, String id_persona) {
 		Persona persona = null;
 		try {
@@ -375,7 +394,7 @@ public class Util {
 		}
 		return persona;
 	}
-	
+
 	public static Juzgado consultarJuzgado(String id_juzgado) {
 		Juzgado juzgado = null;
 		try {
@@ -387,7 +406,7 @@ public class Util {
 		}
 		return juzgado;
 	}
-	
+
 	public static Plantilla consultarPlantilla(String id_plantilla) {
 		Plantilla plantilla = null;
 		try {
@@ -399,7 +418,7 @@ public class Util {
 		}
 		return plantilla;
 	}
-	
+
 	public static CampoPersonalizado consultarCampo(String id_campo) {
 		CampoPersonalizado campo = null;
 		try {
@@ -411,7 +430,7 @@ public class Util {
 		}
 		return campo;
 	}
-	
+
 	public static CampoPersonalizado consultarAtributo(String id_atributo) {
 		CampoPersonalizado campo = null;
 		try {
@@ -423,7 +442,7 @@ public class Util {
 		}
 		return campo;
 	}
-	
+
 	public static Proceso consultarProceso(String id_proceso) {
 		Proceso proceso = null;
 		try {
@@ -435,7 +454,6 @@ public class Util {
 		}
 		return proceso;
 	}
-	
 
 	public static String calendarToString(Calendar calendar, boolean largo) {
 		String string = "";
@@ -462,7 +480,8 @@ public class Util {
 		if (calendar.get(Calendar.HOUR) > 0 && calendar.get(Calendar.HOUR) < 10) {
 			string = string + "0";
 		}
-		string += (calendar.get(Calendar.HOUR) == 0)? "12": calendar.get(Calendar.HOUR) +"";
+		string += (calendar.get(Calendar.HOUR) == 0) ? "12" : calendar
+				.get(Calendar.HOUR) + "";
 		string = string + ":";
 		if (calendar.get(Calendar.MINUTE) < 10) {
 			string = string + "0";
@@ -475,12 +494,5 @@ public class Util {
 			string = string + ("PM");
 		}
 		return string;
-	}
-
-	public static void pushModalScreen(Screen screen) {
-		if (UI_Application == null) {
-			UI_Application = UiApplication.getUiApplication();
-		}
-		UI_Application.pushModalScreen(screen);
 	}
 }

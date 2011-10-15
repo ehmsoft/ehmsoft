@@ -73,14 +73,16 @@ public class VerJuzgado {
 					} catch (NullPointerException e) {
 						Util.noSd();
 					} catch (DatabaseException e) {
-						if (e.getMessage().equalsIgnoreCase(": constraint failed")) {
+						if (e.getMessage().equalsIgnoreCase(
+								": constraint failed")) {
 							Util.alert("Este juzgado ya existe");
-							_juzgado = Util.consultarJuzgado(_juzgado.getId_juzgado());
+							_juzgado = Util.consultarJuzgado(_juzgado
+									.getId_juzgado());
 						}
 					} catch (Exception e) {
 						Util.alert(e.toString());
 					} finally {
-						UiApplication.getUiApplication().popScreen(_screen);
+						Util.popScreen(_screen);
 					}
 				}
 			});
@@ -100,7 +102,7 @@ public class VerJuzgado {
 				_screen.alert(e.toString());
 			}
 			_juzgado = null;
-			UiApplication.getUiApplication().popScreen(_screen);
+			Util.popScreen(_screen);
 		}
 	}
 
@@ -114,10 +116,10 @@ public class VerJuzgado {
 			if (sel == 0) {
 				actualizarJuzgado();
 			} else if (sel == 1) {
-				UiApplication.getUiApplication().popScreen(_screen);
+				Util.popScreen(_screen);
 			}
 		} else {
-			UiApplication.getUiApplication().popScreen(_screen);
+			Util.popScreen(_screen);
 		}
 	}
 }

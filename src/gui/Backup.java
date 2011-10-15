@@ -5,13 +5,14 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Enumeration;
 import java.util.Vector;
+
 import javax.microedition.io.Connector;
 import javax.microedition.io.file.FileConnection;
 import javax.microedition.io.file.FileSystemRegistry;
-import persistence.ConnectionManager;
+
 import net.rim.device.api.ui.Field;
 import net.rim.device.api.ui.FieldChangeListener;
-import net.rim.device.api.ui.UiApplication;
+import persistence.ConnectionManager;
 
 public class Backup {
 	private BackupScreen _screen;
@@ -67,7 +68,7 @@ public class Backup {
 
 	private void examinar() {
 		DirectoryPicker dp = new DirectoryPicker();
-		UiApplication.getUiApplication().pushModalScreen(dp.getScreen());
+		Util.pushModalScreen(dp.getScreen());
 		if (dp.isSelected()) {
 			if (dp.getRuta() == null) {
 				_ruta = roots[0];
@@ -122,7 +123,7 @@ public class Backup {
 				inputStream.close();
 			}
 			_screen.alert("Archivo guardado!");
-			UiApplication.getUiApplication().popScreen(_screen);
+			Util.popScreen(_screen);
 		} catch (IOException ioe) {
 			_screen.alert("No se pudo guardar!");
 		} catch (NullPointerException npe) {

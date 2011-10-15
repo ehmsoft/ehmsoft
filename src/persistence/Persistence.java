@@ -11,8 +11,15 @@ import net.rim.device.api.database.Row;
 import net.rim.device.api.database.Statement;
 import net.rim.device.api.ui.Font;
 import net.rim.device.api.ui.FontFamily;
-
-import core.*;
+import core.Actuacion;
+import core.ActuacionCritica;
+import core.CampoPersonalizado;
+import core.Categoria;
+import core.Juzgado;
+import core.Persona;
+import core.Plantilla;
+import core.Preferencias;
+import core.Proceso;
 import ehmsoft.Cargado;
 import ehmsoft.Guardado;
 
@@ -1816,7 +1823,6 @@ public class Persistence implements Cargado, Guardado {
 		}
 		return campo;
 	}
-	 
 
 	public Vector consultarAtributos() throws Exception {
 		Database d = null;
@@ -1874,9 +1880,9 @@ public class Persistence implements Cargado, Guardado {
 				int longitud_min = row.getInteger(4);
 				String id_campo = null;
 				String valor = null;
-				campo = new CampoPersonalizado(id_campo,
-						id_atributo, nombre, valor,
-						new Boolean(obligatorio), longitud_max, longitud_min);
+				campo = new CampoPersonalizado(id_campo, id_atributo, nombre,
+						valor, new Boolean(obligatorio), longitud_max,
+						longitud_min);
 			}
 			st.close();
 			cursor.close();

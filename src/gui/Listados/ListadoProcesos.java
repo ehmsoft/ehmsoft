@@ -95,10 +95,6 @@ public class ListadoProcesos {
 		}
 	}
 
-	public void setTitle(String text) {
-		_screen.setTitle(text);
-	}
-
 	private FieldChangeListener listener = new FieldChangeListener() {
 
 		public void fieldChanged(Field field, int context) {
@@ -151,7 +147,7 @@ public class ListadoProcesos {
 
 	private void nuevoProceso() {
 		NuevoProceso n = new NuevoProceso();
-		UiApplication.getUiApplication().pushModalScreen(n.getScreen());
+		Util.pushModalScreen(n.getScreen());
 		Proceso proceso = n.getProceso();
 		if (proceso != null) {
 			if ((_style & NO_NUEVO) == NO_NUEVO) {
@@ -189,15 +185,15 @@ public class ListadoProcesos {
 			_screen.remove(selected);
 		}
 	}
-	
+
 	private void setUltimaCategoria() {
-		Preferencias.setUltimaCategoria(_screen.getSelectedCategoria());		
+		Preferencias.setUltimaCategoria(_screen.getSelectedCategoria());
 	}
 
 	private void cerrarPantalla() {
 		setUltimaCategoria();
 		_selected = null;
-		UiApplication.getUiApplication().popScreen((Screen) _screen);
+		Util.popScreen((Screen) _screen);
 	}
 
 	public String toString() {

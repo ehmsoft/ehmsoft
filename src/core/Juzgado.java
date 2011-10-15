@@ -7,7 +7,8 @@ public class Juzgado {
 	private String telefono;
 	private String tipo;
 	private String id_juzgado;
-	//Constructores
+
+	// Constructores
 	public Juzgado(String nombre, String ciudad, String direccion,
 			String telefono, String tipo) {
 		this.nombre = nombre;
@@ -15,7 +16,8 @@ public class Juzgado {
 		this.direccion = direccion;
 		this.telefono = telefono;
 		this.tipo = tipo;
-	}	
+	}
+
 	public Juzgado(String nombre, String ciudad, String direccion,
 			String telefono, String tipo, String id_juzgado) {
 		this.nombre = nombre;
@@ -25,6 +27,7 @@ public class Juzgado {
 		this.tipo = tipo;
 		this.id_juzgado = id_juzgado;
 	}
+
 	public Juzgado() {
 		this.nombre = null;
 		this.ciudad = null;
@@ -33,46 +36,58 @@ public class Juzgado {
 		this.tipo = null;
 		this.id_juzgado = null;
 	}
-	//Fin Constructores
-	//Getters
+
+	// Fin Constructores
+	// Getters
 	public String getNombre() {
 		return nombre;
 	}
+
 	public String getCiudad() {
 		return ciudad;
 	}
+
 	public String getDireccion() {
 		return direccion;
 	}
+
 	public String getTelefono() {
 		return telefono;
 	}
+
 	public String getTipo() {
 		return tipo;
 	}
+
 	public String getId_juzgado() {
 		return id_juzgado;
 	}
-	
-	//Setters
+
+	// Setters
 	public void setId_juzgado(String id_juzgado) {
 		this.id_juzgado = id_juzgado;
 	}
+
 	public void setNombre(String nombre) {
 		this.nombre = nombre;
 	}
+
 	public void setCiudad(String ciudad) {
 		this.ciudad = ciudad;
 	}
+
 	public void setDireccion(String direccion) {
 		this.direccion = direccion;
 	}
+
 	public void setTelefono(String telefono) {
 		this.telefono = telefono;
 	}
+
 	public void setTipo(String tipo) {
 		this.tipo = tipo;
 	}
+
 	public String toString() {
 		return getNombre();
 	}
@@ -112,5 +127,5 @@ public class Juzgado {
 			return false;
 		return true;
 	}
-	
+
 }

@@ -164,7 +164,7 @@ public class ListadoCategorias {
 
 	private void cerrarPantalla() {
 		_selected = null;
-		UiApplication.getUiApplication().popScreen((Screen) _screen);
+		Util.popScreen((Screen) _screen);
 	}
 
 	public String toString() {

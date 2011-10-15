@@ -76,7 +76,7 @@ public class NuevoJuzgado {
 				} catch (NullPointerException e) {
 					Util.noSd();
 				} catch (DatabaseException e) {
-					if(e.getMessage().equalsIgnoreCase(": constraint failed")) {
+					if (e.getMessage().equalsIgnoreCase(": constraint failed")) {
 						Util.alert("Este juzgado ya existe");
 						_juzgado = null;
 					}
@@ -96,10 +96,10 @@ public class NuevoJuzgado {
 			if (sel == 0) {
 				guardarJuzgado();
 			} else if (sel == 1) {
-				UiApplication.getUiApplication().popScreen(_screen);
+				Util.popScreen(_screen);
 			}
 		} else {
-			UiApplication.getUiApplication().popScreen(_screen);
+			Util.popScreen(_screen);
 		}
 	}
 }

@@ -19,11 +19,12 @@ public class Proceso {
 	private String notas;
 	private Vector campos;
 	private int prioridad;
-	//Constructores
+
+	// Constructores
 	public Proceso(Persona demandante, Persona demandado, Calendar fecha,
 			Juzgado juzgado, String radicado, String radicadoUnico,
-			Vector actuaciones, String estado, Categoria categoria, String tipo,
-			String notas, Vector campos, int prioridad) {
+			Vector actuaciones, String estado, Categoria categoria,
+			String tipo, String notas, Vector campos, int prioridad) {
 		this.demandante = demandante;
 		this.demandado = demandado;
 		this.fecha = fecha;
@@ -38,6 +39,7 @@ public class Proceso {
 		this.campos = campos;
 		this.prioridad = prioridad;
 	}
+
 	public Proceso(String id_proceso, Persona demandante, Persona demandado,
 			Calendar fecha, Juzgado juzgado, String radicado,
 			String radicadoUnico, Vector actuaciones, String estado,
@@ -59,106 +61,126 @@ public class Proceso {
 		this.prioridad = prioridad;
 	}
 
+	// Fin Constructores
 
-	//Fin Constructores
-
-/*	public void addActuacion(Actuacion act){
-		this.actuaciones.addElement(act);
-	}
-	public void delActuacion(Actuacion act){
-		this.actuaciones.removeElement(act);
-	}
-	public void addCampo(CampoPersonalizado campo){
-		this.campos.addElement(campo);
-	}
-	public void delCampo(CampoPersonalizado campo){
-		this.campos.removeElement(campo);
-	}*/
-	//Getters
+	/*
+	 * public void addActuacion(Actuacion act){
+	 * this.actuaciones.addElement(act); } public void delActuacion(Actuacion
+	 * act){ this.actuaciones.removeElement(act); } public void
+	 * addCampo(CampoPersonalizado campo){ this.campos.addElement(campo); }
+	 * public void delCampo(CampoPersonalizado campo){
+	 * this.campos.removeElement(campo); }
+	 */
+	// Getters
 	public Persona getDemandante() {
 		return demandante;
 	}
+
 	public Persona getDemandado() {
 		return demandado;
 	}
+
 	public Calendar getFecha() {
 		return fecha;
 	}
+
 	public Juzgado getJuzgado() {
 		return juzgado;
 	}
+
 	public String getRadicado() {
 		return radicado;
 	}
+
 	public String getRadicadoUnico() {
 		return radicadoUnico;
 	}
+
 	public Vector getActuaciones() {
 		return actuaciones;
 	}
+
 	public String getEstado() {
 		return estado;
 	}
+
 	public Categoria getCategoria() {
 		return categoria;
 	}
+
 	public String getTipo() {
 		return tipo;
 	}
+
 	public String getNotas() {
 		return notas;
 	}
+
 	public Vector getCampos() {
 		return campos;
 	}
+
 	public int getPrioridad() {
 		return prioridad;
 	}
-	
+
 	public String getId_proceso() {
 		return id_proceso;
 	}
 
-	//Setters
+	// Setters
 	public void setId_proceso(String id_proceso) {
 		this.id_proceso = id_proceso;
 	}
+
 	public void setDemandante(Persona demandante) {
 		this.demandante = demandante;
 	}
+
 	public void setDemandado(Persona demandado) {
 		this.demandado = demandado;
 	}
+
 	public void setFecha(Calendar fecha) {
 		this.fecha = fecha;
 	}
+
 	public void setJuzgado(Juzgado juzgado) {
 		this.juzgado = juzgado;
 	}
+
 	public void setRadicado(String radicado) {
 		this.radicado = radicado;
 	}
+
 	public void setRadicadoUnico(String radicadoUnico) {
 		this.radicadoUnico = radicadoUnico;
 	}
+
 	public void setActuaciones(Vector actuaciones) {
 		this.actuaciones = actuaciones;
 	}
+
 	public void setEstado(String estado) {
 		this.estado = estado;
 	}
+
 	public void setCategoria(Categoria categoria) {
 		this.categoria = categoria;
 	}
+
 	public void setTipo(String tipo) {
 		this.tipo = tipo;
 	}
+
 	public void setNotas(String notas) {
 		this.notas = notas;
 	}
+
 	public void setCampos(Vector campos) {
 		this.campos = campos;
 	}
+
 	public void setPrioridad(int prioridad) {
 		this.prioridad = prioridad;
 	}
@@ -174,14 +196,14 @@ public class Proceso {
 		if (actuaciones == null) {
 			if (other.actuaciones != null)
 				return false;
-		} else{
+		} else {
 			Enumeration e1 = actuaciones.elements();
 			Enumeration e2 = other.actuaciones.elements();
-			while(e1.hasMoreElements()){
-				while(e2.hasMoreElements()){
-					Actuacion a1 = (Actuacion)e1.nextElement();
-					Actuacion a2 = (Actuacion)e2.nextElement();
-					if(!a1.equals(a2)){
+			while (e1.hasMoreElements()) {
+				while (e2.hasMoreElements()) {
+					Actuacion a1 = (Actuacion) e1.nextElement();
+					Actuacion a2 = (Actuacion) e2.nextElement();
+					if (!a1.equals(a2)) {
 						return false;
 					}
 				}
@@ -190,14 +212,16 @@ public class Proceso {
 		if (campos == null) {
 			if (other.campos != null)
 				return false;
-		} else{
+		} else {
 			Enumeration e1 = campos.elements();
 			Enumeration e2 = other.campos.elements();
-			while(e1.hasMoreElements()){
-				while(e2.hasMoreElements()){
-					CampoPersonalizado a1 = (CampoPersonalizado)e1.nextElement();
-					CampoPersonalizado a2 = (CampoPersonalizado)e2.nextElement();
-					if(!a1.equals(a2)){
+			while (e1.hasMoreElements()) {
+				while (e2.hasMoreElements()) {
+					CampoPersonalizado a1 = (CampoPersonalizado) e1
+							.nextElement();
+					CampoPersonalizado a2 = (CampoPersonalizado) e2
+							.nextElement();
+					if (!a1.equals(a2)) {
 						return false;
 					}
 				}
@@ -257,5 +281,5 @@ public class Proceso {
 			return false;
 		return true;
 	}
-	
+
 }

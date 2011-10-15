@@ -177,9 +177,11 @@ public class VerProceso {
 						} catch (NullPointerException e1) {
 							Util.noSd();
 						} catch (DatabaseException e) {
-							if (e.getMessage().equalsIgnoreCase(": constraint failed")) {
+							if (e.getMessage().equalsIgnoreCase(
+									": constraint failed")) {
 								Util.alert("Este proceso ya existe");
-								_proceso = Util.consultarProceso(_proceso.getId_proceso());
+								_proceso = Util.consultarProceso(_proceso
+										.getId_proceso());
 							}
 						} catch (Exception e1) {
 							Util.alert(e1.toString());
@@ -201,7 +203,7 @@ public class VerProceso {
 
 	private void verListadoActuaciones() {
 		ListadoActuaciones l = new ListadoActuaciones(_proceso);
-		UiApplication.getUiApplication().pushModalScreen(l.getScreen());
+		Util.pushModalScreen(l.getScreen());
 	}
 
 	private boolean cambioCampos() {

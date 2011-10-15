@@ -14,7 +14,7 @@ public class Cita {
 	private Date _fecha;
 	private int _alarma;
 	private String _uid;
-	
+
 	private boolean _eliminar = false;
 	private boolean _actualizar = false;
 	private boolean _guardar = false;
@@ -49,19 +49,19 @@ public class Cita {
 			Util.alert(e.toString());
 		}
 	}
-	
+
 	public void markActualizar() {
 		_guardar = false;
 		_eliminar = false;
 		_actualizar = true;
 	}
-	
+
 	public void markEliminar() {
 		_guardar = false;
 		_eliminar = true;
 		_actualizar = false;
 	}
-	
+
 	public void markGuardar() {
 		_guardar = true;
 		_eliminar = false;

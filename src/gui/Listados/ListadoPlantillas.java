@@ -116,10 +116,6 @@ public class ListadoPlantillas {
 		}
 	};
 
-	public void setTitle(String text) {
-		_screen.setTitle(text);
-	}
-
 	private void nuevoProceso() {
 		NuevoProceso n = new NuevoProceso((Plantilla) _screen.getSelected());
 		Util.popScreen((Screen) _screen);
@@ -161,7 +157,7 @@ public class ListadoPlantillas {
 
 	private void nuevaPlantilla() {
 		NuevaPlantilla n = new NuevaPlantilla();
-		UiApplication.getUiApplication().pushModalScreen(n.getScreen());
+		Util.pushModalScreen(n.getScreen());
 		Plantilla proceso = n.getPlantilla();
 		if (proceso != null) {
 			if ((_style & NO_NUEVO) == NO_NUEVO) {
@@ -199,14 +195,14 @@ public class ListadoPlantillas {
 			_screen.remove(selected);
 		}
 	}
-	
+
 	private void setUltimaCategoria() {
-		Preferencias.setUltimaCategoria(_screen.getSelectedCategoria());		
+		Preferencias.setUltimaCategoria(_screen.getSelectedCategoria());
 	}
 
 	private void cerrarPantalla() {
 		setUltimaCategoria();
 		_selected = null;
-		UiApplication.getUiApplication().popScreen((Screen) _screen);
+		Util.popScreen((Screen) _screen);
 	}
 }

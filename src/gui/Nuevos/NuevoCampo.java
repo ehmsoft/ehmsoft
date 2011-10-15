@@ -68,7 +68,8 @@ public class NuevoCampo {
 						} catch (NullPointerException e) {
 							Util.noSd();
 						} catch (DatabaseException e) {
-							if(e.getMessage().equalsIgnoreCase(": constraint failed")) {
+							if (e.getMessage().equalsIgnoreCase(
+									": constraint failed")) {
 								Util.alert("El campo personalizado ya existe");
 								_campo = null;
 							}
@@ -92,10 +93,10 @@ public class NuevoCampo {
 			if (sel == 0) {
 				guardarCampo();
 			} else {
-				UiApplication.getUiApplication().popScreen(_screen);
+				Util.popScreen(_screen);
 			}
 		} else {
-			UiApplication.getUiApplication().popScreen(_screen);
+			Util.popScreen(_screen);
 		}
 	}
 }

@@ -567,7 +567,7 @@ public class VerPlantilla {
 				_screen.getEstado(), _categoria, _screen.getTipo(),
 				_screen.getNotas(), _campos, _screen.getPrioridad());
 		NuevoProceso n = new NuevoProceso(plantilla);
-		UiApplication.getUiApplication().pushModalScreen(n.getScreen());
+		Util.pushModalScreen(n.getScreen());
 	}
 
 	private void cerrarPantalla() {

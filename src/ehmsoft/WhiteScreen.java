@@ -9,9 +9,10 @@ public class WhiteScreen extends MainScreen {
 	public WhiteScreen() {
 		super();
 		UiApplication.getUiApplication().invokeLater(new Runnable() {
-			
+
 			public void run() {
-				while(!Application.isEventDispatchThread());
+				while (!Application.isEventDispatchThread())
+					;
 				UiApplication.getUiApplication().pushScreen(new ScreenMain());
 			}
 		});

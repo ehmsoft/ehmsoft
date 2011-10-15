@@ -1,9 +1,9 @@
 package gui;
 
-import persistence.Persistence;
 import net.rim.device.api.ui.Field;
 import net.rim.device.api.ui.FieldChangeListener;
 import net.rim.device.api.ui.UiApplication;
+import persistence.Persistence;
 import core.Preferencias;
 
 public class PreferenciasGenerales {
@@ -52,11 +52,13 @@ public class PreferenciasGenerales {
 	private void guardarPreferencias() {
 		_screen.setStatus(Util.getWaitLabel());
 		UiApplication.getUiApplication().invokeLater(new Runnable() {
-			
+
 			public void run() {
 				Preferencias.setNombreUsuario(_screen.getNombreUsuario());
-				Preferencias.setMostrarCampoBusqueda(_screen.isMostrarBusqueda());
-				Preferencias.setMostrarTitulosPantallas(_screen.isMostrarTitulos());
+				Preferencias.setMostrarCampoBusqueda(_screen
+						.isMostrarBusqueda());
+				Preferencias.setMostrarTitulosPantallas(_screen
+						.isMostrarTitulos());
 				Preferencias.setRecodarUltimaCategoria(_screen
 						.isRecordarUltimaCategoria());
 				Preferencias.setTipoFuente(_screen.getFuente());
@@ -69,7 +71,8 @@ public class PreferenciasGenerales {
 				} catch (NullPointerException npe) {
 					Util.noSd();
 				} catch (Exception e) {
-					_screen.alert("No se han podido guardar las preferencias. Error Desconocido" + e.toString());
+					_screen.alert("No se han podido guardar las preferencias. Error Desconocido"
+							+ e.toString());
 				} finally {
 					Util.popScreen(_screen);
 				}
@@ -79,7 +82,7 @@ public class PreferenciasGenerales {
 
 	private void copiaDeSeguridad() {
 		Backup b = new Backup();
-		UiApplication.getUiApplication().pushModalScreen(b.getScreen());
+		Util.pushModalScreen(b.getScreen());
 		b = null;
 	}
 

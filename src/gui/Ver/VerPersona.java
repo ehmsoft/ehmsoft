@@ -72,9 +72,12 @@ public class VerPersona {
 					try {
 						new Persistence().actualizarPersona(_persona);
 					} catch (DatabaseException e) {
-						if (e.getMessage().equalsIgnoreCase(": constraint failed")) {
+						if (e.getMessage().equalsIgnoreCase(
+								": constraint failed")) {
 							Util.alert("Esta persona ya existe");
-							_persona = Util.consultarPersona(_persona.getTipo(), _persona.getId_persona());
+							_persona = Util.consultarPersona(
+									_persona.getTipo(),
+									_persona.getId_persona());
 						}
 					} catch (NullPointerException e) {
 						Util.noSd();
@@ -101,7 +104,7 @@ public class VerPersona {
 				_screen.alert(e.toString());
 			}
 			_persona = null;
-			UiApplication.getUiApplication().popScreen(_screen);
+			Util.popScreen(_screen);
 		}
 	}
 
@@ -112,10 +115,10 @@ public class VerPersona {
 			if (sel == 0) {
 				actualizarPersona();
 			} else if (sel == 1) {
-				UiApplication.getUiApplication().popScreen(_screen);
+				Util.popScreen(_screen);
 			}
 		} else {
-			UiApplication.getUiApplication().popScreen(_screen);
+			Util.popScreen(_screen);
 		}
 	}
 }

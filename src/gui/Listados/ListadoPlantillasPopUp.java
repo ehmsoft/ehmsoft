@@ -1,12 +1,12 @@
 package gui.Listados;
 
+import gui.ListaPopUp;
 import net.rim.device.api.ui.Field;
 import net.rim.device.api.ui.FieldChangeListener;
 import net.rim.device.api.ui.component.ChoiceField;
 import net.rim.device.api.ui.component.LabelField;
 import net.rim.device.api.ui.component.ObjectChoiceField;
 import net.rim.device.api.ui.container.HorizontalFieldManager;
-import gui.ListaPopUp;
 
 public class ListadoPlantillasPopUp extends ListaPopUp implements
 		ListadoProcesosInterface {
@@ -44,7 +44,7 @@ public class ListadoPlantillasPopUp extends ListaPopUp implements
 		_cfCategorias.setSelectedIndex(object);
 		invalidate();
 	}
-	
+
 	public Object getSelectedCategoria() {
 		return _cfCategorias.getChoice(_cfCategorias.getSelectedIndex());
 	}

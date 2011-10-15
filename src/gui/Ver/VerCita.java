@@ -42,7 +42,7 @@ public class VerCita {
 	public VerCitaPopUp getScreen() {
 		return _screen;
 	}
-	
+
 	public boolean isDirty() {
 		return _screen.isDirty();
 	}

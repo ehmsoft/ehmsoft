@@ -22,6 +22,6 @@ public interface ListadosInterface {
 	public void setSearchField();
 
 	public void setTitle(String text);
-	
+
 	public void setStatus(Field field);
 }

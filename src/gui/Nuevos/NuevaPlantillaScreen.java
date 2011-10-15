@@ -156,7 +156,7 @@ public class NuevaPlantillaScreen extends FondoNormal {
 				fieldChangeNotify(Util.ADD_DEMANDADO);
 			} else if (f.equals(_lblJuzgado)) {
 				fieldChangeNotify(Util.ADD_JUZGADO);
-			} else if(f.equals(_lblCategoria)) {
+			} else if (f.equals(_lblCategoria)) {
 				fieldChangeNotify(Util.ADD_CATEGORIA);
 			}
 		}

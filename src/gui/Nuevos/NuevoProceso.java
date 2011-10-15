@@ -158,8 +158,9 @@ public class NuevoProceso {
 						new Persistence().guardarProceso(_proceso);
 					} catch (NullPointerException e) {
 						Util.noSd();
-					}  catch (DatabaseException e) {
-						if(e.getMessage().equalsIgnoreCase(": constraint failed")) {
+					} catch (DatabaseException e) {
+						if (e.getMessage().equalsIgnoreCase(
+								": constraint failed")) {
 							Util.alert("Este proceso ya existe");
 							_proceso = null;
 						}
@@ -322,7 +323,7 @@ public class NuevoProceso {
 			_screen.selectCategoria(_categorias.indexOf(categoria));
 		}
 	}
-	
+
 	private void verCampo() {
 		CampoPersonalizado campo = (CampoPersonalizado) _screen
 				.getCookieOfFocused();

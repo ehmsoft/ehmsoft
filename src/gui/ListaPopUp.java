@@ -26,9 +26,9 @@ public abstract class ListaPopUp extends PopupScreen implements
 		add(_title);
 		add(_searchField);
 	}
-	
+
 	public void setStatus(Field field) {
-		if(field != null) {
+		if (field != null) {
 			_status.add(field);
 		} else {
 			_status.deleteAll();

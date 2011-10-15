@@ -17,7 +17,8 @@ public class Plantilla {
 	private String notas;
 	private Vector campos;
 	private int prioridad;
-	//Constructores
+
+	// Constructores
 	public Plantilla(String nombre, Persona demandante, Persona demandado,
 			Juzgado juzgado, String radicado, String radicadoUnico,
 			String estado, Categoria categoria, String tipo, String notas,
@@ -35,7 +36,7 @@ public class Plantilla {
 		this.campos = campos;
 		this.prioridad = prioridad;
 	}
-	
+
 	public Plantilla(String nombre, String id_plantilla, Persona demandante,
 			Persona demandado, Juzgado juzgado, String radicado,
 			String radicadoUnico, String estado, Categoria categoria,
@@ -54,14 +55,14 @@ public class Plantilla {
 		this.campos = campos;
 		this.prioridad = prioridad;
 	}
-	//Fin Constructores
-/*	public void addCampo(CampoPersonalizado campo){
-		this.campos.addElement(campo);
-	}
-	public void delCampo(CampoPersonalizado campo){
-		this.campos.removeElement(campo);
-	}*/
-	//Getters
+
+	// Fin Constructores
+	/*
+	 * public void addCampo(CampoPersonalizado campo){
+	 * this.campos.addElement(campo); } public void delCampo(CampoPersonalizado
+	 * campo){ this.campos.removeElement(campo); }
+	 */
+	// Getters
 	public String getNombre() {
 		return nombre;
 	}
@@ -113,7 +114,8 @@ public class Plantilla {
 	public int getPrioridad() {
 		return prioridad;
 	}
-	//Setters
+
+	// Setters
 	public void setNombre(String nombre) {
 		this.nombre = nombre;
 	}
@@ -177,14 +179,16 @@ public class Plantilla {
 		if (campos == null) {
 			if (other.campos != null)
 				return false;
-		} else{
+		} else {
 			Enumeration e1 = campos.elements();
 			Enumeration e2 = other.campos.elements();
-			while(e1.hasMoreElements()){
-				while(e2.hasMoreElements()){
-					CampoPersonalizado a1 = (CampoPersonalizado)e1.nextElement();
-					CampoPersonalizado a2 = (CampoPersonalizado)e2.nextElement();
-					if(!a1.equals(a2)){
+			while (e1.hasMoreElements()) {
+				while (e2.hasMoreElements()) {
+					CampoPersonalizado a1 = (CampoPersonalizado) e1
+							.nextElement();
+					CampoPersonalizado a2 = (CampoPersonalizado) e2
+							.nextElement();
+					if (!a1.equals(a2)) {
 						return false;
 					}
 				}
@@ -253,5 +257,5 @@ public class Plantilla {
 	public String toString() {
 		return nombre;
 	}
-	
+
 }

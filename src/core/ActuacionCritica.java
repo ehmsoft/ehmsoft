@@ -36,8 +36,8 @@ public class ActuacionCritica extends Actuacion {
 		return id_proceso;
 	}
 
-//	public void setId_proceso(String id_proceso) {
-//		this.id_proceso = id_proceso;
-//	}
+	// public void setId_proceso(String id_proceso) {
+	// this.id_proceso = id_proceso;
+	// }
 
 }

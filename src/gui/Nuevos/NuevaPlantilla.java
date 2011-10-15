@@ -41,7 +41,7 @@ public class NuevaPlantilla {
 		_demandadoVacio = Util.consultarPersonaVacia(2);
 		_juzgadoVacio = Util.consultarJuzgadoVacio();
 		_categoria = Util.consultarCategoriaVacia();
-		_screen = new NuevaPlantillaScreen();		
+		_screen = new NuevaPlantillaScreen();
 		_screen.setCategoria(_categoria.getDescripcion());
 		_screen.setDemandante(_demandanteVacio.getNombre());
 		_screen.setDemandado(_demandadoVacio.getNombre());
@@ -124,7 +124,8 @@ public class NuevaPlantilla {
 					} catch (NullPointerException e) {
 						Util.noSd();
 					} catch (DatabaseException e) {
-						if(e.getMessage().equalsIgnoreCase(": constraint failed")) {
+						if (e.getMessage().equalsIgnoreCase(
+								": constraint failed")) {
 							Util.alert("Esta plantilla ya existe");
 							_plantilla = null;
 						}

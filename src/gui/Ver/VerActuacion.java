@@ -89,9 +89,11 @@ public class VerActuacion {
 					} catch (NullPointerException e) {
 						Util.noSd();
 					} catch (DatabaseException e) {
-						if (e.getMessage().equalsIgnoreCase(": constraint failed")) {
+						if (e.getMessage().equalsIgnoreCase(
+								": constraint failed")) {
 							Util.alert("Esta actuación ya existe");
-							_actuacion = Util.consultarActuacion(_actuacion.getId_actuacion());
+							_actuacion = Util.consultarActuacion(_actuacion
+									.getId_actuacion());
 						}
 					} catch (Exception e) {
 						Util.alert(e.toString());
@@ -120,7 +122,7 @@ public class VerActuacion {
 
 	private void verCita() {
 		VerCita v = new VerCita(_cita);
-		UiApplication.getUiApplication().pushModalScreen(v.getScreen());
+		Util.pushModalScreen(v.getScreen());
 		if (v.isDirty()) {
 			if (_cita.hasAlarma()) {
 				_screen.setBell();
@@ -156,7 +158,7 @@ public class VerActuacion {
 	private void addCita() {
 		NuevaCita n = new NuevaCita(_screen.getDescripcion(), _screen
 				.getFechaProxima().getTime());
-		UiApplication.getUiApplication().pushModalScreen(n.getScreen());
+		Util.pushModalScreen(n.getScreen());
 		_cita = n.getCita();
 		if (_cita.getDescripcion().length() != 0) {
 			_screen.setClock();
@@ -189,7 +191,7 @@ public class VerActuacion {
 			}
 			_actuacion = null;
 			_cita.eliminarCita();
-			UiApplication.getUiApplication().popScreen(_screen);
+			Util.popScreen(_screen);
 		}
 	}
 
@@ -210,11 +212,11 @@ public class VerActuacion {
 				if (_cita.exist() && _actuacion.getUid() == null) {
 					_cita.eliminarCita();
 				}
-				UiApplication.getUiApplication().popScreen(_screen);
+				Util.popScreen(_screen);
 			}
 		} else {
 			borrarCitaActuacion();
-			UiApplication.getUiApplication().popScreen(_screen);
+			Util.popScreen(_screen);
 		}
 	}
 }

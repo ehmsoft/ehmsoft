@@ -2,7 +2,6 @@ package gui;
 
 import net.rim.device.api.ui.Field;
 import net.rim.device.api.ui.FieldChangeListener;
-import net.rim.device.api.ui.UiApplication;
 import net.rim.device.api.ui.component.ButtonField;
 import net.rim.device.api.ui.component.Dialog;
 import net.rim.device.api.ui.component.LabelField;
@@ -81,7 +80,7 @@ public class DirectoryPickerScreen extends PopupScreen {
 	}
 
 	public boolean onClose() {
-		UiApplication.getUiApplication().popScreen(getScreen());
+		Util.popScreen(getScreen());
 		return true;
 	}
 }

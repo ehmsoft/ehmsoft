@@ -2,7 +2,6 @@ package gui;
 
 import net.rim.device.api.ui.Field;
 import net.rim.device.api.ui.FieldChangeListener;
-import net.rim.device.api.ui.UiApplication;
 import net.rim.device.api.ui.component.BasicEditField;
 import net.rim.device.api.ui.component.ButtonField;
 import net.rim.device.api.ui.component.Dialog;
@@ -64,9 +63,9 @@ public class BackupScreen extends PopupScreen {
 		}
 	};
 
-//	public String getChoice() {
-//		return (String) _lsRoots.getChoice(_lsRoots.getSelectedIndex());
-//	}
+	// public String getChoice() {
+	// return (String) _lsRoots.getChoice(_lsRoots.getSelectedIndex());
+	// }
 
 	public int getIndexChoice() {
 		return _lsRoots.getSelectedIndex();
@@ -89,7 +88,7 @@ public class BackupScreen extends PopupScreen {
 	}
 
 	public boolean onClose() {
-		UiApplication.getUiApplication().popScreen(getScreen());
+		Util.popScreen(getScreen());
 		return true;
 	}
 }
