@@ -22,10 +22,10 @@ public class VerProcesoScreen extends FondoNormal {
 	private EditableTextField _lblDemandante;
 	private EditableTextField _lblDemandado;
 	private EditableTextField _lblJuzgado;
+	private EditableTextField _lblCategoria;
 	private EditableTextField _txtRadicado;
 	private EditableTextField _txtRadicadoUnico;
 	private EditableTextField _txtEstado;
-	private EditableTextField _txtCategoria;
 	private EditableTextField _txtTipo;
 	private EditableTextField _txtNotas;
 	private DateField _dfFecha;
@@ -63,8 +63,8 @@ public class VerProcesoScreen extends FondoNormal {
 		_txtEstado = new EditableTextField("Estado: ");
 		add(_txtEstado);
 
-		_txtCategoria = new EditableTextField("Categoría: ");
-		add(_txtCategoria);
+		_lblCategoria = new EditableTextField("Categoría: ");
+		add(_lblCategoria);
 
 		_txtTipo = new EditableTextField("Tipo: ");
 		add(_txtTipo);
@@ -87,6 +87,9 @@ public class VerProcesoScreen extends FondoNormal {
 			return true;
 		} else if (f.equals(_lblJuzgado)) {
 			fieldChangeNotify(Util.ADD_JUZGADO);
+			return true;
+		} else if (f.equals(_lblCategoria)) {
+			fieldChangeNotify(Util.ADD_CATEGORIA);
 			return true;
 		} else {
 			return false;
@@ -152,7 +155,7 @@ public class VerProcesoScreen extends FondoNormal {
 	}
 
 	public void setCategoria(String text) {
-		_txtCategoria.setText(text);
+		_lblCategoria.setText(text);
 	}
 
 	public void setTipo(String text) {
@@ -212,7 +215,7 @@ public class VerProcesoScreen extends FondoNormal {
 		menu.add(menuAddCampo);
 		menu.add(menuVerActuaciones);
 
-		if (f.equals(_txtCategoria)) {
+		if (f.equals(_lblCategoria)) {
 			menu.add(menuCambiar);
 		} else if (f.equals(_lblDemandante) || f.equals(_lblDemandado)
 				|| f.equals(_lblJuzgado)) {
@@ -295,7 +298,7 @@ public class VerProcesoScreen extends FondoNormal {
 				fieldChangeNotify(Util.VER_DEMANDADO);
 			} else if (f.equals(_lblJuzgado)) {
 				fieldChangeNotify(Util.VER_JUZGADO);
-			} else if (f.equals(_txtCategoria)) {
+			} else if (f.equals(_lblCategoria)) {
 				fieldChangeNotify(Util.VER_CATEGORIA);
 			} else {
 				f.setEditable(true);
@@ -331,7 +334,7 @@ public class VerProcesoScreen extends FondoNormal {
 				fieldChangeNotify(Util.ADD_DEMANDADO);
 			} else if (f.equals(_lblJuzgado)) {
 				fieldChangeNotify(Util.ADD_JUZGADO);
-			} else if (f.equals(_txtCategoria)) {
+			} else if (f.equals(_lblCategoria)) {
 				fieldChangeNotify(Util.ADD_CATEGORIA);
 			}
 		}
