@@ -15,13 +15,11 @@ import net.rim.device.api.ui.component.DateField;
 import net.rim.device.api.ui.component.Dialog;
 import net.rim.device.api.ui.component.Menu;
 import net.rim.device.api.ui.component.NumericChoiceField;
-import net.rim.device.api.ui.component.ObjectChoiceField;
 import net.rim.device.api.ui.component.TextField;
 
 public class NuevoProcesoScreen extends FondoNormal {
 
 	private BasicEditField _txtEstado;
-	private ObjectChoiceField _chCategoria;
 	private NumericChoiceField _chPrioridad;
 	private DateField _dtFecha;
 	private EditableTextField _lblDemandante;
@@ -31,6 +29,7 @@ public class NuevoProcesoScreen extends FondoNormal {
 	private BasicEditField _txtNotas;
 	private BasicEditField _txtRadicado;
 	private BasicEditField _txtRadicadoUnico;
+	private EditableTextField _lblCategoria;
 
 	private Vector _txtCampos;
 
@@ -68,10 +67,8 @@ public class NuevoProcesoScreen extends FondoNormal {
 		_txtEstado.setLabel("Estado:");
 		add(_txtEstado);
 
-		_chCategoria = new ObjectChoiceField();
-		_chCategoria.setLabel("Categoría:");
-
-		add(_chCategoria);
+		_lblCategoria = new EditableTextField("Categoría: ");
+		add(_lblCategoria);
 
 		_chPrioridad = new NumericChoiceField("Prioridad", 1, 10, 1);
 		_chPrioridad.setSelectedIndex(4);
@@ -97,6 +94,9 @@ public class NuevoProcesoScreen extends FondoNormal {
 			return true;
 		} else if (f.equals(_lblJuzgado)) {
 			fieldChangeNotify(Util.ADD_JUZGADO);
+			return true;
+		} else if (f.equals(_lblCategoria)) {
+			fieldChangeNotify(Util.ADD_CATEGORIA);
 			return true;
 		} else {
 			return false;
@@ -134,12 +134,8 @@ public class NuevoProcesoScreen extends FondoNormal {
 		return campos;
 	}
 
-	public void addCategorias(Object[] categorias) {
-		_chCategoria.setChoices(categorias);
-	}
-
-	public void selectCategoria(int index) {
-		_chCategoria.setSelectedIndex(index);
+	public void setCategoria(String text) {
+		_lblCategoria.setText(text);
 	}
 
 	protected void makeMenu(Menu menu, int instance) {
@@ -148,7 +144,7 @@ public class NuevoProcesoScreen extends FondoNormal {
 		menu.add(menuVerActuaciones);
 		menu.addSeparator();
 		if (f.equals(_lblDemandante) || f.equals(_lblDemandado)
-				|| f.equals(_lblJuzgado)) {
+				|| f.equals(_lblJuzgado) || f.equals(_lblCategoria)) {
 			menu.add(menuCambiar);
 		} else {
 			f = UiApplication.getUiApplication().getActiveScreen()
@@ -156,10 +152,6 @@ public class NuevoProcesoScreen extends FondoNormal {
 			if (f.equals(_lblDemandante) || f.equals(_lblDemandado)
 					|| f.equals(_lblJuzgado)) {
 				menu.add(menuCambiar);
-			} else if (f.equals(_chCategoria)) {
-				menu.add(menuAddCategoria);
-				menu.add(menuVerListadoCategorias);
-				menu.addSeparator();
 			} else if (BasicEditField.class.isInstance(f)) {
 				if (f.getCookie() != null) {
 					menu.add(menuModificarCampo);
@@ -182,6 +174,8 @@ public class NuevoProcesoScreen extends FondoNormal {
 				fieldChangeNotify(Util.ADD_DEMANDADO);
 			} else if (f.equals(_lblJuzgado)) {
 				fieldChangeNotify(Util.ADD_JUZGADO);
+			} else  if(f.equals(_lblCategoria)) {
+				fieldChangeNotify(Util.ADD_CATEGORIA);
 			}
 		}
 	};
@@ -209,21 +203,6 @@ public class NuevoProcesoScreen extends FondoNormal {
 		}
 	};
 
-	private final MenuItem menuAddCategoria = new MenuItem("Nueva categoría",
-			262147, 4) {
-
-		public void run() {
-			fieldChangeNotify(Util.NEW_CATEGORIA);
-		}
-	};
-
-	private final MenuItem menuVerListadoCategorias = new MenuItem(
-			"Ver listado", 262147, 3) {
-
-		public void run() {
-			fieldChangeNotify(Util.ADD_CATEGORIA);
-		}
-	};
 
 	private final MenuItem menuGuardar = new MenuItem("Guardar", 65537, 1) {
 
@@ -295,10 +274,6 @@ public class NuevoProcesoScreen extends FondoNormal {
 		_lblJuzgado.setText(text);
 	}
 
-	public void setCategoria(Object categoria) {
-		_chCategoria.setSelectedIndex(categoria);
-	}
-
 	public void setPrioridad(int prioridad) {
 		_chPrioridad.setSelectedValue(prioridad);
 	}
@@ -342,13 +317,6 @@ public class NuevoProcesoScreen extends FondoNormal {
 	 */
 	public String getEstado() {
 		return _txtEstado.getText();
-	}
-
-	/**
-	 * @return La cadena con la categoria ingresada en la pantalla
-	 */
-	public Object getCategoria() {
-		return _chCategoria.getChoice(_chCategoria.getSelectedIndex());
 	}
 
 	/**
