@@ -159,7 +159,7 @@ public class NuevaActuacion {
 	}
 
 	private void eliminarCita() {
-		_cita.markActualizar();
+		_cita.markEliminar();
 		_screen.removeClock();
 		_screen.setDirty(true);
 	}

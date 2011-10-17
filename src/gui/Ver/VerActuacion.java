@@ -156,6 +156,9 @@ public class VerActuacion {
 	}
 
 	private void addCita() {
+		if(_cita.isEliminada()) {
+			_cita.actualizarCita();
+		}
 		NuevaCita n = new NuevaCita(_screen.getDescripcion(), _screen
 				.getFechaProxima().getTime());
 		Util.pushModalScreen(n.getScreen());
