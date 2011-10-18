@@ -3,7 +3,7 @@ package gui.Listados;
 import gui.ListaScreen;
 import gui.Util;
 import net.rim.device.api.ui.Field;
-import net.rim.device.api.ui.FieldChangeListener;
+import net.rim.device.api.ui.FocusChangeListener;
 import net.rim.device.api.ui.MenuItem;
 import net.rim.device.api.ui.component.LabelField;
 import net.rim.device.api.ui.component.Menu;
@@ -19,7 +19,7 @@ public class ListadoPlantillasScreen extends ListaScreen implements
 		super();
 
 		_cfCategorias = new ObjectChoiceField();
-		_cfCategorias.setChangeListener(listener);
+		_cfCategorias.setFocusListener(listener);
 
 		HorizontalFieldManager title = new HorizontalFieldManager(USE_ALL_WIDTH);
 		title.add(new LabelField("Plantillas"));
@@ -65,12 +65,12 @@ public class ListadoPlantillasScreen extends ListaScreen implements
 		return _cfCategorias.getChoice(_cfCategorias.getSelectedIndex());
 	}
 
-	private FieldChangeListener listener = new FieldChangeListener() {
-
-		public void fieldChanged(Field field, int context) {
+	private FocusChangeListener listener = new FocusChangeListener() {
+		
+		public void focusChanged(Field field, int eventType) {
 			Object selected = _cfCategorias.getChoice(_cfCategorias
 					.getSelectedIndex());
-			if (selected.toString().equalsIgnoreCase("todas")) {
+			if (String.class.isInstance(selected)) {
 				_lista.setText("");
 			} else {
 				_lista.setText(selected.toString());
