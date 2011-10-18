@@ -66,6 +66,8 @@ public class ListadoPlantillas {
 				}
 				if (Preferencias.isMostrarCampoBusqueda()) {
 					_screen.setSearchField();
+				} else {
+					_screen.setStatus(null);
 				}
 			}
 		});
@@ -179,6 +181,8 @@ public class ListadoPlantillas {
 				}
 				if(Preferencias.isMostrarCampoBusqueda()) {
 					_screen.setSearchField();
+				} else {
+					_screen.setStatus(null);
 				}
 			}
 		});

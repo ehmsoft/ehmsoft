@@ -64,6 +64,8 @@ public class ListadoProcesos {
 				}
 				if (Preferencias.isMostrarCampoBusqueda()) {
 					_screen.setSearchField();
+				} else {
+					_screen.setStatus(null);
 				}
 			}
 		});
@@ -170,6 +172,8 @@ public class ListadoProcesos {
 				}
 				if(Preferencias.isMostrarCampoBusqueda()) {
 					_screen.setSearchField();
+				} else {
+					_screen.setStatus(null);
 				}
 			}
 		});
