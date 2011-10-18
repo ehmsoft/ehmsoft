@@ -10,6 +10,7 @@ import net.rim.device.api.ui.FieldChangeListener;
 import net.rim.device.api.ui.Screen;
 import net.rim.device.api.ui.UiApplication;
 import persistence.Persistence;
+import core.Categoria;
 import core.Preferencias;
 import core.Proceso;
 
@@ -57,7 +58,6 @@ public class ListadoProcesos {
 				} catch (Exception e) {
 					Util.alert(e.toString());
 				}
-				_screen.setStatus(null);
 				addProcesos();
 				if ((_style & NO_NUEVO) != NO_NUEVO) {
 					_screen.addElement("Crear nuevo proceso", 0);
@@ -144,12 +144,43 @@ public class ListadoProcesos {
 		} catch (Exception e) {
 		}
 	}
+	
+	private void reloadCategorias() {
+		_screen.setStatus(Util.getWaitLabel());
+		UiApplication.getUiApplication().invokeLater(new Runnable() {
+
+			public void run() {
+				Object selected = _screen.getSelectedCategoria();
+				Categoria categoria;
+				if (String.class.isInstance(selected)) {
+					categoria = null;
+				} else {
+					categoria = (Categoria) selected;
+				}
+				_categorias = Util.consultarCategorias();
+				Object[] choices = new Object[_categorias.size() + 1];
+				_categorias.copyInto(choices);
+				String todas = "Todas";
+				choices[_categorias.size()] = todas;
+				_screen.setCategorias(choices);
+				if (categoria != null && _categorias.contains(categoria)) {
+					_screen.setSelectedCategoria(categoria);
+				} else {
+					_screen.setSelectedCategoria(todas);
+				}
+				if(Preferencias.isMostrarCampoBusqueda()) {
+					_screen.setSearchField();
+				}
+			}
+		});
+	}
 
 	private void nuevoProceso() {
 		NuevoProceso n = new NuevoProceso();
 		Util.pushModalScreen(n.getScreen());
 		Proceso proceso = n.getProceso();
 		if (proceso != null) {
+			reloadCategorias();
 			if ((_style & NO_NUEVO) == NO_NUEVO) {
 				_screen.addElement(proceso, 0);
 			} else {
@@ -162,6 +193,7 @@ public class ListadoProcesos {
 	private void verProceso() {
 		Proceso selected = (Proceso) _screen.getSelected();
 		Proceso proceso = Util.verProceso(selected);
+		reloadCategorias();
 		if (proceso != null) {
 			_screen.replace(selected, proceso);
 		} else {

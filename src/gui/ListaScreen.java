@@ -5,18 +5,14 @@ import java.util.Vector;
 import net.rim.device.api.ui.MenuItem;
 import net.rim.device.api.ui.component.Dialog;
 import net.rim.device.api.ui.component.Menu;
-import net.rim.device.api.ui.container.HorizontalFieldManager;
 
 public abstract class ListaScreen extends FondoNormal implements
 		ListadosInterface {
 
 	protected ListaListas _lista;
-	private HorizontalFieldManager _searchField = new HorizontalFieldManager(
-			USE_ALL_WIDTH);
 
 	public ListaScreen() {
 		super();
-		setStatus(_searchField);
 	}
 
 	protected void makeMenu(Menu menu, int instance) {
@@ -61,7 +57,7 @@ public abstract class ListaScreen extends FondoNormal implements
 	}
 
 	public void setSearchField() {
-		_searchField.add(_lista.getKeywordField());
+		setStatus(_lista.getKeywordField());
 	}
 
 	public void alert(String alert) {
