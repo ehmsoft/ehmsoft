@@ -261,9 +261,9 @@ public class NuevaPlantilla {
 				|| _juzgado != null || _screen.isDirty()) {
 			Object[] ask = { "Guardar", "Descartar", "Cancelar" };
 			int sel = _screen.ask(ask, "Se han detectado cambios", 2);
-			if (sel == 1) {
+			if (sel == 0) {
 				guardarPlantilla();
-			} else if (sel == 2) {
+			} else if (sel == 1) {
 				Util.popScreen(_screen);
 			}
 		} else {
