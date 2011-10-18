@@ -162,8 +162,9 @@ public class VerActuacion {
 		NuevaCita n = new NuevaCita(_screen.getDescripcion(), _screen
 				.getFechaProxima().getTime());
 		Util.pushModalScreen(n.getScreen());
-		_cita = n.getCita();
-		if (_cita != null && _cita.getDescripcion().length() != 0) {
+		Cita cita = n.getCita();
+		if (cita != null && cita.getDescripcion().length() != 0) {
+			_cita = cita;
 			_screen.setClock();
 			if (_cita.hasAlarma()) {
 				_screen.setBell();
