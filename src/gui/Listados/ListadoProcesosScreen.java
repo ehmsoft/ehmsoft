@@ -2,7 +2,7 @@ package gui.Listados;
 
 import gui.ListaScreen;
 import net.rim.device.api.ui.Field;
-import net.rim.device.api.ui.FocusChangeListener;
+import net.rim.device.api.ui.FieldChangeListener;
 import net.rim.device.api.ui.component.LabelField;
 import net.rim.device.api.ui.component.ObjectChoiceField;
 import net.rim.device.api.ui.container.HorizontalFieldManager;
@@ -15,8 +15,13 @@ public class ListadoProcesosScreen extends ListaScreen implements
 	public ListadoProcesosScreen() {
 		super();
 
-		_cfCategorias = new ObjectChoiceField();
-		_cfCategorias.setFocusListener(listener);
+		_cfCategorias = new ObjectChoiceField() {
+			public void setSelectedIndex(Object element) {
+				fieldChangeNotify(0);
+				super.setSelectedIndex(element);
+			}
+		};
+		_cfCategorias.setChangeListener(listener);
 
 		HorizontalFieldManager title = new HorizontalFieldManager(USE_ALL_WIDTH);
 		title.add(new LabelField("Procesos"));
@@ -48,9 +53,9 @@ public class ListadoProcesosScreen extends ListaScreen implements
 		return _cfCategorias.getChoice(_cfCategorias.getSelectedIndex());
 	}
 	
-	private FocusChangeListener listener = new FocusChangeListener() {
+	private FieldChangeListener listener = new FieldChangeListener() {
 		
-		public void focusChanged(Field field, int eventType) {
+		public void fieldChanged(Field field, int eventType) {
 			Object selected = _cfCategorias.getChoice(_cfCategorias
 					.getSelectedIndex());
 			if (String.class.isInstance(selected)) {
@@ -59,6 +64,7 @@ public class ListadoProcesosScreen extends ListaScreen implements
 				_lista.setText(selected.toString());
 			}
 			_lista.updateList();
+			_lista.invalidate();
 		}
 	};
 }

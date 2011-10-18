@@ -17,7 +17,12 @@ public class ListadoProcesosPopUp extends ListaPopUp implements
 		super();
 
 		_cfCategorias = new ObjectChoiceField(null, null, 0,
-				ChoiceField.FORCE_SINGLE_LINE);
+				ChoiceField.FORCE_SINGLE_LINE) {
+			public void setSelectedIndex(Object element) {
+				fieldChangeNotify(0);
+				super.setSelectedIndex(element);
+			}
+		};
 		_cfCategorias.setChangeListener(listener);
 
 		HorizontalFieldManager title = new HorizontalFieldManager(USE_ALL_WIDTH);
@@ -60,6 +65,7 @@ public class ListadoProcesosPopUp extends ListaPopUp implements
 				_lista.setText(selected.toString());
 			}
 			_lista.updateList();
+			_lista.invalidate();
 		}
 	};
 }
