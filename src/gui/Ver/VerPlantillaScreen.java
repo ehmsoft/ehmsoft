@@ -69,6 +69,25 @@ public class VerPlantillaScreen extends FondoNormal {
 		_nfPrioridad.setEditable(false);
 		add(_nfPrioridad);
 	}
+	
+	protected boolean navigationClick(int status, int time) {
+		Field f = getFieldWithFocus();
+		if (f.equals(_lblDemandante)) {
+			fieldChangeNotify(Util.ADD_DEMANDANTE);
+			return true;
+		} else if (f.equals(_lblDemandado)) {
+			fieldChangeNotify(Util.ADD_DEMANDADO);
+			return true;
+		} else if (f.equals(_lblJuzgado)) {
+			fieldChangeNotify(Util.ADD_JUZGADO);
+			return true;
+		} else if (f.equals(_lblCategoria)) {
+			fieldChangeNotify(Util.ADD_CATEGORIA);
+			return true;
+		} else {
+			return false;
+		}
+	}
 
 	public int ask(Object[] options, String string, int index) {
 		return Dialog.ask(string, options, index);
