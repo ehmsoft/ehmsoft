@@ -18,7 +18,6 @@ public class NuevaCita {
 		_screen.setDescripcion(descripcion);
 		_screen.setFecha(fecha);
 		_screen.setChangeListener(listener);
-		_cita = new Cita();
 	}
 
 	FieldChangeListener listener = new FieldChangeListener() {
@@ -44,6 +43,7 @@ public class NuevaCita {
 		if (_screen.getDescripcion().equals("")) {
 			Util.alert("La descripción está vacía!. Por favor ingrese algo");
 		} else {
+			_cita = new Cita();
 			if (_screen.hasAlarma()) {
 				_cita.setAlarma(_screen.getAlarma());
 			} else {

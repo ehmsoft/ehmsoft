@@ -136,7 +136,7 @@ public class NuevaActuacion {
 				.getFechaProxima().getTime());
 		Util.pushModalScreen(n.getScreen());
 		_cita = n.getCita();
-		if (_cita.getDescripcion().length() != 0) {
+		if (_cita != null && _cita.getDescripcion().length() != 0) {
 			_screen.setClock();
 			if (_cita.hasAlarma()) {
 				_screen.setBell();
