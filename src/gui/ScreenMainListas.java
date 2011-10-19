@@ -35,7 +35,7 @@ public class ScreenMainListas extends PopupScreen {
 	private static String DEMANDADOS = "Demandados";
 	private static String JUZGADOS = "Juzgados";
 	private static String CAMPOS = "Campos personalizados";
-	private static String CATEGORIAS = "Categorias";
+	private static String CATEGORIAS = "Categorías";
 	private static String PROCESOS = "Procesos";
 	private static String PLANTILLAS = "Plantillas";
 	private static String ACTUACIONES = "Actuaciones";
