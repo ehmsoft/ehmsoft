@@ -5,10 +5,9 @@ import gui.Util;
 import net.rim.device.api.ui.Field;
 import net.rim.device.api.ui.FieldChangeListener;
 import net.rim.device.api.ui.MenuItem;
-import net.rim.device.api.ui.component.LabelField;
+import net.rim.device.api.ui.component.ChoiceField;
 import net.rim.device.api.ui.component.Menu;
 import net.rim.device.api.ui.component.ObjectChoiceField;
-import net.rim.device.api.ui.container.HorizontalFieldManager;
 
 public class ListadoPlantillasScreen extends ListaScreen implements
 		ListadoProcesosInterface {
@@ -25,12 +24,9 @@ public class ListadoPlantillasScreen extends ListaScreen implements
 			}
 		};
 		_cfCategorias.setChangeListener(listener);
+		_cfCategorias.setLabel("Procesos");
 
-		HorizontalFieldManager title = new HorizontalFieldManager(USE_ALL_WIDTH);
-		title.add(new LabelField("Plantillas"));
-		title.add(_cfCategorias);
-
-		setTitle(title);
+		setTitle(_cfCategorias);
 
 		_lista = new ListadoPlantillasLista() {
 			protected boolean navigationClick(int status, int time) {
@@ -73,15 +69,15 @@ public class ListadoPlantillasScreen extends ListaScreen implements
 	private FieldChangeListener listener = new FieldChangeListener() {
 		
 		public void fieldChanged(Field field, int eventType) {
-			Object selected = _cfCategorias.getChoice(_cfCategorias
-					.getSelectedIndex());
-			if (String.class.isInstance(selected)) {
-				_lista.setText("");
-			} else {
-				_lista.setText(selected.toString());
+			if (eventType == ChoiceField.CONTEXT_CHANGE_OPTION) {
+				Object selected = _cfCategorias.getChoice(_cfCategorias
+						.getSelectedIndex());
+				if (String.class.isInstance(selected)) {
+					_lista.setText("");
+				} else {
+					_lista.setText("Cat"+selected.toString());
+				}
 			}
-			_lista.updateList();
-			invalidate();
 		}
 	};
 }

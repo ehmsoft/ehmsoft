@@ -4,9 +4,7 @@ import gui.ListaScreen;
 import net.rim.device.api.ui.Field;
 import net.rim.device.api.ui.FieldChangeListener;
 import net.rim.device.api.ui.component.ChoiceField;
-import net.rim.device.api.ui.component.LabelField;
 import net.rim.device.api.ui.component.ObjectChoiceField;
-import net.rim.device.api.ui.container.HorizontalFieldManager;
 
 public class ListadoProcesosScreen extends ListaScreen implements
 		ListadoProcesosInterface {
@@ -23,12 +21,9 @@ public class ListadoProcesosScreen extends ListaScreen implements
 			}
 		};
 		_cfCategorias.setChangeListener(listener);
+		_cfCategorias.setLabel("Procesos");
 
-		HorizontalFieldManager title = new HorizontalFieldManager(USE_ALL_WIDTH);
-		title.add(new LabelField("Procesos"));
-		title.add(_cfCategorias);
-
-		setTitle(title);
+		setTitle(_cfCategorias);
 
 		_lista = new ListadoProcesosLista() {
 			protected boolean navigationClick(int status, int time) {
@@ -61,9 +56,9 @@ public class ListadoProcesosScreen extends ListaScreen implements
 				Object selected = _cfCategorias.getChoice(_cfCategorias
 						.getSelectedIndex());
 				if (String.class.isInstance(selected)) {
-					_lista.setKeyword("");
+					_lista.setText("");
 				} else {
-					_lista.setKeyword(selected.toString());
+					_lista.setText("Cat"+selected.toString());
 				}
 			}
 		}

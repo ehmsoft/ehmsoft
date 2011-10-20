@@ -57,7 +57,7 @@ public abstract class ListaListas extends KeywordFilterField implements
 	}
 
 	public void setText(String text) {
-		getKeywordField().setText(text);
+		setKeyword(text);
 	}
 
 	public void remove(Object element) {

@@ -64,10 +64,9 @@ public class ListadoPlantillas {
 				if ((_style & NO_NUEVO) != NO_NUEVO) {
 					_screen.addElement("Crear nueva plantilla", 0);
 				}
+				_screen.setStatus(null);
 				if (Preferencias.isMostrarCampoBusqueda()) {
 					_screen.setSearchField();
-				} else {
-					_screen.setStatus(null);
 				}
 			}
 		});
@@ -155,7 +154,7 @@ public class ListadoPlantillas {
 		} catch (Exception e) {
 		}
 	}
-	
+
 	private void reloadCategorias() {
 		_screen.setStatus(Util.getWaitLabel());
 		UiApplication.getUiApplication().invokeLater(new Runnable() {
@@ -179,10 +178,9 @@ public class ListadoPlantillas {
 				} else {
 					_screen.setSelectedCategoria(todas);
 				}
-				if(Preferencias.isMostrarCampoBusqueda()) {
+				_screen.setStatus(null);
+				if (Preferencias.isMostrarCampoBusqueda()) {
 					_screen.setSearchField();
-				} else {
-					_screen.setStatus(null);
 				}
 			}
 		});

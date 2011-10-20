@@ -62,10 +62,9 @@ public class ListadoProcesos {
 				if ((_style & NO_NUEVO) != NO_NUEVO) {
 					_screen.addElement("Crear nuevo proceso", 0);
 				}
+				_screen.setStatus(null);
 				if (Preferencias.isMostrarCampoBusqueda()) {
 					_screen.setSearchField();
-				} else {
-					_screen.setStatus(null);
 				}
 			}
 		});
@@ -170,10 +169,9 @@ public class ListadoProcesos {
 				} else {
 					_screen.setSelectedCategoria(todas);
 				}
-				if(Preferencias.isMostrarCampoBusqueda()) {
+				_screen.setStatus(null);
+				if (Preferencias.isMostrarCampoBusqueda()) {
 					_screen.setSearchField();
-				} else {
-					_screen.setStatus(null);
 				}
 			}
 		});

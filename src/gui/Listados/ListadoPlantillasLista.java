@@ -22,7 +22,7 @@ public class ListadoPlantillasLista extends ListaListas implements
 		} else {
 			Plantilla p = (Plantilla) element;
 			String[] s = new String[10];
-			s[0] = p.getCategoria().getDescripcion();
+			s[0] = "Cat"+p.getCategoria().getDescripcion();
 			s[1] = p.getDemandado().getNombre();
 			s[2] = p.getJuzgado().getNombre();
 			s[3] = p.getRadicado();
