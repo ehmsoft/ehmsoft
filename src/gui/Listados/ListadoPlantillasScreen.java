@@ -81,7 +81,7 @@ public class ListadoPlantillasScreen extends ListaScreen implements
 				_lista.setText(selected.toString());
 			}
 			_lista.updateList();
-			_lista.invalidate();
+			invalidate();
 		}
 	};
 }
