@@ -24,7 +24,7 @@ public class ListadoPlantillasScreen extends ListaScreen implements
 			}
 		};
 		_cfCategorias.setChangeListener(listener);
-		_cfCategorias.setLabel("Procesos");
+		_cfCategorias.setLabel("Plantillas");
 
 		setTitle(_cfCategorias);
 
