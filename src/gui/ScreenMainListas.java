@@ -110,7 +110,7 @@ public class ScreenMainListas extends PopupScreen {
 			} else if (element == CAMPOS) {
 				Util.listadoCampos(false, 0);
 			} else if (element == CATEGORIAS) {
-				Util.listadoJuzgados(false, 0);
+				Util.listadoCategorias(false, 0);
 			} else if (element == PROCESOS) {
 				Util.listadoProcesos(false, 0);
 			} else if (element == PLANTILLAS) {
