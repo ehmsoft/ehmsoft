@@ -37,12 +37,12 @@ public class ListadoPlantillasPopUp extends ListaPopUp implements
 
 	public void setCategorias(Object[] choices) {
 		_cfCategorias.setChoices(choices);
-		invalidate();
+		_lista.updateList();
 	}
 
 	public void setSelectedCategoria(Object object) {
 		_cfCategorias.setSelectedIndex(object);
-		invalidate();
+		_lista.updateList();
 	}
 
 	public Object getSelectedCategoria() {
