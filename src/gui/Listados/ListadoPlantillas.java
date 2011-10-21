@@ -11,6 +11,7 @@ import net.rim.device.api.ui.FieldChangeListener;
 import net.rim.device.api.ui.Screen;
 import net.rim.device.api.ui.UiApplication;
 import persistence.Persistence;
+import core.Categoria;
 import core.Plantilla;
 import core.Preferencias;
 
@@ -64,14 +65,13 @@ public class ListadoPlantillas {
 					_screen.addElement("Crear nueva plantilla", 0);
 				}
 				_screen.setStatus(null);
+				if (Preferencias.isMostrarCampoBusqueda()) {
+					_screen.setSearchField();
+				}
 			}
 		});
 
 		((Screen) _screen).setChangeListener(listener);
-
-		if (Preferencias.isMostrarCampoBusqueda()) {
-			_screen.setSearchField();
-		}
 		if ((_style & ON_CLICK_VER) != ON_CLICK_VER
 				&& (_style & ON_CLICK_SELECT) != ON_CLICK_SELECT) {
 			if (popup) {
@@ -155,11 +155,43 @@ public class ListadoPlantillas {
 		}
 	}
 
+	private void reloadCategorias() {
+		_screen.setStatus(Util.getWaitLabel());
+		UiApplication.getUiApplication().invokeLater(new Runnable() {
+
+			public void run() {
+				Object selected = _screen.getSelectedCategoria();
+				Categoria categoria;
+				if (String.class.isInstance(selected)) {
+					categoria = null;
+				} else {
+					categoria = (Categoria) selected;
+				}
+				_categorias = Util.consultarCategorias();
+				Object[] choices = new Object[_categorias.size() + 1];
+				_categorias.copyInto(choices);
+				String todas = "Todas";
+				choices[_categorias.size()] = todas;
+				_screen.setCategorias(choices);
+				if (categoria != null && _categorias.contains(categoria)) {
+					_screen.setSelectedCategoria(categoria);
+				} else {
+					_screen.setSelectedCategoria(todas);
+				}
+				_screen.setStatus(null);
+				if (Preferencias.isMostrarCampoBusqueda()) {
+					_screen.setSearchField();
+				}
+			}
+		});
+	}
+
 	private void nuevaPlantilla() {
 		NuevaPlantilla n = new NuevaPlantilla();
 		Util.pushModalScreen(n.getScreen());
 		Plantilla proceso = n.getPlantilla();
 		if (proceso != null) {
+			reloadCategorias();
 			if ((_style & NO_NUEVO) == NO_NUEVO) {
 				_screen.addElement(proceso, 0);
 			} else {
@@ -172,6 +204,7 @@ public class ListadoPlantillas {
 	private void verPlantilla() {
 		Plantilla selected = (Plantilla) _screen.getSelected();
 		Plantilla plantilla = Util.verPlantilla(selected);
+		reloadCategorias();
 		if (plantilla != null) {
 			_screen.replace(selected, plantilla);
 		} else {

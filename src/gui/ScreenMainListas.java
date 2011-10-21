@@ -35,7 +35,7 @@ public class ScreenMainListas extends PopupScreen {
 	private static String DEMANDADOS = "Demandados";
 	private static String JUZGADOS = "Juzgados";
 	private static String CAMPOS = "Campos personalizados";
-	private static String CATEGORIAS = "Categorias";
+	private static String CATEGORIAS = "Categorías";
 	private static String PROCESOS = "Procesos";
 	private static String PLANTILLAS = "Plantillas";
 	private static String ACTUACIONES = "Actuaciones";
@@ -110,7 +110,7 @@ public class ScreenMainListas extends PopupScreen {
 			} else if (element == CAMPOS) {
 				Util.listadoCampos(false, 0);
 			} else if (element == CATEGORIAS) {
-				Util.listadoJuzgados(false, 0);
+				Util.listadoCategorias(false, 0);
 			} else if (element == PROCESOS) {
 				Util.listadoProcesos(false, 0);
 			} else if (element == PLANTILLAS) {

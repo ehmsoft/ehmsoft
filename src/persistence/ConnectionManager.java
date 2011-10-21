@@ -212,7 +212,8 @@ public class ConnectionManager {
 					+ "'fecha_mod' DATE,"
 					+ "FOREIGN KEY(id_demandante) REFERENCES demandantes(id_demandante),FOREIGN KEY(id_demandado) REFERENCES demandados(id_demandado),FOREIGN KEY(id_juzgado) REFERENCES juzgados(id_juzgado),FOREIGN KEY(id_categoria) REFERENCES categorias(id_categoria), UNIQUE("
 					+ "'id_demandante'," + "'id_demandado'," + "'radicado',"
-					+ "'radicado_unico'," + "'id_juzgado'))");
+					+ "'radicado_unico'," + "'id_juzgado', " + "'id_categoria', " + "'estado'," + "'tipo'," + "'nombre'" +
+							"))");
 			st.prepare();
 			st.execute();
 			st.close();

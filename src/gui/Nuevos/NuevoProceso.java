@@ -29,7 +29,7 @@ public class NuevoProceso {
 	private Juzgado _juzgado;
 	private Vector _actuaciones;
 	private Vector _campos;
-	private Vector _categorias;
+	private Categoria _categoria;
 
 	/**
 	 * Se crea un NuevoProceso y le asocia una pantalla, con este objeto se
@@ -39,27 +39,20 @@ public class NuevoProceso {
 		_campos = new Vector();
 		_actuaciones = new Vector();
 		_screen = new NuevoProcesoScreen();
+		_categoria = Util.consultarCategoriaVacia();
 		try {
 			Persistence p = new Persistence();
 
 			_screen.setDemandante(p.consultarPersona("1", 1).getNombre());
 			_screen.setDemandado(p.consultarPersona("1", 2).getNombre());
 			_screen.setJuzgado(p.consultarJuzgado("1").getNombre());
-
-			_categorias = p.consultarCategorias();
-			Categoria ninguna = p.consultarCategoria("1");
-			_categorias.removeElement(ninguna);
-			_categorias.insertElementAt(ninguna, 0);
-
 		} catch (NullPointerException e) {
 			Util.noSd();
 		} catch (Exception e) {
 			Util.alert(e.toString());
 		}
 
-		Object[] categorias = new Object[_categorias.size()];
-		_categorias.copyInto(categorias);
-		_screen.addCategorias(categorias);
+		_screen.setCategoria(_categoria.getDescripcion());
 		_screen.setChangeListener(listener);
 	}
 
@@ -69,6 +62,7 @@ public class NuevoProceso {
 		_demandado = plantilla.getDemandado();
 		_juzgado = plantilla.getJuzgado();
 		_campos = plantilla.getCampos();
+		_categoria = plantilla.getCategoria();
 		_screen.setDemandante(_demandante.getNombre());
 		_screen.setDemandado(_demandado.getNombre());
 		_screen.setJuzgado(_juzgado.getNombre());
@@ -80,7 +74,7 @@ public class NuevoProceso {
 		_screen.setRadicado(plantilla.getRadicado());
 		_screen.setRadicadoUnico(plantilla.getRadicadoUnico());
 		_screen.setEstado(plantilla.getEstado());
-		_screen.setCategoria(plantilla.getCategoria());
+		_screen.setCategoria(_categoria.getDescripcion());
 		_screen.setTipo(plantilla.getTipo());
 		_screen.setNotas(plantilla.getNotas());
 		_screen.setPrioridad(plantilla.getPrioridad());
@@ -97,8 +91,6 @@ public class NuevoProceso {
 				addJuzgado();
 			} else if (context == Util.NEW_ACTUACION) {
 				newActuacion();
-			} else if (context == Util.NEW_CATEGORIA) {
-				newCategoria();
 			} else if (context == Util.ADD_CATEGORIA) {
 				addCategoria();
 			} else if (context == Util.GUARDAR) {
@@ -150,10 +142,9 @@ public class NuevoProceso {
 					_proceso = new Proceso(_demandante, _demandado, _screen
 							.getFecha(), _juzgado, _screen.getRadicado(),
 							_screen.getRadicadoUnico(), _actuaciones, _screen
-									.getEstado(), (Categoria) _screen
-									.getCategoria(), _screen.getTipo(), _screen
-									.getNotas(), _campos, _screen
-									.getPrioridad());
+									.getEstado(), (Categoria) _categoria,
+							_screen.getTipo(), _screen.getNotas(), _campos,
+							_screen.getPrioridad());
 					try {
 						new Persistence().guardarProceso(_proceso);
 					} catch (NullPointerException e) {
@@ -279,11 +270,8 @@ public class NuevoProceso {
 	private void addCategoria() {
 		Categoria categoria = Util.listadoCategorias(true, 0);
 		if (categoria != null) {
-			_categorias.addElement(categoria);
-			Object[] categorias = new Object[_categorias.size()];
-			_categorias.copyInto(categorias);
-			_screen.addCategorias(categorias);
-			_screen.selectCategoria(_categorias.indexOf(categoria));
+			_categoria = categoria;
+			_screen.setCategoria(_categoria.getDescripcion());
 		}
 	}
 
@@ -310,17 +298,6 @@ public class NuevoProceso {
 				_campos.removeElement(old);
 			}
 			_screen.setDirty(true);
-		}
-	}
-
-	private void newCategoria() {
-		Categoria categoria = Util.nuevaCategoria(true);
-		if (categoria != null) {
-			_categorias.addElement(categoria);
-			Object[] categorias = new Object[_categorias.size()];
-			_categorias.copyInto(categorias);
-			_screen.addCategorias(categorias);
-			_screen.selectCategoria(_categorias.indexOf(categoria));
 		}
 	}
 

@@ -4,9 +4,7 @@ import gui.ListaPopUp;
 import net.rim.device.api.ui.Field;
 import net.rim.device.api.ui.FieldChangeListener;
 import net.rim.device.api.ui.component.ChoiceField;
-import net.rim.device.api.ui.component.LabelField;
 import net.rim.device.api.ui.component.ObjectChoiceField;
-import net.rim.device.api.ui.container.HorizontalFieldManager;
 
 public class ListadoPlantillasPopUp extends ListaPopUp implements
 		ListadoProcesosInterface {
@@ -17,14 +15,16 @@ public class ListadoPlantillasPopUp extends ListaPopUp implements
 		super();
 
 		_cfCategorias = new ObjectChoiceField(null, null, 0,
-				ChoiceField.FORCE_SINGLE_LINE);
+				ChoiceField.FORCE_SINGLE_LINE) {
+			public void setSelectedIndex(Object element) {
+				fieldChangeNotify(0);
+				super.setSelectedIndex(element);
+			}
+		};
 		_cfCategorias.setChangeListener(listener);
+		_cfCategorias.setLabel("Plantillas");
 
-		HorizontalFieldManager title = new HorizontalFieldManager(USE_ALL_WIDTH);
-		title.add(new LabelField("Plantillas"));
-		title.add(_cfCategorias);
-
-		setTitle(title);
+		setTitle(_cfCategorias);
 
 		_lista = new ListadoPlantillasLista() {
 			protected boolean navigationClick(int status, int time) {
@@ -37,12 +37,12 @@ public class ListadoPlantillasPopUp extends ListaPopUp implements
 
 	public void setCategorias(Object[] choices) {
 		_cfCategorias.setChoices(choices);
-		invalidate();
+		_lista.updateList();
 	}
 
 	public void setSelectedCategoria(Object object) {
 		_cfCategorias.setSelectedIndex(object);
-		invalidate();
+		_lista.updateList();
 	}
 
 	public Object getSelectedCategoria() {
@@ -52,14 +52,15 @@ public class ListadoPlantillasPopUp extends ListaPopUp implements
 	private FieldChangeListener listener = new FieldChangeListener() {
 
 		public void fieldChanged(Field field, int context) {
-			Object selected = _cfCategorias.getChoice(_cfCategorias
-					.getSelectedIndex());
-			if (selected.toString().equalsIgnoreCase("todas")) {
-				_lista.setText("");
-			} else {
-				_lista.setText(selected.toString());
+			if (context == ChoiceField.CONTEXT_CHANGE_OPTION) {
+				Object selected = _cfCategorias.getChoice(_cfCategorias
+						.getSelectedIndex());
+				if (String.class.isInstance(selected)) {
+					_lista.setText("");
+				} else {
+					_lista.setText("Cat"+selected.toString());
+				}
 			}
-			_lista.updateList();
 		}
 	};
 }

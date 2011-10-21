@@ -191,6 +191,8 @@ public class VerProceso {
 					}
 				});
 			}
+		} else {
+			Util.popScreen(_screen);
 		}
 	}
 

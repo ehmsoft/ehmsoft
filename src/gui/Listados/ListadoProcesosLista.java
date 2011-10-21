@@ -2,7 +2,6 @@ package gui.Listados;
 
 import gui.ListaListas;
 import net.rim.device.api.collection.ReadableList;
-import net.rim.device.api.ui.Color;
 import net.rim.device.api.ui.Font;
 import net.rim.device.api.ui.Graphics;
 import net.rim.device.api.ui.component.KeywordProvider;
@@ -33,7 +32,7 @@ public class ListadoProcesosLista extends ListaListas implements
 			s[3] = p.getRadicado();
 			s[4] = p.getRadicadoUnico();
 			s[5] = p.getEstado();
-			s[6] = p.getCategoria().getDescripcion();
+			s[6] = "Cat"+p.getCategoria().getDescripcion();
 			s[7] = p.getTipo();
 			s[8] = p.getNotas();
 			return s;
@@ -45,14 +44,7 @@ public class ListadoProcesosLista extends ListaListas implements
 		try {
 			ReadableList r = ((ListaListas) listField).getResultList();
 			if (String.class.isInstance(r.getAt(index))) {
-				graphics.setFont(graphics.getFont().derive(Font.BOLD));
-				int color = graphics.getColor();
-				graphics.setColor(Color.LIGHTGRAY);
-				graphics.drawLine(5, listField.getRowHeight() + y - 1,
-						listField.getWidth() - 5, listField.getRowHeight() + y
-								- 1);
-				graphics.setColor(color);
-				graphics.drawText(r.getAt(index).toString(), 0, y);
+				super.drawListRow(listField, graphics, index, y, w);
 			} else {
 				Proceso objeto = (Proceso) r.getAt(index);
 				String demandante = objeto.getDemandante().getNombre();

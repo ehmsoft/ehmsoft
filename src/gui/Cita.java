@@ -67,6 +67,10 @@ public class Cita {
 		_eliminar = false;
 		_actualizar = false;
 	}
+	
+	public boolean isEliminada() {
+		return _eliminar;
+	}
 
 	public Object[] getAlarmaConFormato() {
 		Object[] ret = new Object[2];

@@ -17,18 +17,27 @@ public abstract class ListaPopUp extends PopupScreen implements
 			USE_ALL_WIDTH);
 	private VerticalFieldManager _title;
 	private HorizontalFieldManager _status;
+	private VerticalFieldManager _central;
 
 	public ListaPopUp() {
-		super(new VerticalFieldManager(VERTICAL_SCROLL | VERTICAL_SCROLLBAR));
+		super(new VerticalFieldManager());
 		_title = new VerticalFieldManager();
 		_status = new HorizontalFieldManager();
-		add(_status);
-		add(_title);
-		add(_searchField);
+		_central = new VerticalFieldManager(VERTICAL_SCROLL | VERTICAL_SCROLLBAR);
+		super.add(_status);
+		super.add(_title);
+		super.add(_searchField);
+		super.add(new SeparatorField());
+		super.add(_central);
+	}
+	
+	public void add(Field field) {
+		_central.add(field);
 	}
 
 	public void setStatus(Field field) {
 		if (field != null) {
+			field.setBackground(null);
 			_status.add(field);
 		} else {
 			_status.deleteAll();
