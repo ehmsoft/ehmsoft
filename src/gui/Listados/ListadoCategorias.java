@@ -158,6 +158,9 @@ public class ListadoCategorias {
 			} catch (Exception e) {
 				_screen.alert(e.toString());
 			}
+			if(Preferencias.getUltimaCategoria() != null && Preferencias.getUltimaCategoria().getId_categoria().equals(selected.getId_categoria())) {
+				Preferencias.setUltimaCategoria(null);
+			}
 			_screen.remove(selected);
 		}
 	}

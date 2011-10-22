@@ -16,8 +16,8 @@ public class ListadoProcesosScreen extends ListaScreen implements
 
 		_cfCategorias = new ObjectChoiceField() {
 			public void setSelectedIndex(Object element) {
-				fieldChangeNotify(0);
 				super.setSelectedIndex(element);
+				fieldChangeNotify(ChoiceField.CONTEXT_CHANGE_OPTION);
 			}
 		};
 		_cfCategorias.setChangeListener(listener);

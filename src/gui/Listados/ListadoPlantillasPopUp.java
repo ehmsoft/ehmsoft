@@ -17,8 +17,8 @@ public class ListadoPlantillasPopUp extends ListaPopUp implements
 		_cfCategorias = new ObjectChoiceField(null, null, 0,
 				ChoiceField.FORCE_SINGLE_LINE) {
 			public void setSelectedIndex(Object element) {
-				fieldChangeNotify(0);
 				super.setSelectedIndex(element);
+				fieldChangeNotify(ChoiceField.CONTEXT_CHANGE_OPTION);
 			}
 		};
 		_cfCategorias.setChangeListener(listener);

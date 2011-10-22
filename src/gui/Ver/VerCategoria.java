@@ -6,6 +6,7 @@ import net.rim.device.api.ui.FieldChangeListener;
 import net.rim.device.api.ui.UiApplication;
 import persistence.Persistence;
 import core.Categoria;
+import core.Preferencias;
 
 public class VerCategoria {
 	private VerCategoriaScreen _screen;
@@ -73,6 +74,9 @@ public class VerCategoria {
 				System.exit(0);
 			} catch (Exception e) {
 				_screen.alert(e.toString());
+			}
+			if(Preferencias.getUltimaCategoria() != null && Preferencias.getUltimaCategoria().getId_categoria().equals(_categoria.getId_categoria())) {
+				Preferencias.setUltimaCategoria(null);
 			}
 			_categoria = null;
 			Util.popScreen(_screen);
