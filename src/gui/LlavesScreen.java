@@ -1,5 +1,6 @@
 package gui;
 
+import core.Preferencias;
 import net.rim.device.api.ui.Field;
 import net.rim.device.api.ui.FieldChangeListener;
 import net.rim.device.api.ui.component.BasicEditField;
@@ -22,6 +23,7 @@ public class LlavesScreen extends PopupScreen {
 
 	public LlavesScreen() {
 		super(new VerticalFieldManager());
+		setFont(Preferencias.getTipoFuente());
 		_lblTitulo = new LabelField("Activación", Field.FIELD_HCENTER);
 
 		_btnfldOk = new ButtonField("Aceptar", ButtonField.CONSUME_CLICK

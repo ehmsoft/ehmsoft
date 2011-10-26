@@ -63,6 +63,7 @@ public class PreferenciasGeneralesScreen extends MainScreen {
 
 	public PreferenciasGeneralesScreen() {
 		super(Manager.VERTICAL_SCROLL | Manager.VERTICAL_SCROLLBAR);
+		setFont(Preferencias.getTipoFuente());
 		_txtNombreUsuario = new BasicEditField("Nombre de Usuario: ", "");
 		_chkMostrarCampoBusqueda = new CheckboxField(
 				"Mostrar Búsqueda en todas las pantallas", false);

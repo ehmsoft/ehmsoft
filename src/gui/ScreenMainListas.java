@@ -8,6 +8,7 @@ import net.rim.device.api.ui.component.SeparatorField;
 import net.rim.device.api.ui.container.PopupScreen;
 import net.rim.device.api.ui.container.VerticalFieldManager;
 import core.Plantilla;
+import core.Preferencias;
 import core.Proceso;
 
 public class ScreenMainListas extends PopupScreen {
@@ -49,6 +50,7 @@ public class ScreenMainListas extends PopupScreen {
 
 	public ScreenMainListas() {
 		super(new VerticalFieldManager(VERTICAL_SCROLL | VERTICAL_SCROLLBAR));
+		setFont(Preferencias.getTipoFuente());
 		_title = new VerticalFieldManager();
 		_title.add(new LabelField());
 		_title.add(new SeparatorField());

@@ -2,6 +2,8 @@ package gui;
 
 import java.util.Vector;
 
+import core.Preferencias;
+
 import net.rim.device.api.ui.Field;
 import net.rim.device.api.ui.component.Dialog;
 import net.rim.device.api.ui.component.LabelField;
@@ -24,6 +26,7 @@ public abstract class ListaPopUp extends PopupScreen implements
 		_title = new VerticalFieldManager();
 		_status = new HorizontalFieldManager();
 		_central = new VerticalFieldManager(VERTICAL_SCROLL | VERTICAL_SCROLLBAR);
+		setFont(Preferencias.getTipoFuente());
 		super.add(_status);
 		super.add(_title);
 		super.add(_searchField);
