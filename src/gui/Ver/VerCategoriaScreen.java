@@ -13,8 +13,6 @@ public class VerCategoriaScreen extends FondoNormal {
 	private EditableTextField _txtDescripcion;
 
 	public VerCategoriaScreen() {
-		setTitle("Ver categoría");
-
 		_txtDescripcion = new EditableTextField("Nombre: ",
 				TextField.NO_NEWLINE);
 

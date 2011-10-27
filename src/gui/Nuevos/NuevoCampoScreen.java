@@ -21,9 +21,6 @@ public class NuevoCampoScreen extends FondoNormal {
 	public final int CERRAR = 2;
 
 	public NuevoCampoScreen() {
-
-		setTitle("Nuevo campo personalizado");
-
 		_txtNombre = new BasicEditField(TextField.NO_NEWLINE);
 		_txtNombre.setLabel("Nombre: ");
 

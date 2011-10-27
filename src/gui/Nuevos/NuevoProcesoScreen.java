@@ -38,7 +38,6 @@ public class NuevoProcesoScreen extends FondoNormal {
 	 * para el nuevo Proceso
 	 */
 	public NuevoProcesoScreen() {
-		setTitle("Nuevo Proceso");
 		_txtCampos = new Vector();
 
 		_lblDemandante = new EditableTextField("Demandante: ");

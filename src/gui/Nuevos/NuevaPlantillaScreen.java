@@ -36,7 +36,6 @@ public class NuevaPlantillaScreen extends FondoNormal {
 	 * para el nuevo Proceso
 	 */
 	public NuevaPlantillaScreen() {
-		setTitle("Nueva Plantilla");
 		_txtCampos = new Vector();
 
 		_txtNombre = new BasicEditField(TextField.NO_NEWLINE);

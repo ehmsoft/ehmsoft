@@ -20,7 +20,6 @@ public class VerPersonaScreen extends FondoNormal {
 	private EditableTextField _txtNotas;
 
 	public VerPersonaScreen() {
-
 		_txtNombre = new EditableTextField("Nombre: ", TextField.NO_NEWLINE);
 		_txtId = new EditableTextField("Cédula: ", TextField.NO_NEWLINE);
 		_txtTelefono = new EditableTextField("Teléfono: ", TextField.NO_NEWLINE);

@@ -22,8 +22,6 @@ public class NuevoJuzgadoScreen extends FondoNormal {
 	 * para crear un nuevo Juzgado
 	 */
 	public NuevoJuzgadoScreen() {
-		setTitle("Nuevo juzgado");
-
 		_txtNombre = new BasicEditField(TextField.NO_NEWLINE);
 		_txtNombre.setLabel("Nombre: ");
 

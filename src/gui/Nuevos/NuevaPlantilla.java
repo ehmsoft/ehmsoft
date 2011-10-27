@@ -15,6 +15,7 @@ import core.Categoria;
 import core.Juzgado;
 import core.Persona;
 import core.Plantilla;
+import core.Preferencias;
 
 public class NuevaPlantilla {
 
@@ -47,6 +48,9 @@ public class NuevaPlantilla {
 		_screen.setDemandado(_demandadoVacio.getNombre());
 		_screen.setJuzgado(_juzgadoVacio.getNombre());
 		_screen.setChangeListener(listener);
+		if(Preferencias.isMostrarTitulosPantallas()) {
+			_screen.setTitle("Crear plantilla");
+		}
 	}
 
 	FieldChangeListener listener = new FieldChangeListener() {

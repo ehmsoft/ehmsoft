@@ -37,8 +37,6 @@ public class VerProcesoScreen extends FondoNormal {
 
 	public VerProcesoScreen() {
 		_txtCampos = new Vector();
-		setTitle("Ver proceso");
-
 		_lblDemandante = new EditableTextField("Demandante: ",
 				TextField.NO_NEWLINE);
 		add(_lblDemandante);

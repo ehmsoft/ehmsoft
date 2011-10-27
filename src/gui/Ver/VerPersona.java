@@ -8,6 +8,7 @@ import net.rim.device.api.ui.UiApplication;
 import persistence.Persistence;
 import core.Persona;
 import core.PhoneManager;
+import core.Preferencias;
 
 public class VerPersona {
 	private VerPersonaScreen _screen;
@@ -23,6 +24,13 @@ public class VerPersona {
 		_screen.setCorreo(_persona.getCorreo());
 		_screen.setNotas(_persona.getNotas());
 		_screen.setChangeListener(listener);
+		if(Preferencias.isMostrarTitulosPantallas()) {
+			if(_persona.getTipo() == 1) {
+				_screen.setTitle("Demandante");
+			} else {
+				_screen.setTitle("Demandado");
+			}
+		}
 	}
 
 	FieldChangeListener listener = new FieldChangeListener() {

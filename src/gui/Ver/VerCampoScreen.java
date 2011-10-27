@@ -18,8 +18,6 @@ public class VerCampoScreen extends FondoNormal {
 	private EditableTextField _txtLongMin;
 
 	public VerCampoScreen() {
-		setTitle("Ver campo personalizado");
-
 		_txtNombre = new EditableTextField("Nombre: ", "");
 		add(_txtNombre);
 

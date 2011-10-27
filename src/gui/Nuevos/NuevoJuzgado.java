@@ -7,6 +7,7 @@ import net.rim.device.api.ui.FieldChangeListener;
 import net.rim.device.api.ui.UiApplication;
 import persistence.Persistence;
 import core.Juzgado;
+import core.Preferencias;
 
 public class NuevoJuzgado {
 	private Juzgado _juzgado;
@@ -15,6 +16,9 @@ public class NuevoJuzgado {
 	public NuevoJuzgado() {
 		_screen = new NuevoJuzgadoScreen();
 		_screen.setChangeListener(listener);
+		if(Preferencias.isMostrarTitulosPantallas()) {
+			_screen.setTitle("Crear juzgado");
+		}
 	}
 
 	FieldChangeListener listener = new FieldChangeListener() {

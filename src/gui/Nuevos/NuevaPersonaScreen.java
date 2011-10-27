@@ -20,8 +20,6 @@ public class NuevaPersonaScreen extends FondoNormal {
 
 	public NuevaPersonaScreen() {
 		super();
-
-		// Se inicializan con el estilo
 		_txtNombre = new BasicEditField(TextField.NO_NEWLINE);
 		_txtNombre.setLabel("Nombre: ");
 		_txtCedula = new BasicEditField(TextField.NO_NEWLINE);

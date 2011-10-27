@@ -7,6 +7,7 @@ import net.rim.device.api.ui.Screen;
 import net.rim.device.api.ui.UiApplication;
 import persistence.Persistence;
 import core.Categoria;
+import core.Preferencias;
 
 public class NuevaCategoria {
 
@@ -20,6 +21,9 @@ public class NuevaCategoria {
 			_screen = new NuevaCategoriaScreen();
 		}
 		((Screen) _screen).setChangeListener(listener);
+		if(Preferencias.isMostrarTitulosPantallas()) {
+			_screen.setTitle("Crear categoría");
+		}
 	}
 
 	FieldChangeListener listener = new FieldChangeListener() {

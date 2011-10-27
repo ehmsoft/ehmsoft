@@ -13,8 +13,6 @@ public class NuevaCategoriaScreen extends FondoNormal implements
 	private BasicEditField _txtDescripcion;
 
 	public NuevaCategoriaScreen() {
-		setTitle("Nueva categoría");
-
 		_txtDescripcion = new BasicEditField(TextField.NO_NEWLINE);
 		_txtDescripcion.setLabel("Descripción: ");
 

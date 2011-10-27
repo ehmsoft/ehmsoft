@@ -7,6 +7,7 @@ import net.rim.device.api.ui.FieldChangeListener;
 import net.rim.device.api.ui.UiApplication;
 import persistence.Persistence;
 import core.Persona;
+import core.Preferencias;
 
 public class NuevaPersona {
 	private Persona _persona;
@@ -22,10 +23,12 @@ public class NuevaPersona {
 		_tipo = tipo;
 		_screen = new NuevaPersonaScreen();
 		_screen.setChangeListener(listener);
-		if (tipo == 1) {
-			_screen.setTitle("Nuevo demandante");
-		} else {
-			_screen.setTitle("Nuevo demandado");
+		if(Preferencias.isMostrarTitulosPantallas()) {
+			if (tipo == 1) {
+				_screen.setTitle("Crear demandante");
+			} else {
+				_screen.setTitle("Crear demandado");
+			}
 		}
 	}
 

@@ -8,6 +8,7 @@ import net.rim.device.api.ui.UiApplication;
 import persistence.Persistence;
 import core.Juzgado;
 import core.PhoneManager;
+import core.Preferencias;
 
 public class VerJuzgado {
 	private VerJuzgadoScreen _screen;
@@ -22,6 +23,9 @@ public class VerJuzgado {
 		_screen.setTelefono(_juzgado.getTelefono());
 		_screen.setTipo(_juzgado.getTipo());
 		_screen.setChangeListener(listener);
+		if(Preferencias.isMostrarTitulosPantallas()) {
+			_screen.setTitle("Juzgado");
+		}
 	}
 
 	FieldChangeListener listener = new FieldChangeListener() {

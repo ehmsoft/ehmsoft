@@ -18,12 +18,12 @@ public class NuevaCategoriaPopUp extends PopupScreen implements
 
 	private BasicEditField _txtDescripcion;
 	private HorizontalFieldManager _statusField;
+	private LabelField _lblTitle;
 
 	public NuevaCategoriaPopUp() {
 		super(new VerticalFieldManager());
-		LabelField labelField = new LabelField("Nueva categoría",
-				Field.FIELD_HCENTER);
-		add(labelField);
+		_lblTitle = new LabelField("", FIELD_HCENTER);
+		add(_lblTitle);
 		add(new SeparatorField());
 
 		_txtDescripcion = new BasicEditField(TextField.NO_NEWLINE);
@@ -42,6 +42,10 @@ public class NuevaCategoriaPopUp extends PopupScreen implements
 
 	public void setStatus(Field field) {
 		_statusField.add(field);
+	}
+	
+	public void setTitle(String text) {
+		_lblTitle.setText(text);
 	}
 
 	public int ask(Object[] options, String string, int index) {

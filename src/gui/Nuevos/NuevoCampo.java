@@ -7,6 +7,7 @@ import net.rim.device.api.ui.FieldChangeListener;
 import net.rim.device.api.ui.UiApplication;
 import persistence.Persistence;
 import core.CampoPersonalizado;
+import core.Preferencias;
 
 public class NuevoCampo {
 	private CampoPersonalizado _campo;
@@ -18,6 +19,9 @@ public class NuevoCampo {
 		_saveInBd = saveInBd;
 		_screen = new NuevoCampoScreen();
 		_screen.setChangeListener(listener);
+		if(Preferencias.isMostrarTitulosPantallas()) {
+			_screen.setTitle("Crear campo personalizado");
+		}
 	}
 
 	public NuevoCampo() {

@@ -17,6 +17,7 @@ import core.Categoria;
 import core.Juzgado;
 import core.Persona;
 import core.Plantilla;
+import core.Preferencias;
 
 public class VerPlantilla {
 
@@ -76,6 +77,9 @@ public class VerPlantilla {
 				CampoPersonalizado campo = (CampoPersonalizado) e.nextElement();
 				_screen.addCampo(campo, campo.getNombre(), campo.getValor(), campo.getLongitudMax());
 			}
+		}
+		if(Preferencias.isMostrarTitulosPantallas()) {
+			_screen.setTitle("Plantilla");
 		}
 		_screen.setChangeListener(listener);
 	}

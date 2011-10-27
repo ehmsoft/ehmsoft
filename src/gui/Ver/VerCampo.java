@@ -7,6 +7,7 @@ import net.rim.device.api.ui.FieldChangeListener;
 import net.rim.device.api.ui.UiApplication;
 import persistence.Persistence;
 import core.CampoPersonalizado;
+import core.Preferencias;
 
 public class VerCampo {
 	private VerCampoScreen _screen;
@@ -26,6 +27,9 @@ public class VerCampo {
 
 		} else {
 			_screen.setLongitudMin(String.valueOf(_campo.getLongitudMin()));
+		}
+		if(Preferencias.isMostrarTitulosPantallas()) {
+			_screen.setTitle("Campo personalizado");
 		}
 		_screen.setChangeListener(listener);
 	}

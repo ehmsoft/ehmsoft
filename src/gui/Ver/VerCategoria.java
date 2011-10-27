@@ -17,6 +17,9 @@ public class VerCategoria {
 		_screen = new VerCategoriaScreen();
 		_screen.setDescripcion(_categoria.getDescripcion());
 		_screen.setChangeListener(listener);
+		if(Preferencias.isMostrarTitulosPantallas()) {
+			_screen.setTitle("Categoría");
+		}
 	}
 
 	FieldChangeListener listener = new FieldChangeListener() {

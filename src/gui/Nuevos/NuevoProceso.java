@@ -17,6 +17,7 @@ import core.Categoria;
 import core.Juzgado;
 import core.Persona;
 import core.Plantilla;
+import core.Preferencias;
 import core.Proceso;
 
 public class NuevoProceso {
@@ -54,6 +55,9 @@ public class NuevoProceso {
 
 		_screen.setCategoria(_categoria.getDescripcion());
 		_screen.setChangeListener(listener);
+		if(Preferencias.isMostrarTitulosPantallas()) {
+			_screen.setTitle("Crear proceso");
+		}
 	}
 
 	public NuevoProceso(Plantilla plantilla) {
@@ -78,6 +82,9 @@ public class NuevoProceso {
 		_screen.setTipo(plantilla.getTipo());
 		_screen.setNotas(plantilla.getNotas());
 		_screen.setPrioridad(plantilla.getPrioridad());
+		if(Preferencias.isMostrarTitulosPantallas()) {
+			_screen.setTitle("Crear proceso");
+		}
 	}
 
 	FieldChangeListener listener = new FieldChangeListener() {

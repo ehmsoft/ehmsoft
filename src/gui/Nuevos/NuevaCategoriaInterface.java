@@ -7,6 +7,8 @@ public interface NuevaCategoriaInterface {
 	public int ask(Object[] options, String string, int index);
 
 	public void setStatus(Field field);
+	
+	public void setTitle(String text);
 
 	public String getDescripcion();
 }

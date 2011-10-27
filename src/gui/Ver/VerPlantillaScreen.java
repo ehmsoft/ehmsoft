@@ -33,8 +33,6 @@ public class VerPlantillaScreen extends FondoNormal {
 
 	public VerPlantillaScreen() {
 		_txtCampos = new Vector();
-		setTitle("Ver plantilla");
-
 		_txtNombre = new EditableTextField("Nombre: ");
 		add(_txtNombre);
 

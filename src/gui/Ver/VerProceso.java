@@ -17,6 +17,7 @@ import core.CampoPersonalizado;
 import core.Categoria;
 import core.Juzgado;
 import core.Persona;
+import core.Preferencias;
 import core.Proceso;
 
 public class VerProceso {
@@ -69,6 +70,9 @@ public class VerProceso {
 				CampoPersonalizado campo = (CampoPersonalizado) e.nextElement();
 				_screen.addCampo(campo, campo.getNombre(), campo.getValor(), campo.getLongitudMax());
 			}
+		}
+		if(Preferencias.isMostrarTitulosPantallas()) {
+			_screen.setTitle("Proceso");
 		}
 		_screen.setChangeListener(listener);
 	}
