@@ -93,11 +93,14 @@ public class VerPlantillaScreen extends FondoNormal {
 		return Dialog.ask(string, options, index);
 	}
 
-	public void addCampo(Object cookie, String nombre, String valor) {
+	public void addCampo(Object cookie, String nombre, String valor, int lonMax) {
 		nombre = nombre + ": ";
 		EditableTextField txt = new EditableTextField(nombre);
 		txt.setText(valor);
 		txt.setCookie(cookie);
+		if(lonMax != 0) {
+			txt.setMaxSize(lonMax);
+		}
 		_txtCampos.addElement(txt);
 		add(txt);
 	}
@@ -107,8 +110,11 @@ public class VerPlantillaScreen extends FondoNormal {
 		_txtCampos.removeElement(_focused);
 	}
 
-	public void modificarCampo(Object cookie, String text) {
+	public void modificarCampo(Object cookie, String text, int lonMax) {
 		_focused.setCookie(cookie);
+		if(lonMax != 0) {
+			((EditableTextField) _focused).setMaxSize(lonMax);
+		}
 		((EditableTextField) _focused).setLabel(text + ": ");
 	}
 
@@ -218,6 +224,7 @@ public class VerPlantillaScreen extends FondoNormal {
 		if (EditableTextField.class.isInstance(f)) {
 			if (f.getCookie() != null) {
 				_focused = f;
+				menuModificarCampo.setText("Modificar " + f.getCookie().toString());
 				menu.add(menuModificarCampo);
 				menuEliminarCampo.setText("Eliminar " + f.getCookie().toString());
 				menu.add(menuEliminarCampo);

@@ -78,6 +78,10 @@ public class EditableTextField extends HorizontalFieldManager {
 			_editable = true;
 		}
 	}
+	
+	public void setMaxSize(int max) {
+		_txtField.setMaxSize(max);
+	}
 
 	public void setEditable(boolean editable) {
 		if (editable) {

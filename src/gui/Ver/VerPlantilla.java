@@ -74,7 +74,7 @@ public class VerPlantilla {
 			Enumeration e = _campos.elements();
 			while (e.hasMoreElements()) {
 				CampoPersonalizado campo = (CampoPersonalizado) e.nextElement();
-				_screen.addCampo(campo, campo.getNombre(), campo.getValor());
+				_screen.addCampo(campo, campo.getNombre(), campo.getValor(), campo.getLongitudMax());
 			}
 		}
 		_screen.setChangeListener(listener);
@@ -236,35 +236,25 @@ public class VerPlantilla {
 		campo = Util.listadoCampos(true, 0);
 		if (campo != null) {
 			_camposNuevos.addElement(campo);
-			_screen.addCampo(campo, campo.getNombre(), "");
+			_screen.addCampo(campo, campo.getNombre(), "", campo.getLongitudMax());
 			_screen.setDirty(true);
 		}
 	}
 
 	private void verCampo() {
-		CampoPersonalizado nw;
-		CampoPersonalizado old = (CampoPersonalizado) _screen
+		CampoPersonalizado campo = (CampoPersonalizado) _screen
 				.getCookieOfFocused();
-		nw = Util.verCampo(old);
-		if (nw == null) {
-			if (_campos.contains(old)) {
-				_campos.removeElement(old);
-			} else if (_camposNuevos.contains(old)) {
-				_camposNuevos.removeElement(old);
+		campo = Util.verCampo(campo);
+		if (campo != null) {
+			_screen.modificarCampo(campo, campo.getNombre(), campo.getLongitudMax());
+			_screen.setDirty(true);
+		} else {
+			if (_campos.contains(campo)) {
+				_campos.removeElement(campo);
+			} else if (_camposNuevos.contains(campo)) {
+				_camposNuevos.removeElement(campo);
 			}
 			_screen.eliminarCampo();
-			_screen.setDirty(true);
-		} else if (!old.equals(nw)) {
-			if (_campos.contains(old)) {
-				int index = _campos.indexOf(old);
-				_campos.removeElementAt(index);
-				_campos.insertElementAt(nw, index);
-			} else if (_camposNuevos.contains(old)) {
-				int index = _camposNuevos.indexOf(old);
-				_camposNuevos.removeElementAt(index);
-				_camposNuevos.insertElementAt(nw, index);
-			}
-			_screen.modificarCampo(nw, nw.getNombre());
 			_screen.setDirty(true);
 		}
 	}

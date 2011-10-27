@@ -67,7 +67,7 @@ public class VerProceso {
 			Enumeration e = _campos.elements();
 			while (e.hasMoreElements()) {
 				CampoPersonalizado campo = (CampoPersonalizado) e.nextElement();
-				_screen.addCampo(campo, campo.getNombre(), campo.getValor());
+				_screen.addCampo(campo, campo.getNombre(), campo.getValor(), campo.getLongitudMax());
 			}
 		}
 		_screen.setChangeListener(listener);
@@ -250,7 +250,7 @@ public class VerProceso {
 		CampoPersonalizado campo = Util.listadoCampos(true, 0);
 		if (campo != null) {
 			_camposNuevos.addElement(campo);
-			_screen.addCampo(campo, campo.getNombre(), "");
+			_screen.addCampo(campo, campo.getNombre(), "", campo.getLongitudMax());
 			_screen.setDirty(true);
 		}
 	}
@@ -260,7 +260,7 @@ public class VerProceso {
 				.getCookieOfFocused();
 		campo = Util.verCampo(campo);
 		if (campo != null) {
-			_screen.modificarCampo(campo, campo.getNombre());
+			_screen.modificarCampo(campo, campo.getNombre(), campo.getLongitudMax());
 			_screen.setDirty(true);
 		} else {
 			if (_campos.contains(campo)) {

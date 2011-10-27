@@ -67,7 +67,7 @@ public class VerCampoScreen extends FondoNormal {
 			}
 			if (f.equals(_txtLongMax)) {
 				_txtLongMax.setEditable();
-				_txtLongMin.setFocus();
+				_txtLongMax.setFocus();
 			}
 			if (f.equals(_txtLongMin)) {
 				_txtLongMin.setEditable();

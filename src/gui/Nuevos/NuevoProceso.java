@@ -69,7 +69,7 @@ public class NuevoProceso {
 		Enumeration e = _campos.elements();
 		while (e.hasMoreElements()) {
 			CampoPersonalizado campo = (CampoPersonalizado) e.nextElement();
-			_screen.addCampo(campo, campo.getNombre(), campo.getValor());
+			_screen.addCampo(campo, campo.getNombre(), campo.getValor(), campo.getLongitudMax());
 		}
 		_screen.setRadicado(plantilla.getRadicado());
 		_screen.setRadicadoUnico(plantilla.getRadicadoUnico());
@@ -280,7 +280,7 @@ public class NuevoProceso {
 		if (!_campos.contains(campo)) {
 			if (campo != null) {
 				_campos.addElement(campo);
-				_screen.addCampo(campo, campo.getNombre());
+				_screen.addCampo(campo, campo.getNombre(),campo.getLongitudMax());
 			}
 		} else {
 			Util.alert("Este campo personalizado ya está incluido en el proceso");
@@ -306,7 +306,7 @@ public class NuevoProceso {
 				.getCookieOfFocused();
 		campo = Util.verCampo(campo);
 		if (campo != null) {
-			_screen.modificarCampo(campo, campo.getNombre());
+			_screen.modificarCampo(campo, campo.getNombre(),campo.getLongitudMax());
 			_screen.setDirty(true);
 		} else {
 			if (_campos.contains(campo)) {

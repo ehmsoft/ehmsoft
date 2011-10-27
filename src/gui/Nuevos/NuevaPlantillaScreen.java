@@ -103,10 +103,13 @@ public class NuevaPlantillaScreen extends FondoNormal {
 		return Dialog.ask(string, options, index);
 	}
 
-	public void addCampo(Object cookie, String nombre) {
+	public void addCampo(Object cookie, String nombre, int lonMax) {
 		BasicEditField txt = new BasicEditField();
 		txt.setLabel(nombre + ": ");
 		txt.setCookie(cookie);
+		if(lonMax != 0) {
+			txt.setMaxSize(lonMax);
+		}
 		_txtCampos.addElement(txt);
 		add(txt);
 	}
@@ -116,9 +119,12 @@ public class NuevaPlantillaScreen extends FondoNormal {
 		delete(_focused);
 	}
 
-	public void modificarCampo(Object cookie, String text) {
+	public void modificarCampo(Object cookie, String text, int lonMax) {
 		_focused.setCookie(cookie);
 		((BasicEditField) _focused).setLabel(text + ": ");
+		if(lonMax != 0) {
+			((BasicEditField) _focused).setMaxSize(lonMax);
+		}
 	}
 
 	public Object getFocused() {
@@ -148,6 +154,7 @@ public class NuevaPlantillaScreen extends FondoNormal {
 		} else if (BasicEditField.class.isInstance(f)) {
 			if (f.getCookie() != null) {
 				_focused = f;
+				menuModificarCampo.setText("Modificar " + f.getCookie().toString());
 				menu.add(menuModificarCampo);
 				menuEliminarCampo.setText("Eliminar " + f.getCookie().toString());
 				menu.add(menuEliminarCampo);

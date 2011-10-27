@@ -231,7 +231,7 @@ public class NuevaPlantilla {
 		CampoPersonalizado campo = Util.listadoCampos(true, 0);
 		if (campo != null) {
 			_campos.addElement(campo);
-			_screen.addCampo(campo, campo.getNombre());
+			_screen.addCampo(campo, campo.getNombre(), campo.getLongitudMax());
 		}
 	}
 
@@ -251,7 +251,7 @@ public class NuevaPlantilla {
 				int index = _campos.indexOf(old);
 				_campos.removeElementAt(index);
 				_campos.insertElementAt(nw, index);
-				_screen.modificarCampo(nw, nw.getNombre());
+				_screen.modificarCampo(nw, nw.getNombre(), nw.getLongitudMax());
 			}
 		}
 	}

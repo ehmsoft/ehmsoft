@@ -111,15 +111,18 @@ public class NuevoProcesoScreen extends FondoNormal {
 		return Dialog.ask(string, options, index);
 	}
 
-	public void addCampo(Object cookie, String nombre) {
-		addCampo(cookie, nombre, "");
+	public void addCampo(Object cookie, String nombre, int lonMax) {
+		addCampo(cookie, nombre, "", lonMax);
 	}
 
-	public void addCampo(Object cookie, String nombre, String valor) {
+	public void addCampo(Object cookie, String nombre, String valor, int lonMax) {
 		BasicEditField txt = new BasicEditField();
 		txt.setLabel(nombre + ": ");
 		txt.setText(valor);
 		txt.setCookie(cookie);
+		if(lonMax != 0) {
+			txt.setMaxSize(lonMax);
+		}
 		_txtCampos.addElement(txt);
 		add(txt);
 	}
@@ -154,6 +157,7 @@ public class NuevoProcesoScreen extends FondoNormal {
 				menu.add(menuCambiar);
 			} else if (BasicEditField.class.isInstance(f)) {
 				if (f.getCookie() != null) {
+					menuModificarCampo.setText("Modificar " + f.getCookie().toString());
 					menu.add(menuModificarCampo);
 					menuEliminarCampo.setText("Eliminar " + f.getCookie().toString());
 					menu.add(menuEliminarCampo);
@@ -251,10 +255,13 @@ public class NuevoProcesoScreen extends FondoNormal {
 		return getLeafFieldWithFocus().getCookie();
 	}
 
-	public void modificarCampo(Object cookie, String text) {
+	public void modificarCampo(Object cookie, String text, int lonMax) {
 		Field focus = getLeafFieldWithFocus();
 		focus.setCookie(cookie);
 		((BasicEditField) focus).setLabel(text + ": ");
+		if(lonMax != 0) {
+			((BasicEditField) focus).setMaxSize(lonMax);
+		}
 	}
 
 	public void eliminarCampo() {
