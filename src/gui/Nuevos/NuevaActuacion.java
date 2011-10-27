@@ -160,9 +160,13 @@ public class NuevaActuacion {
 	}
 
 	private void eliminarCita() {
-		_cita.markEliminar();
-		_screen.removeClock();
-		_screen.setDirty(true);
+		Object[] ask = { "Sí", "No" };
+		int sel = _screen.ask(ask, "¿Desea eliminar la cita?", 1);
+		if (sel == 0) {
+			_cita.markEliminar();
+			_screen.removeClock();
+			_screen.setDirty(true);
+		}
 	}
 
 	private void cerrarPantalla() {
