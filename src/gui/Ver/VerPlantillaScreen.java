@@ -219,6 +219,7 @@ public class VerPlantillaScreen extends FondoNormal {
 			if (f.getCookie() != null) {
 				_focused = f;
 				menu.add(menuModificarCampo);
+				menuEliminarCampo.setText("Eliminar " + f.getCookie().toString());
 				menu.add(menuEliminarCampo);
 			}
 		}

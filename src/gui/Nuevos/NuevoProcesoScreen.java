@@ -155,6 +155,7 @@ public class NuevoProcesoScreen extends FondoNormal {
 			} else if (BasicEditField.class.isInstance(f)) {
 				if (f.getCookie() != null) {
 					menu.add(menuModificarCampo);
+					menuEliminarCampo.setText("Eliminar " + f.getCookie().toString());
 					menu.add(menuEliminarCampo);
 				}
 			}

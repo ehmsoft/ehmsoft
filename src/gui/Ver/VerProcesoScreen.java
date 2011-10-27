@@ -230,6 +230,7 @@ public class VerProcesoScreen extends FondoNormal {
 			if (f.getCookie() != null) {
 				_focused = f;
 				menu.add(menuModificarCampo);
+				menuEliminarCampo.setText("Eliminar " + f.getCookie().toString());
 				menu.add(menuEliminarCampo);
 			}
 		}
@@ -248,6 +249,13 @@ public class VerProcesoScreen extends FondoNormal {
 
 		public void run() {
 			fieldChangeNotify(Util.VER_CAMPO);
+		}
+	};
+	
+	private final MenuItem menuEliminarCampo = new MenuItem(
+			"Eliminar del proceso", 393216, 2) {
+		public void run() {
+			fieldChangeNotify(Util.ELIMINAR_CAMPO);
 		}
 	};
 
@@ -271,13 +279,6 @@ public class VerProcesoScreen extends FondoNormal {
 			} else if (f.equals(_lblJuzgado)) {
 				fieldChangeNotify(Util.ELIMINAR_JUZGADO);
 			}
-		}
-	};
-
-	private final MenuItem menuEliminarCampo = new MenuItem(
-			"Eliminar del proceso", 262147, 2) {
-		public void run() {
-			fieldChangeNotify(Util.ELIMINAR_CAMPO);
 		}
 	};
 
