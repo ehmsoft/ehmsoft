@@ -92,11 +92,11 @@ public class NuevoCampo {
 
 	private void cerrarPantalla() {
 		if (_screen.getNombre().length() != 0) {
-			Object[] ask = { "Guardar", "Cancelar" };
+			Object[] ask = { "Guardar", "Descartar","Cancelar" };
 			int sel = _screen.ask(ask, "Se han detectado cambios", 1);
 			if (sel == 0) {
 				guardarCampo();
-			} else {
+			} else if(sel == 1){
 				Util.popScreen(_screen);
 			}
 		} else {
