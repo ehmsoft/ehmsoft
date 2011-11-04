@@ -5,6 +5,7 @@ import gui.FondoNormal;
 import gui.Util;
 import net.rim.device.api.ui.Field;
 import net.rim.device.api.ui.MenuItem;
+import net.rim.device.api.ui.UiApplication;
 import net.rim.device.api.ui.component.BasicEditField;
 import net.rim.device.api.ui.component.CheckboxField;
 import net.rim.device.api.ui.component.Dialog;
@@ -97,9 +98,14 @@ public class VerCampoScreen extends FondoNormal {
 
 		public void run() {
 			fieldChangeNotify(Util.CERRAR);
-			if (!getScreen().isVisible()) {
-				System.exit(0);
-			}
+
+			UiApplication.getUiApplication().invokeLater(new Runnable() {
+				
+				public void run() {
+					while (getScreen().isVisible());
+					System.exit(0);
+				}
+			});
 		}
 	};
 

@@ -11,6 +11,7 @@ import java.util.Vector;
 
 import net.rim.device.api.ui.Field;
 import net.rim.device.api.ui.MenuItem;
+import net.rim.device.api.ui.UiApplication;
 import net.rim.device.api.ui.component.DateField;
 import net.rim.device.api.ui.component.Dialog;
 import net.rim.device.api.ui.component.Menu;
@@ -358,9 +359,14 @@ public class VerProcesoScreen extends FondoNormal {
 
 		public void run() {
 			fieldChangeNotify(Util.CERRAR);
-			if (!getScreen().isVisible()) {
-				System.exit(0);
-			}
+
+			UiApplication.getUiApplication().invokeLater(new Runnable() {
+				
+				public void run() {
+					while (getScreen().isVisible());
+					System.exit(0);
+				}
+			});
 		}
 	};
 

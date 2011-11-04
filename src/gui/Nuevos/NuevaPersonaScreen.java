@@ -1,7 +1,9 @@
 package gui.Nuevos;
 
 import gui.FondoNormal;
+import gui.Util;
 import net.rim.device.api.ui.MenuItem;
+import net.rim.device.api.ui.UiApplication;
 import net.rim.device.api.ui.component.BasicEditField;
 import net.rim.device.api.ui.component.Dialog;
 import net.rim.device.api.ui.component.TextField;
@@ -55,10 +57,15 @@ public class NuevaPersonaScreen extends FondoNormal {
 			1000000000, 15) {
 
 		public void run() {
-			fieldChangeNotify(CERRAR);
-			if (!getScreen().isVisible()) {
-				System.exit(0);
-			}
+			fieldChangeNotify(Util.CERRAR);
+
+			UiApplication.getUiApplication().invokeLater(new Runnable() {
+				
+				public void run() {
+					while (getScreen().isVisible());
+					System.exit(0);
+				}
+			});
 		}
 	};
 

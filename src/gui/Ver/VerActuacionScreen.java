@@ -204,9 +204,14 @@ public class VerActuacionScreen extends FondoNormal {
 
 		public void run() {
 			fieldChangeNotify(Util.CERRAR);
-			if (!getScreen().isVisible()) {
-				System.exit(0);
-			}
+
+			UiApplication.getUiApplication().invokeLater(new Runnable() {
+				
+				public void run() {
+					while (getScreen().isVisible());
+					System.exit(0);
+				}
+			});
 		}
 	};
 

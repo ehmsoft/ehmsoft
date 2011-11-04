@@ -10,6 +10,7 @@ import java.util.Date;
 import net.rim.device.api.system.Bitmap;
 import net.rim.device.api.ui.Field;
 import net.rim.device.api.ui.MenuItem;
+import net.rim.device.api.ui.UiApplication;
 import net.rim.device.api.ui.component.BasicEditField;
 import net.rim.device.api.ui.component.BitmapField;
 import net.rim.device.api.ui.component.DateField;
@@ -145,9 +146,14 @@ public class NuevaActuacionScreen extends FondoNormal {
 
 		public void run() {
 			fieldChangeNotify(Util.CERRAR);
-			if (!getScreen().isVisible()) {
-				System.exit(0);
-			}
+
+			UiApplication.getUiApplication().invokeLater(new Runnable() {
+				
+				public void run() {
+					while (getScreen().isVisible());
+					System.exit(0);
+				}
+			});
 		}
 	};
 

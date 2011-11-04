@@ -6,6 +6,7 @@ import gui.Util;
 import net.rim.device.api.system.KeyListener;
 import net.rim.device.api.ui.Keypad;
 import net.rim.device.api.ui.MenuItem;
+import net.rim.device.api.ui.UiApplication;
 import net.rim.device.api.ui.component.Dialog;
 import net.rim.device.api.ui.component.Menu;
 import net.rim.device.api.ui.component.TextField;
@@ -88,9 +89,14 @@ public class VerPersonaScreen extends FondoNormal {
 
 		public void run() {
 			fieldChangeNotify(Util.CERRAR);
-			if (!getScreen().isVisible()) {
-				System.exit(0);
-			}
+
+			UiApplication.getUiApplication().invokeLater(new Runnable() {
+				
+				public void run() {
+					while (getScreen().isVisible());
+					System.exit(0);
+				}
+			});
 		}
 	};
 
