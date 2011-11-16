@@ -84,10 +84,10 @@ public class Persistence implements Cargado, Guardado {
 			d = DatabaseFactory.open(connMgr.getDbLocation());
 			if (persona.getTipo() == 1) {
 				stPersona1 = d
-						.createStatement("INSERT INTO demandantes (id_demandante,cedula,nombre,telefono,direccion,correo,notas) VALUES(NULL,?,?,?,?,?,?)");
+						.createStatement("INSERT INTO demandantes (id_demandante,cedula,nombre,telefono,direccion,correo,notas,nuevo,fecha_mod) VALUES(NULL,?,?,?,?,?,?,1,datetime(" + "'now'," + "'localtime'))");
 			} else if (persona.getTipo() == 2) {
 				stPersona1 = d
-						.createStatement("INSERT INTO demandados (id_demandado,cedula,nombre,telefono,direccion,correo,notas)  VALUES(NULL,?,?,?,?,?,?)");
+						.createStatement("INSERT INTO demandados (id_demandado,cedula,nombre,telefono,direccion,correo,notas,nuevo,fecha_mod) VALUES(NULL,?,?,?,?,?,?,1,datetime(" + "'now'," + "'localtime'))");
 			} else {
 				throw new Exception("Tipo persona invalido");
 			}
@@ -198,7 +198,7 @@ public class Persistence implements Cargado, Guardado {
 			connMgr.prepararBD();
 			d = DatabaseFactory.open(connMgr.getDbLocation());
 			Statement stJuzgado = d
-					.createStatement("INSERT INTO juzgados (id_juzgado,nombre,ciudad,telefono,direccion,tipo) VALUES( NULL,?,?,?,?,?)");
+					.createStatement("INSERT INTO juzgados (id_juzgado,nombre,ciudad,telefono,direccion,tipo,nuevo,fecha_mod) VALUES( NULL,?,?,?,?,?,1,datetime(" + "'now'," +  "'localtime'))");
 			stJuzgado.prepare();
 			stJuzgado.bind(1, juzgado.getNombre());
 			stJuzgado.bind(2, juzgado.getCiudad());
@@ -302,7 +302,7 @@ public class Persistence implements Cargado, Guardado {
 			connMgr.prepararBD();
 			d = DatabaseFactory.open(connMgr.getDbLocation());
 			Statement stActuacion = d
-					.createStatement("INSERT INTO actuaciones (id_actuacion,id_proceso, id_juzgado, fecha_creacion, fecha_proxima, descripcion, uid) VALUES( NULL,?,?,datetime(?),datetime(?),?,?)");
+					.createStatement("INSERT INTO actuaciones (id_actuacion,id_proceso, id_juzgado, fecha_creacion, fecha_proxima, descripcion, uid, nuevo, fecha_mod) VALUES( NULL,?,?,datetime(?),datetime(?),?,?,1,datetime(" + "'now'," + "'localtime'))");
 			stActuacion.prepare();
 			stActuacion.bind(1, Integer.parseInt(id_proceso));
 			stActuacion.bind(2, actuacion.getJuzgado().getId_juzgado());
@@ -375,7 +375,7 @@ public class Persistence implements Cargado, Guardado {
 			connMgr.prepararBD();
 			d = DatabaseFactory.open(connMgr.getDbLocation());
 			Statement stAtributosProceso = d
-					.createStatement("INSERT INTO atributos_proceso (id_atributo_proceso, id_atributo, id_proceso, valor) VALUES( NULL,?,?,?)");
+					.createStatement("INSERT INTO atributos_proceso (id_atributo_proceso, id_atributo, id_proceso, valor, nuevo, fecha_mod) VALUES( NULL,?,?,?,1,datetime(" + "'now'," + "'localtime'))'''");
 			stAtributosProceso.prepare();
 			stAtributosProceso
 					.bind(1, Integer.parseInt(campo.getId_atributo()));
@@ -454,7 +454,7 @@ public class Persistence implements Cargado, Guardado {
 			connMgr.prepararBD();
 			d = DatabaseFactory.open(connMgr.getDbLocation());
 			Statement stAtributos = d
-					.createStatement("INSERT INTO atributos (id_atributo, nombre, obligatorio, longitud_max, longitud_min) VALUES( NULL,?,?,?,?)");
+					.createStatement("INSERT INTO atributos (id_atributo, nombre, obligatorio, longitud_max, longitud_min,nuevo, fecha_mod) VALUES( NULL,?,?,?,?,1,datetime(" + "'now'," + "'localtime'))");
 			stAtributos.prepare();
 			stAtributos.bind(1, campo.getNombre());
 			int obligatorio = 0;
@@ -601,7 +601,7 @@ public class Persistence implements Cargado, Guardado {
 			connMgr.prepararBD();
 			d = DatabaseFactory.open(connMgr.getDbLocation());
 			Statement stProceso = d
-					.createStatement("INSERT INTO procesos (id_proceso,id_demandante,id_demandado,fecha_creacion,radicado,radicado_unico,estado,tipo,notas,prioridad,id_juzgado,id_categoria) VALUES(NULL,?,?,datetime(?),?,?,?,?,?,?,?,?)");
+					.createStatement("INSERT INTO procesos (id_proceso,id_demandante,id_demandado,fecha_creacion,radicado,radicado_unico,estado,tipo,notas,prioridad,id_juzgado,id_categoria,nuevo,fecha_mod) VALUES(NULL,?,?,datetime(?),?,?,?,?,?,?,?,?,1,fecha_mod = datetime(" + "'now'," + "'localtime'))");
 			stProceso.prepare();
 			stProceso.bind(1, proceso.getDemandante().getId_persona()); // ingresa
 																		// el id
@@ -719,7 +719,7 @@ public class Persistence implements Cargado, Guardado {
 			connMgr.prepararBD();
 			d = DatabaseFactory.open(connMgr.getDbLocation());
 			Statement stCategoria = d
-					.createStatement("INSERT INTO categorias (id_categoria,descripcion) VALUES( NULL,?)");
+					.createStatement("INSERT INTO categorias (id_categoria,descripcion,nuevo,fecha_mod) VALUES( NULL,?,1,datetime(" + "'now'," + "'localtime'))");
 			stCategoria.prepare();
 			stCategoria.bind(1, categoria.getDescripcion());
 			stCategoria.execute();
@@ -862,7 +862,7 @@ public class Persistence implements Cargado, Guardado {
 			connMgr.prepararBD();
 			d = DatabaseFactory.open(connMgr.getDbLocation());
 			Statement stPlantilla = d
-					.createStatement("INSERT INTO plantillas (id_plantilla,id_demandante,id_demandado,radicado,radicado_unico,estado,tipo,notas,prioridad,id_juzgado,id_categoria,nombre) VALUES(NULL,?,?,?,?,?,?,?,?,?,?,?)");
+					.createStatement("INSERT INTO plantillas (id_plantilla,id_demandante,id_demandado,radicado,radicado_unico,estado,tipo,notas,prioridad,id_juzgado,id_categoria,nombre,nuevo, fecha_mod) VALUES(NULL,?,?,?,?,?,?,?,?,?,?,?,1,fecha_mod = datetime(" + "'now'," + "'localtime'))");
 			stPlantilla.prepare();
 			stPlantilla.bind(1, plantilla.getDemandante().getId_persona());
 			stPlantilla.bind(2, plantilla.getDemandado().getId_persona());
@@ -961,7 +961,7 @@ public class Persistence implements Cargado, Guardado {
 			connMgr.prepararBD();
 			d = DatabaseFactory.open(connMgr.getDbLocation());
 			Statement stAtributosProceso = d
-					.createStatement("INSERT INTO atributos_plantilla (id_atributo_plantilla, id_atributo, id_plantilla, valor) VALUES( NULL,?,?,?)");
+					.createStatement("INSERT INTO atributos_plantilla (id_atributo_plantilla, id_atributo, id_plantilla, valor, nuevo, fecha_mod) VALUES( NULL,?,?,?,1,datetime(" + "'now'," + "'localtime'))");
 			stAtributosProceso.prepare();
 			stAtributosProceso
 					.bind(1, Integer.parseInt(campo.getId_atributo()));
