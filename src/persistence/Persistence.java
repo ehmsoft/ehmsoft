@@ -41,13 +41,13 @@ public class Persistence implements Cargado, Guardado {
 						.createStatement("UPDATE demandantes SET cedula = ?,"
 								+ " nombre = ?," + " telefono = ?,"
 								+ " direccion = ?," + "correo= ?,"
-								+ "notas = ? WHERE id_demandante = ?");
+								+ "notas = ?, modificado = 1, fecha_mod = datetime(" + "'now'," + "'localtime') WHERE id_demandante = ?");
 			} else if (persona.getTipo() == 2) {
 				stAcPersona1 = d
 						.createStatement("UPDATE demandados SET cedula = ?,"
 								+ " nombre = ?," + " telefono = ?,"
 								+ " direccion = ?," + "correo= ?,"
-								+ " notas = ? WHERE id_demandado = ?");
+								+ " notas = ?, modificado = 1, fecha_mod = datetime(" + "'now'," +  "'localtime') WHERE id_demandado = ?");
 			} else {
 				throw new Exception("Tipo persona invalido");
 			}
@@ -171,7 +171,7 @@ public class Persistence implements Cargado, Guardado {
 			d = DatabaseFactory.open(connMgr.getDbLocation());
 			stAcJuzgado = d.createStatement("UPDATE juzgados SET nombre = ?,"
 					+ " ciudad = ?," + " telefono = ?," + " direccion=?,"
-					+ " tipo = ? WHERE id_juzgado = ?");
+					+ " tipo = ?, modificado = 1, fecha_mod = datetime(" + "'now'," + "'localtime') WHERE id_juzgado = ?");
 			stAcJuzgado.prepare();
 			stAcJuzgado.bind(1, juzgado.getNombre());
 			stAcJuzgado.bind(2, juzgado.getCiudad());
@@ -273,7 +273,7 @@ public class Persistence implements Cargado, Guardado {
 							+ " fecha_creacion = datetime(?),"
 							+ " fecha_proxima = datetime(?),"
 							+ " descripcion = (?),"
-							+ " uid = ? WHERE id_actuacion = ?");
+							+ " uid = ?, modificado = 1, fecha_mod = datetime(" + "'now'," + "'localtime') WHERE id_actuacion = ?");
 			stAcActuacion.prepare();
 			stAcActuacion.bind(1, actuacion.getJuzgado().getId_juzgado());
 			stAcActuacion.bind(2, calendarToString(actuacion.getFecha()));
@@ -351,7 +351,7 @@ public class Persistence implements Cargado, Guardado {
 			connMgr.prepararBD();
 			d = DatabaseFactory.open(connMgr.getDbLocation());
 			Statement stAcAtributoProceso = d
-					.createStatement("UPDATE atributos_proceso SET valor = ? WHERE id_atributo_proceso = ?");
+					.createStatement("UPDATE atributos_proceso SET valor = ?, modificado = 1, fecha_mod = datetime(" + "'now'," + "'localtime') WHERE id_atributo_proceso = ?");
 			stAcAtributoProceso.prepare();
 			stAcAtributoProceso.bind(1, campo.getValor());
 			stAcAtributoProceso.bind(2, campo.getId_campo());
@@ -424,7 +424,7 @@ public class Persistence implements Cargado, Guardado {
 			Statement stAcAtributo = d
 					.createStatement("UPDATE atributos SET nombre = ?,"
 							+ " obligatorio = ?," + " longitud_max = ?,"
-							+ " longitud_min = ? WHERE id_atributo = ?");
+							+ " longitud_min = ?, modificado = 1, fecha_mod = datetime(" + "'now'," + "'localtime') WHERE id_atributo = ?");
 			stAcAtributo.prepare();
 			stAcAtributo.bind(1, campo.getNombre());
 			int obligatorio = 0;
@@ -524,7 +524,7 @@ public class Persistence implements Cargado, Guardado {
 							+ " radicado = ?," + " radicado_unico = ?,"
 							+ " estado = ?," + " tipo = ?," + " notas = ?,"
 							+ " prioridad = ?," + " id_juzgado = ?,"
-							+ " id_categoria = ? WHERE id_proceso = ?");
+							+ " id_categoria = ?, modificado = 1, fecha_mod = datetime(" + "'now'," + "'localtime') WHERE id_proceso = ?");
 			stAcProceso.prepare();
 			if (proceso.getDemandante() == null) {
 				stAcProceso.bind(1, "1");
@@ -694,7 +694,7 @@ public class Persistence implements Cargado, Guardado {
 				connMgr.prepararBD();
 				d = DatabaseFactory.open(connMgr.getDbLocation());
 				Statement stCategoria = d
-						.createStatement("UPDATE categorias SET descripcion = ? WHERE id_categoria = ?");
+						.createStatement("UPDATE categorias SET descripcion = ?, modificado = 1, fecha_mod = datetime(" + "'now'," + "'localtime') WHERE id_categoria = ?");
 				stCategoria.prepare();
 				stCategoria.bind(1, categoria.getDescripcion());
 				stCategoria.bind(2, categoria.getId_categoria());
@@ -785,7 +785,7 @@ public class Persistence implements Cargado, Guardado {
 							+ " radicado_unico = ?," + " estado = ?,"
 							+ " tipo = ?," + " notas = ?," + " prioridad = ?,"
 							+ " id_juzgado = ?," + " nombre = ?,"
-							+ " id_categoria = ? WHERE id_plantilla = ?");
+							+ " id_categoria = ?, modificado = 1, fecha_mod = datetime(" + "'now'," + "'localtime') WHERE id_plantilla = ?");
 			stAcPlantilla.prepare();
 			if (plantilla.getDemandante() == null) {
 				stAcPlantilla.bind(1, "1");
@@ -935,7 +935,9 @@ public class Persistence implements Cargado, Guardado {
 			connMgr.prepararBD();
 			d = DatabaseFactory.open(connMgr.getDbLocation());
 			Statement stAcAtributoProceso = d
-					.createStatement("UPDATE atributos_plantilla SET valor = ? WHERE id_atributo_plantilla = ?");
+					.createStatement("UPDATE atributos_plantilla SET valor = ?, modificado = 1, fecha_mod = datetime(" +
+							"'now'," +
+							"'localtime') WHERE id_atributo_plantilla = ?");
 			stAcAtributoProceso.prepare();
 			stAcAtributoProceso.bind(1, campo.getValor());
 			stAcAtributoProceso.bind(2, campo.getId_campo());
