@@ -1208,7 +1208,7 @@ public class Persistence implements Cargado, Guardado {
 			connMgr.prepararBD();
 			d = DatabaseFactory.open(connMgr.getDbLocation());
 			Statement st = d
-					.createStatement("SELECT id_demandante, cedula, nombre, telefono, direccion, correo, notas FROM demandantes order by nombre");
+					.createStatement("SELECT id_demandante, cedula, nombre, telefono, direccion, correo, notas FROM demandantes WHERE eliminado = 0 order by nombre");
 			st.prepare();
 			Cursor cursor = st.getCursor();
 			while (cursor.next()) {
@@ -1249,7 +1249,7 @@ public class Persistence implements Cargado, Guardado {
 			connMgr.prepararBD();
 			d = DatabaseFactory.open(connMgr.getDbLocation());
 			Statement st = d
-					.createStatement("SELECT id_demandado, cedula, nombre, telefono, direccion, correo, notas FROM demandados order by nombre");
+					.createStatement("SELECT id_demandado, cedula, nombre, telefono, direccion, correo, notas FROM demandados WHERE eliminado = 0 order by nombre");
 			st.prepare();
 			Cursor cursor = st.getCursor();
 			while (cursor.next()) {
@@ -1378,7 +1378,7 @@ public class Persistence implements Cargado, Guardado {
 			// Statement st =
 			// d.createStatement("SELECT p.id_proceso, p.fecha_creacion, p.radicado, p.radicado_unico, p.estado, p.tipo, p.notas, p.prioridad, demandante.id_demandante, demandante.cedula, demandante.nombre, demandante.telefono, demandante.direccion, demandante.correo, demandante.notas, demandado.id_demandado, demandado.cedula, demandado.nombre, demandado.telefono, demandado.direccion, demandado.correo, demandado.notas, j.id_juzgado, j.nombre, j.ciudad, j.telefono, j.direccion, j.tipo, c.descripcion FROM procesos p, demandantes demandante, demandados demandado, juzgados j, categorias c WHERE p.id_demandante = demandante.id_demandante AND p.id_demandado = demandado.id_demandado AND p.id_juzgado = j.id_juzgado AND p.id_categoria = c.id_categoria ");
 			Statement st = d
-					.createStatement("SELECT p.id_proceso, p.id_demandante, p.id_demandado, p.fecha_creacion, p.radicado, p.radicado_unico, p.estado, p.tipo, p.notas, p.prioridad, p.id_juzgado, p.id_categoria FROM procesos p");
+					.createStatement("SELECT p.id_proceso, p.id_demandante, p.id_demandado, p.fecha_creacion, p.radicado, p.radicado_unico, p.estado, p.tipo, p.notas, p.prioridad, p.id_juzgado, p.id_categoria FROM procesos p WHERE p.eliminado = 0");
 			st.prepare();
 			Cursor cursor = st.getCursor();
 			while (cursor.next()) {
@@ -1502,7 +1502,7 @@ public class Persistence implements Cargado, Guardado {
 			connMgr.prepararBD();
 			d = DatabaseFactory.open(connMgr.getDbLocation());
 			Statement st = d
-					.createStatement("SELECT id_actuacion, id_proceso, id_juzgado, fecha_creacion, fecha_proxima, descripcion, uid FROM actuaciones WHERE id_proceso = ? ORDER BY fecha_creacion, fecha_proxima");
+					.createStatement("SELECT id_actuacion, id_proceso, id_juzgado, fecha_creacion, fecha_proxima, descripcion, uid FROM actuaciones WHERE id_proceso = ? AND eliminado = 0 ORDER BY fecha_creacion, fecha_proxima");
 			st.prepare();
 			st.bind(1, proceso.getId_proceso());
 			Cursor cursor = st.getCursor();
@@ -1583,7 +1583,7 @@ public class Persistence implements Cargado, Guardado {
 			connMgr.prepararBD();
 			d = DatabaseFactory.open(connMgr.getDbLocation());
 			Statement st = d
-					.createStatement("SELECT id_actuacion, id_proceso, id_juzgado, fecha_creacion, fecha_proxima, descripcion, uid FROM actuaciones WHERE fecha_proxima >= date() ORDER BY fecha_proxima LIMIT ?");
+					.createStatement("SELECT id_actuacion, id_proceso, id_juzgado, fecha_creacion, fecha_proxima, descripcion, uid FROM actuaciones WHERE fecha_proxima >= date() AND eliminado = 0 ORDER BY fecha_proxima LIMIT ?");
 			st.prepare();
 			st.bind(1, cantidad);
 			Cursor cursor = st.getCursor();
@@ -1630,7 +1630,7 @@ public class Persistence implements Cargado, Guardado {
 			connMgr.prepararBD();
 			d = DatabaseFactory.open(connMgr.getDbLocation());
 			Statement st = d
-					.createStatement("SELECT id_juzgado, nombre, ciudad, tipo, direccion, telefono FROM juzgados order by nombre");
+					.createStatement("SELECT id_juzgado, nombre, ciudad, tipo, direccion, telefono FROM juzgados WHERE eliminado = 0 order by nombre");
 			st.prepare();
 			Cursor cursor = st.getCursor();
 			while (cursor.next()) {
@@ -1666,7 +1666,7 @@ public class Persistence implements Cargado, Guardado {
 			connMgr.prepararBD();
 			d = DatabaseFactory.open(connMgr.getDbLocation());
 			Statement st = d
-					.createStatement("SELECT id_juzgado, nombre, ciudad, tipo, direccion, telefono FROM juzgados where id_juzgado = ?");
+					.createStatement("SELECT id_juzgado, nombre, ciudad, tipo, direccion, telefono FROM juzgados WHERE id_juzgado = ?");
 			st.prepare();
 			st.bind(1, id_juzgado);
 			Cursor cursor = st.getCursor();
@@ -1699,7 +1699,7 @@ public class Persistence implements Cargado, Guardado {
 			connMgr.prepararBD();
 			d = DatabaseFactory.open(connMgr.getDbLocation());
 			Statement st = d
-					.createStatement("SELECT id_categoria, descripcion FROM categorias where id_categoria = ?");
+					.createStatement("SELECT id_categoria, descripcion FROM categorias WHERE id_categoria = ?");
 			st.prepare();
 			st.bind(1, id_categoria);
 			Cursor cursor = st.getCursor();
@@ -1727,7 +1727,7 @@ public class Persistence implements Cargado, Guardado {
 			connMgr.prepararBD();
 			d = DatabaseFactory.open(connMgr.getDbLocation());
 			Statement st = d
-					.createStatement("SELECT id_categoria, descripcion FROM categorias order by descripcion");
+					.createStatement("SELECT id_categoria, descripcion FROM categorias WHERE eliminado = 0 ORDER BY descripcion");
 			st.prepare();
 			Cursor cursor = st.getCursor();
 			while (cursor.next()) {
@@ -1757,7 +1757,7 @@ public class Persistence implements Cargado, Guardado {
 			connMgr.prepararBD();
 			d = DatabaseFactory.open(connMgr.getDbLocation());
 			Statement st = d
-					.createStatement("SELECT at.id_atributo_proceso, at.id_atributo, at.valor, a.nombre,a.obligatorio,a.longitud_max, a.longitud_min FROM atributos_proceso at, atributos a WHERE at.id_atributo = a.id_atributo AND at.id_proceso = ?");
+					.createStatement("SELECT at.id_atributo_proceso, at.id_atributo, at.valor, a.nombre,a.obligatorio,a.longitud_max, a.longitud_min FROM atributos_proceso at, atributos a WHERE at.id_atributo = a.id_atributo AND at.id_proceso = ? AND at.eliminado = 0");
 			st.prepare();
 			st.bind(1, proceso.getId_proceso());
 			Cursor cursor = st.getCursor();
@@ -1833,7 +1833,7 @@ public class Persistence implements Cargado, Guardado {
 			connMgr.prepararBD();
 			d = DatabaseFactory.open(connMgr.getDbLocation());
 			Statement st = d
-					.createStatement("SELECT id_atributo, nombre,obligatorio,longitud_max, longitud_min FROM  atributos");
+					.createStatement("SELECT id_atributo, nombre,obligatorio,longitud_max, longitud_min FROM  atributos WHERE eliminado = 0");
 			st.prepare();
 			Cursor cursor = st.getCursor();
 			while (cursor.next()) {
@@ -1905,7 +1905,7 @@ public class Persistence implements Cargado, Guardado {
 			connMgr.prepararBD();
 			d = DatabaseFactory.open(connMgr.getDbLocation());
 			Statement st = d
-					.createStatement("SELECT p.id_plantilla, p.id_demandante, p.id_demandado, p.radicado, p.radicado_unico, p.estado, p.tipo, p.notas, p.prioridad, p.id_juzgado, p.id_categoria, p.nombre FROM plantillas p");
+					.createStatement("SELECT p.id_plantilla, p.id_demandante, p.id_demandado, p.radicado, p.radicado_unico, p.estado, p.tipo, p.notas, p.prioridad, p.id_juzgado, p.id_categoria, p.nombre FROM plantillas p WHERE p.eliminado = 0");
 			st.prepare();
 			Cursor cursor = st.getCursor();
 			while (cursor.next()) {
@@ -2028,7 +2028,7 @@ public class Persistence implements Cargado, Guardado {
 			connMgr.prepararBD();
 			d = DatabaseFactory.open(connMgr.getDbLocation());
 			Statement st = d
-					.createStatement("SELECT at.id_atributo_plantilla, at.id_atributo, at.valor, a.nombre,a.obligatorio,a.longitud_max, a.longitud_min FROM atributos_plantilla at, atributos a WHERE at.id_atributo = a.id_atributo AND at.id_plantilla = ?");
+					.createStatement("SELECT at.id_atributo_plantilla, at.id_atributo, at.valor, a.nombre,a.obligatorio,a.longitud_max, a.longitud_min FROM atributos_plantilla at, atributos a WHERE at.id_atributo = a.id_atributo AND at.id_plantilla = ? AND at.eliminado = 0");
 			st.prepare();
 			st.bind(1, plantilla.getId_plantilla());
 			Cursor cursor = st.getCursor();
