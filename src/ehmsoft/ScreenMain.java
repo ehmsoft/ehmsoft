@@ -405,19 +405,23 @@ public class ScreenMain extends MainScreen {
 							(int) (Display.getWidth() * (16.3 / 360)), 0, 0,
 							(int) (Display.getWidth() * (16.3 / 360))));
 				}
-
-				Actuacion a = (Actuacion) _lista.get(_lista,
-						_lista.getSelectedIndex());
-				if (a == null) {
-					a = (Actuacion) _lista.get(_lista, 0);
+				if (_lista.isEmpty()) {
+					_descripcion.setText("");
+					_juzgado.setText("");
+					_fecha.setText("");
+					_fechaProxima.setText("");
+				} else {
+					Actuacion a = (Actuacion) _lista.get(_lista,
+							_lista.getSelectedIndex());
+					_descripcion.setText(a.getDescripcion());
+					_juzgado.setText(a.getJuzgado().getNombre());
+					String fecha = Util.calendarToString(a.getFecha(), true);
+					_fecha.setText(fecha);
+					fecha = Util.calendarToString(a.getFechaProxima(), true);
+					_fechaProxima.setText(fecha);
 				}
-				_descripcion.setText(a.getDescripcion());
-				_juzgado.setText(a.getJuzgado().getNombre());
-				String fecha = Util.calendarToString(a.getFecha(), true);
-				_fecha.setText(fecha);
-				fecha = Util.calendarToString(a.getFechaProxima(), true);
-				_fechaProxima.setText(fecha);
 			} catch (Exception e) {
+				Util.alert(e.toString());
 			}
 		}
 	};
