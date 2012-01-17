@@ -33,7 +33,7 @@ public class NuevoJuzgadoScreen extends FondoNormal {
 		_txtDireccion = new BasicEditField(TextField.NO_NEWLINE);
 		_txtDireccion.setLabel("Dirección: ");
 
-		_txtTelefono = new BasicEditField(TextField.NO_NEWLINE);
+		_txtTelefono = new BasicEditField(TextField.NO_NEWLINE|BasicEditField.FILTER_PHONE);
 		_txtTelefono.setLabel("Teléfono: ");
 
 		_txtTipo = new BasicEditField(TextField.NO_NEWLINE);

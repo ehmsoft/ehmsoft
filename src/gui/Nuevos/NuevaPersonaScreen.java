@@ -30,9 +30,9 @@ public class NuevaPersonaScreen extends FondoNormal {
 		_txtDireccion.setLabel("Dirección: ");
 		_txtNotas = new BasicEditField();
 		_txtNotas.setLabel("Notas: ");
-		_txtTelefono = new BasicEditField(TextField.NO_NEWLINE);
+		_txtTelefono = new BasicEditField(TextField.NO_NEWLINE|BasicEditField.FILTER_PHONE);
 		_txtTelefono.setLabel("Teléfono: ");
-		_txtCorreo = new BasicEditField(TextField.NO_NEWLINE);
+		_txtCorreo = new BasicEditField(TextField.NO_NEWLINE|BasicEditField.FILTER_EMAIL);
 		_txtCorreo.setLabel("Correo: ");
 		// Se agregan los elementos a la pantalla
 
