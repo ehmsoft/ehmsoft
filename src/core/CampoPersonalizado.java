@@ -129,10 +129,14 @@ public class CampoPersonalizado {
 				return false;
 		} else if (!obligatorio.equals(other.obligatorio))
 			return false;
-		if (valor == null) {
-			if (other.valor != null)
-				return false;
-		} else if (!valor.equals(other.valor))
+		if(valor == null) {
+			if(other.valor != null) {
+				if(!other.valor.equals("")) {
+					return false;
+				}
+			}
+		}
+		else if (!valor.equals(other.valor))
 			return false;
 		return true;
 	}
