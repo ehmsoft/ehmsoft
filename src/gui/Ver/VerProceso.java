@@ -252,10 +252,24 @@ public class VerProceso {
 
 	private void addCampo() {
 		CampoPersonalizado campo = Util.listadoCampos(true, 0);
-		if (campo != null) {
-			_camposNuevos.addElement(campo);
-			_screen.addCampo(campo, campo.getNombre(), "", campo.getLongitudMax());
-			_screen.setDirty(true);
+		if (!_campos.contains(campo) && !_camposNuevos.contains(campo)) {
+			if (campo != null) {
+				if (_camposEliminados.contains(campo)) {
+					_camposEliminados.removeElement(campo);
+					if (_camposOriginales.contains(campo)) {
+						_campos.addElement(campo);
+					} else {
+						_camposNuevos.addElement(campo);
+					}
+				} else {
+					_camposNuevos.addElement(campo);
+				}
+				_screen.addCampo(campo, campo.getNombre(), "",
+						campo.getLongitudMax());
+				_screen.setDirty(true);
+			}
+		} else {
+			Util.alert("Este campo personalizado ya está incluido en el proceso");
 		}
 	}
 

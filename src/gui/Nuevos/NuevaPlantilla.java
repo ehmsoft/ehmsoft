@@ -233,9 +233,14 @@ public class NuevaPlantilla {
 
 	private void addCampo() {
 		CampoPersonalizado campo = Util.listadoCampos(true, 0);
-		if (campo != null) {
-			_campos.addElement(campo);
-			_screen.addCampo(campo, campo.getNombre(), campo.getLongitudMax());
+		if (!_campos.contains(campo)) {
+			if (campo != null) {
+				_campos.addElement(campo);
+				_screen.addCampo(campo, campo.getNombre(),
+						campo.getLongitudMax());
+			}
+		} else {
+			Util.alert("Este campo personalizado ya está incluido en el proceso");
 		}
 	}
 
