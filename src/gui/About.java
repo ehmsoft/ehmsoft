@@ -5,6 +5,7 @@ import net.rim.device.api.ui.Color;
 import net.rim.device.api.ui.Field;
 import net.rim.device.api.ui.Graphics;
 import net.rim.device.api.ui.Manager;
+import net.rim.device.api.ui.UiApplication;
 import net.rim.device.api.ui.component.BitmapField;
 import net.rim.device.api.ui.component.Dialog;
 import net.rim.device.api.ui.component.LabelField;
@@ -36,10 +37,12 @@ public class About extends FullScreen {
 	private final String NOMBRE_APLICACION = "Procesos Judiciales";
 	private final String VERSION = "Versión 1.0";
 	private final String LICENCIA = "Ver Términos y condiciones";
-	private final String EMPRESA = "ehmSoft";
+	private final String EMPRESA = "Ver información de ehmSoftware";
 	private final String URL = "www.ehmsoft.com";
 	private final String CONTACTO = "soporte@ehmsoft.com";
-
+	private final String ICONLEAK1 = "Íconos por: http://www.iconleak.com,";
+	private final String ICONLEAK2 = "concedidos bajo licencia";
+	private final String ICONLEAK3 = "Tauriest Studio Free License";
 	public About() {
 		super(Manager.VERTICAL_SCROLL | Manager.VERTICAL_SCROLLBAR);
 		this.setBackground(BackgroundFactory.createSolidBackground(Color.BLACK));
@@ -52,16 +55,25 @@ public class About extends FullScreen {
 				return true;
 			}
 		};
+		WhiteLabelField lblEmpresa = new WhiteLabelField(EMPRESA,
+				Field.FIELD_HCENTER | Field.FOCUSABLE) {
+			protected boolean navigationClick(int status, int time) {
+				UiApplication.getUiApplication().pushScreen(new AboutEhm());
+				return true;
+			}
+		};
 
 		add(new WhiteLabelField("\n", Field.FIELD_HCENTER));
 		add(_logo);
 		add(new WhiteLabelField(NOMBRE_APLICACION, Field.FIELD_HCENTER));
 		add(new WhiteLabelField(VERSION, Field.FIELD_HCENTER));
 		add(lblLicencia);
-		add(new WhiteLabelField(EMPRESA, Field.FIELD_HCENTER));
+		add(lblEmpresa);
 		add(new WhiteLabelField(URL, Field.FOCUSABLE | Field.FIELD_HCENTER));
 		add(new WhiteLabelField(CONTACTO, Field.FOCUSABLE | Field.FIELD_HCENTER));
-
+		add(new WhiteLabelField(ICONLEAK1, Field.FIELD_HCENTER));
+		add(new WhiteLabelField(ICONLEAK2, Field.FIELD_HCENTER));
+		add(new WhiteLabelField(ICONLEAK3, Field.FIELD_HCENTER));
 	}
 
 	public boolean onClose() {
