@@ -1,6 +1,7 @@
 package gui;
 
 import net.rim.device.api.system.Bitmap;
+import net.rim.device.api.system.Display;
 import net.rim.device.api.ui.Color;
 import net.rim.device.api.ui.Field;
 import net.rim.device.api.ui.Graphics;
@@ -26,8 +27,18 @@ public class AboutEhm extends FullScreen {
 	public AboutEhm() {
 		super(Manager.VERTICAL_SCROLL | Manager.VERTICAL_SCROLLBAR);
 		this.setBackground(BackgroundFactory.createSolidBackground(Color.BLACK));
-		_logo = new BitmapField(Bitmap.getBitmapResource("logoEhm.png"),
-				FIELD_HCENTER);
+		if (Display.getWidth() == 480){
+			_logo = new BitmapField(Bitmap.getBitmapResource("logoN450.png"),
+					FIELD_HCENTER);
+		}
+		else if(Display.getWidth() == 360){
+			_logo = new BitmapField(Bitmap.getBitmapResource("logoN350.png"),
+					FIELD_HCENTER);
+		}
+		else {
+			_logo = new BitmapField(Bitmap.getBitmapResource("logoN300.png"),
+					FIELD_HCENTER);
+		}
 		add(new WhiteLabelField("\n", Field.FIELD_HCENTER));
 		add(_logo);
 		add(new WhiteLabelField(EMPRESA, Field.FIELD_HCENTER));
