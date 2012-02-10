@@ -20,7 +20,8 @@ public class AboutEhm extends FullScreen {
 	private final String EMPRESA = "ehmSoftware S.A.S";
 	private final String DIRECCION = "Calle 38 bis 9 b 31";
 	private final String CIUDAD = "Pereira, Colombia";
-	private final String TELEFONO = "Tel: (57)3175911125";
+	private final String TELEFONO = "Tel: (+576)3266660";
+	private final String MOVIL = "Móvil: (+57)3175911125";
 	private final String URL = "www.ehmsoft.com";
 	private final String CONTACTO = "soporte@ehmsoft.com";
 
@@ -46,6 +47,7 @@ public class AboutEhm extends FullScreen {
 		add(new WhiteLabelField(DIRECCION, Field.FOCUSABLE | Field.FIELD_HCENTER));
 		add(new WhiteLabelField(CIUDAD, Field.FOCUSABLE | Field.FIELD_HCENTER));
 		add(new WhiteLabelField(TELEFONO, Field.FOCUSABLE | Field.FIELD_HCENTER));
+		add(new WhiteLabelField(MOVIL, Field.FOCUSABLE | Field.FIELD_HCENTER));
 		add(new WhiteLabelField(CONTACTO, Field.FOCUSABLE | Field.FIELD_HCENTER));
 
 	}
