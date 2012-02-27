@@ -35,7 +35,7 @@ public class About extends FullScreen {
 			+ "este documento y puede retirar la licencia de uso si usted no cumple con los términos y condiciones. ";
 	private BitmapField _logo;
 	private final String NOMBRE_APLICACION = "Procesos Judiciales";
-	private final String VERSION = "Versión 1.0";
+	private final String VERSION = "Versión 1.1";
 	private final String LICENCIA = "Ver Términos y condiciones";
 	private final String EMPRESA = "Ver información de ehmSoftware";
 	private final String URL = "www.ehmsoft.com";
