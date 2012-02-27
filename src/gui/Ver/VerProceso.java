@@ -131,15 +131,15 @@ public class VerProceso {
 	}
 
 	private void actualizarProceso() {
-		if (_screen.isDirty()) {
+		if (_demandante == null || _demandante.getId() == "1") {
+			_screen.alert("El Demandante es obligatorio");
+		} else if (_demandado == null || _demandado.getId() == "1") {
+			_screen.alert("El Demandado es obligatorio");
+		} else if (_juzgado == null || _juzgado.getId_juzgado() == "1") {
+			_screen.alert("El juzgado es obligatorio");
+		} else if (_screen.isDirty()) {
 			getValoresCampos();
-			if (_demandante == null) {
-				_screen.alert("El Demandante es obligatorio");
-			} else if (_demandado == null) {
-				_screen.alert("El Demandado es obligatorio");
-			} else if (_juzgado == null) {
-				_screen.alert("El juzgado es obligatorio");
-			} else if (isCampoObligatorio()) {
+			if (isCampoObligatorio()) {
 			} else if (checkLong()) {
 			} else {
 				_screen.setStatus(Util.getWaitLabel());
@@ -252,10 +252,24 @@ public class VerProceso {
 
 	private void addCampo() {
 		CampoPersonalizado campo = Util.listadoCampos(true, 0);
-		if (campo != null) {
-			_camposNuevos.addElement(campo);
-			_screen.addCampo(campo, campo.getNombre(), "", campo.getLongitudMax());
-			_screen.setDirty(true);
+		if (!_campos.contains(campo) && !_camposNuevos.contains(campo)) {
+			if (campo != null) {
+				if (_camposEliminados.contains(campo)) {
+					_camposEliminados.removeElement(campo);
+					if (_camposOriginales.contains(campo)) {
+						_campos.addElement(campo);
+					} else {
+						_camposNuevos.addElement(campo);
+					}
+				} else {
+					_camposNuevos.addElement(campo);
+				}
+				_screen.addCampo(campo, campo.getNombre(), "",
+						campo.getLongitudMax());
+				_screen.setDirty(true);
+			}
+		} else {
+			Util.alert("Este campo personalizado ya está incluido en el proceso");
 		}
 	}
 
@@ -584,6 +598,13 @@ public class VerProceso {
 	}
 
 	private void cerrarPantalla() {
+		if (_demandante == null || _demandante.getId() == "1") {
+			_screen.setDirty(true);
+		} else if (_demandado == null || _demandado.getId() == "1") {
+			_screen.setDirty(true);
+		} else if (_juzgado == null || _juzgado.getId_juzgado() == "1") {
+			_screen.setDirty(true);
+		}
 		if (_screen.isDirty()) {
 			Object[] ask = { "Guardar", "Descartar", "Cancelar" };
 			int sel = _screen.ask(ask, "Se han detectado cambios", 2);
