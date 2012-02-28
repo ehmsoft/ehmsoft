@@ -79,8 +79,11 @@ public class ConnectionManager {
 					+ "('id_demandante' INTEGER PRIMARY KEY,"
 					+ "'cedula' TEXT," + "'nombre' TEXT," + "'telefono' TEXT,"
 					+ "'direccion' TEXT," + "'correo' TEXT," + "'notas' TEXT, "
-					+ "'nuevo' BOOLEAN, " + "'modificado' BOOLEAN, "
-					+ "'eliminado' BOOLEAN, " + "'fecha_mod' DATE," + "UNIQUE("
+					+ "'nuevo' BOOLEAN DEFAULT 1, " 
+					+ "'modificado' BOOLEAN DEFAULT 0, "
+					+ "'eliminado' BOOLEAN DEFAULT 0, " 
+					+ "'fecha_mod' DATE DEFAULT (datetime(" + "'now', " + "'localtime'))," 
+					+ "UNIQUE("
 					+ "'cedula'," + "'nombre'))");
 			st.prepare();
 			st.execute();
@@ -90,8 +93,11 @@ public class ConnectionManager {
 					+ "'id_demandado' INTEGER PRIMARY KEY," + "'cedula' TEXT,"
 					+ "'nombre' TEXT," + "'telefono' TEXT,"
 					+ "'direccion' TEXT," + "'correo' TEXT," + "'notas' TEXT, "
-					+ "'nuevo' BOOLEAN, " + "'modificado' BOOLEAN, "
-					+ "'eliminado' BOOLEAN, " + "'fecha_mod' DATE," + "UNIQUE("
+					+ "'nuevo' BOOLEAN DEFAULT 1, " 
+					+ "'modificado' BOOLEAN DEFAULT 0, "
+					+ "'eliminado' BOOLEAN DEFAULT 0, " 
+					+ "'fecha_mod' DATE DEFAULT (datetime(" + "'now', " + "'localtime')),"
+					+ "UNIQUE("
 					+ "'cedula'," + "'nombre'))");
 			st.prepare();
 			st.execute();
@@ -101,8 +107,11 @@ public class ConnectionManager {
 					+ "'id_juzgado' INTEGER PRIMARY KEY," + "'nombre' TEXT,"
 					+ "'ciudad' TEXT," + "'telefono' TEXT,"
 					+ "'direccion' TEXT," + "'tipo' TEXT, "
-					+ "'nuevo' BOOLEAN, " + "'modificado' BOOLEAN, "
-					+ "'eliminado' BOOLEAN, " + "'fecha_mod' DATE," + "UNIQUE("
+					+ "'nuevo' BOOLEAN DEFAULT 1, " 
+					+ "'modificado' BOOLEAN DEFAULT 0, "
+					+ "'eliminado' BOOLEAN DEFAULT 0, " 
+					+ "'fecha_mod' DATE DEFAULT (datetime(" + "'now', " + "'localtime'))," 
+					+ "UNIQUE("
 					+ "'nombre'," + "'ciudad'," + "'tipo'))");
 			st.prepare();
 			st.execute();
@@ -116,10 +125,10 @@ public class ConnectionManager {
 					+ "'fecha_proxima' DATE,"
 					+ "'descripcion' TEXT,"
 					+ "'uid' TEXT,"
-					+ "'nuevo' BOOLEAN, "
-					+ "'modificado' BOOLEAN, "
-					+ "'eliminado' BOOLEAN, "
-					+ "'fecha_mod' DATE,"
+					+ "'nuevo' BOOLEAN DEFAULT 1, "
+					+ "'modificado' BOOLEAN DEFAULT 0, "
+					+ "'eliminado' BOOLEAN DEFAULT 0, "
+					+ "'fecha_mod' DATE DEFAULT (datetime(" + "'now', " + "'localtime')),"
 					+ "FOREIGN KEY(id_proceso) REFERENCES procesos(id_proceso),FOREIGN KEY(id_juzgado) REFERENCES juzgados(id_juzgado), UNIQUE("
 					+ "'id_proceso'," + "'id_juzgado'," + "'fecha_creacion',"
 					+ "'fecha_proxima'," + "'descripcion'))");
@@ -129,9 +138,11 @@ public class ConnectionManager {
 			// Crear Tabla Categorias
 			st = d.createStatement("CREATE TABLE 'categorias'("
 					+ "'id_categoria' INTEGER PRIMARY KEY,"
-					+ "'descripcion' TEXT," + "'nuevo' BOOLEAN, "
-					+ "'modificado' BOOLEAN, " + "'eliminado' BOOLEAN, "
-					+ "'fecha_mod' DATE" + ")");
+					+ "'descripcion' TEXT," 
+					+ "'nuevo' BOOLEAN DEFAULT 1, "
+					+ "'modificado' BOOLEAN DEFAULT 0, " 
+					+ "'eliminado' BOOLEAN DEFAULT 0, "
+					+ "'fecha_mod' DATE DEFAULT (datetime(" + "'now', " + "'localtime'))" + ")");
 			st.prepare();
 			st.execute();
 			st.close();
@@ -139,9 +150,12 @@ public class ConnectionManager {
 			st = d.createStatement("CREATE TABLE 'atributos'("
 					+ "'id_atributo' INTEGER PRIMARY KEY," + "'nombre' TEXT,"
 					+ "'obligatorio' BOOLEAN," + "'longitud_max' INTEGER,"
-					+ "'longitud_min' INTEGER, " + "'nuevo' BOOLEAN, "
-					+ "'modificado' BOOLEAN, " + "'eliminado' BOOLEAN, "
-					+ "'fecha_mod' DATE," + "UNIQUE(" + "'nombre',"
+					+ "'longitud_min' INTEGER, " 
+					+ "'nuevo' BOOLEAN DEFAULT 1, "
+					+ "'modificado' BOOLEAN DEFAULT 0, " 
+					+ "'eliminado' BOOLEAN DEFAULT 0, "
+					+ "'fecha_mod' DATE DEFAULT (datetime(" + "'now', " + "'localtime'))," 
+					+ "UNIQUE(" + "'nombre',"
 					+ "'obligatorio'))");
 			st.prepare();
 			st.execute();
@@ -152,10 +166,10 @@ public class ConnectionManager {
 					+ "'id_atributo' INTEGER,"
 					+ "'id_proceso' INTEGER,"
 					+ "'valor' TEXT,"
-					+ "'nuevo' BOOLEAN, "
-					+ "'modificado' BOOLEAN, "
-					+ "'eliminado' BOOLEAN, "
-					+ "'fecha_mod' DATE,"
+					+ "'nuevo' BOOLEAN DEFAULT 1, "
+					+ "'modificado' BOOLEAN DEFAULT 0, "
+					+ "'eliminado' BOOLEAN DEFAULT 0, "
+					+ "'fecha_mod' DATE DEFAULT (datetime(" + "'now', " + "'localtime')),"
 					+ "FOREIGN KEY(id_atributo) REFERENCES atributos(id_atributo),FOREIGN KEY(id_proceso) REFERENCES procesos(id_proceso),UNIQUE("
 					+ "'id_atributo'," + "'id_proceso'," + "'valor'))");
 			st.prepare();
@@ -175,10 +189,10 @@ public class ConnectionManager {
 					+ "'prioridad' TEXT,"
 					+ "'id_juzgado' INTEGER,"
 					+ "'id_categoria' INTEGER,"
-					+ "'nuevo' BOOLEAN, "
-					+ "'modificado' BOOLEAN, "
-					+ "'eliminado' BOOLEAN, "
-					+ "'fecha_mod' DATE,"
+					+ "'nuevo' BOOLEAN DEFAULT 1, "
+					+ "'modificado' BOOLEAN DEFAULT 0, "
+					+ "'eliminado' BOOLEAN DEFAULT 0, "
+					+ "'fecha_mod' DATE DEFAULT (datetime(" + "'now', " + "'localtime')),"
 					+ "FOREIGN KEY(id_demandante) REFERENCES demandantes(id_demandante),FOREIGN KEY(id_demandado) REFERENCES demandados(id_demandado),FOREIGN KEY(id_juzgado) REFERENCES juzgados(id_juzgado),FOREIGN KEY(id_categoria) REFERENCES categorias(id_categoria), UNIQUE("
 					+ "'id_demandante'," + "'id_demandado'," + "'radicado',"
 					+ "'radicado_unico'," + "'id_juzgado'))");
@@ -206,10 +220,10 @@ public class ConnectionManager {
 					+ "'prioridad' TEXT,"
 					+ "'id_juzgado' INTEGER,"
 					+ "'id_categoria' INTEGER,"
-					+ "'nuevo' BOOLEAN, "
-					+ "'modificado' BOOLEAN, "
-					+ "'eliminado' BOOLEAN, "
-					+ "'fecha_mod' DATE,"
+					+ "'nuevo' BOOLEAN DEFAULT 1, "
+					+ "'modificado' BOOLEAN DEFAULT 0, "
+					+ "'eliminado' BOOLEAN DEFAULT 0, "
+					+ "'fecha_mod' DATE DEFAULT (datetime(" + "'now', " + "'localtime')),"
 					+ "FOREIGN KEY(id_demandante) REFERENCES demandantes(id_demandante),FOREIGN KEY(id_demandado) REFERENCES demandados(id_demandado),FOREIGN KEY(id_juzgado) REFERENCES juzgados(id_juzgado),FOREIGN KEY(id_categoria) REFERENCES categorias(id_categoria), UNIQUE("
 					+ "'id_demandante'," + "'id_demandado'," + "'radicado',"
 					+ "'radicado_unico'," + "'id_juzgado', " + "'id_categoria', " + "'estado'," + "'tipo'," + "'nombre'" +
@@ -223,10 +237,10 @@ public class ConnectionManager {
 					+ "'id_atributo' INTEGER,"
 					+ "'id_plantilla' INTEGER,"
 					+ "'valor' TEXT,"
-					+ "'nuevo' BOOLEAN, "
-					+ "'modificado' BOOLEAN, "
-					+ "'eliminado' BOOLEAN, "
-					+ "'fecha_mod' DATE,"
+					+ "'nuevo' BOOLEAN DEFAULT 1, "
+					+ "'modificado' BOOLEAN DEFAULT 0, "
+					+ "'eliminado' BOOLEAN DEFAULT 0, "
+					+ "'fecha_mod' DATE DEFAULT (datetime(" + "'now', " + "'localtime')),"
 					+ "FOREIGN KEY(id_atributo) REFERENCES atributos(id_atributo),FOREIGN KEY(id_plantilla) REFERENCES plantillas(id_plantilla),UNIQUE("
 					+ "'id_atributo'," + "'id_plantilla'," + "'valor'))");
 			st.prepare();
@@ -245,36 +259,36 @@ public class ConnectionManager {
 			st.execute();
 			st.close();
 			// Insertar la categoria por defecto
-			st = d.createStatement("INSERT INTO 'categorias'(id_categoria, descripcion) VALUES(1,"
-					+ "'Ninguna')");
+			st = d.createStatement("INSERT INTO 'categorias'(id_categoria, descripcion, nuevo) VALUES(1,"
+					+ "'Ninguna', 0)");
 			st.prepare();
 			st.execute();
 			st.close();
 			// Insertar los valores vacíos
-			st = d.createStatement("INSERT INTO demandantes (id_demandante, cedula, nombre, telefono, direccion, correo, notas) VALUES(1, "
+			st = d.createStatement("INSERT INTO demandantes (id_demandante, cedula, nombre, telefono, direccion, correo, notas, nuevo) VALUES(1, "
 					+ "'No id', "
 					+ "'vacio', "
 					+ "'vacio', "
 					+ "'vacio', "
-					+ "'vacio', " + "'vacio')");
+					+ "'vacio', " + "'vacio', 0)");
 			st.prepare();
 			st.execute();
 			st.close();
-			st = d.createStatement("INSERT INTO demandados (id_demandado, cedula, nombre, telefono, direccion, correo, notas) VALUES(1,"
+			st = d.createStatement("INSERT INTO demandados (id_demandado, cedula, nombre, telefono, direccion, correo, notas, nuevo) VALUES(1,"
 					+ "'No id', "
 					+ "'vacio', "
 					+ "'vacio', "
 					+ "'vacio', "
-					+ "'vacio', " + "'vacio')");
+					+ "'vacio', " + "'vacio', 0)");
 			st.prepare();
 			st.execute();
 			st.close();
-			st = d.createStatement("INSERT INTO juzgados (id_juzgado, nombre, ciudad, telefono, direccion, tipo) VALUES(1,"
+			st = d.createStatement("INSERT INTO juzgados (id_juzgado, nombre, ciudad, telefono, direccion, tipo, nuevo) VALUES(1,"
 					+ "'vacio',"
 					+ "'vacio', "
 					+ "'vacio',"
 					+ "'vacio', "
-					+ "'vacio')");
+					+ "'vacio', 0)");
 			st.prepare();
 			st.execute();
 			st.close();
