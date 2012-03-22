@@ -15,6 +15,7 @@ import core.Actuacion;
 import core.ActuacionCritica;
 import core.CampoPersonalizado;
 import core.Categoria;
+import core.CitaCalendario;
 import core.Juzgado;
 import core.Persona;
 import core.Plantilla;
@@ -38,16 +39,16 @@ public class Persistence implements Cargado, Guardado {
 			d = DatabaseFactory.open(connMgr.getDbLocation());
 			if (persona.getTipo() == 1) {
 				stAcPersona1 = d
-						.createStatement("UPDATE demandantes SET cedula = ?,"
-								+ " nombre = ?," + " telefono = ?,"
-								+ " direccion = ?," + "correo= ?,"
-								+ "notas = ?, modificado = 1, fecha_mod = datetime(" + "'now'," + "'localtime') WHERE id_demandante = ?");
+				.createStatement("UPDATE demandantes SET cedula = ?,"
+						+ " nombre = ?," + " telefono = ?,"
+						+ " direccion = ?," + "correo= ?,"
+						+ "notas = ?, modificado = 1, fecha_mod = datetime(" + "'now'," + "'localtime') WHERE id_demandante = ?");
 			} else if (persona.getTipo() == 2) {
 				stAcPersona1 = d
-						.createStatement("UPDATE demandados SET cedula = ?,"
-								+ " nombre = ?," + " telefono = ?,"
-								+ " direccion = ?," + "correo= ?,"
-								+ " notas = ?, modificado = 1, fecha_mod = datetime(" + "'now'," +  "'localtime') WHERE id_demandado = ?");
+				.createStatement("UPDATE demandados SET cedula = ?,"
+						+ " nombre = ?," + " telefono = ?,"
+						+ " direccion = ?," + "correo= ?,"
+						+ " notas = ?, modificado = 1, fecha_mod = datetime(" + "'now'," +  "'localtime') WHERE id_demandado = ?");
 			} else {
 				throw new Exception("Tipo persona invalido");
 			}
@@ -84,10 +85,10 @@ public class Persistence implements Cargado, Guardado {
 			d = DatabaseFactory.open(connMgr.getDbLocation());
 			if (persona.getTipo() == 1) {
 				stPersona1 = d
-						.createStatement("INSERT INTO demandantes (id_demandante,cedula,nombre,telefono,direccion,correo,notas,nuevo,fecha_mod) VALUES(NULL,?,?,?,?,?,?,1,datetime(" + "'now'," + "'localtime'))");
+				.createStatement("INSERT INTO demandantes (id_demandante,cedula,nombre,telefono,direccion,correo,notas,nuevo,fecha_mod) VALUES(NULL,?,?,?,?,?,?,1,datetime(" + "'now'," + "'localtime'))");
 			} else if (persona.getTipo() == 2) {
 				stPersona1 = d
-						.createStatement("INSERT INTO demandados (id_demandado,cedula,nombre,telefono,direccion,correo,notas,nuevo,fecha_mod) VALUES(NULL,?,?,?,?,?,?,1,datetime(" + "'now'," + "'localtime'))");
+				.createStatement("INSERT INTO demandados (id_demandado,cedula,nombre,telefono,direccion,correo,notas,nuevo,fecha_mod) VALUES(NULL,?,?,?,?,?,?,1,datetime(" + "'now'," + "'localtime'))");
 			} else {
 				throw new Exception("Tipo persona invalido");
 			}
@@ -122,19 +123,19 @@ public class Persistence implements Cargado, Guardado {
 			d = DatabaseFactory.open(connMgr.getDbLocation());
 			if (persona.getTipo() == 1) {
 				stDelPersona1 = d
-						.createStatement("UPDATE demandantes SET eliminado = 1, fecha_mod = datetime(" + "'now'," + "'localtime') WHERE id_demandante = ?");
+				.createStatement("UPDATE demandantes SET eliminado = 1, fecha_mod = datetime(" + "'now'," + "'localtime') WHERE id_demandante = ?");
 				stDelPersona2 = d
-						.createStatement("UPDATE procesos SET id_demandante = 1 WHERE id_demandante = ?");
+				.createStatement("UPDATE procesos SET id_demandante = 1 WHERE id_demandante = ?");
 				stDelPersona3 = d
-						.createStatement("UPDATE plantillas SET id_demandante = 1 WHERE id_demandante = ?");
+				.createStatement("UPDATE plantillas SET id_demandante = 1 WHERE id_demandante = ?");
 
 			} else if (persona.getTipo() == 2) {
 				stDelPersona1 = d
-						.createStatement("UPDATE demandados SET eliminado = 1, fecha_mod = datetime(" + "'now'," + "'localtime') WHERE id_demandado = ?");
+				.createStatement("UPDATE demandados SET eliminado = 1, fecha_mod = datetime(" + "'now'," + "'localtime') WHERE id_demandado = ?");
 				stDelPersona2 = d
-						.createStatement("UPDATE procesos SET id_demandado = 1 WHERE id_demandado = ?");
+				.createStatement("UPDATE procesos SET id_demandado = 1 WHERE id_demandado = ?");
 				stDelPersona3 = d
-						.createStatement("UPDATE plantillas SET id_demandado = 1 WHERE id_demandado = ?");
+				.createStatement("UPDATE plantillas SET id_demandado = 1 WHERE id_demandado = ?");
 
 			} else {
 				throw new Exception("Tipo persona invalido");
@@ -198,7 +199,7 @@ public class Persistence implements Cargado, Guardado {
 			connMgr.prepararBD();
 			d = DatabaseFactory.open(connMgr.getDbLocation());
 			Statement stJuzgado = d
-					.createStatement("INSERT INTO juzgados (id_juzgado,nombre,ciudad,telefono,direccion,tipo,nuevo,fecha_mod) VALUES( NULL,?,?,?,?,?,1,datetime(" + "'now'," +  "'localtime'))");
+			.createStatement("INSERT INTO juzgados (id_juzgado,nombre,ciudad,telefono,direccion,tipo,nuevo,fecha_mod) VALUES( NULL,?,?,?,?,?,1,datetime(" + "'now'," +  "'localtime'))");
 			stJuzgado.prepare();
 			stJuzgado.bind(1, juzgado.getNombre());
 			stJuzgado.bind(2, juzgado.getCiudad());
@@ -224,13 +225,13 @@ public class Persistence implements Cargado, Guardado {
 			connMgr.prepararBD();
 			d = DatabaseFactory.open(connMgr.getDbLocation());
 			Statement stDelJuzgado1 = d
-					.createStatement("UPDATE juzgados SET eliminado = 1, fecha_mod = datetime(" + "'now'," + "'localtime') WHERE id_juzgado = ?");
+			.createStatement("UPDATE juzgados SET eliminado = 1, fecha_mod = datetime(" + "'now'," + "'localtime') WHERE id_juzgado = ?");
 			Statement stDelJuzgado2 = d
-					.createStatement("UPDATE procesos SET id_juzgado = 1 WHERE id_juzgado = ?");
+			.createStatement("UPDATE procesos SET id_juzgado = 1 WHERE id_juzgado = ?");
 			Statement stDelJuzgado3 = d
-					.createStatement("UPDATE actuaciones SET id_juzgado = 1 WHERE id_juzgado = ?");
+			.createStatement("UPDATE actuaciones SET id_juzgado = 1 WHERE id_juzgado = ?");
 			Statement stDelJuzgado4 = d
-					.createStatement("UPDATE plantillas SET id_juzgado = 1 WHERE id_juzgado = ?");
+			.createStatement("UPDATE plantillas SET id_juzgado = 1 WHERE id_juzgado = ?");
 
 			stDelJuzgado1.prepare();
 			stDelJuzgado2.prepare();
@@ -259,26 +260,26 @@ public class Persistence implements Cargado, Guardado {
 	}
 
 	public void actualizarActuacion(Actuacion actuacion) throws Exception { // id_proceso
-																			// no
-																			// se
-																			// puede
-																			// cambiar
+		// no
+		// se
+		// puede
+		// cambiar
 		Database d = null;
 		Statement stAcActuacion;
 		try {
 			connMgr.prepararBD();
 			d = DatabaseFactory.open(connMgr.getDbLocation());
 			stAcActuacion = d
-					.createStatement("UPDATE actuaciones SET id_juzgado = ?,"
-							+ " fecha_creacion = datetime(?),"
-							+ " fecha_proxima = datetime(?),"
-							+ " descripcion = (?),"
-							+ " uid = ?, modificado = 1, fecha_mod = datetime(" + "'now'," + "'localtime') WHERE id_actuacion = ?");
+			.createStatement("UPDATE actuaciones SET id_juzgado = ?,"
+					+ " fecha_creacion = datetime(?),"
+					+ " fecha_proxima = datetime(?),"
+					+ " descripcion = (?),"
+					+ " uid = ?, modificado = 1, fecha_mod = datetime(" + "'now'," + "'localtime') WHERE id_actuacion = ?");
 			stAcActuacion.prepare();
 			stAcActuacion.bind(1, actuacion.getJuzgado().getId_juzgado());
 			stAcActuacion.bind(2, calendarToString(actuacion.getFecha()));
 			stAcActuacion
-					.bind(3, calendarToString(actuacion.getFechaProxima()));
+			.bind(3, calendarToString(actuacion.getFechaProxima()));
 			stAcActuacion.bind(4, actuacion.getDescripcion());
 			stAcActuacion.bind(5, actuacion.getUid());
 			stAcActuacion.bind(6, actuacion.getId_actuacion());
@@ -296,13 +297,13 @@ public class Persistence implements Cargado, Guardado {
 	}
 
 	public void guardarActuacion(Actuacion actuacion, String id_proceso)
-			throws Exception {
+	throws Exception {
 		Database d = null;
 		try {
 			connMgr.prepararBD();
 			d = DatabaseFactory.open(connMgr.getDbLocation());
 			Statement stActuacion = d
-					.createStatement("INSERT INTO actuaciones (id_actuacion,id_proceso, id_juzgado, fecha_creacion, fecha_proxima, descripcion, uid, nuevo, fecha_mod) VALUES( NULL,?,?,datetime(?),datetime(?),?,?,1,datetime(" + "'now'," + "'localtime'))");
+			.createStatement("INSERT INTO actuaciones (id_actuacion,id_proceso, id_juzgado, fecha_creacion, fecha_proxima, descripcion, uid, nuevo, fecha_mod) VALUES( NULL,?,?,datetime(?),datetime(?),?,?,1,datetime(" + "'now'," + "'localtime'))");
 			stActuacion.prepare();
 			stActuacion.bind(1, Integer.parseInt(id_proceso));
 			stActuacion.bind(2, actuacion.getJuzgado().getId_juzgado());
@@ -329,7 +330,7 @@ public class Persistence implements Cargado, Guardado {
 			connMgr.prepararBD();
 			d = DatabaseFactory.open(connMgr.getDbLocation());
 			Statement stDelActuacion = d
-					.createStatement("UPDATE actuaciones SET eliminado = 1, fecha_mod = datetime(" + "'now'," + "'localtime') WHERE id_actuacion = ?");
+			.createStatement("UPDATE actuaciones SET eliminado = 1, fecha_mod = datetime(" + "'now'," + "'localtime') WHERE id_actuacion = ?");
 			stDelActuacion.prepare();
 			stDelActuacion.bind(1, actuacion.getId_actuacion());
 			stDelActuacion.execute();
@@ -345,13 +346,13 @@ public class Persistence implements Cargado, Guardado {
 	}
 
 	public void actualizarCampoPersonalizado(CampoPersonalizado campo)
-			throws Exception {
+	throws Exception {
 		Database d = null;
 		try {
 			connMgr.prepararBD();
 			d = DatabaseFactory.open(connMgr.getDbLocation());
 			Statement stAcAtributoProceso = d
-					.createStatement("UPDATE atributos_proceso SET valor = ?, modificado = 1, fecha_mod = datetime(" + "'now'," + "'localtime') WHERE id_atributo_proceso = ?");
+			.createStatement("UPDATE atributos_proceso SET valor = ?, modificado = 1, fecha_mod = datetime(" + "'now'," + "'localtime') WHERE id_atributo_proceso = ?");
 			stAcAtributoProceso.prepare();
 			stAcAtributoProceso.bind(1, campo.getValor());
 			stAcAtributoProceso.bind(2, campo.getId_campo());
@@ -375,10 +376,10 @@ public class Persistence implements Cargado, Guardado {
 			connMgr.prepararBD();
 			d = DatabaseFactory.open(connMgr.getDbLocation());
 			Statement stAtributosProceso = d
-					.createStatement("INSERT INTO atributos_proceso (id_atributo_proceso, id_atributo, id_proceso, valor, nuevo, fecha_mod) VALUES( NULL,?,?,?,1,datetime(" + "'now'," + "'localtime'))");
+			.createStatement("INSERT INTO atributos_proceso (id_atributo_proceso, id_atributo, id_proceso, valor, nuevo, fecha_mod) VALUES( NULL,?,?,?,1,datetime(" + "'now'," + "'localtime'))");
 			stAtributosProceso.prepare();
 			stAtributosProceso
-					.bind(1, Integer.parseInt(campo.getId_atributo()));
+			.bind(1, Integer.parseInt(campo.getId_atributo()));
 			stAtributosProceso.bind(2, Integer.parseInt(id_proceso));
 			stAtributosProceso.bind(3, campo.getValor());
 			stAtributosProceso.execute();
@@ -395,13 +396,13 @@ public class Persistence implements Cargado, Guardado {
 	}
 
 	public void borrarCampoPersonalizado(CampoPersonalizado campo)
-			throws Exception {
+	throws Exception {
 		Database d = null;
 		try {
 			connMgr.prepararBD();
 			d = DatabaseFactory.open(connMgr.getDbLocation());
 			Statement stDelCampoPersonalizado = d
-					.createStatement("UPDATE atributos_proceso SET eliminado = 1, fecha_mod = datetime(" + "'now'," + "'localtime') WHERE id_atributo_proceso = ?");
+			.createStatement("UPDATE atributos_proceso SET eliminado = 1, fecha_mod = datetime(" + "'now'," + "'localtime') WHERE id_atributo_proceso = ?");
 			stDelCampoPersonalizado.prepare();
 			stDelCampoPersonalizado.bind(1, campo.getId_campo());
 			stDelCampoPersonalizado.execute();
@@ -422,9 +423,9 @@ public class Persistence implements Cargado, Guardado {
 			connMgr.prepararBD();
 			d = DatabaseFactory.open(connMgr.getDbLocation());
 			Statement stAcAtributo = d
-					.createStatement("UPDATE atributos SET nombre = ?,"
-							+ " obligatorio = ?," + " longitud_max = ?,"
-							+ " longitud_min = ?, modificado = 1, fecha_mod = datetime(" + "'now'," + "'localtime') WHERE id_atributo = ?");
+			.createStatement("UPDATE atributos SET nombre = ?,"
+					+ " obligatorio = ?," + " longitud_max = ?,"
+					+ " longitud_min = ?, modificado = 1, fecha_mod = datetime(" + "'now'," + "'localtime') WHERE id_atributo = ?");
 			stAcAtributo.prepare();
 			stAcAtributo.bind(1, campo.getNombre());
 			int obligatorio = 0;
@@ -454,7 +455,7 @@ public class Persistence implements Cargado, Guardado {
 			connMgr.prepararBD();
 			d = DatabaseFactory.open(connMgr.getDbLocation());
 			Statement stAtributos = d
-					.createStatement("INSERT INTO atributos (id_atributo, nombre, obligatorio, longitud_max, longitud_min,nuevo, fecha_mod) VALUES( NULL,?,?,?,?,1,datetime(" + "'now'," + "'localtime'))");
+			.createStatement("INSERT INTO atributos (id_atributo, nombre, obligatorio, longitud_max, longitud_min,nuevo, fecha_mod) VALUES( NULL,?,?,?,?,1,datetime(" + "'now'," + "'localtime'))");
 			stAtributos.prepare();
 			stAtributos.bind(1, campo.getNombre());
 			int obligatorio = 0;
@@ -484,11 +485,11 @@ public class Persistence implements Cargado, Guardado {
 			connMgr.prepararBD();
 			d = DatabaseFactory.open(connMgr.getDbLocation());
 			Statement stDelAtributo = d
-					.createStatement("UPDATE atributos SET eliminado = 1, fecha_mod = datetime(" + "'now'," + "'localtime') WHERE id_atributo = ?");
+			.createStatement("UPDATE atributos SET eliminado = 1, fecha_mod = datetime(" + "'now'," + "'localtime') WHERE id_atributo = ?");
 			Statement stDelCampoPersonalizado = d
-					.createStatement("UPDATE atributos_proceso SET eliminado = 1, fecha_mod = datetime(" + "'now'," + "'localtime') WHERE id_atributo = ?");
+			.createStatement("UPDATE atributos_proceso SET eliminado = 1, fecha_mod = datetime(" + "'now'," + "'localtime') WHERE id_atributo = ?");
 			Statement stDelCampoPlantilla = d
-					.createStatement("UPDATE atributos_plantilla SET eliminado = 1, fecha_mod = datetime(" + "'now'," + "'localtime') WHERE id_atributo = ?");
+			.createStatement("UPDATE atributos_plantilla SET eliminado = 1, fecha_mod = datetime(" + "'now'," + "'localtime') WHERE id_atributo = ?");
 			stDelCampoPersonalizado.prepare();
 			stDelAtributo.prepare();
 			stDelCampoPlantilla.prepare();
@@ -518,13 +519,13 @@ public class Persistence implements Cargado, Guardado {
 			connMgr.prepararBD();
 			d = DatabaseFactory.open(connMgr.getDbLocation());
 			stAcProceso = d
-					.createStatement("UPDATE procesos SET id_demandante = ?,"
-							+ " id_demandado = ?,"
-							+ " fecha_creacion = datetime(?),"
-							+ " radicado = ?," + " radicado_unico = ?,"
-							+ " estado = ?," + " tipo = ?," + " notas = ?,"
-							+ " prioridad = ?," + " id_juzgado = ?,"
-							+ " id_categoria = ?, modificado = 1, fecha_mod = datetime(" + "'now'," + "'localtime') WHERE id_proceso = ?");
+			.createStatement("UPDATE procesos SET id_demandante = ?,"
+					+ " id_demandado = ?,"
+					+ " fecha_creacion = datetime(?),"
+					+ " radicado = ?," + " radicado_unico = ?,"
+					+ " estado = ?," + " tipo = ?," + " notas = ?,"
+					+ " prioridad = ?," + " id_juzgado = ?,"
+					+ " id_categoria = ?, modificado = 1, fecha_mod = datetime(" + "'now'," + "'localtime') WHERE id_proceso = ?");
 			stAcProceso.prepare();
 			if (proceso.getDemandante() == null) {
 				stAcProceso.bind(1, "1");
@@ -601,12 +602,12 @@ public class Persistence implements Cargado, Guardado {
 			connMgr.prepararBD();
 			d = DatabaseFactory.open(connMgr.getDbLocation());
 			Statement stProceso = d
-					.createStatement("INSERT INTO procesos (id_proceso,id_demandante,id_demandado,fecha_creacion,radicado,radicado_unico,estado,tipo,notas,prioridad,id_juzgado,id_categoria,nuevo,fecha_mod) VALUES(NULL,?,?,datetime(?),?,?,?,?,?,?,?,?,1,datetime(" + "'now'," + "'localtime'))");
+			.createStatement("INSERT INTO procesos (id_proceso,id_demandante,id_demandado,fecha_creacion,radicado,radicado_unico,estado,tipo,notas,prioridad,id_juzgado,id_categoria,nuevo,fecha_mod) VALUES(NULL,?,?,datetime(?),?,?,?,?,?,?,?,?,1,datetime(" + "'now'," + "'localtime'))");
 			stProceso.prepare();
 			stProceso.bind(1, proceso.getDemandante().getId_persona()); // ingresa
-																		// el id
-																		// del
-																		// demandante
+			// el id
+			// del
+			// demandante
 			stProceso.bind(2, proceso.getDemandado().getId_persona());
 			stProceso.bind(3, calendarToString(proceso.getFecha()));
 			stProceso.bind(4, proceso.getRadicado());
@@ -660,11 +661,11 @@ public class Persistence implements Cargado, Guardado {
 			connMgr.prepararBD();
 			d = DatabaseFactory.open(connMgr.getDbLocation());
 			Statement stDelProceso = d
-					.createStatement("UPDATE procesos SET eliminado = 1, fecha_mod = datetime(" + "'now'," + "'localtime') WHERE id_proceso = ?");
+			.createStatement("UPDATE procesos SET eliminado = 1, fecha_mod = datetime(" + "'now'," + "'localtime') WHERE id_proceso = ?");
 			Statement stDelActuaciones = d
-					.createStatement("UPDATE actuaciones SET eliminado = 1, fecha_mod = datetime(" + "'now'," + "'localtime') WHERE id_proceso = ?");
+			.createStatement("UPDATE actuaciones SET eliminado = 1, fecha_mod = datetime(" + "'now'," + "'localtime') WHERE id_proceso = ?");
 			Statement stDelCampoPersonalizado = d
-					.createStatement("UPDATE atributos_proceso SET eliminado = 1,fecha_mod = datetime(" + "'now'," + "'localtime') WHERE id_proceso = ?");
+			.createStatement("UPDATE atributos_proceso SET eliminado = 1,fecha_mod = datetime(" + "'now'," + "'localtime') WHERE id_proceso = ?");
 			stDelProceso.prepare();
 			stDelActuaciones.prepare();
 			stDelCampoPersonalizado.prepare();
@@ -694,7 +695,7 @@ public class Persistence implements Cargado, Guardado {
 				connMgr.prepararBD();
 				d = DatabaseFactory.open(connMgr.getDbLocation());
 				Statement stCategoria = d
-						.createStatement("UPDATE categorias SET descripcion = ?, modificado = 1, fecha_mod = datetime(" + "'now'," + "'localtime') WHERE id_categoria = ?");
+				.createStatement("UPDATE categorias SET descripcion = ?, modificado = 1, fecha_mod = datetime(" + "'now'," + "'localtime') WHERE id_categoria = ?");
 				stCategoria.prepare();
 				stCategoria.bind(1, categoria.getDescripcion());
 				stCategoria.bind(2, categoria.getId_categoria());
@@ -719,7 +720,7 @@ public class Persistence implements Cargado, Guardado {
 			connMgr.prepararBD();
 			d = DatabaseFactory.open(connMgr.getDbLocation());
 			Statement stCategoria = d
-					.createStatement("INSERT INTO categorias (id_categoria,descripcion,nuevo,fecha_mod) VALUES( NULL,?,1,datetime(" + "'now'," + "'localtime'))");
+			.createStatement("INSERT INTO categorias (id_categoria,descripcion,nuevo,fecha_mod) VALUES( NULL,?,1,datetime(" + "'now'," + "'localtime'))");
 			stCategoria.prepare();
 			stCategoria.bind(1, categoria.getDescripcion());
 			stCategoria.execute();
@@ -742,11 +743,11 @@ public class Persistence implements Cargado, Guardado {
 				connMgr.prepararBD();
 				d = DatabaseFactory.open(connMgr.getDbLocation());
 				Statement stDelCategoria1 = d
-						.createStatement("UPDATE categorias SET eliminado = 1,fecha_mod = datetime(" + "'now'," + "'localtime') WHERE id_categoria = ?");
+				.createStatement("UPDATE categorias SET eliminado = 1,fecha_mod = datetime(" + "'now'," + "'localtime') WHERE id_categoria = ?");
 				Statement stDelCategoria2 = d
-						.createStatement("UPDATE procesos SET id_categoria = 1 WHERE id_categoria = ?");
+				.createStatement("UPDATE procesos SET id_categoria = 1 WHERE id_categoria = ?");
 				Statement stDelCategoria3 = d
-						.createStatement("UPDATE plantillas SET id_categoria = 1 WHERE id_categoria = ?");
+				.createStatement("UPDATE plantillas SET id_categoria = 1 WHERE id_categoria = ?");
 
 				stDelCategoria1.prepare();
 				stDelCategoria2.prepare();
@@ -780,18 +781,18 @@ public class Persistence implements Cargado, Guardado {
 			connMgr.prepararBD();
 			d = DatabaseFactory.open(connMgr.getDbLocation());
 			stAcPlantilla = d
-					.createStatement("UPDATE plantillas SET id_demandante = ?,"
-							+ " id_demandado = ?," + " radicado = ?,"
-							+ " radicado_unico = ?," + " estado = ?,"
-							+ " tipo = ?," + " notas = ?," + " prioridad = ?,"
-							+ " id_juzgado = ?," + " nombre = ?,"
-							+ " id_categoria = ?, modificado = 1, fecha_mod = datetime(" + "'now'," + "'localtime') WHERE id_plantilla = ?");
+			.createStatement("UPDATE plantillas SET id_demandante = ?,"
+					+ " id_demandado = ?," + " radicado = ?,"
+					+ " radicado_unico = ?," + " estado = ?,"
+					+ " tipo = ?," + " notas = ?," + " prioridad = ?,"
+					+ " id_juzgado = ?," + " nombre = ?,"
+					+ " id_categoria = ?, modificado = 1, fecha_mod = datetime(" + "'now'," + "'localtime') WHERE id_plantilla = ?");
 			stAcPlantilla.prepare();
 			if (plantilla.getDemandante() == null) {
 				stAcPlantilla.bind(1, "1");
 			} else {
 				stAcPlantilla
-						.bind(1, plantilla.getDemandante().getId_persona());
+				.bind(1, plantilla.getDemandante().getId_persona());
 			}
 			if (plantilla.getDemandado() == null) {
 				stAcPlantilla.bind(2, "1");
@@ -862,7 +863,7 @@ public class Persistence implements Cargado, Guardado {
 			connMgr.prepararBD();
 			d = DatabaseFactory.open(connMgr.getDbLocation());
 			Statement stPlantilla = d
-					.createStatement("INSERT INTO plantillas (id_plantilla,id_demandante,id_demandado,radicado,radicado_unico,estado,tipo,notas,prioridad,id_juzgado,id_categoria,nombre,nuevo, fecha_mod) VALUES(NULL,?,?,?,?,?,?,?,?,?,?,?,1,datetime(" + "'now'," + "'localtime'))");
+			.createStatement("INSERT INTO plantillas (id_plantilla,id_demandante,id_demandado,radicado,radicado_unico,estado,tipo,notas,prioridad,id_juzgado,id_categoria,nombre,nuevo, fecha_mod) VALUES(NULL,?,?,?,?,?,?,?,?,?,?,?,1,datetime(" + "'now'," + "'localtime'))");
 			stPlantilla.prepare();
 			stPlantilla.bind(1, plantilla.getDemandante().getId_persona());
 			stPlantilla.bind(2, plantilla.getDemandado().getId_persona());
@@ -907,9 +908,9 @@ public class Persistence implements Cargado, Guardado {
 			connMgr.prepararBD();
 			d = DatabaseFactory.open(connMgr.getDbLocation());
 			Statement stDelPlantilla = d
-					.createStatement("UPDATE plantillas SET eliminado = 1, fecha_mod = datetime(" + "'now'," + "'localtime') WHERE id_plantilla = ?");
+			.createStatement("UPDATE plantillas SET eliminado = 1, fecha_mod = datetime(" + "'now'," + "'localtime') WHERE id_plantilla = ?");
 			Statement stDelCampoPersonalizado = d
-					.createStatement("UPDATE atributos_plantilla SET eliminado = 1, fecha_mod = datetime(" + "'now'," + "'localtime') WHERE id_plantilla = ?");
+			.createStatement("UPDATE atributos_plantilla SET eliminado = 1, fecha_mod = datetime(" + "'now'," + "'localtime') WHERE id_plantilla = ?");
 			stDelPlantilla.prepare();
 			stDelCampoPersonalizado.prepare();
 			stDelPlantilla.bind(1, plantilla.getId_plantilla());
@@ -929,15 +930,15 @@ public class Persistence implements Cargado, Guardado {
 	}
 
 	public void actualizarCampoPlantilla(CampoPersonalizado campo)
-			throws Exception {
+	throws Exception {
 		Database d = null;
 		try {
 			connMgr.prepararBD();
 			d = DatabaseFactory.open(connMgr.getDbLocation());
 			Statement stAcAtributoProceso = d
-					.createStatement("UPDATE atributos_plantilla SET valor = ?, modificado = 1, fecha_mod = datetime(" +
-							"'now'," +
-							"'localtime') WHERE id_atributo_plantilla = ?");
+			.createStatement("UPDATE atributos_plantilla SET valor = ?, modificado = 1, fecha_mod = datetime(" +
+					"'now'," +
+			"'localtime') WHERE id_atributo_plantilla = ?");
 			stAcAtributoProceso.prepare();
 			stAcAtributoProceso.bind(1, campo.getValor());
 			stAcAtributoProceso.bind(2, campo.getId_campo());
@@ -961,10 +962,10 @@ public class Persistence implements Cargado, Guardado {
 			connMgr.prepararBD();
 			d = DatabaseFactory.open(connMgr.getDbLocation());
 			Statement stAtributosProceso = d
-					.createStatement("INSERT INTO atributos_plantilla (id_atributo_plantilla, id_atributo, id_plantilla, valor, nuevo, fecha_mod) VALUES( NULL,?,?,?,1,datetime(" + "'now'," + "'localtime'))");
+			.createStatement("INSERT INTO atributos_plantilla (id_atributo_plantilla, id_atributo, id_plantilla, valor, nuevo, fecha_mod) VALUES( NULL,?,?,?,1,datetime(" + "'now'," + "'localtime'))");
 			stAtributosProceso.prepare();
 			stAtributosProceso
-					.bind(1, Integer.parseInt(campo.getId_atributo()));
+			.bind(1, Integer.parseInt(campo.getId_atributo()));
 			stAtributosProceso.bind(2, Integer.parseInt(id_plantilla));
 			stAtributosProceso.bind(3, campo.getValor());
 			stAtributosProceso.execute();
@@ -986,7 +987,7 @@ public class Persistence implements Cargado, Guardado {
 			connMgr.prepararBD();
 			d = DatabaseFactory.open(connMgr.getDbLocation());
 			Statement stDelCampoPersonalizado = d
-					.createStatement("UPDATE atributos_plantilla SET eliminado = 1, fecha_mod = datetime(" + "'now'," + "'localtime') WHERE id_atributo_plantilla = ?");
+			.createStatement("UPDATE atributos_plantilla SET eliminado = 1, fecha_mod = datetime(" + "'now'," + "'localtime') WHERE id_atributo_plantilla = ?");
 			stDelCampoPersonalizado.prepare();
 			stDelCampoPersonalizado.bind(1, campo.getId_campo());
 			stDelCampoPersonalizado.execute();
@@ -1002,13 +1003,13 @@ public class Persistence implements Cargado, Guardado {
 	}
 
 	public void actualizarPreferencia(int id_preferencia, String valor)
-			throws Exception {
+	throws Exception {
 		Database d = null;
 		try {
 			connMgr.prepararBD();
 			d = DatabaseFactory.open(connMgr.getDbLocation());
 			Statement stPreferencias = d
-					.createStatement("UPDATE preferencias SET valor = ? WHERE id_preferencia = ?");
+			.createStatement("UPDATE preferencias SET valor = ? WHERE id_preferencia = ?");
 			stPreferencias.prepare();
 			stPreferencias.bind(1, valor);
 			stPreferencias.bind(2, id_preferencia);
@@ -1032,28 +1033,28 @@ public class Persistence implements Cargado, Guardado {
 			d = DatabaseFactory.open(connMgr.getDbLocation());
 
 			Statement stFuenteTipo = d
-					.createStatement("UPDATE preferencias SET valor=? WHERE id_preferencia = 10001");
+			.createStatement("UPDATE preferencias SET valor=? WHERE id_preferencia = 10001");
 			stFuenteTipo.prepare();
 			stFuenteTipo.bind(1, Preferencias.getTipoFuente().getFontFamily()
 					.getName());
 			stFuenteTipo.execute();
 			stFuenteTipo.close();
 			Statement stFuenteTamano = d
-					.createStatement("UPDATE preferencias SET valor=? WHERE id_preferencia = 10002");
+			.createStatement("UPDATE preferencias SET valor=? WHERE id_preferencia = 10002");
 			stFuenteTamano.prepare();
 			stFuenteTamano.bind(1,
 					Integer.toString(Preferencias.getTipoFuente().getHeight()));
 			stFuenteTamano.execute();
 			stFuenteTamano.close();
 			Statement stFuenteEstilo = d
-					.createStatement("UPDATE preferencias SET valor=? WHERE id_preferencia = 10003");
+			.createStatement("UPDATE preferencias SET valor=? WHERE id_preferencia = 10003");
 			stFuenteEstilo.prepare();
 			stFuenteEstilo.bind(1,
 					Integer.toString(Preferencias.getTipoFuente().getStyle()));
 			stFuenteEstilo.execute();
 			stFuenteEstilo.close();
 			Statement stPantallaInicial = d
-					.createStatement("UPDATE preferencias SET valor=? WHERE id_preferencia = 10101");
+			.createStatement("UPDATE preferencias SET valor=? WHERE id_preferencia = 10101");
 			stPantallaInicial.prepare();
 			stPantallaInicial.bind(1,
 					Integer.toString(Preferencias.getPantallaInicial()));
@@ -1064,7 +1065,7 @@ public class Persistence implements Cargado, Guardado {
 				tituloPantalla = 1;
 			}
 			Statement stTituloPantalla = d
-					.createStatement("UPDATE preferencias SET valor=? WHERE id_preferencia = 10102");
+			.createStatement("UPDATE preferencias SET valor=? WHERE id_preferencia = 10102");
 			stTituloPantalla.prepare();
 			stTituloPantalla.bind(1, Integer.toString(tituloPantalla));
 			stTituloPantalla.execute();
@@ -1074,7 +1075,7 @@ public class Persistence implements Cargado, Guardado {
 				recordarUltimaCategoria = 1;
 			}
 			Statement stRecordarUltimaCategoria = d
-					.createStatement("UPDATE preferencias SET valor=? WHERE id_preferencia =10201");
+			.createStatement("UPDATE preferencias SET valor=? WHERE id_preferencia =10201");
 			stRecordarUltimaCategoria.prepare();
 			stRecordarUltimaCategoria.bind(1,
 					Integer.toString(recordarUltimaCategoria));
@@ -1085,19 +1086,19 @@ public class Persistence implements Cargado, Guardado {
 				mostrarBusqueda = 1;
 			}
 			Statement stMostrarBusqueda = d
-					.createStatement("UPDATE preferencias SET valor=? WHERE id_preferencia = 10301");
+			.createStatement("UPDATE preferencias SET valor=? WHERE id_preferencia = 10301");
 			stMostrarBusqueda.prepare();
 			stMostrarBusqueda.bind(1, Integer.toString(mostrarBusqueda));
 			stMostrarBusqueda.execute();
 			stMostrarBusqueda.close();
 			Statement stNombreUsuario = d
-					.createStatement("UPDATE preferencias SET valor=? WHERE id_preferencia = 10401");
+			.createStatement("UPDATE preferencias SET valor=? WHERE id_preferencia = 10401");
 			stNombreUsuario.prepare();
 			stNombreUsuario.bind(1, Preferencias.getNombreUsuario());
 			stNombreUsuario.execute();
 			stNombreUsuario.close();
 			Statement stCantidadActCriticas = d
-					.createStatement("UPDATE preferencias SET valor=? WHERE id_preferencia = 10501");
+			.createStatement("UPDATE preferencias SET valor=? WHERE id_preferencia = 10501");
 			stCantidadActCriticas.prepare();
 			stCantidadActCriticas.bind(1, Integer.toString(Preferencias
 					.getCantidadActuacionesCriticas()));
@@ -1119,52 +1120,52 @@ public class Persistence implements Cargado, Guardado {
 			connMgr.prepararBD();
 			d = DatabaseFactory.open(connMgr.getDbLocation());
 			Statement stFuenteTipo = d
-					.createStatement("UPDATE preferencias SET valor=? WHERE id_preferencia = 10001");
+			.createStatement("UPDATE preferencias SET valor=? WHERE id_preferencia = 10001");
 			stFuenteTipo.prepare();
 			stFuenteTipo.bind(1, Font.getDefault().getFontFamily().getName());
 			stFuenteTipo.execute();
 			stFuenteTipo.close();
 			Statement stFuenteTamano = d
-					.createStatement("UPDATE preferencias SET valor=? WHERE id_preferencia = 10002");
+			.createStatement("UPDATE preferencias SET valor=? WHERE id_preferencia = 10002");
 			stFuenteTamano.prepare();
 			stFuenteTamano.bind(1,
 					Integer.toString(Font.getDefault().getHeight()));
 			stFuenteTamano.execute();
 			stFuenteTamano.close();
 			Statement stFuenteEstilo = d
-					.createStatement("UPDATE preferencias SET valor=? WHERE id_preferencia = 10003");
+			.createStatement("UPDATE preferencias SET valor=? WHERE id_preferencia = 10003");
 			stFuenteEstilo.prepare();
 			stFuenteEstilo.bind(1,
 					Integer.toString(Font.getDefault().getStyle()));
 			stFuenteEstilo.execute();
 			stFuenteEstilo.close();
 			Statement stPantallaInicial = d
-					.createStatement("UPDATE preferencias SET valor=20001 WHERE id_preferencia = 10101");
+			.createStatement("UPDATE preferencias SET valor=20001 WHERE id_preferencia = 10101");
 			stPantallaInicial.prepare();
 			stPantallaInicial.execute();
 			stPantallaInicial.close();
 			Statement stTituloPantalla = d
-					.createStatement("UPDATE preferencias SET valor=1 WHERE id_preferencia = 10102");
+			.createStatement("UPDATE preferencias SET valor=1 WHERE id_preferencia = 10102");
 			stTituloPantalla.prepare();
 			stTituloPantalla.execute();
 			stTituloPantalla.close();
 			Statement stRecordarUltimaCategoria = d
-					.createStatement("UPDATE preferencias SET valor=0 WHERE id_preferencia =10201");
+			.createStatement("UPDATE preferencias SET valor=0 WHERE id_preferencia =10201");
 			stRecordarUltimaCategoria.prepare();
 			stRecordarUltimaCategoria.execute();
 			stRecordarUltimaCategoria.close();
 			Statement stMostrarBusqueda = d
-					.createStatement("UPDATE preferencias SET valor=1 WHERE id_preferencia = 10301");
+			.createStatement("UPDATE preferencias SET valor=1 WHERE id_preferencia = 10301");
 			stMostrarBusqueda.prepare();
 			stMostrarBusqueda.execute();
 			stMostrarBusqueda.close();
 			Statement stNombreUsuario = d
-					.createStatement("UPDATE preferencias SET valor= 'Usuario' WHERE id_preferencia = 10401");
+			.createStatement("UPDATE preferencias SET valor= 'Usuario' WHERE id_preferencia = 10401");
 			stNombreUsuario.prepare();
 			stNombreUsuario.execute();
 			stNombreUsuario.close();
 			Statement stCantidadActCriticas = d
-					.createStatement("UPDATE preferencias SET valor=10 WHERE id_preferencia = 10501");
+			.createStatement("UPDATE preferencias SET valor=10 WHERE id_preferencia = 10501");
 			stCantidadActCriticas.prepare();
 			stCantidadActCriticas.execute();
 			stCantidadActCriticas.close();
@@ -1198,17 +1199,97 @@ public class Persistence implements Cargado, Guardado {
 	// }
 	// }
 
+	public void actualizarCitaCalendario(CitaCalendario cita) throws Exception { 
+		Database d = null;
+		Statement stAcCitaCalendario;
+		try {
+			connMgr.prepararBD();
+			d = DatabaseFactory.open(connMgr.getDbLocation());
+			stAcCitaCalendario = d
+			.createStatement("UPDATE citas SET uid=?, fecha=datetime(?),anticipacion=?,id_actuacion=?,modificado=1, fecha_mod = datetime(" +
+					"'now'," +
+					"'localtime') WHERE id_cita=?");
+			stAcCitaCalendario.prepare();
+			stAcCitaCalendario.bind(1, cita.getUid());
+			stAcCitaCalendario.bind(2, calendarToString(cita.getFecha()));
+			stAcCitaCalendario.bind(3, cita.getAnticipacion());
+			stAcCitaCalendario.bind(4, cita.getId_actuacion());
+			stAcCitaCalendario.bind(5, cita.getId_cita());
+
+			stAcCitaCalendario.execute();
+			stAcCitaCalendario.close();
+
+		} catch (Exception e) {
+			throw e;
+		} finally {
+			if (d != null) {
+				d.close();
+			}
+		}
+	}
+
+	public void guardarCitaCalendario(CitaCalendario cita, String id_proceso)
+	throws Exception {
+		Database d = null;
+		try {
+			connMgr.prepararBD();
+			d = DatabaseFactory.open(connMgr.getDbLocation());
+			Statement stCitaCalendario = d
+			.createStatement("INSERT INTO citas (id_cita,uid, fecha,anticipacion,id_actuacion, fecha_mod) VALUES( NULL,?,datetime(?),?,?,datetime(" +
+					"'now'," +
+					"'localtime'))");
+			stCitaCalendario.prepare();
+			stCitaCalendario.bind(1, cita.getUid());
+			stCitaCalendario.bind(2, calendarToString(cita.getFecha()));
+			stCitaCalendario.bind(3, cita.getAnticipacion());
+			stCitaCalendario.bind(4, Integer.parseInt(cita.getId_actuacion()));
+			stCitaCalendario.execute();
+			stCitaCalendario.close();
+			cita.setId_cita(Long.toString(d.lastInsertedRowID()));
+		} catch (Exception e) {
+			throw e;
+		} finally {
+			if (d != null) {
+				d.close();
+			}
+		}
+
+	}
+
+	public void borrarCitaCalendario(CitaCalendario cita) throws Exception {
+		Database d = null;
+		try {
+			connMgr.prepararBD();
+			d = DatabaseFactory.open(connMgr.getDbLocation());
+			Statement stDelCitaCalendario = d
+			.createStatement("UPDATE citas SET eliminado = 1, fecha_mod = datetime(" +
+					"'now'," +
+					"'localtime') WHERE id_cita = ?");
+			stDelCitaCalendario.prepare();
+			stDelCitaCalendario.bind(1, cita.getId_cita());
+			stDelCitaCalendario.execute();
+			stDelCitaCalendario.close();
+		} catch (Exception e) {
+			throw e;
+		} finally {
+			if (d != null) {
+				d.close();
+			}
+		}
+
+	}
+
 	public Vector consultarDemandantes() throws Exception {// Devuelve una
-															// vector iterable
-															// de todos los
-															// demandantes
+		// vector iterable
+		// de todos los
+		// demandantes
 		Database d = null;
 		Vector demandantes = new Vector();
 		try {
 			connMgr.prepararBD();
 			d = DatabaseFactory.open(connMgr.getDbLocation());
 			Statement st = d
-					.createStatement("SELECT id_demandante, cedula, nombre, telefono, direccion, correo, notas FROM demandantes WHERE eliminado = 0 order by nombre");
+			.createStatement("SELECT id_demandante, cedula, nombre, telefono, direccion, correo, notas FROM demandantes WHERE eliminado = 0 order by nombre");
 			st.prepare();
 			Cursor cursor = st.getCursor();
 			while (cursor.next()) {
@@ -1240,16 +1321,16 @@ public class Persistence implements Cargado, Guardado {
 	}
 
 	public Vector consultarDemandados() throws Exception {// Devuelve un vector
-															// iterable con
-															// todos los
-															// demandados
+		// iterable con
+		// todos los
+		// demandados
 		Database d = null;
 		Vector demandados = new Vector();
 		try {
 			connMgr.prepararBD();
 			d = DatabaseFactory.open(connMgr.getDbLocation());
 			Statement st = d
-					.createStatement("SELECT id_demandado, cedula, nombre, telefono, direccion, correo, notas FROM demandados WHERE eliminado = 0 order by nombre");
+			.createStatement("SELECT id_demandado, cedula, nombre, telefono, direccion, correo, notas FROM demandados WHERE eliminado = 0 order by nombre");
 			st.prepare();
 			Cursor cursor = st.getCursor();
 			while (cursor.next()) {
@@ -1310,7 +1391,7 @@ public class Persistence implements Cargado, Guardado {
 	 */
 
 	public Persona consultarPersona(String id_persona, int tipo)
-			throws Exception {// Devuelve una persona especifica
+	throws Exception {// Devuelve una persona especifica
 		Database d = null;
 		Persona per = null;
 		try {
@@ -1318,7 +1399,7 @@ public class Persistence implements Cargado, Guardado {
 			d = DatabaseFactory.open(connMgr.getDbLocation());
 			if (tipo == 2) {
 				Statement st = d
-						.createStatement("SELECT id_demandado, cedula, nombre, telefono, direccion, correo, notas FROM demandados where id_demandado = ?");
+				.createStatement("SELECT id_demandado, cedula, nombre, telefono, direccion, correo, notas FROM demandados where id_demandado = ?");
 				st.prepare();
 				st.bind(1, id_persona);
 				Cursor cursor = st.getCursor();
@@ -1338,7 +1419,7 @@ public class Persistence implements Cargado, Guardado {
 				cursor.close();
 			} else if (tipo == 1) {
 				Statement st = d
-						.createStatement("SELECT id_demandante, cedula, nombre, telefono, direccion, correo, notas FROM demandantes where id_demandante = ?");
+				.createStatement("SELECT id_demandante, cedula, nombre, telefono, direccion, correo, notas FROM demandantes where id_demandante = ?");
 				st.prepare();
 				st.bind(1, id_persona);
 				Cursor cursor = st.getCursor();
@@ -1378,7 +1459,7 @@ public class Persistence implements Cargado, Guardado {
 			// Statement st =
 			// d.createStatement("SELECT p.id_proceso, p.fecha_creacion, p.radicado, p.radicado_unico, p.estado, p.tipo, p.notas, p.prioridad, demandante.id_demandante, demandante.cedula, demandante.nombre, demandante.telefono, demandante.direccion, demandante.correo, demandante.notas, demandado.id_demandado, demandado.cedula, demandado.nombre, demandado.telefono, demandado.direccion, demandado.correo, demandado.notas, j.id_juzgado, j.nombre, j.ciudad, j.telefono, j.direccion, j.tipo, c.descripcion FROM procesos p, demandantes demandante, demandados demandado, juzgados j, categorias c WHERE p.id_demandante = demandante.id_demandante AND p.id_demandado = demandado.id_demandado AND p.id_juzgado = j.id_juzgado AND p.id_categoria = c.id_categoria ");
 			Statement st = d
-					.createStatement("SELECT p.id_proceso, p.id_demandante, p.id_demandado, p.fecha_creacion, p.radicado, p.radicado_unico, p.estado, p.tipo, p.notas, p.prioridad, p.id_juzgado, p.id_categoria FROM procesos p WHERE p.eliminado = 0");
+			.createStatement("SELECT p.id_proceso, p.id_demandante, p.id_demandado, p.fecha_creacion, p.radicado, p.radicado_unico, p.estado, p.tipo, p.notas, p.prioridad, p.id_juzgado, p.id_categoria FROM procesos p WHERE p.eliminado = 0");
 			st.prepare();
 			Cursor cursor = st.getCursor();
 			while (cursor.next()) {
@@ -1443,7 +1524,7 @@ public class Persistence implements Cargado, Guardado {
 			connMgr.prepararBD();
 			d = DatabaseFactory.open(connMgr.getDbLocation());
 			Statement st = d
-					.createStatement("SELECT p.id_proceso, p.id_demandante, p.id_demandado, p.fecha_creacion, p.radicado, p.radicado_unico, p.estado, p.tipo, p.notas, p.prioridad, p.id_juzgado, p.id_categoria FROM procesos p WHERE p.id_proceso = ?");
+			.createStatement("SELECT p.id_proceso, p.id_demandante, p.id_demandado, p.fecha_creacion, p.radicado, p.radicado_unico, p.estado, p.tipo, p.notas, p.prioridad, p.id_juzgado, p.id_categoria FROM procesos p WHERE p.id_proceso = ?");
 			st.prepare();
 			st.bind(1, id_proceso);
 			Cursor cursor = st.getCursor();
@@ -1502,7 +1583,7 @@ public class Persistence implements Cargado, Guardado {
 			connMgr.prepararBD();
 			d = DatabaseFactory.open(connMgr.getDbLocation());
 			Statement st = d
-					.createStatement("SELECT id_actuacion, id_proceso, id_juzgado, fecha_creacion, fecha_proxima, descripcion, uid FROM actuaciones WHERE id_proceso = ? AND eliminado = 0 ORDER BY fecha_creacion, fecha_proxima");
+			.createStatement("SELECT id_actuacion, id_proceso, id_juzgado, fecha_creacion, fecha_proxima, descripcion, uid FROM actuaciones WHERE id_proceso = ? AND eliminado = 0 ORDER BY fecha_creacion, fecha_proxima");
 			st.prepare();
 			st.bind(1, proceso.getId_proceso());
 			Cursor cursor = st.getCursor();
@@ -1546,7 +1627,7 @@ public class Persistence implements Cargado, Guardado {
 			connMgr.prepararBD();
 			d = DatabaseFactory.open(connMgr.getDbLocation());
 			Statement st = d
-					.createStatement("SELECT id_actuacion, id_proceso, id_juzgado, fecha_creacion, fecha_proxima, descripcion, uid FROM actuaciones WHERE id_actuacion = ?");
+			.createStatement("SELECT id_actuacion, id_proceso, id_juzgado, fecha_creacion, fecha_proxima, descripcion, uid FROM actuaciones WHERE id_actuacion = ?");
 			st.prepare();
 			st.bind(1, id_actuacion);
 			Cursor cursor = st.getCursor();
@@ -1583,7 +1664,7 @@ public class Persistence implements Cargado, Guardado {
 			connMgr.prepararBD();
 			d = DatabaseFactory.open(connMgr.getDbLocation());
 			Statement st = d
-					.createStatement("SELECT id_actuacion, id_proceso, id_juzgado, fecha_creacion, fecha_proxima, descripcion, uid FROM actuaciones WHERE fecha_proxima >= date() AND eliminado = 0 ORDER BY fecha_proxima LIMIT ?");
+			.createStatement("SELECT id_actuacion, id_proceso, id_juzgado, fecha_creacion, fecha_proxima, descripcion, uid FROM actuaciones WHERE fecha_proxima >= date() AND eliminado = 0 ORDER BY fecha_proxima LIMIT ?");
 			st.prepare();
 			st.bind(1, cantidad);
 			Cursor cursor = st.getCursor();
@@ -1630,7 +1711,7 @@ public class Persistence implements Cargado, Guardado {
 			connMgr.prepararBD();
 			d = DatabaseFactory.open(connMgr.getDbLocation());
 			Statement st = d
-					.createStatement("SELECT id_juzgado, nombre, ciudad, tipo, direccion, telefono FROM juzgados WHERE eliminado = 0 order by nombre");
+			.createStatement("SELECT id_juzgado, nombre, ciudad, tipo, direccion, telefono FROM juzgados WHERE eliminado = 0 order by nombre");
 			st.prepare();
 			Cursor cursor = st.getCursor();
 			while (cursor.next()) {
@@ -1666,7 +1747,7 @@ public class Persistence implements Cargado, Guardado {
 			connMgr.prepararBD();
 			d = DatabaseFactory.open(connMgr.getDbLocation());
 			Statement st = d
-					.createStatement("SELECT id_juzgado, nombre, ciudad, tipo, direccion, telefono FROM juzgados WHERE id_juzgado = ?");
+			.createStatement("SELECT id_juzgado, nombre, ciudad, tipo, direccion, telefono FROM juzgados WHERE id_juzgado = ?");
 			st.prepare();
 			st.bind(1, id_juzgado);
 			Cursor cursor = st.getCursor();
@@ -1699,7 +1780,7 @@ public class Persistence implements Cargado, Guardado {
 			connMgr.prepararBD();
 			d = DatabaseFactory.open(connMgr.getDbLocation());
 			Statement st = d
-					.createStatement("SELECT id_categoria, descripcion FROM categorias WHERE id_categoria = ?");
+			.createStatement("SELECT id_categoria, descripcion FROM categorias WHERE id_categoria = ?");
 			st.prepare();
 			st.bind(1, id_categoria);
 			Cursor cursor = st.getCursor();
@@ -1727,7 +1808,7 @@ public class Persistence implements Cargado, Guardado {
 			connMgr.prepararBD();
 			d = DatabaseFactory.open(connMgr.getDbLocation());
 			Statement st = d
-					.createStatement("SELECT id_categoria, descripcion FROM categorias WHERE eliminado = 0 ORDER BY descripcion");
+			.createStatement("SELECT id_categoria, descripcion FROM categorias WHERE eliminado = 0 ORDER BY descripcion");
 			st.prepare();
 			Cursor cursor = st.getCursor();
 			while (cursor.next()) {
@@ -1757,7 +1838,7 @@ public class Persistence implements Cargado, Guardado {
 			connMgr.prepararBD();
 			d = DatabaseFactory.open(connMgr.getDbLocation());
 			Statement st = d
-					.createStatement("SELECT at.id_atributo_proceso, at.id_atributo, at.valor, a.nombre,a.obligatorio,a.longitud_max, a.longitud_min FROM atributos_proceso at, atributos a WHERE at.id_atributo = a.id_atributo AND at.id_proceso = ? AND at.eliminado = 0");
+			.createStatement("SELECT at.id_atributo_proceso, at.id_atributo, at.valor, a.nombre,a.obligatorio,a.longitud_max, a.longitud_min FROM atributos_proceso at, atributos a WHERE at.id_atributo = a.id_atributo AND at.id_proceso = ? AND at.eliminado = 0");
 			st.prepare();
 			st.bind(1, proceso.getId_proceso());
 			Cursor cursor = st.getCursor();
@@ -1795,7 +1876,7 @@ public class Persistence implements Cargado, Guardado {
 			connMgr.prepararBD();
 			d = DatabaseFactory.open(connMgr.getDbLocation());
 			Statement st = d
-					.createStatement("SELECT at.id_atributo_proceso, at.id_atributo, at.valor, a.nombre,a.obligatorio,a.longitud_max, a.longitud_min FROM atributos_proceso at, atributos a WHERE at.id_atributo = a.id_atributo AND at.id_atributo_proceso = ?");
+			.createStatement("SELECT at.id_atributo_proceso, at.id_atributo, at.valor, a.nombre,a.obligatorio,a.longitud_max, a.longitud_min FROM atributos_proceso at, atributos a WHERE at.id_atributo = a.id_atributo AND at.id_atributo_proceso = ?");
 			st.prepare();
 			st.bind(1, id_campo);
 			Cursor cursor = st.getCursor();
@@ -1833,7 +1914,7 @@ public class Persistence implements Cargado, Guardado {
 			connMgr.prepararBD();
 			d = DatabaseFactory.open(connMgr.getDbLocation());
 			Statement st = d
-					.createStatement("SELECT id_atributo, nombre,obligatorio,longitud_max, longitud_min FROM  atributos WHERE eliminado = 0");
+			.createStatement("SELECT id_atributo, nombre,obligatorio,longitud_max, longitud_min FROM  atributos WHERE eliminado = 0");
 			st.prepare();
 			Cursor cursor = st.getCursor();
 			while (cursor.next()) {
@@ -1863,14 +1944,14 @@ public class Persistence implements Cargado, Guardado {
 	}
 
 	public CampoPersonalizado consultarAtributo(String id_atributo)
-			throws Exception {
+	throws Exception {
 		Database d = null;
 		CampoPersonalizado campo = null;
 		try {
 			connMgr.prepararBD();
 			d = DatabaseFactory.open(connMgr.getDbLocation());
 			Statement st = d
-					.createStatement("SELECT id_atributo, nombre,obligatorio,longitud_max, longitud_min FROM atributos WHERE id_atributo = ?");
+			.createStatement("SELECT id_atributo, nombre,obligatorio,longitud_max, longitud_min FROM atributos WHERE id_atributo = ?");
 			st.prepare();
 			st.bind(1, id_atributo);
 			Cursor cursor = st.getCursor();
@@ -1905,7 +1986,7 @@ public class Persistence implements Cargado, Guardado {
 			connMgr.prepararBD();
 			d = DatabaseFactory.open(connMgr.getDbLocation());
 			Statement st = d
-					.createStatement("SELECT p.id_plantilla, p.id_demandante, p.id_demandado, p.radicado, p.radicado_unico, p.estado, p.tipo, p.notas, p.prioridad, p.id_juzgado, p.id_categoria, p.nombre FROM plantillas p WHERE p.eliminado = 0");
+			.createStatement("SELECT p.id_plantilla, p.id_demandante, p.id_demandado, p.radicado, p.radicado_unico, p.estado, p.tipo, p.notas, p.prioridad, p.id_juzgado, p.id_categoria, p.nombre FROM plantillas p WHERE p.eliminado = 0");
 			st.prepare();
 			Cursor cursor = st.getCursor();
 			while (cursor.next()) {
@@ -1968,7 +2049,7 @@ public class Persistence implements Cargado, Guardado {
 			connMgr.prepararBD();
 			d = DatabaseFactory.open(connMgr.getDbLocation());
 			Statement st = d
-					.createStatement("SELECT p.id_plantilla, p.id_demandante, p.id_demandado, p.radicado, p.radicado_unico, p.estado, p.tipo, p.notas, p.prioridad, p.id_juzgado, p.id_categoria, p.nombre FROM plantillas p WHERE p.id_plantilla = ?");
+			.createStatement("SELECT p.id_plantilla, p.id_demandante, p.id_demandado, p.radicado, p.radicado_unico, p.estado, p.tipo, p.notas, p.prioridad, p.id_juzgado, p.id_categoria, p.nombre FROM plantillas p WHERE p.id_plantilla = ?");
 			st.prepare();
 			st.bind(1, id_plantilla);
 			Cursor cursor = st.getCursor();
@@ -2021,14 +2102,14 @@ public class Persistence implements Cargado, Guardado {
 	}
 
 	public Vector consultarCamposPlantilla(Plantilla plantilla)
-			throws Exception {
+	throws Exception {
 		Database d = null;
 		Vector campos = new Vector();
 		try {
 			connMgr.prepararBD();
 			d = DatabaseFactory.open(connMgr.getDbLocation());
 			Statement st = d
-					.createStatement("SELECT at.id_atributo_plantilla, at.id_atributo, at.valor, a.nombre,a.obligatorio,a.longitud_max, a.longitud_min FROM atributos_plantilla at, atributos a WHERE at.id_atributo = a.id_atributo AND at.id_plantilla = ? AND at.eliminado = 0");
+			.createStatement("SELECT at.id_atributo_plantilla, at.id_atributo, at.valor, a.nombre,a.obligatorio,a.longitud_max, a.longitud_min FROM atributos_plantilla at, atributos a WHERE at.id_atributo = a.id_atributo AND at.id_plantilla = ? AND at.eliminado = 0");
 			st.prepare();
 			st.bind(1, plantilla.getId_plantilla());
 			Cursor cursor = st.getCursor();
@@ -2078,6 +2159,67 @@ public class Persistence implements Cargado, Guardado {
 	 * { if (d != null) { d.close(); } } return campo; }
 	 */
 
+	public Vector consultarCitasCalendario() throws Exception{
+		Database d = null;
+		Vector citas = new Vector();
+		try {
+			connMgr.prepararBD();
+			d = DatabaseFactory.open(connMgr.getDbLocation());
+			Statement st = d.createStatement("SELECT id_cita, uid,fecha, anticipacion,id_actuacion FROM citas WHERE eliminado = 0 ORDER BY fecha");
+			st.prepare();
+			Cursor cursor = st.getCursor();
+			while (cursor.next()) {
+				Row row = cursor.getRow();
+				int id_cita = row.getInteger(0);
+				String uid = row.getString(1);
+				Calendar fecha = stringToCalendar(row.getString(2));
+				int anticipacion = row.getInteger(3);
+				int id_actuacion = row.getInteger(4);
+				CitaCalendario cita = new CitaCalendario(Integer.toString(id_cita), fecha, anticipacion, Integer.toString(id_actuacion), uid); 
+				citas.addElement(cita);
+			}
+			st.close();
+			cursor.close();
+		} catch (Exception e) {
+			throw e;
+		} finally {
+			if (d != null) {
+				d.close();
+			}
+		}
+		return citas;
+	}
+	
+	public CitaCalendario consultarCitaCalendario(String id_cita) throws Exception{
+		Database d = null;
+		CitaCalendario cita = null;
+		try {
+			connMgr.prepararBD();
+			d = DatabaseFactory.open(connMgr.getDbLocation());
+			Statement st = d.createStatement("SELECT  id_cita, uid,fecha, anticipacion,id_actuacion FROM citas WHERE id_cita = ? AND eliminado = 0 ORDER BY fecha");
+			st.prepare();
+			st.bind(1, id_cita);
+			Cursor cursor = st.getCursor();
+			if (cursor.next()) {
+				Row row = cursor.getRow();
+				String uid = row.getString(1);
+				Calendar fecha = stringToCalendar(row.getString(2));
+				int anticipacion = row.getInteger(3);
+				int id_actuacion = row.getInteger(4);
+				cita = new CitaCalendario(id_cita, fecha, anticipacion, Integer.toString(id_actuacion), uid);
+			}
+			st.close();
+			cursor.close();
+		} catch (Exception e) {
+			throw e;
+		} finally {
+			if (d != null) {
+				d.close();
+			}
+		}
+		return cita;
+	}
+	
 	public String consultarPreferencia(int id_preferencia) throws Exception {
 		String valor = "0";
 		Database d = null;
@@ -2085,7 +2227,7 @@ public class Persistence implements Cargado, Guardado {
 			connMgr.prepararBD();
 			d = DatabaseFactory.open(connMgr.getDbLocation());
 			Statement st = d
-					.createStatement("SELECT valor FROM preferencias WHERE id_preferencia = ? ");
+			.createStatement("SELECT valor FROM preferencias WHERE id_preferencia = ? ");
 			st.prepare();
 			st.bind(1, id_preferencia);
 			Cursor cursor = st.getCursor();
@@ -2131,7 +2273,7 @@ public class Persistence implements Cargado, Guardado {
 			connMgr.prepararBD();
 			d = DatabaseFactory.open(connMgr.getDbLocation());
 			Statement stPreferencias = d
-					.createStatement("SELECT id_preferencia, valor FROM preferencias");
+			.createStatement("SELECT id_preferencia, valor FROM preferencias");
 			stPreferencias.prepare();
 			Cursor cursor = stPreferencias.getCursor();
 			while (cursor.next()) {
@@ -2237,7 +2379,7 @@ public class Persistence implements Cargado, Guardado {
 			minuto = Integer.toString(fecha.get(Calendar.MINUTE));
 		}
 		nuevafecha = fecha.get(Calendar.YEAR) + "-" + mes + "-" + dia + " "
-				+ hora + ":" + minuto;
+		+ hora + ":" + minuto;
 		return nuevafecha;
 	}
 
