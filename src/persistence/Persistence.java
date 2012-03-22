@@ -1208,7 +1208,7 @@ public class Persistence implements Cargado, Guardado {
 			stAcCitaCalendario = d
 			.createStatement("UPDATE citas SET uid=?, fecha=datetime(?),anticipacion=?,id_actuacion=?,modificado=1, fecha_mod = datetime(" +
 					"'now'," +
-					"'localtime') WHERE id_cita=?");
+			"'localtime') WHERE id_cita=?");
 			stAcCitaCalendario.prepare();
 			stAcCitaCalendario.bind(1, cita.getUid());
 			stAcCitaCalendario.bind(2, calendarToString(cita.getFecha()));
@@ -1228,6 +1228,36 @@ public class Persistence implements Cargado, Guardado {
 		}
 	}
 
+	public void actualizarCitasCalendario(Vector citas) throws Exception { 
+		Database d = null;
+		Statement stAcCitaCalendario;
+		try {
+			connMgr.prepararBD();
+			d = DatabaseFactory.open(connMgr.getDbLocation());
+			Enumeration e = citas.elements();
+			while(e.hasMoreElements()){
+				CitaCalendario cita = (CitaCalendario)e.nextElement();
+				stAcCitaCalendario = d.createStatement("UPDATE citas SET uid=?, fecha=datetime(?),anticipacion=?,id_actuacion=?,modificado=1, fecha_mod = datetime(" +
+						"'now'," +
+				"'localtime') WHERE id_cita=?");
+				stAcCitaCalendario.prepare();
+				stAcCitaCalendario.bind(1, cita.getUid());
+				stAcCitaCalendario.bind(2, calendarToString(cita.getFecha()));
+				stAcCitaCalendario.bind(3, cita.getAnticipacion());
+				stAcCitaCalendario.bind(4, cita.getId_actuacion());
+				stAcCitaCalendario.bind(5, cita.getId_cita());
+				stAcCitaCalendario.execute();
+				stAcCitaCalendario.close();
+			}
+		} catch (Exception e) {
+			throw e;
+		} finally {
+			if (d != null) {
+				d.close();
+			}
+		}
+	}
+
 	public void guardarCitaCalendario(CitaCalendario cita, String id_proceso)
 	throws Exception {
 		Database d = null;
@@ -1237,7 +1267,7 @@ public class Persistence implements Cargado, Guardado {
 			Statement stCitaCalendario = d
 			.createStatement("INSERT INTO citas (id_cita,uid, fecha,anticipacion,id_actuacion, fecha_mod) VALUES( NULL,?,datetime(?),?,?,datetime(" +
 					"'now'," +
-					"'localtime'))");
+			"'localtime'))");
 			stCitaCalendario.prepare();
 			stCitaCalendario.bind(1, cita.getUid());
 			stCitaCalendario.bind(2, calendarToString(cita.getFecha()));
@@ -1264,7 +1294,7 @@ public class Persistence implements Cargado, Guardado {
 			Statement stDelCitaCalendario = d
 			.createStatement("UPDATE citas SET eliminado = 1, fecha_mod = datetime(" +
 					"'now'," +
-					"'localtime') WHERE id_cita = ?");
+			"'localtime') WHERE id_cita = ?");
 			stDelCitaCalendario.prepare();
 			stDelCitaCalendario.bind(1, cita.getId_cita());
 			stDelCitaCalendario.execute();
@@ -2189,7 +2219,7 @@ public class Persistence implements Cargado, Guardado {
 		}
 		return citas;
 	}
-	
+
 	public CitaCalendario consultarCitaCalendario(String id_cita) throws Exception{
 		Database d = null;
 		CitaCalendario cita = null;
@@ -2219,7 +2249,7 @@ public class Persistence implements Cargado, Guardado {
 		}
 		return cita;
 	}
-	
+
 	public String consultarPreferencia(int id_preferencia) throws Exception {
 		String valor = "0";
 		Database d = null;
