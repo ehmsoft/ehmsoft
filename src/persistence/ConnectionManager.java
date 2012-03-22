@@ -239,6 +239,24 @@ public class ConnectionManager {
 			st.prepare();
 			st.execute();
 			st.close();
+			//Crear tabla Citas
+			st = d.createStatement("CREATE TABLE 'citas'(" +
+					"'id_cita' INTEGER PRIMARY KEY," +
+					"'uid' TEXT," +
+					"'fecha' DATE," +
+					"'anticipacion' INTEGER," +
+					"'id_actuacion' INTEGER, " +
+					"'nuevo' BOOLEAN DEFAULT 1, " +
+					"'modificado' BOOLEAN DEFAULT 0, " +
+					"'eliminado' BOOLEAN DEFAULT 0, " +
+					"'fecha_mod' DATE DEFAULT (datetime(" +
+					"'now', " +
+					"'localtime')),FOREIGN KEY(id_actuacion) REFERENCES actuaciones(id_actuacion), UNIQUE(" +
+					"'uid'," +
+					"'id_actuacion'))");
+			st.prepare();
+			st.execute();
+			st.close();
 			// Crear Tabla Preferencias
 			st = d.createStatement("CREATE TABLE 'preferencias'("
 					+ "'id_preferencia' INTEGER PRIMARY KEY," + "'valor' TEXT)");
