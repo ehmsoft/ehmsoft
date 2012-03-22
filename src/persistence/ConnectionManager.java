@@ -199,13 +199,6 @@ public class ConnectionManager {
 			st.prepare();
 			st.execute();
 			st.close();
-			// Crear tabla Filtros
-			st = d.createStatement("CREATE TABLE 'filtros'("
-					+ "'id_filtro' INTEGER PRIMARY KEY," + "'nombre' TEXT,"
-					+ "'sentencia' TEXT)");
-			st.prepare();
-			st.execute();
-			st.close();
 			// Crear tabla Plantillas
 			st = d.createStatement("CREATE TABLE 'plantillas'"
 					+ "('id_plantilla' INTEGER PRIMARY KEY,"
