@@ -244,7 +244,9 @@ public class ConnectionManager {
 					"'id_cita' INTEGER PRIMARY KEY," +
 					"'uid' TEXT," +
 					"'fecha' DATE," +
+					"'descripcion' TEXT," + 
 					"'anticipacion' INTEGER," +
+					"'alarma' BOOLEAN," +
 					"'id_actuacion' INTEGER, " +
 					"'nuevo' BOOLEAN DEFAULT 1, " +
 					"'modificado' BOOLEAN DEFAULT 0, " +
@@ -253,7 +255,11 @@ public class ConnectionManager {
 					"'now', " +
 					"'localtime')),FOREIGN KEY(id_actuacion) REFERENCES actuaciones(id_actuacion), UNIQUE(" +
 					"'uid'," +
-					"'id_actuacion'))");
+					"'id_actuacion'," +
+					"'eliminado'," +
+					"'fecha_mod', " +
+					"'descripcion', " +
+					"'alarma'))");
 			st.prepare();
 			st.execute();
 			st.close();
