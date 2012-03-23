@@ -335,6 +335,11 @@ public class Persistence implements Cargado, Guardado {
 			stDelActuacion.bind(1, actuacion.getId_actuacion());
 			stDelActuacion.execute();
 			stDelActuacion.close();
+			Statement stDelCita = d.createStatement("UPDATE citas SET eliminado = 1, fecha_mod = datetime(" + "'now'," + "'localtime') WHERE id_actuacion = ?");
+			stDelCita.prepare();
+			stDelCita.bind(1, actuacion.getId_actuacion());
+			stDelCita.execute();
+			stDelCita.close();
 		} catch (Exception e) {
 			throw e;
 		} finally {
@@ -678,6 +683,15 @@ public class Persistence implements Cargado, Guardado {
 			stDelProceso.close();
 			stDelActuaciones.close();
 			stDelCampoPersonalizado.close();
+			Enumeration actuaciones = proceso.getActuaciones().elements();
+			while (actuaciones.hasMoreElements()){
+				Actuacion actuacion = (Actuacion)actuaciones.nextElement();
+				Statement stDelCita = d.createStatement("UPDATE citas SET eliminado = 1, fecha_mod = datetime(" + "'now'," + "'localtime') WHERE id_actuacion = ?");
+				stDelCita.prepare();
+				stDelCita.bind(1, actuacion.getId_actuacion());
+				stDelCita.execute();
+				stDelCita.close();
+			}
 		} catch (Exception e) {
 			throw e;
 		} finally {
@@ -1205,20 +1219,29 @@ public class Persistence implements Cargado, Guardado {
 		try {
 			connMgr.prepararBD();
 			d = DatabaseFactory.open(connMgr.getDbLocation());
-			stAcCitaCalendario = d
-			.createStatement("UPDATE citas SET uid=?, fecha=datetime(?),anticipacion=?,id_actuacion=?,modificado=1, fecha_mod = datetime(" +
+			stAcCitaCalendario = d.createStatement("UPDATE citas SET uid=?, fecha=datetime(?),descripcion=?,anticipacion=?,alarma=?,id_actuacion=?,modificado=1, fecha_mod = datetime(" +
 					"'now'," +
 			"'localtime') WHERE id_cita=?");
 			stAcCitaCalendario.prepare();
 			stAcCitaCalendario.bind(1, cita.getUid());
 			stAcCitaCalendario.bind(2, calendarToString(cita.getFecha()));
-			stAcCitaCalendario.bind(3, cita.getAnticipacion());
-			stAcCitaCalendario.bind(4, cita.getId_actuacion());
-			stAcCitaCalendario.bind(5, cita.getId_cita());
-
+			stAcCitaCalendario.bind(3, cita.getDescripcion());
+			stAcCitaCalendario.bind(4, cita.getAnticipacion());
+			int alarma = 0;
+			if (cita.isAlarma().booleanValue()){
+				alarma = 1;
+			}
+			stAcCitaCalendario.bind(5, alarma);
+			stAcCitaCalendario.bind(6, cita.getId_actuacion());
+			stAcCitaCalendario.bind(7, cita.getId_cita());
 			stAcCitaCalendario.execute();
 			stAcCitaCalendario.close();
-
+			Statement stAcActuacion = d.createStatement("UPDATE actuaciones SET uid=? WHERE id_actuacion=?");
+			stAcActuacion.prepare();
+			stAcActuacion.bind(1, cita.getUid());
+			stAcActuacion.bind(2, cita.getId_actuacion());
+			stAcActuacion.execute();
+			stAcActuacion.close();
 		} catch (Exception e) {
 			throw e;
 		} finally {
@@ -1237,17 +1260,29 @@ public class Persistence implements Cargado, Guardado {
 			Enumeration e = citas.elements();
 			while(e.hasMoreElements()){
 				CitaCalendario cita = (CitaCalendario)e.nextElement();
-				stAcCitaCalendario = d.createStatement("UPDATE citas SET uid=?, fecha=datetime(?),anticipacion=?,id_actuacion=?,modificado=1, fecha_mod = datetime(" +
+				stAcCitaCalendario = d.createStatement("UPDATE citas SET uid=?, fecha=datetime(?),descripcion=?,anticipacion=?,alarma=?,id_actuacion=?,modificado=1, fecha_mod = datetime(" +
 						"'now'," +
 				"'localtime') WHERE id_cita=?");
 				stAcCitaCalendario.prepare();
 				stAcCitaCalendario.bind(1, cita.getUid());
 				stAcCitaCalendario.bind(2, calendarToString(cita.getFecha()));
-				stAcCitaCalendario.bind(3, cita.getAnticipacion());
-				stAcCitaCalendario.bind(4, cita.getId_actuacion());
-				stAcCitaCalendario.bind(5, cita.getId_cita());
+				stAcCitaCalendario.bind(3, cita.getDescripcion());
+				stAcCitaCalendario.bind(4, cita.getAnticipacion());
+				int alarma = 0;
+				if (cita.isAlarma().booleanValue()){
+					alarma = 1;
+				}
+				stAcCitaCalendario.bind(5, alarma);
+				stAcCitaCalendario.bind(6, cita.getId_actuacion());
+				stAcCitaCalendario.bind(7, cita.getId_cita());
 				stAcCitaCalendario.execute();
 				stAcCitaCalendario.close();
+				Statement stAcActuacion = d.createStatement("UPDATE actuaciones SET uid=? WHERE id_actuacion=?");
+				stAcActuacion.prepare();
+				stAcActuacion.bind(1, cita.getUid());
+				stAcActuacion.bind(2, cita.getId_actuacion());
+				stAcActuacion.execute();
+				stAcActuacion.close();
 			}
 		} catch (Exception e) {
 			throw e;
@@ -2195,7 +2230,7 @@ public class Persistence implements Cargado, Guardado {
 		try {
 			connMgr.prepararBD();
 			d = DatabaseFactory.open(connMgr.getDbLocation());
-			Statement st = d.createStatement("SELECT id_cita, uid,fecha, anticipacion,id_actuacion FROM citas WHERE eliminado = 0 ORDER BY fecha");
+			Statement st = d.createStatement("SELECT id_cita, uid,fecha, anticipacion,id_actuacion,descripcion,alarma FROM citas WHERE eliminado = 0 ORDER BY fecha");
 			st.prepare();
 			Cursor cursor = st.getCursor();
 			while (cursor.next()) {
@@ -2205,7 +2240,9 @@ public class Persistence implements Cargado, Guardado {
 				Calendar fecha = stringToCalendar(row.getString(2));
 				int anticipacion = row.getInteger(3);
 				int id_actuacion = row.getInteger(4);
-				CitaCalendario cita = new CitaCalendario(Integer.toString(id_cita), fecha, anticipacion, Integer.toString(id_actuacion), uid); 
+				String descripcion = row.getString(5);
+				boolean alarma = row.getBoolean(6);
+				CitaCalendario cita = new CitaCalendario(Integer.toString(id_cita), fecha, anticipacion, Integer.toString(id_actuacion), uid, descripcion, new Boolean(alarma)); 
 				citas.addElement(cita);
 			}
 			st.close();
@@ -2236,7 +2273,9 @@ public class Persistence implements Cargado, Guardado {
 				Calendar fecha = stringToCalendar(row.getString(2));
 				int anticipacion = row.getInteger(3);
 				int id_actuacion = row.getInteger(4);
-				cita = new CitaCalendario(id_cita, fecha, anticipacion, Integer.toString(id_actuacion), uid);
+				String descripcion = row.getString(5);
+				boolean alarma = row.getBoolean(6);
+				cita = new CitaCalendario(id_cita, fecha, anticipacion, Integer.toString(id_actuacion), uid, descripcion, new Boolean(alarma)); 
 			}
 			st.close();
 			cursor.close();
