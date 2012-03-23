@@ -1300,14 +1300,20 @@ public class Persistence implements Cargado, Guardado {
 			connMgr.prepararBD();
 			d = DatabaseFactory.open(connMgr.getDbLocation());
 			Statement stCitaCalendario = d
-			.createStatement("INSERT INTO citas (id_cita,uid, fecha,anticipacion,id_actuacion, fecha_mod) VALUES( NULL,?,datetime(?),?,?,datetime(" +
+			.createStatement("INSERT INTO citas (id_cita,uid, fecha,descripcion,anticipacion,alarma,id_actuacion, fecha_mod) VALUES( NULL,?,datetime(?),?,?,?,?,datetime(" +
 					"'now'," +
 			"'localtime'))");
 			stCitaCalendario.prepare();
 			stCitaCalendario.bind(1, cita.getUid());
 			stCitaCalendario.bind(2, calendarToString(cita.getFecha()));
-			stCitaCalendario.bind(3, cita.getAnticipacion());
-			stCitaCalendario.bind(4, Integer.parseInt(cita.getId_actuacion()));
+			stCitaCalendario.bind(3, cita.getDescripcion());
+			stCitaCalendario.bind(4, cita.getAnticipacion());
+			int alarma = 0;
+			if (cita.isAlarma().booleanValue()){
+				alarma = 1;
+			}
+			stCitaCalendario.bind(5, alarma);
+			stCitaCalendario.bind(6, Integer.parseInt(cita.getId_actuacion()));
 			stCitaCalendario.execute();
 			stCitaCalendario.close();
 			cita.setId_cita(Long.toString(d.lastInsertedRowID()));
