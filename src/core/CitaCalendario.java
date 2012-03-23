@@ -8,38 +8,51 @@ public class CitaCalendario {
 	private int anticipacion;
 	private String id_actuacion;
 	private String uid;
+	private String descripcion;
+	private Boolean alarma;
 	
 	// Constructores
 	public CitaCalendario(String id_cita, Calendar fecha, int anticipacion,
-			String id_actuacion, String uid) {
+			String id_actuacion, String uid, String descripcion, Boolean alarma) {
 		this.id_cita = id_cita;
 		this.fecha = fecha;
 		this.anticipacion = anticipacion;
 		this.id_actuacion = id_actuacion;
 		this.uid = uid;
+		this.descripcion = descripcion;
+		this.alarma = alarma;
+	}
+	
+	public CitaCalendario(String id_cita, Calendar fecha, int anticipacion,
+			String id_actuacion, String descripcion, Boolean alarma) {
+		this.id_cita = id_cita;
+		this.fecha = fecha;
+		this.anticipacion = anticipacion;
+		this.id_actuacion = id_actuacion;
+		this.descripcion = descripcion;
+		this.alarma = alarma;
+	}
+
+	public CitaCalendario(String id_cita, Calendar fecha, String id_actuacion,
+			String descripcion, Boolean alarma) {
+		this.id_cita = id_cita;
+		this.fecha = fecha;
+		this.id_actuacion = id_actuacion;
+		this.descripcion = descripcion;
+		this.alarma = alarma;
 	}
 
 	public CitaCalendario(Calendar fecha, int anticipacion,
-			String id_actuacion, String uid) {
+			String id_actuacion, String uid, String descripcion, Boolean alarma) {
 		this.fecha = fecha;
 		this.anticipacion = anticipacion;
 		this.id_actuacion = id_actuacion;
 		this.uid = uid;
-	}
-
-	public CitaCalendario(Calendar fecha, int anticipacion, String uid) {
-		this.fecha = fecha;
-		this.anticipacion = anticipacion;
-		this.uid = uid;
-	}
-
-	public CitaCalendario(Calendar fecha, int anticipacion) {
-		this.fecha = fecha;
-		this.anticipacion = anticipacion;
+		this.descripcion = descripcion;
+		this.alarma = alarma;
 	}
 
 	// Fin Constructores
-
 	// Getters
 	public String getId_cita() {
 		return id_cita;
@@ -61,6 +74,15 @@ public class CitaCalendario {
 		return uid;
 	}
 
+	public String getDescripcion() {
+		return descripcion;
+	}
+
+	public Boolean isAlarma() {
+		return alarma;
+	}
+
+	
 	//Setters
 	public void setId_cita(String id_cita) {
 		this.id_cita = id_cita;
@@ -82,6 +104,14 @@ public class CitaCalendario {
 		this.uid = uid;
 	}
 
+	public void setDescripcion(String descripcion) {
+		this.descripcion = descripcion;
+	}
+
+	public void setAlarma(Boolean alarma) {
+		this.alarma = alarma;
+	}
+
 
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -91,7 +121,17 @@ public class CitaCalendario {
 		if (!(obj instanceof CitaCalendario))
 			return false;
 		CitaCalendario other = (CitaCalendario) obj;
+		if (alarma == null) {
+			if (other.alarma != null)
+				return false;
+		} else if (!alarma.equals(other.alarma))
+			return false;
 		if (anticipacion != other.anticipacion)
+			return false;
+		if (descripcion == null) {
+			if (other.descripcion != null)
+				return false;
+		} else if (!descripcion.equals(other.descripcion))
 			return false;
 		if (fecha == null) {
 			if (other.fecha != null)
@@ -116,7 +156,6 @@ public class CitaCalendario {
 		return true;
 	}
 
-	
 
 	
 }
