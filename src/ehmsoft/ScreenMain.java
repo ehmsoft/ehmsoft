@@ -2,6 +2,7 @@ package ehmsoft;
 
 import gui.About;
 import gui.Cita;
+import gui.LeerQR;
 import gui.Llaves;
 import gui.PreferenciasGenerales;
 import gui.ScreenMainListas;
@@ -433,6 +434,7 @@ public class ScreenMain extends MainScreen {
 		}
 		menu.add(menuListas);
 		menu.add(menuNuevos);
+		menu.add(menuLeerQr);
 		menu.add(menuPreferencias);
 		menu.add(menuCerrar);
 		menu.add(menuAcerca);
@@ -488,7 +490,7 @@ public class ScreenMain extends MainScreen {
 		}
 	};
 
-	private final MenuItem menuAcerca = new MenuItem("Acerca de", 327682, 5) {
+	private final MenuItem menuAcerca = new MenuItem("Acerca de", 327682, 6) {
 
 		public void run() {
 			TransitionContext transition = new TransitionContext(
@@ -506,9 +508,18 @@ public class ScreenMain extends MainScreen {
 			cargarActuaciones();
 		}
 	};
-
-	private final MenuItem menuPreferencias = new MenuItem("Preferencias",
+	
+	private final MenuItem menuLeerQr = new MenuItem("Escanear código QR",
 			262147, 4) {
+
+		public void run() {
+			LeerQR pantalla = new LeerQR();
+			UiApplication.getUiApplication().pushScreen(pantalla);
+		}
+	};
+	
+	private final MenuItem menuPreferencias = new MenuItem("Preferencias",
+			262147, 5) {
 
 		public void run() {
 			PreferenciasGenerales p = new PreferenciasGenerales();
@@ -517,7 +528,7 @@ public class ScreenMain extends MainScreen {
 		}
 	};
 	private MenuItem menuCerrar = new MenuItem("Salir de Aplicación",
-			1000000000, 6) {
+			1000000000, 7) {
 
 		public void run() {
 			System.exit(0);
