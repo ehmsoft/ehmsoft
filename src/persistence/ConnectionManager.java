@@ -372,6 +372,12 @@ public class ConnectionManager {
 			stCantidadActCriticas.prepare();
 			stCantidadActCriticas.execute();
 			stCantidadActCriticas.close();
+			Statement stDuracionCita = d
+			.createStatement("INSERT INTO preferencias (id_preferencia, valor) VALUES( 10601,"
+					+ "'3600000')");
+			stDuracionCita.prepare();
+			stDuracionCita.execute();
+			stDuracionCita.close();
 
 		} catch (Exception e) {
 			throw e;
