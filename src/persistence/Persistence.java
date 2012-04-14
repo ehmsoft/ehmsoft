@@ -1219,7 +1219,7 @@ public class Persistence implements Cargado, Guardado {
 		try {
 			connMgr.prepararBD();
 			d = DatabaseFactory.open(connMgr.getDbLocation());
-			stAcCitaCalendario = d.createStatement("UPDATE citas SET uid=?, fecha=datetime(?),descripcion=?,anticipacion=?,alarma=?,id_actuacion=?,modificado=1, fecha_mod = datetime(" +
+			stAcCitaCalendario = d.createStatement("UPDATE citas SET uid=?, fecha=datetime(?),descripcion=?,anticipacion=?,alarma=?,modificado=1, fecha_mod = datetime(" +
 					"'now'," +
 			"'localtime') WHERE id_cita=?");
 			stAcCitaCalendario.prepare();
@@ -1232,16 +1232,9 @@ public class Persistence implements Cargado, Guardado {
 				alarma = 1;
 			}
 			stAcCitaCalendario.bind(5, alarma);
-			stAcCitaCalendario.bind(6, cita.getId_actuacion());
-			stAcCitaCalendario.bind(7, cita.getId_cita());
+			stAcCitaCalendario.bind(6, cita.getId_cita());
 			stAcCitaCalendario.execute();
 			stAcCitaCalendario.close();
-			Statement stAcActuacion = d.createStatement("UPDATE actuaciones SET uid=? WHERE id_actuacion=?");
-			stAcActuacion.prepare();
-			stAcActuacion.bind(1, cita.getUid());
-			stAcActuacion.bind(2, cita.getId_actuacion());
-			stAcActuacion.execute();
-			stAcActuacion.close();
 		} catch (Exception e) {
 			throw e;
 		} finally {
@@ -1260,7 +1253,7 @@ public class Persistence implements Cargado, Guardado {
 			Enumeration e = citas.elements();
 			while(e.hasMoreElements()){
 				Cita cita = (Cita)e.nextElement();
-				stAcCitaCalendario = d.createStatement("UPDATE citas SET uid=?, fecha=datetime(?),descripcion=?,anticipacion=?,alarma=?,id_actuacion=?,modificado=1, fecha_mod = datetime(" +
+				stAcCitaCalendario = d.createStatement("UPDATE citas SET uid=?, fecha=datetime(?),descripcion=?,anticipacion=?,alarma=?,modificado=1, fecha_mod = datetime(" +
 						"'now'," +
 				"'localtime') WHERE id_cita=?");
 				stAcCitaCalendario.prepare();
@@ -1273,16 +1266,9 @@ public class Persistence implements Cargado, Guardado {
 					alarma = 1;
 				}
 				stAcCitaCalendario.bind(5, alarma);
-				stAcCitaCalendario.bind(6, cita.getId_actuacion());
-				stAcCitaCalendario.bind(7, cita.getId_cita());
+				stAcCitaCalendario.bind(6, cita.getId_cita());
 				stAcCitaCalendario.execute();
 				stAcCitaCalendario.close();
-				Statement stAcActuacion = d.createStatement("UPDATE actuaciones SET uid=? WHERE id_actuacion=?");
-				stAcActuacion.prepare();
-				stAcActuacion.bind(1, cita.getUid());
-				stAcActuacion.bind(2, cita.getId_actuacion());
-				stAcActuacion.execute();
-				stAcActuacion.close();
 			}
 		} catch (Exception e) {
 			throw e;
@@ -1293,7 +1279,7 @@ public class Persistence implements Cargado, Guardado {
 		}
 	}
 
-	public void guardarCitaCalendario(Cita cita, String id_proceso)
+	public void guardarCitaCalendario(Cita cita, String id_actuacion)
 	throws Exception {
 		Database d = null;
 		try {
@@ -1313,7 +1299,7 @@ public class Persistence implements Cargado, Guardado {
 				alarma = 1;
 			}
 			stCitaCalendario.bind(5, alarma);
-			stCitaCalendario.bind(6, Integer.parseInt(cita.getId_actuacion()));
+			stCitaCalendario.bind(6, Integer.parseInt(id_actuacion));
 			stCitaCalendario.execute();
 			stCitaCalendario.close();
 			cita.setId_cita(Long.toString(d.lastInsertedRowID()));
@@ -2245,10 +2231,10 @@ public class Persistence implements Cargado, Guardado {
 				String uid = row.getString(1);
 				Calendar fecha = stringToCalendar(row.getString(2));
 				int anticipacion = row.getInteger(3);
-				int id_actuacion = row.getInteger(4);
+				//int id_actuacion = row.getInteger(4); id_actuacion fue removido del objeto
 				String descripcion = row.getString(5);
 				boolean alarma = row.getBoolean(6);
-				Cita cita = new Cita(Integer.toString(id_cita), fecha, anticipacion, Integer.toString(id_actuacion), uid, descripcion, new Boolean(alarma)); 
+				Cita cita = new Cita(Integer.toString(id_cita), fecha, anticipacion, uid, descripcion, new Boolean(alarma)); 
 				citas.addElement(cita);
 			}
 			st.close();
@@ -2278,10 +2264,10 @@ public class Persistence implements Cargado, Guardado {
 				String uid = row.getString(1);
 				Calendar fecha = stringToCalendar(row.getString(2));
 				int anticipacion = row.getInteger(3);
-				int id_actuacion = row.getInteger(4);
+				//int id_actuacion = row.getInteger(4); el id_actuacion fue removido del objeto
 				String descripcion = row.getString(5);
 				boolean alarma = row.getBoolean(6);
-				cita = new Cita(id_cita, fecha, anticipacion, Integer.toString(id_actuacion), uid, descripcion, new Boolean(alarma)); 
+				cita = new Cita(id_cita, fecha, anticipacion, uid, descripcion, new Boolean(alarma)); 
 			}
 			st.close();
 			cursor.close();
