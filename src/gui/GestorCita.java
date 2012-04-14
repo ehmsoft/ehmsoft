@@ -8,7 +8,7 @@ import javax.microedition.pim.PIMItem;
 import net.rim.blackberry.api.pdap.BlackBerryEvent;
 import core.CalendarManager;
 
-public class Cita {
+public class GestorCita {
 
 	private String _descripcion;
 	private Date _fecha;
@@ -23,18 +23,18 @@ public class Cita {
 	public static final String HORAS = "Horas";
 	public static final String MINUTOS = "Minutos";
 
-	public Cita(String descripcion, Date date, int alarma, String uid) {
+	public GestorCita(String descripcion, Date date, int alarma, String uid) {
 		_descripcion = descripcion;
 		_fecha = date;
 		_alarma = alarma;
 		_uid = uid;
 	}
 
-	public Cita() {
+	public GestorCita() {
 		this(null, null, 0, null);
 	}
 
-	public Cita(String uid) {
+	public GestorCita(String uid) {
 		try {
 			BlackBerryEvent e = CalendarManager.consultarCita(uid);
 			_fecha = new Date(e.getDate(Event.START, PIMItem.ATTR_NONE));

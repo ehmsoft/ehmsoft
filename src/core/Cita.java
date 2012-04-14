@@ -2,7 +2,7 @@ package core;
 
 import java.util.Calendar;
 
-public class CitaCalendario {
+public class Cita {
 	private String id_cita;
 	private Calendar fecha;
 	private int anticipacion;
@@ -12,7 +12,7 @@ public class CitaCalendario {
 	private Boolean alarma;
 	
 	// Constructores
-	public CitaCalendario(String id_cita, Calendar fecha, int anticipacion,
+	public Cita(String id_cita, Calendar fecha, int anticipacion,
 			String id_actuacion, String uid, String descripcion, Boolean alarma) {
 		this.id_cita = id_cita;
 		this.fecha = fecha;
@@ -23,7 +23,7 @@ public class CitaCalendario {
 		this.alarma = alarma;
 	}
 	
-	public CitaCalendario(String id_cita, Calendar fecha, int anticipacion,
+	public Cita(String id_cita, Calendar fecha, int anticipacion,
 			String id_actuacion, String descripcion, Boolean alarma) {
 		this.id_cita = id_cita;
 		this.fecha = fecha;
@@ -33,7 +33,7 @@ public class CitaCalendario {
 		this.alarma = alarma;
 	}
 
-	public CitaCalendario(String id_cita, Calendar fecha, String id_actuacion,
+	public Cita(String id_cita, Calendar fecha, String id_actuacion,
 			String descripcion, Boolean alarma) {
 		this.id_cita = id_cita;
 		this.fecha = fecha;
@@ -42,7 +42,7 @@ public class CitaCalendario {
 		this.alarma = alarma;
 	}
 
-	public CitaCalendario(Calendar fecha, int anticipacion,
+	public Cita(Calendar fecha, int anticipacion,
 			String id_actuacion, String uid, String descripcion, Boolean alarma) {
 		this.fecha = fecha;
 		this.anticipacion = anticipacion;
@@ -118,9 +118,9 @@ public class CitaCalendario {
 			return true;
 		if (obj == null)
 			return false;
-		if (!(obj instanceof CitaCalendario))
+		if (!(obj instanceof Cita))
 			return false;
-		CitaCalendario other = (CitaCalendario) obj;
+		Cita other = (Cita) obj;
 		if (alarma == null) {
 			if (other.alarma != null)
 				return false;

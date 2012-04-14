@@ -1,6 +1,6 @@
 package gui.Ver;
 
-import gui.Cita;
+import gui.GestorCita;
 import gui.Util;
 import gui.Nuevos.NuevaCita;
 import net.rim.device.api.database.DatabaseException;
@@ -14,14 +14,14 @@ import core.Juzgado;
 public class VerActuacion {
 	private VerActuacionScreen _screen;
 	private Actuacion _actuacion;
-	private Cita _cita;
+	private GestorCita _cita;
 	private Juzgado _juzgado;
 	private Juzgado _juzgadoVacio;
 
 	public VerActuacion(Actuacion actuacion) {
 		_actuacion = actuacion;
 		_juzgado = _actuacion.getJuzgado();
-		_cita = new Cita(_actuacion.getUid());
+		_cita = new GestorCita(_actuacion.getUid());
 		_screen = new VerActuacionScreen();
 		_screen.setChangeListener(listener);
 		_screen.setJuzgado(_juzgado.getNombre());
@@ -162,7 +162,7 @@ public class VerActuacion {
 		NuevaCita n = new NuevaCita(_screen.getDescripcion(), _screen
 				.getFechaProxima().getTime());
 		Util.pushModalScreen(n.getScreen());
-		Cita cita = n.getCita();
+		GestorCita cita = n.getCita();
 		if (cita != null && cita.getDescripcion().length() != 0) {
 			_cita = cita;
 			_screen.setClock();

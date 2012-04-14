@@ -1,7 +1,7 @@
 package ehmsoft;
 
 import gui.About;
-import gui.Cita;
+import gui.GestorCita;
 import gui.Llaves;
 import gui.PreferenciasGenerales;
 import gui.ScreenMainListas;
@@ -261,7 +261,7 @@ public class ScreenMain extends MainScreen {
 			public void drawListRow(ListField listField, Graphics graphics,
 					int index, int y, int width) {
 				Actuacion objeto = (Actuacion) this.get(listField, index);
-				Cita cita = new Cita(objeto.getUid());
+				GestorCita cita = new GestorCita(objeto.getUid());
 				int count = 0;
 				if (cita.exist()) {
 					graphics.drawBitmap(0, y, 16, 16,

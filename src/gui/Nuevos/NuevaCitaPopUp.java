@@ -1,6 +1,6 @@
 package gui.Nuevos;
 
-import gui.Cita;
+import gui.GestorCita;
 
 import java.util.Date;
 
@@ -48,7 +48,7 @@ public class NuevaCitaPopUp extends PopupScreen {
 				BasicEditField.FILTER_INTEGER);
 		_txtTiempo.setText("5");
 
-		Object[] choices = { Cita.MINUTOS, Cita.HORAS, Cita.DIAS };
+		Object[] choices = { GestorCita.MINUTOS, GestorCita.HORAS, GestorCita.DIAS };
 		_ocTiempo = new ObjectChoiceField(null, choices, 0, USE_ALL_WIDTH
 				| FIELD_LEFT);
 

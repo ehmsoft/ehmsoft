@@ -1,6 +1,6 @@
 package gui.Nuevos;
 
-import gui.Cita;
+import gui.GestorCita;
 import gui.Util;
 import gui.Listados.ListadoJuzgados;
 import gui.Ver.VerCita;
@@ -15,7 +15,7 @@ import core.Proceso;
 
 public class NuevaActuacion {
 	private Actuacion _actuacion;
-	private Cita _cita;
+	private GestorCita _cita;
 	private Juzgado _juzgado;
 	private Juzgado _juzgadoVacio;
 	private NuevaActuacionScreen _screen;
@@ -23,7 +23,7 @@ public class NuevaActuacion {
 
 	public NuevaActuacion(Proceso proceso) {
 		_juzgadoVacio = Util.consultarJuzgadoVacio();
-		_cita = new Cita();
+		_cita = new GestorCita();
 		_proceso = proceso;
 		_screen = new NuevaActuacionScreen();
 		_screen.setJuzgado(_juzgadoVacio.getNombre());
@@ -135,7 +135,7 @@ public class NuevaActuacion {
 		NuevaCita n = new NuevaCita(_screen.getDescripcion(), _screen
 				.getFechaProxima().getTime());
 		Util.pushModalScreen(n.getScreen());
-		Cita cita = n.getCita();
+		GestorCita cita = n.getCita();
 		if (cita != null && cita.getDescripcion().length() != 0) {
 			_cita = cita;
 			_screen.setClock();

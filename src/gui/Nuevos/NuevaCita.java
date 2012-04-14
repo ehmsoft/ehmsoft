@@ -1,6 +1,6 @@
 package gui.Nuevos;
 
-import gui.Cita;
+import gui.GestorCita;
 import gui.Util;
 
 import java.util.Date;
@@ -11,7 +11,7 @@ import net.rim.device.api.ui.FieldChangeListener;
 public class NuevaCita {
 
 	private NuevaCitaPopUp _screen;
-	private Cita _cita;
+	private GestorCita _cita;
 
 	public NuevaCita(String descripcion, Date fecha) {
 		_screen = new NuevaCitaPopUp();
@@ -35,7 +35,7 @@ public class NuevaCita {
 		return _screen;
 	}
 
-	public Cita getCita() {
+	public GestorCita getCita() {
 		return _cita;
 	}
 
@@ -43,7 +43,7 @@ public class NuevaCita {
 		if (_screen.getDescripcion().equals("")) {
 			Util.alert("La descripción está vacía!. Por favor ingrese algo");
 		} else {
-			_cita = new Cita();
+			_cita = new GestorCita();
 			if (_screen.hasAlarma()) {
 				_cita.setAlarma(_screen.getAlarma());
 			} else {

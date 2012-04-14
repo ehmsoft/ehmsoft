@@ -1,18 +1,18 @@
 package gui.Ver;
 
-import gui.Cita;
+import gui.GestorCita;
 import gui.Util;
 import net.rim.device.api.ui.Field;
 import net.rim.device.api.ui.FieldChangeListener;
 
 public class VerCita {
 	private VerCitaPopUp _screen;
-	private Cita _cita;
+	private GestorCita _cita;
 
-	public VerCita(Cita cita) {
+	public VerCita(GestorCita cita) {
 		_cita = cita;
 
-		Object[] choices = { Cita.MINUTOS, Cita.HORAS, Cita.DIAS };
+		Object[] choices = { GestorCita.MINUTOS, GestorCita.HORAS, GestorCita.DIAS };
 
 		_screen = new VerCitaPopUp();
 		_screen.setChangeListener(listener);
@@ -23,7 +23,7 @@ public class VerCita {
 			_screen.setAlarma(_cita.getAlarmaConFormato());
 			_screen.setChecked(true);
 		} else {
-			Object[] alarma = { new Integer(5), Cita.MINUTOS };
+			Object[] alarma = { new Integer(5), GestorCita.MINUTOS };
 			_screen.setAlarma(alarma);
 		}
 	}

@@ -15,7 +15,7 @@ import core.Actuacion;
 import core.ActuacionCritica;
 import core.CampoPersonalizado;
 import core.Categoria;
-import core.CitaCalendario;
+import core.Cita;
 import core.Juzgado;
 import core.Persona;
 import core.Plantilla;
@@ -1213,7 +1213,7 @@ public class Persistence implements Cargado, Guardado {
 	// }
 	// }
 
-	public void actualizarCitaCalendario(CitaCalendario cita) throws Exception { 
+	public void actualizarCitaCalendario(Cita cita) throws Exception { 
 		Database d = null;
 		Statement stAcCitaCalendario;
 		try {
@@ -1259,7 +1259,7 @@ public class Persistence implements Cargado, Guardado {
 			d = DatabaseFactory.open(connMgr.getDbLocation());
 			Enumeration e = citas.elements();
 			while(e.hasMoreElements()){
-				CitaCalendario cita = (CitaCalendario)e.nextElement();
+				Cita cita = (Cita)e.nextElement();
 				stAcCitaCalendario = d.createStatement("UPDATE citas SET uid=?, fecha=datetime(?),descripcion=?,anticipacion=?,alarma=?,id_actuacion=?,modificado=1, fecha_mod = datetime(" +
 						"'now'," +
 				"'localtime') WHERE id_cita=?");
@@ -1293,7 +1293,7 @@ public class Persistence implements Cargado, Guardado {
 		}
 	}
 
-	public void guardarCitaCalendario(CitaCalendario cita, String id_proceso)
+	public void guardarCitaCalendario(Cita cita, String id_proceso)
 	throws Exception {
 		Database d = null;
 		try {
@@ -1327,7 +1327,7 @@ public class Persistence implements Cargado, Guardado {
 
 	}
 
-	public void borrarCitaCalendario(CitaCalendario cita) throws Exception {
+	public void borrarCitaCalendario(Cita cita) throws Exception {
 		Database d = null;
 		try {
 			connMgr.prepararBD();
@@ -2248,7 +2248,7 @@ public class Persistence implements Cargado, Guardado {
 				int id_actuacion = row.getInteger(4);
 				String descripcion = row.getString(5);
 				boolean alarma = row.getBoolean(6);
-				CitaCalendario cita = new CitaCalendario(Integer.toString(id_cita), fecha, anticipacion, Integer.toString(id_actuacion), uid, descripcion, new Boolean(alarma)); 
+				Cita cita = new Cita(Integer.toString(id_cita), fecha, anticipacion, Integer.toString(id_actuacion), uid, descripcion, new Boolean(alarma)); 
 				citas.addElement(cita);
 			}
 			st.close();
@@ -2263,9 +2263,9 @@ public class Persistence implements Cargado, Guardado {
 		return citas;
 	}
 
-	public CitaCalendario consultarCitaCalendario(String id_cita) throws Exception{
+	public Cita consultarCitaCalendario(String id_cita) throws Exception{
 		Database d = null;
-		CitaCalendario cita = null;
+		Cita cita = null;
 		try {
 			connMgr.prepararBD();
 			d = DatabaseFactory.open(connMgr.getDbLocation());
@@ -2281,7 +2281,7 @@ public class Persistence implements Cargado, Guardado {
 				int id_actuacion = row.getInteger(4);
 				String descripcion = row.getString(5);
 				boolean alarma = row.getBoolean(6);
-				cita = new CitaCalendario(id_cita, fecha, anticipacion, Integer.toString(id_actuacion), uid, descripcion, new Boolean(alarma)); 
+				cita = new Cita(id_cita, fecha, anticipacion, Integer.toString(id_actuacion), uid, descripcion, new Boolean(alarma)); 
 			}
 			st.close();
 			cursor.close();
