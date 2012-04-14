@@ -274,16 +274,14 @@ public class Persistence implements Cargado, Guardado {
 					+ " fecha_creacion = datetime(?),"
 					+ " fecha_proxima = datetime(?),"
 					+ " descripcion = (?),"
-					+ " uid = ?, modificado = 1, fecha_mod = datetime(" + "'now'," + "'localtime') WHERE id_actuacion = ?");
+					+ "modificado = 1, fecha_mod = datetime(" + "'now'," + "'localtime') WHERE id_actuacion = ?");
 			stAcActuacion.prepare();
 			stAcActuacion.bind(1, actuacion.getJuzgado().getId_juzgado());
 			stAcActuacion.bind(2, calendarToString(actuacion.getFecha()));
 			stAcActuacion
 			.bind(3, calendarToString(actuacion.getFechaProxima()));
 			stAcActuacion.bind(4, actuacion.getDescripcion());
-			stAcActuacion.bind(5, actuacion.getUid());
-			stAcActuacion.bind(6, actuacion.getId_actuacion());
-
+			stAcActuacion.bind(5, actuacion.getId_actuacion());
 			stAcActuacion.execute();
 			stAcActuacion.close();
 
@@ -292,6 +290,17 @@ public class Persistence implements Cargado, Guardado {
 		} finally {
 			if (d != null) {
 				d.close();
+			}
+		}
+		if (actuacion != null){
+			Cita cita = actuacion.getCita();
+			if (cita != null){
+				if(cita.getId_cita() == null){
+					guardarCitaCalendario(cita, actuacion.getId_actuacion());
+				}
+				else{
+					actualizarCitaCalendario(cita);
+				}
 			}
 		}
 	}
@@ -303,14 +312,13 @@ public class Persistence implements Cargado, Guardado {
 			connMgr.prepararBD();
 			d = DatabaseFactory.open(connMgr.getDbLocation());
 			Statement stActuacion = d
-			.createStatement("INSERT INTO actuaciones (id_actuacion,id_proceso, id_juzgado, fecha_creacion, fecha_proxima, descripcion, uid, nuevo, fecha_mod) VALUES( NULL,?,?,datetime(?),datetime(?),?,?,1,datetime(" + "'now'," + "'localtime'))");
+			.createStatement("INSERT INTO actuaciones (id_actuacion,id_proceso, id_juzgado, fecha_creacion, fecha_proxima, descripcion, nuevo, fecha_mod) VALUES( NULL,?,?,datetime(?),datetime(?),?,1,datetime(" + "'now'," + "'localtime'))");
 			stActuacion.prepare();
 			stActuacion.bind(1, Integer.parseInt(id_proceso));
 			stActuacion.bind(2, actuacion.getJuzgado().getId_juzgado());
 			stActuacion.bind(3, calendarToString(actuacion.getFecha()));
 			stActuacion.bind(4, calendarToString(actuacion.getFechaProxima()));
 			stActuacion.bind(5, actuacion.getDescripcion());
-			stActuacion.bind(6, actuacion.getUid());
 			stActuacion.execute();
 			stActuacion.close();
 			actuacion.setId_actuacion(Long.toString(d.lastInsertedRowID()));
@@ -320,6 +328,9 @@ public class Persistence implements Cargado, Guardado {
 			if (d != null) {
 				d.close();
 			}
+		}
+		if (actuacion.getId_actuacion() != null){
+			guardarCitaCalendario(actuacion.getCita(), actuacion.getId_actuacion());
 		}
 
 	}
@@ -1640,7 +1651,7 @@ public class Persistence implements Cargado, Guardado {
 			connMgr.prepararBD();
 			d = DatabaseFactory.open(connMgr.getDbLocation());
 			Statement st = d
-			.createStatement("SELECT id_actuacion, id_proceso, id_juzgado, fecha_creacion, fecha_proxima, descripcion, uid FROM actuaciones WHERE id_proceso = ? AND eliminado = 0 ORDER BY fecha_creacion, fecha_proxima");
+			.createStatement("SELECT id_actuacion, id_proceso, id_juzgado, fecha_creacion, fecha_proxima, descripcion FROM actuaciones WHERE id_proceso = ? AND eliminado = 0 ORDER BY fecha_creacion, fecha_proxima");
 			st.prepare();
 			st.bind(1, proceso.getId_proceso());
 			Cursor cursor = st.getCursor();
@@ -1651,12 +1662,11 @@ public class Persistence implements Cargado, Guardado {
 				Calendar fecha_creacion = stringToCalendar(row.getString(3));
 				Calendar fecha_proxima = stringToCalendar(row.getString(4));
 				String descripcion = row.getString(5);
-				String uid = row.getString(6);
 				Juzgado juzgado = new Juzgado();
 				juzgado.setId_juzgado(Integer.toString(id_juzgado));
 				Actuacion actuacion = new Actuacion(juzgado, fecha_creacion,
 						fecha_proxima, descripcion,
-						Integer.toString(id_actuacion), uid);
+						Integer.toString(id_actuacion));
 				actuaciones.addElement(actuacion);
 			}
 			st.close();
@@ -1673,6 +1683,7 @@ public class Persistence implements Cargado, Guardado {
 			Actuacion actuacion_act = (Actuacion) e.nextElement();
 			actuacion_act.setJuzgado(consultarJuzgado(actuacion_act
 					.getJuzgado().getId_juzgado()));
+			actuacion_act.setCita(consultarCitaActuaion(actuacion_act.getId_actuacion()));
 		}
 		return actuaciones;
 	}
@@ -1684,7 +1695,7 @@ public class Persistence implements Cargado, Guardado {
 			connMgr.prepararBD();
 			d = DatabaseFactory.open(connMgr.getDbLocation());
 			Statement st = d
-			.createStatement("SELECT id_actuacion, id_proceso, id_juzgado, fecha_creacion, fecha_proxima, descripcion, uid FROM actuaciones WHERE id_actuacion = ?");
+			.createStatement("SELECT id_actuacion, id_proceso, id_juzgado, fecha_creacion, fecha_proxima, descripcion FROM actuaciones WHERE id_actuacion = ?");
 			st.prepare();
 			st.bind(1, id_actuacion);
 			Cursor cursor = st.getCursor();
@@ -1694,11 +1705,10 @@ public class Persistence implements Cargado, Guardado {
 				Calendar fecha_creacion = stringToCalendar(row.getString(3));
 				Calendar fecha_proxima = stringToCalendar(row.getString(4));
 				String descripcion = row.getString(5);
-				String uid = row.getString(6);
 				Juzgado juzgado = new Juzgado();
 				juzgado.setId_juzgado(Integer.toString(id_juzgado));
 				actuacion = new Actuacion(juzgado, fecha_creacion,
-						fecha_proxima, descripcion, id_actuacion, uid);
+						fecha_proxima, descripcion, id_actuacion);
 			}
 			st.close();
 			cursor.close();
@@ -1711,6 +1721,7 @@ public class Persistence implements Cargado, Guardado {
 		}
 		actuacion.setJuzgado(consultarJuzgado(actuacion.getJuzgado()
 				.getId_juzgado()));
+		actuacion.setCita(consultarCitaActuaion(actuacion.getId_actuacion()));
 		return actuacion;
 	}
 
@@ -1721,7 +1732,7 @@ public class Persistence implements Cargado, Guardado {
 			connMgr.prepararBD();
 			d = DatabaseFactory.open(connMgr.getDbLocation());
 			Statement st = d
-			.createStatement("SELECT id_actuacion, id_proceso, id_juzgado, fecha_creacion, fecha_proxima, descripcion, uid FROM actuaciones WHERE fecha_proxima >= date() AND eliminado = 0 ORDER BY fecha_proxima LIMIT ?");
+			.createStatement("SELECT id_actuacion, id_proceso, id_juzgado, fecha_creacion, fecha_proxima, descripcion FROM actuaciones WHERE fecha_proxima >= date() AND eliminado = 0 ORDER BY fecha_proxima LIMIT ?");
 			st.prepare();
 			st.bind(1, cantidad);
 			Cursor cursor = st.getCursor();
@@ -1733,13 +1744,11 @@ public class Persistence implements Cargado, Guardado {
 				Calendar fecha_creacion = stringToCalendar(row.getString(3));
 				Calendar fecha_proxima = stringToCalendar(row.getString(4));
 				String descripcion = row.getString(5);
-				String uid = row.getString(6);
 				Juzgado juzgado = new Juzgado();
 				juzgado.setId_juzgado(Integer.toString(id_juzgado));
 				ActuacionCritica actuacion = new ActuacionCritica(juzgado,
 						fecha_creacion, fecha_proxima, descripcion,
-						Integer.toString(id_actuacion), uid,
-						Integer.toString(id_proceso));
+						Integer.toString(id_actuacion),Integer.toString(id_proceso));
 				actuaciones.addElement(actuacion);
 			}
 			st.close();
@@ -1756,6 +1765,7 @@ public class Persistence implements Cargado, Guardado {
 			Actuacion actuacion_act = (Actuacion) e.nextElement();
 			actuacion_act.setJuzgado(consultarJuzgado(actuacion_act
 					.getJuzgado().getId_juzgado()));
+			actuacion_act.setCita(consultarCitaActuaion(actuacion_act.getId_actuacion()));
 		}
 		return actuaciones;
 	}
@@ -2280,7 +2290,40 @@ public class Persistence implements Cargado, Guardado {
 		}
 		return cita;
 	}
-
+	
+	public Cita consultarCitaActuaion(String id_actuacion) throws Exception{
+		Database d = null;
+		Cita cita = null;
+		try {
+			connMgr.prepararBD();
+			d = DatabaseFactory.open(connMgr.getDbLocation());
+			Statement st = d.createStatement("SELECT  id_cita, uid,fecha, anticipacion,id_actuacion FROM citas WHERE id_actuacion = ? AND eliminado = 0 ORDER BY fecha");
+			st.prepare();
+			st.bind(1, id_actuacion);
+			Cursor cursor = st.getCursor();
+			if (cursor.next()) {
+				Row row = cursor.getRow();
+				int id_cita = row.getInteger(0);
+				String uid = row.getString(1);
+				Calendar fecha = stringToCalendar(row.getString(2));
+				int anticipacion = row.getInteger(3);
+				//int id_actuacion = row.getInteger(4); el id_actuacion fue removido del objeto
+				String descripcion = row.getString(5);
+				boolean alarma = row.getBoolean(6);
+				cita = new Cita(Integer.toString(id_cita), fecha, anticipacion, uid, descripcion, new Boolean(alarma)); 
+			}
+			st.close();
+			cursor.close();
+		} catch (Exception e) {
+			throw e;
+		} finally {
+			if (d != null) {
+				d.close();
+			}
+		}
+		return cita;
+	}
+	
 	public String consultarPreferencia(int id_preferencia) throws Exception {
 		String valor = "0";
 		Database d = null;
