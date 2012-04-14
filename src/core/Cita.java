@@ -6,47 +6,39 @@ public class Cita {
 	private String id_cita;
 	private Calendar fecha;
 	private int anticipacion;
-	private String id_actuacion;
 	private String uid;
 	private String descripcion;
 	private Boolean alarma;
 	
 	// Constructores
-	public Cita(String id_cita, Calendar fecha, int anticipacion,
-			String id_actuacion, String uid, String descripcion, Boolean alarma) {
+	public Cita(String id_cita, Calendar fecha, int anticipacion, String uid, String descripcion, Boolean alarma) {
 		this.id_cita = id_cita;
 		this.fecha = fecha;
 		this.anticipacion = anticipacion;
-		this.id_actuacion = id_actuacion;
 		this.uid = uid;
 		this.descripcion = descripcion;
 		this.alarma = alarma;
 	}
 	
-	public Cita(String id_cita, Calendar fecha, int anticipacion,
-			String id_actuacion, String descripcion, Boolean alarma) {
+	public Cita(String id_cita, Calendar fecha, int anticipacion, String descripcion, Boolean alarma) {
 		this.id_cita = id_cita;
 		this.fecha = fecha;
 		this.anticipacion = anticipacion;
-		this.id_actuacion = id_actuacion;
 		this.descripcion = descripcion;
 		this.alarma = alarma;
 	}
 
-	public Cita(String id_cita, Calendar fecha, String id_actuacion,
+	public Cita(String id_cita, Calendar fecha,
 			String descripcion, Boolean alarma) {
 		this.id_cita = id_cita;
 		this.fecha = fecha;
-		this.id_actuacion = id_actuacion;
 		this.descripcion = descripcion;
 		this.alarma = alarma;
 	}
 
-	public Cita(Calendar fecha, int anticipacion,
-			String id_actuacion, String uid, String descripcion, Boolean alarma) {
+	public Cita(Calendar fecha, int anticipacion, String uid, String descripcion, Boolean alarma) {
 		this.fecha = fecha;
 		this.anticipacion = anticipacion;
-		this.id_actuacion = id_actuacion;
 		this.uid = uid;
 		this.descripcion = descripcion;
 		this.alarma = alarma;
@@ -64,10 +56,6 @@ public class Cita {
 
 	public int getAnticipacion() {
 		return anticipacion;
-	}
-
-	public String getId_actuacion() {
-		return id_actuacion;
 	}
 
 	public String getUid() {
@@ -94,10 +82,6 @@ public class Cita {
 
 	public void setAnticipacion(int anticipacion) {
 		this.anticipacion = anticipacion;
-	}
-
-	public void setId_actuacion(String id_actuacion) {
-		this.id_actuacion = id_actuacion;
 	}
 
 	public void setUid(String uid) {
@@ -137,11 +121,6 @@ public class Cita {
 			if (other.fecha != null)
 				return false;
 		} else if (!fecha.equals(other.fecha))
-			return false;
-		if (id_actuacion == null) {
-			if (other.id_actuacion != null)
-				return false;
-		} else if (!id_actuacion.equals(other.id_actuacion))
 			return false;
 		if (id_cita == null) {
 			if (other.id_cita != null)
