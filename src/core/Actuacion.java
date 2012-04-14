@@ -8,9 +8,9 @@ public class Actuacion {
 	private Calendar fechaProxima;
 	private String descripcion;
 	private String id_actuacion;
-	private String uid;
-
-	// Constructores
+	private Cita cita;
+	
+	//Constructores
 	public Actuacion(Juzgado juzgado, Calendar fecha, Calendar fechaProxima,
 			String descripcion) {
 		this.juzgado = juzgado;
@@ -18,7 +18,6 @@ public class Actuacion {
 		this.fechaProxima = fechaProxima;
 		this.descripcion = descripcion;
 	}
-
 	public Actuacion(Juzgado juzgado, Calendar fecha, Calendar fechaProxima,
 			String descripcion, String id_actuacion) {
 		this.juzgado = juzgado;
@@ -27,81 +26,72 @@ public class Actuacion {
 		this.descripcion = descripcion;
 		this.id_actuacion = id_actuacion;
 	}
-
 	public Actuacion(Juzgado juzgado, Calendar fecha, Calendar fechaProxima,
-			String descripcion, String id_actuacion, String uid) {
+			String descripcion, String id_actuacion, Cita cita) {
 		this.juzgado = juzgado;
 		this.fecha = fecha;
 		this.fechaProxima = fechaProxima;
 		this.descripcion = descripcion;
 		this.id_actuacion = id_actuacion;
-		this.uid = uid;
+		this.cita = cita;
 	}
-
-	// Fin Constructores
-
-	// Getters
+	//Fin Constructores
+	
+	
+	//Getters
 	public Juzgado getJuzgado() {
 		return juzgado;
 	}
-
 	public Calendar getFecha() {
 		return fecha;
 	}
-
 	public Calendar getFechaProxima() {
 		return fechaProxima;
 	}
-
 	public String getDescripcion() {
 		return descripcion;
 	}
-
 	public String getId_actuacion() {
 		return id_actuacion;
 	}
-
-	public String getUid() {
-		return uid;
+	public Cita getCita() {
+		return cita;
 	}
-
-	// Setters
-	public void setUid(String uid) {
-		this.uid = uid;
-	}
-
-	public void setId_actuacion(String id_actuacion) {
-		this.id_actuacion = id_actuacion;
-	}
-
+	
+	//Setters
 	public void setJuzgado(Juzgado juzgado) {
 		this.juzgado = juzgado;
 	}
-
 	public void setFecha(Calendar fecha) {
 		this.fecha = fecha;
 	}
-
 	public void setFechaProxima(Calendar fechaProxima) {
 		this.fechaProxima = fechaProxima;
 	}
-
 	public void setDescripcion(String descripcion) {
 		this.descripcion = descripcion;
 	}
-
-	public String toString() {
-		return getDescripcion();
+	public void setId_actuacion(String id_actuacion) {
+		this.id_actuacion = id_actuacion;
 	}
-
+	public void setCita(Cita cita) {
+		this.cita = cita;
+	}
+	
+	
 	public boolean equals(Object obj) {
 		if (this == obj)
 			return true;
 		if (obj == null)
 			return false;
-		if (getClass() != obj.getClass())
+		if (!(obj instanceof Actuacion))
 			return false;
 		Actuacion other = (Actuacion) obj;
+		if (cita == null) {
+			if (other.cita != null)
+				return false;
+		} else if (!cita.equals(other.cita))
+			return false;
 		if (descripcion == null) {
 			if (other.descripcion != null)
 				return false;
@@ -117,17 +107,16 @@ public class Actuacion {
 				return false;
 		} else if (!fechaProxima.equals(other.fechaProxima))
 			return false;
+		if (id_actuacion == null) {
+			if (other.id_actuacion != null)
+				return false;
+		} else if (!id_actuacion.equals(other.id_actuacion))
+			return false;
 		if (juzgado == null) {
 			if (other.juzgado != null)
 				return false;
 		} else if (!juzgado.equals(other.juzgado))
 			return false;
-		if (uid == null) {
-			if (other.uid != null)
-				return false;
-		} else if (!uid.equals(other.uid))
-			return false;
 		return true;
 	}
-
 }

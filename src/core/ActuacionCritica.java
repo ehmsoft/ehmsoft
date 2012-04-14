@@ -20,15 +20,15 @@ public class ActuacionCritica extends Actuacion {
 
 	public ActuacionCritica(Juzgado juzgado, Calendar fecha,
 			Calendar fechaProxima, String descripcion, String id_actuacion,
-			String uid, String id_proceso) {
-		super(juzgado, fecha, fechaProxima, descripcion, id_actuacion, uid);
+			Cita cita, String id_proceso) {
+		super(juzgado, fecha, fechaProxima, descripcion, id_actuacion,cita);
 		this.id_proceso = id_proceso;
 	}
 
 	public ActuacionCritica(Actuacion actuacion, String id_proceso) {
 		super(actuacion.getJuzgado(), actuacion.getFecha(), actuacion
 				.getFechaProxima(), actuacion.getDescripcion(), actuacion
-				.getId_actuacion(), actuacion.getUid());
+				.getId_actuacion(), actuacion.getCita());
 		this.id_proceso = id_proceso;
 	}
 
