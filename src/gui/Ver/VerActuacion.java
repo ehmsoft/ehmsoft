@@ -21,7 +21,7 @@ public class VerActuacion {
 	public VerActuacion(Actuacion actuacion) {
 		_actuacion = actuacion;
 		_juzgado = _actuacion.getJuzgado();
-		_cita = new GestorCita(_actuacion.getUid());
+		_cita = new GestorCita(_actuacion.getCita().getUid());
 		_screen = new VerActuacionScreen();
 		_screen.setChangeListener(listener);
 		_screen.setJuzgado(_juzgado.getNombre());
@@ -78,7 +78,7 @@ public class VerActuacion {
 			_actuacion.setFecha(_screen.getFecha());
 			_actuacion.setFechaProxima(_screen.getFechaProxima());
 			_actuacion.setDescripcion(_screen.getDescripcion());
-			_actuacion.setUid(_cita.getUid());
+			_actuacion.setCita(_cita.getCita());
 			_screen.setStatus(Util.getWaitLabel());
 			UiApplication.getUiApplication().invokeLater(new Runnable() {
 
@@ -108,8 +108,8 @@ public class VerActuacion {
 	}
 
 	private void borrarCitaActuacion() {
-		if (!_cita.exist() && _actuacion.getUid() != null) {
-			_actuacion.setUid(_cita.getUid());
+		if (!_cita.exist() && _actuacion.getCita() != null) {
+			_actuacion.setCita(null);
 			try {
 				new Persistence().actualizarActuacion(_actuacion);
 			} catch (NullPointerException e) {
@@ -217,7 +217,7 @@ public class VerActuacion {
 				actualizarActuacion();
 			} else if (sel == 1) {
 				borrarCitaActuacion();
-				if (_cita.exist() && _actuacion.getUid() == null) {
+				if (_cita.exist() && _actuacion.getCita() == null) {
 					_cita.eliminarCita();
 				}
 				Util.popScreen(_screen);

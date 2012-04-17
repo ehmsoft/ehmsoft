@@ -2297,7 +2297,7 @@ public class Persistence implements Cargado, Guardado {
 		try {
 			connMgr.prepararBD();
 			d = DatabaseFactory.open(connMgr.getDbLocation());
-			Statement st = d.createStatement("SELECT  id_cita, uid,fecha, anticipacion,id_actuacion FROM citas WHERE id_actuacion = ? AND eliminado = 0 ORDER BY fecha");
+			Statement st = d.createStatement("SELECT  id_cita, uid, fecha, descripcion, anticipacion, alarma FROM citas WHERE id_actuacion = ? AND eliminado = 0 ORDER BY fecha");
 			st.prepare();
 			st.bind(1, id_actuacion);
 			Cursor cursor = st.getCursor();
@@ -2306,10 +2306,9 @@ public class Persistence implements Cargado, Guardado {
 				int id_cita = row.getInteger(0);
 				String uid = row.getString(1);
 				Calendar fecha = stringToCalendar(row.getString(2));
-				int anticipacion = row.getInteger(3);
-				//int id_actuacion = row.getInteger(4); el id_actuacion fue removido del objeto
-				String descripcion = row.getString(5);
-				boolean alarma = row.getBoolean(6);
+				String descripcion = row.getString(3);
+				int anticipacion = row.getInteger(4);
+				boolean alarma = row.getBoolean(5);
 				cita = new Cita(Integer.toString(id_cita), fecha, anticipacion, uid, descripcion, new Boolean(alarma)); 
 			}
 			st.close();

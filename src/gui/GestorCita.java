@@ -1,5 +1,6 @@
 package gui;
 
+import java.util.Calendar;
 import java.util.Date;
 
 import javax.microedition.pim.Event;
@@ -7,6 +8,7 @@ import javax.microedition.pim.PIMItem;
 
 import net.rim.blackberry.api.pdap.BlackBerryEvent;
 import core.CalendarManager;
+import core.Cita;
 
 public class GestorCita {
 
@@ -112,6 +114,14 @@ public class GestorCita {
 			Util.citaErrorMessage();
 		}
 	}
+	
+	public String getDescripcion() {
+		return _descripcion;
+	}
+	
+	public Date getFecha() {
+		return _fecha;
+	}
 
 	public void actualizarCita() {
 		if (_actualizar) {
@@ -134,10 +144,6 @@ public class GestorCita {
 		}
 	}
 
-	public String getDescripcion() {
-		return _descripcion;
-	}
-
 	public boolean exist() {
 		if (_uid == null) {
 			return false;
@@ -154,20 +160,19 @@ public class GestorCita {
 		}
 	}
 
-	public Date getFecha() {
-		return _fecha;
-	}
-
-	public String getUid() {
-		return _uid;
-	}
-
 	public void setDescripcion(String descripcion) {
 		_descripcion = descripcion;
 	}
 
 	public void setAlarma(int alarma) {
 		_alarma = alarma;
+	}
+	
+	public Cita getCita() {
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTime(_fecha);
+		Cita cita = new Cita(calendar, _alarma, _uid, _descripcion, new Boolean(hasAlarma()));
+		return cita;
 	}
 
 	public void setAlarma(Object[] alarma) {

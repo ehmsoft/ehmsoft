@@ -261,7 +261,7 @@ public class ScreenMain extends MainScreen {
 			public void drawListRow(ListField listField, Graphics graphics,
 					int index, int y, int width) {
 				Actuacion objeto = (Actuacion) this.get(listField, index);
-				GestorCita cita = new GestorCita(objeto.getUid());
+				GestorCita cita = new GestorCita(objeto.getCita().getUid());
 				int count = 0;
 				if (cita.exist()) {
 					graphics.drawBitmap(0, y, 16, 16,

@@ -75,7 +75,7 @@ public class NuevaActuacion {
 			_cita.actualizarCita();
 			_actuacion = new Actuacion(_juzgado, _screen.getFecha(),
 					_screen.getFechaProxima(), _screen.getDescripcion(), null,
-					_cita.getUid());
+					_cita.getCita());
 			if (_proceso != null) {
 				_screen.setStatus(Util.getWaitLabel());
 				UiApplication.getUiApplication().invokeLater(new Runnable() {
@@ -118,8 +118,8 @@ public class NuevaActuacion {
 
 	private void borrarCitaActuacion() {
 		if (_actuacion != null) {
-			if (!_cita.exist() && _actuacion.getUid() != null) {
-				_actuacion.setUid(_cita.getUid());
+			if (!_cita.exist() && _actuacion.getCita() != null) {
+				_actuacion.setCita(null);
 				try {
 					new Persistence().actualizarActuacion(_actuacion);
 				} catch (NullPointerException e) {
@@ -177,7 +177,7 @@ public class NuevaActuacion {
 				guardarActuacion();
 			} else if (sel == 1) {
 				borrarCitaActuacion();
-				if (_cita.exist() && _actuacion.getUid() == null) {
+				if (_cita.exist() && _actuacion.getCita() == null) {
 					_cita.eliminarCita();
 				}
 				Util.popScreen(_screen);
