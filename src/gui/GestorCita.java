@@ -38,11 +38,27 @@ public class GestorCita {
 	}
 	
 	public GestorCita(Cita cita) {
-		this(cita.getUid());
+		this();
 		_cita = cita;
+		if(cita != null && cita.getUid() != null)
+			cargarUid(cita.getUid());
+		else if(cita != null){
+			_descripcion = cita.getDescripcion();
+			_fecha = cita.getFecha().getTime();
+			_alarma = cita.getAnticipacion();
+			_uid = cita.getUid();
+		}
+	}
+	
+	public void setCita(Cita cita) {
+		cargarUid(cita.getUid());
 	}
 
 	public GestorCita(String uid) {
+		cargarUid(uid);
+	}
+	
+	private void cargarUid(String uid) {
 		try {
 			BlackBerryEvent e = CalendarManager.consultarCita(uid);
 			_fecha = new Date(e.getDate(Event.START, PIMItem.ATTR_NONE));
@@ -175,15 +191,22 @@ public class GestorCita {
 	}
 	
 	public Cita getCita() {
-		Calendar calendar = Calendar.getInstance();
-		calendar.setTime(_fecha);
-		_cita.setAlarma(new Boolean(hasAlarma()));
-		_cita.setAnticipacion(_alarma);
-		_cita.setDescripcion(_descripcion);
-		_cita.setFecha(calendar);
-		_cita.setUid(_uid);
-		
-		return _cita;
+		if (_uid != null) {
+			Calendar calendar = Calendar.getInstance();
+			calendar.setTime(_fecha);
+			if(_cita != null){
+				_cita.setAlarma(new Boolean(hasAlarma()));
+				_cita.setAnticipacion(_alarma);
+				_cita.setDescripcion(_descripcion);
+				_cita.setFecha(calendar);
+				_cita.setUid(_uid);
+			} else {
+				_cita = new Cita(calendar, _alarma, _uid, _descripcion, new Boolean(hasAlarma()));
+			}
+			return _cita;
+		} else {
+			return null;
+		}
 	}
 
 	public void setAlarma(Object[] alarma) {
