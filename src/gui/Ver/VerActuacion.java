@@ -21,7 +21,7 @@ public class VerActuacion {
 	public VerActuacion(Actuacion actuacion) {
 		_actuacion = actuacion;
 		_juzgado = _actuacion.getJuzgado();
-		_cita = new GestorCita(_actuacion.getCita().getUid());
+		_cita = new GestorCita(_actuacion.getCita());
 		_screen = new VerActuacionScreen();
 		_screen.setChangeListener(listener);
 		_screen.setJuzgado(_juzgado.getNombre());

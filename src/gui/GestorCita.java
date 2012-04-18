@@ -16,6 +16,7 @@ public class GestorCita {
 	private Date _fecha;
 	private int _alarma;
 	private String _uid;
+	private Cita _cita;
 
 	private boolean _eliminar = false;
 	private boolean _actualizar = false;
@@ -34,6 +35,11 @@ public class GestorCita {
 
 	public GestorCita() {
 		this(null, null, 0, null);
+	}
+	
+	public GestorCita(Cita cita) {
+		this(cita.getUid());
+		_cita = cita;
 	}
 
 	public GestorCita(String uid) {
@@ -171,8 +177,13 @@ public class GestorCita {
 	public Cita getCita() {
 		Calendar calendar = Calendar.getInstance();
 		calendar.setTime(_fecha);
-		Cita cita = new Cita(calendar, _alarma, _uid, _descripcion, new Boolean(hasAlarma()));
-		return cita;
+		_cita.setAlarma(new Boolean(hasAlarma()));
+		_cita.setAnticipacion(_alarma);
+		_cita.setDescripcion(_descripcion);
+		_cita.setFecha(calendar);
+		_cita.setUid(_uid);
+		
+		return _cita;
 	}
 
 	public void setAlarma(Object[] alarma) {
