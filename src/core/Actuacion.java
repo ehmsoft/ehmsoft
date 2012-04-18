@@ -78,6 +78,9 @@ public class Actuacion {
 		this.cita = cita;
 	}
 	
+	public String toString() {
+		return descripcion;
+	}	
 	
 	public boolean equals(Object obj) {
 		if (this == obj)
