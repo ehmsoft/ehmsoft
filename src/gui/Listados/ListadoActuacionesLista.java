@@ -48,7 +48,7 @@ public class ListadoActuacionesLista extends ListaListas implements
 			Actuacion objeto = (Actuacion) r.getAt(index);
 			try {
 				int count = 0;
-				if (objeto.getCita().getUid() != null) {
+				if (objeto.getCita() != null) {
 					BlackBerryEvent e = CalendarManager.consultarCita(objeto
 							.getCita().getUid());
 					if (e != null) {
