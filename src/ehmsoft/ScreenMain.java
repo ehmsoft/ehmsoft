@@ -42,6 +42,7 @@ import persistence.ConnectionManager;
 import persistence.Persistence;
 import core.Actuacion;
 import core.ActuacionCritica;
+import core.Cita;
 import core.Preferencias;
 import core.Proceso;
 
@@ -197,7 +198,6 @@ public class ScreenMain extends MainScreen {
 
 			public void run() {
 				try {
-					new ConnectionManager().prepararBD();
 					new Persistence().consultarPreferencias();
 				} catch (NullPointerException e) {
 					Util.popScreen(wait);
@@ -215,7 +215,37 @@ public class ScreenMain extends MainScreen {
 						System.exit(0);
 					}
 				}
+				cargarCitas();
 				cargarActuaciones();
+			}
+		});
+	}
+	
+	private void cargarCitas() {
+		setStatus(Util.getWaitLabel());
+		UiApplication.getUiApplication().invokeLater(new Runnable() {
+
+			public void run() {
+				try {
+					Persistence p = new Persistence();
+					Vector citasBD = p.consultarCitasCalendario();
+					Vector citasNuevas = new Vector();
+					Enumeration en = citasBD.elements();
+					GestorCita gestor = new GestorCita();
+					while(en.hasMoreElements()) {
+						Cita cita = (Cita)en.nextElement();
+						if(cita.getUid() == null) {
+							gestor.setCita(cita);
+							gestor.guardarCita();
+							citasNuevas.addElement(gestor.getCita());
+							p.actualizarCitasCalendario(citasNuevas);
+						}
+					}
+				} catch (NullPointerException e) {
+					Util.noSd();
+				} catch (Exception e) {
+					Util.alert(e.toString());
+				}
 			}
 		});
 	}
@@ -261,7 +291,11 @@ public class ScreenMain extends MainScreen {
 			public void drawListRow(ListField listField, Graphics graphics,
 					int index, int y, int width) {
 				Actuacion objeto = (Actuacion) this.get(listField, index);
-				GestorCita cita = new GestorCita(objeto.getCita().getUid());
+				GestorCita cita;
+				if(objeto.getCita() != null)
+					cita = new GestorCita(objeto.getCita());
+				else
+					cita = new GestorCita();
 				int count = 0;
 				if (cita.exist()) {
 					graphics.drawBitmap(0, y, 16, 16,
@@ -535,13 +569,13 @@ public class ScreenMain extends MainScreen {
 				if (_grid.getRowCount() > 1) {
 					deleteAll();
 					dibujarPantalla();
-					cargarBD();
+					cargarActuaciones();
 				}
 			} else if (Display.getOrientation() == Display.ORIENTATION_PORTRAIT) {
 				if (_grid.getColumnCount() > 1) {
 					deleteAll();
 					dibujarPantalla();
-					cargarBD();
+					cargarActuaciones();
 				}
 			}
 		}
