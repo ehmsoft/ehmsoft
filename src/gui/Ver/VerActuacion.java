@@ -111,7 +111,9 @@ public class VerActuacion {
 		if (!_cita.exist() && _actuacion.getCita() != null) {
 			_actuacion.setCita(null);
 			try {
-				new Persistence().actualizarActuacion(_actuacion);
+				Persistence p = new Persistence();
+				p.actualizarActuacion(_actuacion);
+				p.borrarCitaCalendario(_cita.getCita());
 			} catch (NullPointerException e) {
 				Util.noSd();
 			} catch (Exception e) {

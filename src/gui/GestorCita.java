@@ -6,6 +6,8 @@ import java.util.Date;
 import javax.microedition.pim.Event;
 import javax.microedition.pim.PIMItem;
 
+import persistence.Persistence;
+
 import net.rim.blackberry.api.pdap.BlackBerryEvent;
 import core.CalendarManager;
 import core.Cita;
@@ -51,7 +53,15 @@ public class GestorCita {
 	}
 	
 	public void setCita(Cita cita) {
-		cargarUid(cita.getUid());
+		_cita = cita;
+		if(cita != null && cita.getUid() != null)
+			cargarUid(cita.getUid());
+		else if(cita != null){
+			_descripcion = cita.getDescripcion();
+			_fecha = cita.getFecha().getTime();
+			_alarma = cita.getAnticipacion();
+			_uid = cita.getUid();
+		}
 	}
 
 	public GestorCita(String uid) {
@@ -115,6 +125,7 @@ public class GestorCita {
 	public void eliminarCita() {
 		try {
 			CalendarManager.borrarCita(_uid);
+			new Persistence().borrarCitaCalendario(_cita);
 		} catch (NullPointerException e) {
 
 		} catch (Exception e) {
