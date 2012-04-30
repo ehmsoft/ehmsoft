@@ -329,7 +329,7 @@ public class Persistence implements Cargado, Guardado {
 				d.close();
 			}
 		}
-		if (actuacion.getId_actuacion() != null){
+		if (actuacion.getId_actuacion() != null && actuacion.getCita() != null){
 			guardarCitaCalendario(actuacion.getCita(), actuacion.getId_actuacion());
 		}
 
