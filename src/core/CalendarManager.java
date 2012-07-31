@@ -12,7 +12,7 @@ import net.rim.blackberry.api.pdap.BlackBerryEventList;
 
 public class CalendarManager {
 	// Parametro para duracion por defecto de una cita. 1 hora
-	private static long DURACION_CITA = 3600000;
+	private static long DURACION_CITA = Preferencias.getDuracionCitas();
 
 	/**
 	 * @param fecha
@@ -24,6 +24,7 @@ public class CalendarManager {
 			throws Exception {
 		EventList el = null;
 		String uid = null;
+		DURACION_CITA = Preferencias.getDuracionCitas();
 		try {
 			el = (BlackBerryEventList) PIM.getInstance().openPIMList(
 					PIM.EVENT_LIST, PIM.WRITE_ONLY);
@@ -63,6 +64,7 @@ public class CalendarManager {
 			throws Exception {
 		EventList el = null;
 		String uid = null;
+		DURACION_CITA = Preferencias.getDuracionCitas();
 		try {
 			el = (BlackBerryEventList) PIM.getInstance().openPIMList(
 					PIM.EVENT_LIST, PIM.WRITE_ONLY);
@@ -141,6 +143,7 @@ public class CalendarManager {
 			String descripcion) throws Exception {
 		boolean flag = false;
 		BlackBerryEventList el = null;
+		DURACION_CITA = Preferencias.getDuracionCitas();
 		try {
 			el = (BlackBerryEventList) PIM.getInstance().openPIMList(
 					PIM.EVENT_LIST, PIM.READ_WRITE);
@@ -189,6 +192,7 @@ public class CalendarManager {
 			String descripcion, int alarma) throws Exception {
 		boolean flag = false;
 		BlackBerryEventList el = null;
+		DURACION_CITA = Preferencias.getDuracionCitas();
 		try {
 			el = (BlackBerryEventList) PIM.getInstance().openPIMList(
 					PIM.EVENT_LIST, PIM.READ_WRITE);

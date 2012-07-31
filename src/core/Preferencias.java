@@ -48,7 +48,8 @@ public class Preferencias {
 	private static boolean recodarUltimaCategoria = false;
 	private static short pantallaInicial = PANTALLA_INICIAL_MAIN;
 	private static short cantidadActuacionesCriticas = 10;
-
+	private static long duracionCitas = 3600000;
+	
 	public static boolean isMostrarCampoBusqueda() {
 		return mostrarCampoBusqueda;
 	}
@@ -77,6 +78,10 @@ public class Preferencias {
 		return cantidadActuacionesCriticas;
 	}
 
+	public static long getDuracionCitas() {
+		return duracionCitas;
+	}
+	
 	public static int getPANTALLA_INICIAL_MAIN() {
 		return PANTALLA_INICIAL_MAIN;
 	}
@@ -110,7 +115,11 @@ public class Preferencias {
 			int cantidadActuacionesCriticas) {
 		Preferencias.cantidadActuacionesCriticas = (short) cantidadActuacionesCriticas;
 	}
-
+	
+	public static void setDuracionCitas(
+			long duracionCitas) {
+		Preferencias.duracionCitas = duracionCitas;
+	}
 	public static void setUltimaCategoria(Object categoria) {
 		if (isRecodarUltimaCategoria()) {
 			if (String.class.isInstance(categoria)) {

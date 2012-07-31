@@ -43,6 +43,7 @@ public class PreferenciasGeneralesScreen extends MainScreen {
 	private HorizontalFieldManager _hfmCantidadActuaciones;
 	private LabelField _lblLlaves;
 	private ButtonField _btnLlaves;
+	private BasicEditField _txtDuracion;
 
 	private int[] _significadoEstilos = { Font.PLAIN, Font.BOLD,
 			Font.EXTRA_BOLD, Font.BOLD | Font.ITALIC, Font.ITALIC };
@@ -125,6 +126,10 @@ public class PreferenciasGeneralesScreen extends MainScreen {
 		_btnLlaves = new ButtonField("Cambiar Llave de activación",
 				ButtonField.CONSUME_CLICK | Field.FIELD_RIGHT);
 		_btnLlaves.setChangeListener(listenerLlaves);
+		
+		//DuracionCitas
+		_txtDuracion = new BasicEditField("Duración de las citas(Horas): ",
+				"1", 2, BasicEditField.FILTER_INTEGER);
 		// Agregar componentes
 		add(_txtNombreUsuario);
 		add(_chkMostrarCampoBusqueda);
@@ -133,6 +138,7 @@ public class PreferenciasGeneralesScreen extends MainScreen {
 		// add(new SeparatorField());
 		// add(_chfPantallaInicial);
 		add(_hfmCantidadActuaciones);
+		add(_txtDuracion);
 		add(new SeparatorField());
 		add(_chfTipoFuente);
 		add(_chfTamanoFuente);
@@ -185,6 +191,10 @@ public class PreferenciasGeneralesScreen extends MainScreen {
 		_txtCantidadActuaciones.setText(Integer.toString(cant));
 	}
 
+	public void setDuracionCita(int cant) {
+		_txtDuracion.setText(Integer.toString(cant));
+	}
+	
 	public String getNombreUsuario() {
 		return _txtNombreUsuario.getText();
 	}
@@ -217,6 +227,10 @@ public class PreferenciasGeneralesScreen extends MainScreen {
 
 	public int getCantidadActuacionesCriticas() {
 		return Integer.parseInt(_txtCantidadActuaciones.getText());
+	}
+	
+	public int getDuracionCitas() {
+		return Integer.parseInt(_txtDuracion.getText());
 	}
 
 	private FieldChangeListener listenerPantallaInicial = new FieldChangeListener() {

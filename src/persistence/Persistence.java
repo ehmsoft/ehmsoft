@@ -1129,6 +1129,15 @@ public class Persistence implements Cargado, Guardado {
 					.getCantidadActuacionesCriticas()));
 			stCantidadActCriticas.execute();
 			stCantidadActCriticas.close();
+
+			Statement stDuracionCitas = d
+			.createStatement("UPDATE preferencias SET valor=? WHERE id_preferencia = 10601");
+			stDuracionCitas.prepare();
+			stDuracionCitas.bind(1, Long.toString(Preferencias
+					.getDuracionCitas()));
+			stDuracionCitas.execute();
+			stDuracionCitas.close();
+	
 		} catch (Exception e) {
 			throw e;
 		} finally {
@@ -1194,6 +1203,12 @@ public class Persistence implements Cargado, Guardado {
 			stCantidadActCriticas.prepare();
 			stCantidadActCriticas.execute();
 			stCantidadActCriticas.close();
+			
+			Statement stDuracionCitas = d
+			.createStatement("UPDATE preferencias SET valor=3600000 WHERE id_preferencia = 10601");
+	stDuracionCitas.prepare();
+	stDuracionCitas.execute();
+	stDuracionCitas.close();
 		} catch (Exception e) {
 			throw e;
 		} finally {
@@ -2431,6 +2446,9 @@ public class Persistence implements Cargado, Guardado {
 				case 10501:
 					Preferencias.setCantidadActuacionesCriticas(Integer
 							.parseInt(valor));
+					break;
+				case 10601:
+					Preferencias.setDuracionCitas(Long.parseLong(valor));
 					break;
 				default:
 					break;

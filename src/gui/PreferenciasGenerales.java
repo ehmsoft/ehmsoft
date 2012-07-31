@@ -4,6 +4,7 @@ import net.rim.device.api.ui.Field;
 import net.rim.device.api.ui.FieldChangeListener;
 import net.rim.device.api.ui.UiApplication;
 import persistence.Persistence;
+import core.CalendarManager;
 import core.Preferencias;
 
 public class PreferenciasGenerales {
@@ -22,6 +23,7 @@ public class PreferenciasGenerales {
 		_screen.setRecordarUltimaCategoria(Preferencias
 				.isRecodarUltimaCategoria());
 		_screen.setFuente(Preferencias.getTipoFuente());
+		_screen.setDuracionCita((int)Preferencias.getDuracionCitas()/3600000);
 		_screen.setChangeListener(listener);
 	}
 
@@ -65,6 +67,7 @@ public class PreferenciasGenerales {
 				Preferencias.setPantallaInicial(_screen.getPantallaInicial());
 				Preferencias.setCantidadActuacionesCriticas(_screen
 						.getCantidadActuacionesCriticas());
+				Preferencias.setDuracionCitas((long)_screen.getDuracionCitas()*3600000);
 				try {
 					Persistence per = new Persistence();
 					per.actualizarPreferencias();
