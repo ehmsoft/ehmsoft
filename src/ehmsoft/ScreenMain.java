@@ -43,6 +43,7 @@ import persistence.ConnectionManager;
 import persistence.Persistence;
 import core.Actuacion;
 import core.ActuacionCritica;
+import core.CalendarManager;
 import core.Cita;
 import core.Preferencias;
 import core.Proceso;
@@ -232,16 +233,33 @@ public class ScreenMain extends MainScreen {
 					Vector citasBD = p.consultarCitasCalendario();
 					Vector citasNuevas = new Vector();
 					Enumeration en = citasBD.elements();
-					GestorCita gestor = new GestorCita();
 					while(en.hasMoreElements()) {
 						Cita cita = (Cita)en.nextElement();
-						if(cita.getUid() == null) {
-							gestor.setCita(cita);
-							gestor.guardarCita();
-							citasNuevas.addElement(gestor.getCita());
-							p.actualizarCitasCalendario(citasNuevas);
+						if(cita.getUid() == null) { //En caso que la cita haya sido creada en el Desktop
+							if (cita.isAlarma().booleanValue()){
+								cita.setUid(CalendarManager.agregarCita(cita.getFecha().getTime(), cita.getDescripcion(), cita.getAnticipacion()));
+							}else{
+								cita.setUid(CalendarManager.agregarCita(cita.getFecha().getTime(), cita.getDescripcion()));
+							}
+							citasNuevas.addElement(cita);
+						}else{ //En caso que la cita ya tuviera cita en el blackberry
+							try{
+								if (cita.isAlarma().booleanValue()){
+									CalendarManager.actualizarCita(cita.getUid(), cita.getFecha().getTime(), cita.getDescripcion(), cita.getAnticipacion());
+								}else{
+									CalendarManager.actualizarCita(cita.getUid(), cita.getFecha().getTime(), cita.getDescripcion());
+								}
+							}catch (NullPointerException e) { //Si llega aqui es que el usuario borro la cita del telefono, se procede a volver a crearla
+								if (cita.isAlarma().booleanValue()){
+									cita.setUid(CalendarManager.agregarCita(cita.getFecha().getTime(), cita.getDescripcion(), cita.getAnticipacion()));
+								}else{
+									cita.setUid(CalendarManager.agregarCita(cita.getFecha().getTime(), cita.getDescripcion()));
+								}
+								citasNuevas.addElement(cita);
+							}
 						}
 					}
+					p.actualizarCitasCalendario(citasNuevas);
 				} catch (NullPointerException e) {
 					Util.noSd();
 				} catch (Exception e) {
