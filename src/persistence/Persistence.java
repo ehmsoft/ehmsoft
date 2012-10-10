@@ -3,7 +3,7 @@ package persistence;
 import java.util.Calendar;
 import java.util.Enumeration;
 import java.util.Vector;
-
+import java.util.Random;
 import net.rim.device.api.database.Cursor;
 import net.rim.device.api.database.Database;
 import net.rim.device.api.database.DatabaseFactory;
@@ -121,9 +121,10 @@ public class Persistence implements Cargado, Guardado {
 		try {
 			connMgr.prepararBD();
 			d = DatabaseFactory.open(connMgr.getDbLocation());
+			int rand = new Random().nextInt();
 			if (persona.getTipo() == 1) {
 				stDelPersona1 = d
-				.createStatement("UPDATE demandantes SET eliminado = 1, fecha_mod = datetime(" + "'now'," + "'localtime') WHERE id_demandante = ?");
+				.createStatement("UPDATE demandantes SET eliminado = 1, fecha_mod = datetime(" + "'now'," + "'localtime'), nombre = ? WHERE id_demandante = ?");
 				stDelPersona2 = d
 				.createStatement("UPDATE procesos SET id_demandante = 1 WHERE id_demandante = ?");
 				stDelPersona3 = d
@@ -131,7 +132,7 @@ public class Persistence implements Cargado, Guardado {
 
 			} else if (persona.getTipo() == 2) {
 				stDelPersona1 = d
-				.createStatement("UPDATE demandados SET eliminado = 1, fecha_mod = datetime(" + "'now'," + "'localtime') WHERE id_demandado = ?");
+				.createStatement("UPDATE demandados SET eliminado = 1, fecha_mod = datetime(" + "'now'," + "'localtime'), nombre = ? WHERE id_demandado = ?");
 				stDelPersona2 = d
 				.createStatement("UPDATE procesos SET id_demandado = 1 WHERE id_demandado = ?");
 				stDelPersona3 = d
@@ -144,7 +145,8 @@ public class Persistence implements Cargado, Guardado {
 			stDelPersona1.prepare();
 			stDelPersona2.prepare();
 			stDelPersona3.prepare();
-			stDelPersona1.bind(1, persona.getId_persona());
+			stDelPersona1.bind(1, persona.getNombre() + "-" + rand );
+			stDelPersona1.bind(2, persona.getId_persona());
 			stDelPersona2.bind(1, persona.getId_persona());
 			stDelPersona3.bind(1, persona.getId_persona());
 			stDelPersona1.execute();
@@ -224,8 +226,9 @@ public class Persistence implements Cargado, Guardado {
 		try {
 			connMgr.prepararBD();
 			d = DatabaseFactory.open(connMgr.getDbLocation());
+			int rand = new Random().nextInt();
 			Statement stDelJuzgado1 = d
-			.createStatement("UPDATE juzgados SET eliminado = 1, fecha_mod = datetime(" + "'now'," + "'localtime') WHERE id_juzgado = ?");
+			.createStatement("UPDATE juzgados SET eliminado = 1, fecha_mod = datetime(" + "'now'," + "'localtime'), nombre = ? WHERE id_juzgado = ?");
 			Statement stDelJuzgado2 = d
 			.createStatement("UPDATE procesos SET id_juzgado = 1 WHERE id_juzgado = ?");
 			Statement stDelJuzgado3 = d
@@ -237,7 +240,8 @@ public class Persistence implements Cargado, Guardado {
 			stDelJuzgado2.prepare();
 			stDelJuzgado3.prepare();
 			stDelJuzgado4.prepare();
-			stDelJuzgado1.bind(1, juzgado.getId_juzgado());
+			stDelJuzgado1.bind(1, juzgado.getNombre() + "-" + rand);
+			stDelJuzgado1.bind(2, juzgado.getId_juzgado());
 			stDelJuzgado2.bind(1, juzgado.getId_juzgado());
 			stDelJuzgado3.bind(1, juzgado.getId_juzgado());
 			stDelJuzgado4.bind(1, juzgado.getId_juzgado());
@@ -340,15 +344,18 @@ public class Persistence implements Cargado, Guardado {
 		try {
 			connMgr.prepararBD();
 			d = DatabaseFactory.open(connMgr.getDbLocation());
+			int rand = new Random().nextInt();
 			Statement stDelActuacion = d
-			.createStatement("UPDATE actuaciones SET eliminado = 1, fecha_mod = datetime(" + "'now'," + "'localtime') WHERE id_actuacion = ?");
+			.createStatement("UPDATE actuaciones SET eliminado = 1, fecha_mod = datetime(" + "'now'," + "'localtime'), descripcion = ? WHERE id_actuacion = ?");
 			stDelActuacion.prepare();
-			stDelActuacion.bind(1, actuacion.getId_actuacion());
+			stDelActuacion.bind(1, actuacion.getDescripcion() + "-"+ rand);
+			stDelActuacion.bind(2, actuacion.getId_actuacion());
 			stDelActuacion.execute();
 			stDelActuacion.close();
-			Statement stDelCita = d.createStatement("UPDATE citas SET eliminado = 1, fecha_mod = datetime(" + "'now'," + "'localtime') WHERE id_actuacion = ?");
+			Statement stDelCita = d.createStatement("UPDATE citas SET eliminado = 1, fecha_mod = datetime(" + "'now'," + "'localtime'), descripcion = ? WHERE id_actuacion = ?");
 			stDelCita.prepare();
-			stDelCita.bind(1, actuacion.getId_actuacion());
+			stDelCita.bind(1, actuacion.getDescripcion() + "-" + rand);
+			stDelCita.bind(2, actuacion.getId_actuacion());
 			stDelCita.execute();
 			stDelCita.close();
 		} catch (Exception e) {
@@ -417,10 +424,12 @@ public class Persistence implements Cargado, Guardado {
 		try {
 			connMgr.prepararBD();
 			d = DatabaseFactory.open(connMgr.getDbLocation());
+			int rand = new Random().nextInt();
 			Statement stDelCampoPersonalizado = d
-			.createStatement("UPDATE atributos_proceso SET eliminado = 1, fecha_mod = datetime(" + "'now'," + "'localtime') WHERE id_atributo_proceso = ?");
+			.createStatement("UPDATE atributos_proceso SET eliminado = 1, fecha_mod = datetime(" + "'now'," + "'localtime'), valor = ? WHERE id_atributo_proceso = ?");
 			stDelCampoPersonalizado.prepare();
-			stDelCampoPersonalizado.bind(1, campo.getId_campo());
+			stDelCampoPersonalizado.bind(1, campo.getValor()+ "-" + rand);
+			stDelCampoPersonalizado.bind(2, campo.getId_campo());
 			stDelCampoPersonalizado.execute();
 			stDelCampoPersonalizado.close();
 		} catch (Exception e) {
@@ -500,18 +509,22 @@ public class Persistence implements Cargado, Guardado {
 		try {
 			connMgr.prepararBD();
 			d = DatabaseFactory.open(connMgr.getDbLocation());
+			int rand = new Random().nextInt();
 			Statement stDelAtributo = d
-			.createStatement("UPDATE atributos SET eliminado = 1, fecha_mod = datetime(" + "'now'," + "'localtime') WHERE id_atributo = ?");
+			.createStatement("UPDATE atributos SET eliminado = 1, fecha_mod = datetime(" + "'now'," + "'localtime'), nombre = ? WHERE id_atributo = ?");
 			Statement stDelCampoPersonalizado = d
-			.createStatement("UPDATE atributos_proceso SET eliminado = 1, fecha_mod = datetime(" + "'now'," + "'localtime') WHERE id_atributo = ?");
+			.createStatement("UPDATE atributos_proceso SET eliminado = 1, fecha_mod = datetime(" + "'now'," + "'localtime'), valor = ? WHERE id_atributo = ?");
 			Statement stDelCampoPlantilla = d
-			.createStatement("UPDATE atributos_plantilla SET eliminado = 1, fecha_mod = datetime(" + "'now'," + "'localtime') WHERE id_atributo = ?");
+			.createStatement("UPDATE atributos_plantilla SET eliminado = 1, fecha_mod = datetime(" + "'now'," + "'localtime'), valor = ? WHERE id_atributo = ?");
 			stDelCampoPersonalizado.prepare();
 			stDelAtributo.prepare();
 			stDelCampoPlantilla.prepare();
-			stDelCampoPersonalizado.bind(1, campo.getId_atributo());
-			stDelAtributo.bind(1, campo.getId_atributo());
-			stDelCampoPlantilla.bind(1, campo.getId_atributo());
+			stDelCampoPersonalizado.bind(1, campo.getNombre() + "-" + rand);
+			stDelAtributo.bind(1, campo.getNombre() + "-" + rand);
+			stDelCampoPlantilla.bind(1, campo.getNombre() + "-" + rand);
+			stDelCampoPersonalizado.bind(2, campo.getId_atributo());
+			stDelAtributo.bind(2, campo.getId_atributo());
+			stDelCampoPlantilla.bind(2, campo.getId_atributo());
 			stDelCampoPersonalizado.execute();
 			stDelAtributo.execute();
 			stDelCampoPlantilla.execute();
@@ -676,18 +689,23 @@ public class Persistence implements Cargado, Guardado {
 		try {
 			connMgr.prepararBD();
 			d = DatabaseFactory.open(connMgr.getDbLocation());
+			int rand = new Random().nextInt();
 			Statement stDelProceso = d
-			.createStatement("UPDATE procesos SET eliminado = 1, fecha_mod = datetime(" + "'now'," + "'localtime') WHERE id_proceso = ?");
+			.createStatement("UPDATE procesos SET eliminado = 1, fecha_mod = datetime(" + "'now'," + "'localtime'), radicado = ? WHERE id_proceso = ?");
 			Statement stDelActuaciones = d
-			.createStatement("UPDATE actuaciones SET eliminado = 1, fecha_mod = datetime(" + "'now'," + "'localtime') WHERE id_proceso = ?");
+			.createStatement("UPDATE actuaciones SET eliminado = 1, fecha_mod = datetime(" + "'now'," + "'localtime'), descripcion = ? WHERE id_proceso = ?");
 			Statement stDelCampoPersonalizado = d
-			.createStatement("UPDATE atributos_proceso SET eliminado = 1,fecha_mod = datetime(" + "'now'," + "'localtime') WHERE id_proceso = ?");
+			.createStatement("UPDATE atributos_proceso SET eliminado = 1,fecha_mod = datetime(" + "'now'," + "'localtime'), valor = ? WHERE id_proceso = ?");
 			stDelProceso.prepare();
 			stDelActuaciones.prepare();
 			stDelCampoPersonalizado.prepare();
-			stDelProceso.bind(1, proceso.getId_proceso());
-			stDelActuaciones.bind(1, proceso.getId_proceso());
-			stDelCampoPersonalizado.bind(1, proceso.getId_proceso());
+			String strRand = proceso.getRadicado() + "-" + rand;
+			stDelProceso.bind(1, strRand);
+			stDelActuaciones.bind(1, strRand);
+			stDelCampoPersonalizado.bind(1, strRand);
+			stDelProceso.bind(2, proceso.getId_proceso());
+			stDelActuaciones.bind(2, proceso.getId_proceso());
+			stDelCampoPersonalizado.bind(2, proceso.getId_proceso());
 			stDelProceso.execute();
 			stDelActuaciones.execute();
 			stDelCampoPersonalizado.execute();
@@ -767,8 +785,9 @@ public class Persistence implements Cargado, Guardado {
 			try {
 				connMgr.prepararBD();
 				d = DatabaseFactory.open(connMgr.getDbLocation());
+				int rand = new Random().nextInt();
 				Statement stDelCategoria1 = d
-				.createStatement("UPDATE categorias SET eliminado = 1,fecha_mod = datetime(" + "'now'," + "'localtime') WHERE id_categoria = ?");
+				.createStatement("UPDATE categorias SET eliminado = 1,fecha_mod = datetime(" + "'now'," + "'localtime'), descripcion = ? WHERE id_categoria = ?");
 				Statement stDelCategoria2 = d
 				.createStatement("UPDATE procesos SET id_categoria = 1 WHERE id_categoria = ?");
 				Statement stDelCategoria3 = d
@@ -777,7 +796,8 @@ public class Persistence implements Cargado, Guardado {
 				stDelCategoria1.prepare();
 				stDelCategoria2.prepare();
 				stDelCategoria3.prepare();
-				stDelCategoria1.bind(1, categoria.getId_categoria());
+				stDelCategoria1.bind(1, categoria.getDescripcion() + "-" + rand);
+				stDelCategoria1.bind(2, categoria.getId_categoria());
 				stDelCategoria2.bind(1, categoria.getId_categoria());
 				stDelCategoria3.bind(1, categoria.getId_categoria());
 				stDelCategoria1.execute();
@@ -932,14 +952,17 @@ public class Persistence implements Cargado, Guardado {
 		try {
 			connMgr.prepararBD();
 			d = DatabaseFactory.open(connMgr.getDbLocation());
+			int rand = new Random().nextInt();
 			Statement stDelPlantilla = d
-			.createStatement("UPDATE plantillas SET eliminado = 1, fecha_mod = datetime(" + "'now'," + "'localtime') WHERE id_plantilla = ?");
+			.createStatement("UPDATE plantillas SET eliminado = 1, fecha_mod = datetime(" + "'now'," + "'localtime'), nombre = ? WHERE id_plantilla = ?");
 			Statement stDelCampoPersonalizado = d
-			.createStatement("UPDATE atributos_plantilla SET eliminado = 1, fecha_mod = datetime(" + "'now'," + "'localtime') WHERE id_plantilla = ?");
+			.createStatement("UPDATE atributos_plantilla SET eliminado = 1, fecha_mod = datetime(" + "'now'," + "'localtime'), valor = ? WHERE id_plantilla = ?");
 			stDelPlantilla.prepare();
 			stDelCampoPersonalizado.prepare();
-			stDelPlantilla.bind(1, plantilla.getId_plantilla());
-			stDelCampoPersonalizado.bind(1, plantilla.getId_plantilla());
+			stDelPlantilla.bind(1, plantilla.getNombre() + "-" + rand);
+			stDelPlantilla.bind(2, plantilla.getId_plantilla());
+			stDelCampoPersonalizado.bind(1, plantilla.getNombre() + "-" + rand);
+			stDelCampoPersonalizado.bind(2, plantilla.getId_plantilla());
 			stDelPlantilla.execute();
 			stDelCampoPersonalizado.execute();
 			stDelPlantilla.close();
@@ -1011,10 +1034,12 @@ public class Persistence implements Cargado, Guardado {
 		try {
 			connMgr.prepararBD();
 			d = DatabaseFactory.open(connMgr.getDbLocation());
+			int rand = new Random().nextInt();
 			Statement stDelCampoPersonalizado = d
-			.createStatement("UPDATE atributos_plantilla SET eliminado = 1, fecha_mod = datetime(" + "'now'," + "'localtime') WHERE id_atributo_plantilla = ?");
+			.createStatement("UPDATE atributos_plantilla SET eliminado = 1, fecha_mod = datetime(" + "'now'," + "'localtime'), valor = ? WHERE id_atributo_plantilla = ?");
 			stDelCampoPersonalizado.prepare();
-			stDelCampoPersonalizado.bind(1, campo.getId_campo());
+			stDelCampoPersonalizado.bind(1, campo.getValor() + "-" + rand);
+			stDelCampoPersonalizado.bind(2, campo.getId_campo());
 			stDelCampoPersonalizado.execute();
 			stDelCampoPersonalizado.close();
 		} catch (Exception e) {
@@ -1344,12 +1369,14 @@ public class Persistence implements Cargado, Guardado {
 		try {
 			connMgr.prepararBD();
 			d = DatabaseFactory.open(connMgr.getDbLocation());
+			int rand = new Random().nextInt();
 			Statement stDelCitaCalendario = d
 			.createStatement("UPDATE citas SET eliminado = 1, fecha_mod = datetime(" +
 					"'now'," +
-			"'localtime') WHERE id_cita = ?");
+			"'localtime'), descripcion = ? WHERE id_cita = ?");
 			stDelCitaCalendario.prepare();
-			stDelCitaCalendario.bind(1, cita.getId_cita());
+			stDelCitaCalendario.bind(1, cita.getDescripcion() + "-" + rand);
+			stDelCitaCalendario.bind(2, cita.getId_cita());
 			stDelCitaCalendario.execute();
 			stDelCitaCalendario.close();
 		} catch (Exception e) {
