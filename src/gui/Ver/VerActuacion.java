@@ -73,7 +73,7 @@ public class VerActuacion {
 		} else if (_juzgado == null || _juzgado.getId_juzgado().equals("1")) {
 			Util.alert("El juzgado es obligatorio");
 		} else if (_screen.isDirty()) {
-			_cita.actualizarCita();
+			_cita.actualizarCita(_actuacion.getId_actuacion());
 			_actuacion.setJuzgado(_juzgado);
 			_actuacion.setFecha(_screen.getFecha());
 			_actuacion.setFechaProxima(_screen.getFechaProxima());
@@ -159,7 +159,7 @@ public class VerActuacion {
 
 	private void addCita() {
 		if(_cita.isEliminada()) {
-			_cita.actualizarCita();
+			_cita.actualizarCita(_actuacion.getId_actuacion());
 		}
 		NuevaCita n = new NuevaCita(_screen.getDescripcion(), _screen
 				.getFechaProxima().getTime());

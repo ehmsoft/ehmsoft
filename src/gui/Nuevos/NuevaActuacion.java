@@ -72,7 +72,6 @@ public class NuevaActuacion {
 		} else if (_juzgado == null) {
 			Util.alert("El juzgado es obligatorio");
 		} else {
-			_cita.actualizarCita();
 			_actuacion = new Actuacion(_juzgado, _screen.getFecha(),
 					_screen.getFechaProxima(), _screen.getDescripcion(), null,
 					_cita.getCita());
@@ -83,6 +82,7 @@ public class NuevaActuacion {
 						try {
 							new Persistence().guardarActuacion(_actuacion,
 									_proceso.getId_proceso());
+							_cita.actualizarCita(_actuacion.getId_actuacion());
 						} catch (NullPointerException e) {
 							Util.noSd();
 						} catch (DatabaseException e) {

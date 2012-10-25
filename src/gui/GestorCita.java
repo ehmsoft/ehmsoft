@@ -11,6 +11,7 @@ import persistence.Persistence;
 import net.rim.blackberry.api.pdap.BlackBerryEvent;
 import core.CalendarManager;
 import core.Cita;
+//import persistence.Persistence;
 
 public class GestorCita {
 
@@ -135,7 +136,7 @@ public class GestorCita {
 		}
 	}
 
-	public void guardarCita() {
+	public void guardarCita(String id_actuacion) {
 		try {
 			if (hasAlarma()) {
 				_uid = CalendarManager.agregarCita(_fecha, _descripcion,
@@ -143,6 +144,7 @@ public class GestorCita {
 			} else {
 				_uid = CalendarManager.agregarCita(_fecha, _descripcion);
 			}
+			new Persistence().guardarCitaCalendario(getCita(), id_actuacion);
 		} catch (Exception e) {
 			Util.citaErrorMessage();
 		}
@@ -156,7 +158,7 @@ public class GestorCita {
 		return _fecha;
 	}
 
-	public void actualizarCita() {
+	public void actualizarCita(String id_actuacion) {
 		if (_actualizar) {
 			try {
 				if (hasAlarma()) {
@@ -165,15 +167,16 @@ public class GestorCita {
 				} else {
 					CalendarManager.actualizarCita(_uid, _fecha, _descripcion);
 				}
+				new Persistence().actualizarCitaCalendario(getCita());
 			} catch (NullPointerException e) {
-				guardarCita();
+				guardarCita(id_actuacion);
 			} catch (Exception e) {
 				Util.citaErrorMessage();
 			}
 		} else if (_eliminar) {
 			eliminarCita();
 		} else if (_guardar) {
-			guardarCita();
+			guardarCita(id_actuacion);
 		}
 	}
 
