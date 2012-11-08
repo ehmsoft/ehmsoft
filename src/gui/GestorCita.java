@@ -204,8 +204,8 @@ public class GestorCita {
 		_alarma = alarma;
 	}
 	
-	public Cita getCita() {
-		if (_uid != null) {
+	public Cita getCita(boolean paraProceso) {
+		if (_uid != null || paraProceso) {
 			Calendar calendar = Calendar.getInstance();
 			calendar.setTime(_fecha);
 			if(_cita != null){

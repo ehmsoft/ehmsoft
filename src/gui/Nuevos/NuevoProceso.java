@@ -1,5 +1,6 @@
 package gui.Nuevos;
 
+import gui.GestorCita;
 import gui.Util;
 import gui.Listados.ListadoActuaciones;
 
@@ -14,6 +15,7 @@ import persistence.Persistence;
 import core.Actuacion;
 import core.CampoPersonalizado;
 import core.Categoria;
+import core.Cita;
 import core.Juzgado;
 import core.Persona;
 import core.Plantilla;
@@ -154,6 +156,7 @@ public class NuevoProceso {
 							_screen.getPrioridad());
 					try {
 						new Persistence().guardarProceso(_proceso);
+						guardarCitas(_actuaciones);
 					} catch (NullPointerException e) {
 						Util.noSd();
 					} catch (DatabaseException e) {
@@ -169,6 +172,23 @@ public class NuevoProceso {
 					}
 				}
 			});
+		}
+	}
+	
+	private void guardarCitas(Vector actuaciones) {
+		Enumeration e = actuaciones.elements();
+		while (e.hasMoreElements()) {
+			Actuacion a = (Actuacion) e.nextElement();
+			if (a.getCita() != null) {
+				Cita cita = a.getCita();
+				GestorCita gestor = new GestorCita(cita);
+				if (cita.getId_cita() == null) {
+					gestor.markGuardar();
+				} else {
+					gestor.markActualizar();
+				}
+				gestor.actualizarCita(a.getId_actuacion());
+			}
 		}
 	}
 
